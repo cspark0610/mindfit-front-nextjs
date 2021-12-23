@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@atoms/*": ["./components/UI/atoms/*"],
+      "@molecules/*": ["./components/UI/molecules/*"],
+      "@organisms/*": ["./components/UI/organisms/*"]
+    },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
