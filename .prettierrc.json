@@ -1,9 +1,9 @@
 {
-    "endOfLine": "auto",
-    "jsxBracketSameLine": true,
-    "jsxSingleQuote": true,
-    "singleQuote": true,
-    "proseWrap": "always",
-    "semi": false,
-    "tabWidth": 2
-  }
+  "endOfLine": "auto",
+  "bracketSameLine": true,
+  "jsxSingleQuote": true,
+  "singleQuote": true,
+  "proseWrap": "always",
+  "semi": false,
+  "tabWidth": 2
+}
