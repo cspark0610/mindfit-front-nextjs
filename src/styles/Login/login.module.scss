@@ -1,0 +1,35 @@
+@import '../variables.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Button/button.module.scss';
+
+.logo {
+  @media (max-width: 768px) {
+    width: 280px;
+  }
+}
+
+.container {
+  text-align: center;
+}
+
+.marginInput {
+  margin-bottom: 13px;
+}
+
+.marginButtom {
+  margin: 47px 0;
+}
+
+.textMargin {
+  margin-bottom: 64px;
+}
+
+.textLeft {
+  text-align: left;
+  font-weight: bold;
+}
+
+.textRight {
+  text-align: right;
+}

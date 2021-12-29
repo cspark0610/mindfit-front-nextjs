@@ -1,0 +1,10 @@
+@import '../variables.scss';
+@import '../UI/Card/appCard.module.scss';
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 620px;
+}
