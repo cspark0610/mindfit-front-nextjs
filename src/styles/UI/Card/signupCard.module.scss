@@ -10,7 +10,10 @@
     font-weight: bold;
     text-align: center;
   }
-  .row > * {
-    margin: 0.5rem 0;
+  .row {
+    justify-content: center;
+    > * {
+      margin: 0.5rem 0;
+    }
   }
 }

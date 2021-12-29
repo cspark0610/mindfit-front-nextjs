@@ -1,8 +1,16 @@
 // main tools
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 
 // bootstrap components
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap'
 import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
@@ -12,9 +20,13 @@ import { Password } from 'primereact/password'
 // components
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // utils
 import { validateUserSignup } from './utils'
+
+// commons
+import { regex } from 'commons'
 
 // styles
 import classes from 'styles/UI/Card/signupCard.module.scss'
@@ -25,7 +37,7 @@ import { ChangeType } from 'types'
 
 export const UserSignup: FC = () => {
   const [userData, setUserData] = useState({
-    profilePicture: {} as File,
+    picture: {} as File,
     firstName: '',
     lastName: '',
     email: '',
@@ -35,10 +47,22 @@ export const UserSignup: FC = () => {
   const handleChange = (ev: ChangeType) =>
     setUserData({ ...userData, [ev.target.name]: ev.target.value })
 
+  const handleSignup = () => {
+    signIn('credentials', {
+      email: userData.email,
+      password: userData.password,
+      callbackUrl: '/signup/organization/company',
+    })
+  }
+
+  const overlayTooltip = () => (
+    <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
+  )
+
   return (
     <section className={classes.container}>
       <h1 className={classes.title}>Registra tu usuario</h1>
-      <UploadPicture setUserData={setUserData} />
+      <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>
@@ -72,27 +96,44 @@ export const UserSignup: FC = () => {
           <Col xs={12}>
             <Password
               toggleMask
-              feedback={false}
-              name='password'
-              value={userData.password}
-              onChange={handleChange}
-              placeholder='Contraseña'
               className='w-100'
+              name='password'
+              placeholder='Contraseña'
+              promptLabel='Sugerencias'
+              weakLabel='Contraseña muy corta'
+              mediumLabel='Por favor, tenga en cuenta las sugerencias'
+              strongLabel='Contraseña aceptada'
+              mediumRegex={regex.minSize.source}
+              strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
+              value={userData.password}
               inputClassName={classes.input}
+              footer={passwordSuggestionsTemplate}
+              onChange={handleChange}
             />
           </Col>
         </Row>
-      </Container>
-      <Container>
         <Row className={classes.row}>
-          <Col xs={1} className={classes.mark}>
-            {validateUserSignup(userData) ? <Check2 /> : <Question />}
+          {validateUserSignup(userData) ? (
+            <Col xs={12} sm={1} className={classes.mark}>
+              <Check2 />
+            </Col>
+          ) : (
+            <OverlayTrigger placement='bottom' overlay={overlayTooltip()}>
+              <Col xs={12} sm={1} className={classes.mark}>
+                <Question className={classes.tip} />
+              </Col>
+            </OverlayTrigger>
+          )}
+          <Col xs={12} sm={10}>
+            <Button
+              disabled={!validateUserSignup(userData)}
+              onClick={handleSignup}
+              className={classes.button}>
+              Registra tu usuario
+            </Button>
           </Col>
-          <Col xs={10}>
-            <Button className={classes.button}>Registra tu usuario</Button>
-          </Col>
-          <ExploreBadge />
         </Row>
+        <ExploreBadge />
       </Container>
     </section>
   )

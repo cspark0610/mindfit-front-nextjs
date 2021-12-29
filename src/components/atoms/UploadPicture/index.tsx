@@ -1,5 +1,6 @@
 // main tools
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 
 // bootstrap components
 import { CloseButton } from 'react-bootstrap'
@@ -14,9 +15,12 @@ import classes from 'styles/UI/Input/AppInput.module.scss'
 // types
 import { FC } from 'react'
 import { FileUploadSelectParams } from 'primereact/fileupload'
-import { UploadPicturesProps, UploadPicturesRef } from 'types/UploadPicture'
+import {
+  UploadPicturesProps,
+  UploadPicturesRef,
+} from 'types/components/UploadPicture'
 
-export const UploadPicture: FC<UploadPicturesProps> = ({ setUserData }) => {
+export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
   const [picture, setPicture] = useState('')
   const uploader = useRef<UploadPicturesRef>(null)
 
@@ -24,12 +28,12 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setUserData }) => {
   const handleDelete = () => {
     uploader.current?.clear()
     setPicture('')
-    setUserData((prev) => ({ ...prev, profilePicture: {} as File }))
+    setData((prev: any) => ({ ...prev, picture: {} }))
   }
 
   const handleSelect = (ev: FileUploadSelectParams) => {
     const picture = ev.files[0]
-    setUserData((prev) => ({ ...prev, profilePicture: picture }))
+    setData((prev: any) => ({ ...prev, picture: picture }))
     setPicture(URL.createObjectURL(ev.files[0]))
   }
 
@@ -55,7 +59,7 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setUserData }) => {
               onClick={handleDelete}
               className={classes.upload_preview_close}
             />
-            <img
+            <Image
               src={picture}
               alt='profile'
               width={120}

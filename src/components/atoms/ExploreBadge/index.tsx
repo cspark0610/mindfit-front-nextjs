@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 // bootstrap components
 import { Container, Row, Col } from 'react-bootstrap'
 
@@ -14,9 +16,10 @@ export const ExploreBadge: FC = () => (
         Explorar
       </Col>
       <Col xs={4} sm={3}>
-        <img
+        <Image
           width={100}
-          height='auto'
+          height={56}
+          className={classes.img}
           src='/icon/MINDFIT.svg'
           alt='Mindfit_Logo'
         />

@@ -1,14 +1,10 @@
 import { FileUpload } from 'primereact/fileupload'
 import { SetStateType } from 'types'
+import { UserDataType } from 'types/models/User'
+import { CompanyDataType } from 'types/models/Company'
 
 export type UploadPicturesProps = {
-  setUserData: SetStateType<{
-    profilePicture: File
-    firstName: string
-    lastName: string
-    email: string
-    password: string
-  }>
+  setData: SetStateType<UserDataType> | SetStateType<CompanyDataType>
 }
 
 export interface UploadPicturesRef extends FileUpload {

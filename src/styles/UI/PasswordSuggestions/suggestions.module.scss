@@ -1,0 +1,10 @@
+@import '../../variables.scss';
+
+.container {
+  max-width: 320px;
+  width: 100%;
+
+  & i {
+    color: $primary;
+  }
+}
