@@ -1,56 +1,59 @@
-import { Container, Row, Col, Button } from 'react-bootstrap'
-import { Password } from 'primereact/password'
-import { InputText } from 'primereact/inputtext'
-import classes from 'styles/Login/login.module.scss'
+// Main tools
+import { useState } from 'react'
+import Image from 'next/image'
 
-const LoginPage = () => {
+// Components
+import { ForgottenPassword } from 'components/Login/ForgottenPassword'
+import { LoginCard } from 'components/Login/LoginCard'
+
+// Styles
+import { Container } from 'react-bootstrap'
+
+// Types
+import { NextPage, GetServerSidePropsContext } from 'next'
+import { GetSSPropsType } from 'types'
+
+const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
+}) => {
+  const [toggleView, setToggleView] = useState(false)
   return (
-    <Container className={`${classes.container}`}>
+    <Container className='text-center'>
       <div>
-        <img
-          className={classes.logo}
-          src='./icon/MINDFIT.svg'
-          alt='Mindfit_Logo'
+        <Image
+          src='/icon/MINDFIT.svg'
+          alt='Mindfit Logo'
+          width={500}
+          height={250}
+          layout='intrinsic'
         />
       </div>
-      <Row>
-        <Col
-          xs={12}
-          sm={{ span: 10, offset: 1 }}
-          md={{ span: 8, offset: 2 }}
-          lg={{ span: 6, offset: 3 }}
-          xl={{ span: 4, offset: 4 }}>
-          <form className={`${classes.form} ${classes.card}`}>
-            <Row>
-              <InputText
-                className={`${classes.marginInput} ${classes.input}`}
-                // value={value}
-                // onChange={(e) => setValue(e.target.value)}
-                placeholder='Email'
-              />
-            </Row>
-            <Row>
-              <Password
-                inputClassName={`${classes.input}`}
-                className={`${classes.marginInput} `}
-                // value={value}
-                // onChange={(e) => setValue(e.target.value)}
-                placeholder='Contraseña'
-              />
-            </Row>
-            <Row>
-              <Button className={classes.marginButtom}>Iniciar sesión</Button>
-            </Row>
-            <p className={classes.textMargin}>Recuperar contraseña</p>
-            <Row xs={2}>
-              <p className={classes.textRight}>Explorar</p>
-              <i className={classes.textLeft}>icon</i>
-            </Row>
-          </form>
-        </Col>
-      </Row>
+      {toggleView ? (
+        <ForgottenPassword
+          setToggleView={setToggleView}
+          content={content.forgottenPassword}
+        />
+      ) : (
+        <LoginCard setToggleView={setToggleView} content={content.login} />
+      )}
     </Container>
   )
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const contentLoginCard = await import('@public/jsons/loginCard.json')
+  const contentForgottenPasword = await import(
+    '@public/jsons/forgottenPassword.json'
+  )
+
+  return {
+    props: {
+      content: {
+        ...contentLoginCard.default,
+        ...contentForgottenPasword.default,
+      },
+    },
+  }
 }
 
 export default LoginPage
