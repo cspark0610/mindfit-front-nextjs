@@ -1,0 +1,40 @@
+@import '../variables.scss';
+
+.navbarContainer {
+  height: 120px;
+  padding: 0px 30px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-left: 120px;
+}
+.avatar {
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 24px;
+}
+.notifications {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.item {
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+}
+.btn,
+.badge {
+  position: absolute;
+}
+.btn {
+  font-size: 24px;
+  color: $primary;
+  right: 1px;
+}
+.badge {
+  right: 0;
+}

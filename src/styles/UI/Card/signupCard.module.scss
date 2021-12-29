@@ -1,0 +1,19 @@
+@import '../../variables.scss';
+@import '../Input/AppInput.module.scss';
+@import '../Button/button.module.scss';
+@import '../../UI/Card/stepsCard.module.scss';
+
+.container {
+  .title {
+    font-size: 18px;
+    color: $primary;
+    font-weight: bold;
+    text-align: center;
+  }
+  .row {
+    justify-content: center;
+    > * {
+      margin: 0.5rem 0;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@import '../variables.scss';
+.sidebarSeparator {
+  margin-left: 120px;
+}
+.sidebarContainer {
+  max-width: 120px;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $primary;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  h3 {
+    color: white;
+  }
+  .sidebar--logo-container {
+    height: 48px;
+    width: 100%;
+    text-align: center;
+    color: white;
+  }
+
+  .sidebarItemContainer {
+    background-color: white;
+    height: 48px;
+    width: 48px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .sidebarItemContainerNoBackground {
+    @extend .sidebarItemContainer;
+    background-color: transparent;
+  }
+  .sidebarIconContainer {
+    height: 48px;
+    width: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,39 +1,50 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Item } from './Item'
+import classes from 'styles/Sidebar/sidebar.module.scss'
+import {
+  Calendar,
+  ChatRightText,
+  Journal,
+  LayoutWtf,
+} from 'react-bootstrap-icons'
 
 export const Sidebar = () => {
   const items = [
     {
-      icon: 'journal',
+      id: 's-el-i-0',
+      icon: 'Journal',
       url: 'index',
     },
     {
-      icon: 'calendar',
+      id: 's-el-i-1',
+      icon: 'Calendar',
       url: 'index',
     },
     {
-      icon: 'layout-wtf',
+      id: 's-el-i-2',
+      icon: 'LayoutWtf',
       url: 'index',
     },
     {
-      icon: 'chat-right-text',
+      id: 's-el-i-3',
+      icon: 'ChatRightText',
       url: 'index',
     },
   ]
 
   return (
-    <div className='sidebar-container d-flex flex-column align-items-center justify-content-around'>
+    <aside className={classes.sidebarContainer}>
       <div className='sidebar--logo-container'>
         <h3>MindFit</h3>
       </div>
       <div className='sidebar--items-container'>
-        {items.map((i) => {
-          return <Item key={uuidv4()} icon={i.icon} />
-        })}
+        {items.map((i) => (
+          <Item key={i.id} icon={i.icon} url={i.url} />
+        ))}
       </div>
       <div className='sidebar--settings-item'>
-        <Item key={uuidv4()} icon='nut' background={false} url='settings' />
+        <Item icon='Nut' background={false} url='settings' />
       </div>
-    </div>
+    </aside>
   )
 }

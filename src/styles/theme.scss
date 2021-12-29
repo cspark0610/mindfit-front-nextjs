@@ -11,7 +11,10 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: $lightgraybackground !important;
+  background: $background;
+  > div#__next {
+    background: $background;
+  }
 }
 
 a {
@@ -41,16 +44,3 @@ a {
 }
 
 @import 'bootstrap/scss/bootstrap';
-//Layout styles
-.layout .view-content {
-  padding: 40px 30px 20px;
-}
-//theme rounded containers
-.rounded-container {
-  border-radius: 16px;
-}
-
-//Components
-@import 'components/sidebar.scss';
-@import 'components/navbar.scss';
-@import 'components/coach-card.scss';

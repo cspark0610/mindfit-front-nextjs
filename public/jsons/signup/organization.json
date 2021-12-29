@@ -1,0 +1,16 @@
+{
+    "steps": [
+        {
+            "label": "Registra a tu empresa",
+            "action": "¡Empecemos!"
+        },
+        {
+            "label": "Elige un plan",
+            "action": "Elige un plan"
+        },
+        {
+            "label": "Invita a tus colaboradores",
+            "action": "Invita a tus colaboradores"
+        }
+    ]
+}
