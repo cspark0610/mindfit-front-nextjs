@@ -1,0 +1,10 @@
+@import '../../variables.scss';
+
+.button {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid $lightGray;
+  font-size: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

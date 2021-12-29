@@ -1,9 +1,10 @@
 @import '../../variables.scss';
 
 .input {
+  width: 100%;
   border: none;
-  background: rgba(209, 244, 255, 0.18);
-  border: 0.5px solid #c4c4c4;
+  background: $lightBlue !important;
+  border: 0.5px solid $lightGray;
   box-sizing: border-box;
   border-radius: 10px;
   height: 45px;
@@ -21,5 +22,44 @@
   }
   @media (max-width: 575px) {
     font-size: 14px;
+  }
+}
+
+.upload {
+  &_hidden {
+    display: none;
+  }
+  &_container {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &_input {
+    cursor: pointer;
+    background: $lightBlue;
+    border: 1px solid $primary;
+    border-radius: 50%;
+    padding: 30px;
+    transition: filter 0.3s;
+    &:hover {
+      filter: brightness(0.95);
+      transition: filter 0.3s;
+    }
+  }
+  &_preview {
+    position: relative;
+    padding: 9px;
+    &_close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 2px solid $primary;
+      border-radius: 50%;
+    }
+    &_img {
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 }
