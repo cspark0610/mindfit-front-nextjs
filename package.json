@@ -19,6 +19,7 @@
     "format": "prettier --write \"pages/**/*.ts\" \"pages/**/*.tsx\" \"cypress/integration/**/*.ts\""
   },
   "dependencies": {
+    "@types/uuid": "^8.3.3",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.7.2",
     "framer-motion": "^5.5.5",
@@ -32,7 +33,8 @@
     "react-dom": "17.0.2",
     "react-transition-group": "^4.4.2",
     "react-viewer": "^3.2.2",
-    "sass": "^1.45.1"
+    "sass": "^1.45.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@cypress/react": "^5.12.0",
