@@ -1,7 +1,12 @@
+@import '../../variables.scss';
+@import '../Button/button.module.scss';
+
 .card {
-  border: 0.5px solid #c4c4c4;
-  background: #ffffff;
-  box-sizing: border-box;
+  border: 1px solid $lightGray;
+  background: $white;
   border-radius: 38px;
-  padding: 60px 50px;
+  padding: 50px 130px;
+  @media (max-width: 660px) {
+    padding: 80px 30px;
+  }
 }
