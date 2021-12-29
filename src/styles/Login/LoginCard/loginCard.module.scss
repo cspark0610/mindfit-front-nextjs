@@ -1,0 +1,20 @@
+@import '../../variables.scss';
+@import '../../UI/Input/AppInput.module.scss';
+@import '../../UI/Card/AppCard.module.scss';
+
+.card {
+  padding: 46px 56px;
+  max-width: 424px;
+  min-width: 420px;
+  @media (max-width: 768px) {
+    min-width: 300px;
+    padding: 46px 35px;
+  }
+}
+
+.textMargin {
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
