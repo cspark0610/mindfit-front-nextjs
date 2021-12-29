@@ -1,4 +1,5 @@
 // main tools
+import { getSession } from 'next-auth/react'
 import Link from 'next/link'
 
 // bootstrap components
@@ -12,35 +13,17 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import classes from 'styles/signup/org.module.scss'
 
 // types
-import { NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
+import { GetSSPropsType } from 'types'
 
-const steps = [
-  {
-    label: 'Registra a tu empresa',
-    action: '¡Empecemos!',
-    url: 'user',
-    completed: false,
-  },
-  {
-    label: 'Invita a tus colaboradores',
-    action: 'Invita a tus colaboradores',
-    url: 'colaborators',
-    completed: false,
-  },
-  {
-    label: 'Elige un plan',
-    action: 'Elige un plan',
-    url: 'plan',
-    completed: false,
-  },
-]
-
-const SignupOrgPage: NextPage = () => {
+const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  steps,
+}) => {
   const stepIndex = steps.findIndex((step) => step.completed === false)
 
   return (
     <Container className={classes.container}>
-      <Container fluid className={classes.card}>
+      <Container fluid className={classes.section}>
         {steps.map((step, idx) => {
           if (idx < stepIndex)
             return <CompletedStep key={idx} label={step.label} />
@@ -50,7 +33,7 @@ const SignupOrgPage: NextPage = () => {
         })}
         <Row>
           <Col xs={12}>
-            <Link passHref href={`organization/${steps[stepIndex].url}`}>
+            <Link passHref href={steps[stepIndex].url}>
               <Button className={classes.button}>
                 {steps[stepIndex].action}
               </Button>
@@ -63,6 +46,33 @@ const SignupOrgPage: NextPage = () => {
       </Container>
     </Container>
   )
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  const content = await import('@public/jsons/signup/organization.json')
+  const steps = [
+    {
+      label: content.steps[0].label,
+      action: content.steps[0].action,
+      completed: !session || session.user.name === '0' ? false : true,
+      url: '/signup/organization/user',
+    },
+    {
+      label: content.steps[1].label,
+      action: content.steps[1].action,
+      completed: !session || session.user.name === '1' ? false : true,
+      url: '/choose-plan',
+    },
+    {
+      label: content.steps[2].label,
+      action: content.steps[2].action,
+      completed: !session || session.user.name === '2' ? false : true,
+      url: '/invite-colaborators',
+    },
+  ]
+
+  return { props: { content: content.default, steps } }
 }
 
 export default SignupOrgPage

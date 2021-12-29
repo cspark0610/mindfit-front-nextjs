@@ -6,7 +6,7 @@ import classes from 'styles/UI/Card/stepsCard.module.scss'
 
 // types
 import { FC } from 'react'
-import { ActualStepProps } from 'types/StepsCard'
+import { ActualStepProps } from 'types/components/StepsCard'
 
 export const ActualStep: FC<ActualStepProps> = ({ index, label }) => (
   <Row className={classes.row}>

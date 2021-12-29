@@ -20,7 +20,7 @@ const LoginPage = () => {
           md={{ span: 8, offset: 2 }}
           lg={{ span: 6, offset: 3 }}
           xl={{ span: 4, offset: 4 }}>
-          <form className={`${classes.form} ${classes.card}`}>
+          <form className={`${classes.form} ${classes.section}`}>
             <Row>
               <InputText
                 className={`${classes.marginInput} ${classes.input}`}
