@@ -37,7 +37,7 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
     <>
       <Row>
         <Col xs={12} className='d-flex justify-content-center'>
-          <form className={classes.card}>
+          <form className={`${classes.card} ${classes.section}`}>
             <Row>
               <InputText
                 name='email'

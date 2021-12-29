@@ -34,7 +34,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
     <>
       <Row>
         <Col xs={12} className='d-flex justify-content-center'>
-          <form className={classes.card}>
+          <form className={`${classes.card} ${classes.section}`}>
             <Row>
               <InputText
                 type={'email'}

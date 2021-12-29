@@ -17,6 +17,8 @@ import { ChangeType, GetSSPropsType } from 'types'
 const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
+  console.log(content)
+
   const [password, setPassword] = useState({
     newPassword: '',
     repeatNewPassword: '',
@@ -40,7 +42,10 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       <>
         <Row>
           <Col xs={12} className='d-flex justify-content-center'>
-            <form className={`${classes.card}`}>
+            <form className={`${classes.card} ${classes.section}`}>
+              <p className={`mb-4 ${classes.textDescription}`}>
+                Cambio de contraseña
+              </p>
               <Row>
                 <Password
                   toggleMask
