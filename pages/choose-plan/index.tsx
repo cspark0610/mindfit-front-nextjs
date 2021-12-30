@@ -13,6 +13,7 @@ import classes from 'styles/Choose-plan/page.module.scss'
 
 // types
 import { NextPage, GetServerSidePropsContext } from 'next'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 const ChoosePlanPage: NextPage = () => (
   <Container className={classes.container}>
@@ -32,6 +33,7 @@ const ChoosePlanPage: NextPage = () => (
           <PlanCard />
         </Col>
       </Row>
+      <ExploreBadge />
     </Container>
   </Container>
 )
