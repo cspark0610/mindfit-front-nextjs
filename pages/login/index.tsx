@@ -21,7 +21,7 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Container className='text-center'>
       <div>
         <Image
-          src='/icon/MINDFIT.svg'
+          src='/static/icon/MINDFIT.svg'
           alt='Mindfit Logo'
           width={500}
           height={250}

@@ -12,15 +12,15 @@ import { FC } from 'react'
 export const ExploreBadge: FC = () => (
   <Container fluid className={classes.badgeContainer}>
     <Row className={classes.row}>
-      <Col xs={4} sm={3}>
+      <Col xs={6} sm={4}>
         Explorar
       </Col>
-      <Col xs={4} sm={3}>
+      <Col xs={6} sm={4}>
         <Image
           width={100}
           height={56}
           className={classes.img}
-          src='/icon/MINDFIT.svg'
+          src='/static/icon/MINDFIT.svg'
           alt='Mindfit_Logo'
         />
       </Col>
