@@ -19,18 +19,14 @@ interface Props {
 }
 
 export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
-  const [user, setUser] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
+  const [userEmail, setUserEmail] = useState('')
 
   const handleToggleChange = () => {
     setToggleView((currentValue) => !currentValue)
   }
 
   const handleChange = (ev: ChangeType) => {
-    setUser({ ...user, [ev.target.name]: ev.target.value })
+    setUserEmail(ev.target.value)
   }
 
   return (
@@ -40,9 +36,8 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
           <form className={`${classes.card} ${classes.section}`}>
             <Row>
               <InputText
-                name='email'
                 className={`${classes.marginInput} ${classes.input}`}
-                value={user.email}
+                value={userEmail}
                 onChange={handleChange}
                 placeholder={content.email.placeholder}
               />
