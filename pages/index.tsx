@@ -1,17 +1,40 @@
-import { signOut } from 'next-auth/react'
+// main tools
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 
-import type { NextPage } from 'next'
-import styles from 'styles/Home.module.scss'
+// components
 import { Layout } from 'components/organisms/Layout'
 
-const Home: NextPage = () => (
-  <Layout>
-    <main className={styles.main}>
-      <h1 className={styles.title}>
-        <span onClick={() => signOut()}>Sign out</span>
-      </h1>
-    </main>
-  </Layout>
-)
+// styles
+import styles from 'styles/Home.module.scss'
+
+// types
+import type { NextPage } from 'next'
+
+const Home: NextPage = () => {
+  const { data, status } = useSession()
+
+  return (
+    <Layout>
+      <main className={styles.main}>
+        {console.log(data, status)}
+        <h1 className={styles.title}>
+          {data && (
+            <span onClick={() => signOut({ callbackUrl: '/login' })}>
+              Sign out
+            </span>
+          )}
+          {!data && (
+            <Link href='/login'>
+              <a>
+                <span>Sign in</span>
+              </a>
+            </Link>
+          )}
+        </h1>
+      </main>
+    </Layout>
+  )
+}
 
 export default Home

@@ -1,17 +1,24 @@
 // Main tools
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 
 // Components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
-//Styles
+// bootstrap components
+import { Row, Col, Button } from 'react-bootstrap'
+import { XLg } from 'react-bootstrap-icons'
+
+// prime components
 import { Password } from 'primereact/password'
 import { InputText } from 'primereact/inputtext'
-import { Row, Col, Button } from 'react-bootstrap'
+
+//Styles
 import classes from 'styles/Login/LoginCard/loginCard.module.scss'
 
 // Types
-import { ChangeType, SetStateType } from 'types'
+import { ChangeType, SetStateType, SubmitType } from 'types'
 import { FC } from 'react'
 
 interface Props {
@@ -21,6 +28,8 @@ interface Props {
 
 export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
   const [user, setUser] = useState({ email: '', password: '' })
+  const [error, setError] = useState('')
+  const { query } = useRouter()
 
   const handleChange = (ev: ChangeType) => {
     setUser({ ...user, [ev.target.name]: ev.target.value })
@@ -30,11 +39,22 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
     setToggleView((currentValue) => !currentValue)
   }
 
+  const handleSubmit = (ev: SubmitType) => {
+    ev.preventDefault()
+    signIn('credentials', { ...user, callbackUrl: '/' })
+  }
+
+  useEffect(() => {
+    query.error && setError('Usuario o Contraseña incorrectos')
+  }, [query])
+
   return (
     <>
       <Row>
         <Col xs={12} className='d-flex justify-content-center'>
-          <form className={`${classes.card} ${classes.section}`}>
+          <form
+            onSubmit={handleSubmit}
+            className={`${classes.card} ${classes.section}`}>
             <Row>
               <InputText
                 type={'email'}
@@ -45,7 +65,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
                 placeholder={content.email.placeholder}
               />
             </Row>
-            <Row>
+            <Row className='mb-5'>
               <Password
                 toggleMask
                 feedback={false}
@@ -57,8 +77,15 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
                 placeholder={content.password.placeholder}
               />
             </Row>
+            {error && (
+              <Row>
+                <strong className='p-error'>
+                  <XLg className='p-error' /> {error}
+                </strong>
+              </Row>
+            )}
             <Row>
-              <Button className={`my-5 ${classes.button}`}>
+              <Button type='submit' className={`my-3 ${classes.button}`}>
                 {content.loginButton}
               </Button>
             </Row>
