@@ -1,40 +1,56 @@
 @import '../variables.scss';
 
-.navbarContainer {
-  height: 120px;
-  padding: 0px 30px;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  margin-left: 120px;
+.container {
+  padding: 10px 30px;
+  .row {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .profile {
+      max-width: 150px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .avatar {
+        border-radius: 50%;
+      }
+      .notifications {
+        font-size: 26px;
+        color: $lightPrimary;
+        cursor: pointer;
+        &_badge {
+          background: $danger;
+        }
+      }
+    }
+    .menuMobile {
+      display: none;
+      @media (max-width: 650px) {
+        display: block;
+      }
+    }
+  }
 }
-.avatar {
-  height: 72px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 24px;
-}
-.notifications {
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-.item {
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-}
-.btn,
-.badge {
-  position: absolute;
-}
-.btn {
-  font-size: 24px;
-  color: $primary;
-  right: 1px;
-}
-.badge {
-  right: 0;
+
+.sidebar {
+  &_body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &_item {
+    font-size: 24px;
+    &_icon {
+      margin: 15px 10px;
+    }
+  }
+  &_settings {
+    font-size: 24px;
+    background: $primary;
+    color: $white;
+    text-align: center;
+    &_icon {
+      font-size: 28px;
+    }
+  }
 }

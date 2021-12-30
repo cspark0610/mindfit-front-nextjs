@@ -40,7 +40,7 @@ a {
   background: $primary;
 }
 ::-webkit-scrollbar-track {
-  background: black;
+  background: $black;
 }
 
 @import 'bootstrap/scss/bootstrap';

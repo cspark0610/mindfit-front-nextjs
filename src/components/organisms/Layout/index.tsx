@@ -1,19 +1,21 @@
+// components
 import { Navbar } from 'components/molecules/Navbar'
 import { Sidebar } from 'components/molecules/Sidebar'
-import { FC } from 'react'
-import classes from 'styles/Sidebar/sidebar.module.scss'
 
-interface Props {
-  children: React.ReactNode
-}
-export const Layout: FC<Props> = (props: Props) => {
-  return (
-    <div className='layout'>
+// styles
+import classes from 'styles/Layout/layout.module.scss'
+
+// types
+import { FC } from 'react'
+
+export const Layout: FC = ({ children }) => (
+  <>
+    <aside className={classes.sidebar}>
       <Sidebar />
-      <div className={classes.sidebarSeparator}>
-        <Navbar />
-        <section className='view-content'>{props.children}</section>
-      </div>
+    </aside>
+    <div className={classes.container}>
+      <Navbar />
+      <main>{children}</main>
     </div>
-  )
-}
+  </>
+)
