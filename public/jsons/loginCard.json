@@ -1,0 +1,12 @@
+{
+  "login": {
+    "email": {
+      "placeholder": "Email"
+    },
+    "password": {
+      "placeholder": "Contraseña"
+    },
+    "loginButton": "Iniciar sesión",
+    "passwordRecovery": "Recuperar contraseña"
+  }
+}
