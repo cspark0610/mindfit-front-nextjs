@@ -4,6 +4,10 @@ import Image from 'next/image'
 
 // Components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
+
+// commons
+import { regex } from 'commons'
 
 // Styles
 import { Password } from 'primereact/password'
@@ -50,11 +54,18 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 <Password
                   toggleMask
                   name='newPassword'
-                  inputClassName={`${classes.input}`}
-                  className={`mb-4 px-0 `}
-                  value={password.newPassword}
                   onChange={handleChange}
+                  className={`mb-4 px-0 `}
+                  promptLabel='Sugerencias'
+                  value={password.newPassword}
+                  weakLabel='Contraseña muy corta'
+                  strongLabel='Contraseña aceptada'
+                  mediumRegex={regex.minSize.source}
+                  inputClassName={`${classes.input}`}
+                  footer={passwordSuggestionsTemplate}
+                  mediumLabel='Por favor, tenga en cuenta las sugerencias'
                   placeholder={content.changePassword.newPassword.placeholder}
+                  strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
                 />
               </Row>
               <Row>
