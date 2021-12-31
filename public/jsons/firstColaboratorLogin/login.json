@@ -1,0 +1,13 @@
+{
+    "title": "Bienvenido a",
+    "login": {
+        "email": {
+            "placeholder": "Email"
+        },
+        "password": {
+            "placeholder": "Contraseña"
+        },
+        "loginButton": "Registrar Contraseña",
+        "passwordRecovery": "Recuperar contraseña"
+    }
+}

@@ -1,0 +1,17 @@
+@import '../variables.scss';
+@import '../UI/Card/appCard.module.scss';
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 620px;
+  .title {
+    text-align: center;
+    color: $primary;
+    font-size: 36px;
+    margin-bottom: 0;
+  }
+}

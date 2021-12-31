@@ -1,6 +1,6 @@
 // main tools
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 // bootstrap components
 import {
@@ -15,18 +15,17 @@ import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
-import { Password } from 'primereact/password'
+import { Dropdown } from 'primereact/dropdown'
 
 // components
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
-import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // utils
-import { validateUserSignup } from 'components/organisms/OrganizationSignup/User/utils'
-
-// commons
-import { regex } from 'commons'
+import {
+  validateUserSignup,
+  workPositions,
+} from 'components/organisms/ColaboratorSignup/utils'
 
 // styles
 import classes from 'styles/UI/Card/signupCard.module.scss'
@@ -34,26 +33,22 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
+import { DropdownChangeParams } from 'primereact/dropdown'
 
-export const UserSignup: FC = () => {
-  const [userData, setUserData] = useState({
+export const ColaboratorSignup: FC = () => {
+  const { push } = useRouter()
+  const [colaboratorData, setUserData] = useState({
     picture: {} as File,
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
+    position: '',
   })
 
-  const handleChange = (ev: ChangeType) =>
-    setUserData({ ...userData, [ev.target.name]: ev.target.value })
+  const handleChange = (ev: ChangeType | DropdownChangeParams) =>
+    setUserData({ ...colaboratorData, [ev.target.name]: ev.target.value })
 
-  const handleSignup = () => {
-    signIn('credentials', {
-      email: userData.email,
-      password: userData.password,
-      callbackUrl: '/signup/organization/company',
-    })
-  }
+  const handleSignup = () => push('/signup/colaborator/steps')
 
   const overlayTooltip = () => (
     <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
@@ -61,14 +56,14 @@ export const UserSignup: FC = () => {
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>Registra tu usuario</h1>
+      <h1 className={classes.title}>Completa tu perfil</h1>
       <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>
             <InputText
               name='firstName'
-              value={userData.firstName}
+              value={colaboratorData.firstName}
               onChange={handleChange}
               placeholder='Nombre'
               className={classes.input}
@@ -77,7 +72,7 @@ export const UserSignup: FC = () => {
           <Col xs={12}>
             <InputText
               name='lastName'
-              value={userData.lastName}
+              value={colaboratorData.lastName}
               onChange={handleChange}
               placeholder='Apellido'
               className={classes.input}
@@ -87,33 +82,26 @@ export const UserSignup: FC = () => {
             <InputText
               name='email'
               type='email'
-              value={userData.email}
+              value={colaboratorData.email}
               onChange={handleChange}
               placeholder='Email'
               className={classes.input}
             />
           </Col>
           <Col xs={12}>
-            <Password
-              toggleMask
-              className='w-100'
-              name='password'
-              placeholder='Contraseña'
-              promptLabel='Sugerencias'
-              weakLabel='Contraseña muy corta'
-              mediumLabel='Por favor, tenga en cuenta las sugerencias'
-              strongLabel='Contraseña aceptada'
-              mediumRegex={regex.minSize.source}
-              strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
-              value={userData.password}
-              inputClassName={classes.input}
-              footer={passwordSuggestionsTemplate}
+            <Dropdown
+              showClear
+              name='position'
+              options={workPositions}
               onChange={handleChange}
+              placeholder='Posición o Cargo'
+              className={classes.input}
+              value={colaboratorData.position}
             />
           </Col>
         </Row>
         <Row className={classes.row}>
-          {validateUserSignup(userData) ? (
+          {validateUserSignup(colaboratorData) ? (
             <Col xs={12} sm={1} className={classes.mark}>
               <Check2 />
             </Col>
@@ -126,10 +114,10 @@ export const UserSignup: FC = () => {
           )}
           <Col xs={12} sm={10}>
             <Button
-              disabled={!validateUserSignup(userData)}
+              disabled={!validateUserSignup(colaboratorData)}
               onClick={handleSignup}
               className={classes.button}>
-              Registra tu usuario
+              Completa tu perfil
             </Button>
           </Col>
         </Row>
