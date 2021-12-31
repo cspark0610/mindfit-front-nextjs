@@ -5,18 +5,18 @@ import { getSession } from 'next-auth/react'
 import { Container } from 'react-bootstrap'
 
 // components
-import { UserSignup } from 'components/organisms/OrganizationSignup/User'
+import { ColaboratorSignup } from 'components/organisms/ColaboratorSignup'
 
 // styles
-import classes from 'styles/signup/org.module.scss'
+import classes from 'styles/signup/colaborator.module.scss'
 
 // types
 import { GetServerSideProps, NextPage } from 'next'
 
-const SignupOrgUserPage: NextPage = () => (
+const SignupColaboratorUserPage: NextPage = () => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <UserSignup />
+      <ColaboratorSignup />
     </Container>
   </Container>
 )
@@ -25,13 +25,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
   if (session)
     return {
-      redirect: {
-        destination: '/signup/organization/company',
-        permanent: false,
-      },
+      redirect: { destination: '/signup/colaborator', permanent: false },
     }
 
   return { props: {} }
 }
 
-export default SignupOrgUserPage
+export default SignupColaboratorUserPage
