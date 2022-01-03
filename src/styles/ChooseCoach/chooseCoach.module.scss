@@ -1,0 +1,76 @@
+@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
+
+//Choose Coach view
+.container {
+  border-radius: 20px;
+  background-color: white;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  .viewTitle {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .coachsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+//Choose coach card component
+.coachCard {
+  border: 1px solid $primary;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  padding: 12px;
+  @media (max-width: 570px) {
+    .rightSide {
+      margin: 20px 0px 0px;
+    }
+  }
+  .cardCol {
+    display: flex;
+    justify-content: center;
+  }
+  .leftSide {
+    display: flex;
+    justify-content: space-around;
+    @media (min-width: 570px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .photo {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+    }
+    .video {
+      width: 80px;
+      height: 80px;
+      overflow: hidden;
+      position: relative;
+      margin-top: 1rem;
+    }
+    .ytIcon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      margin: 24px;
+    }
+  }
+  .rightSide {
+    & div * {
+      color: $secondary;
+      margin-bottom: 0;
+    }
+    & div hr {
+      margin: 0.5rem 0 1rem;
+    }
+  }
+}
