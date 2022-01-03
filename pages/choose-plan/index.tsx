@@ -1,8 +1,9 @@
 // main tools
 import { getSession } from 'next-auth/react'
+import Link from 'next/link'
 
 // bootstrap components
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
 // components
 import { ActualPlan } from 'components/atoms/ActualPlan'
@@ -20,17 +21,17 @@ const ChoosePlanPage: NextPage = () => (
     <Container fluid className={classes.section}>
       <ActualPlan />
       <Row className='mt-5'>
-        <Col md={3}>
-          <PlanCard />
-        </Col>
-        <Col md={3}>
-          <PlanCard selected />
-        </Col>
-        <Col md={3}>
-          <PlanCard />
-        </Col>
-        <Col md={3}>
-          <PlanCard />
+        {[0, 1, 2, 3].map((plan) => (
+          <Col key={plan} xs={3}>
+            <PlanCard selected={plan === 1 ? true : false} />
+          </Col>
+        ))}
+      </Row>
+      <Row className='mt-5 flex-row-reverse'>
+        <Col xs={12} sm={2}>
+          <Link passHref href='/signup/organization'>
+            <Button className={classes.button}>Siguiente</Button>
+          </Link>
         </Col>
       </Row>
       <ExploreBadge />
@@ -40,10 +41,7 @@ const ChoosePlanPage: NextPage = () => (
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (!session)
-    return {
-      redirect: { destination: '/signup/organization/user', permanent: false },
-    }
+  if (!session) return { redirect: { destination: '/login', permanent: false } }
   if (session.user.name === '0')
     return {
       redirect: { destination: '/signup/organization', permanent: false },
