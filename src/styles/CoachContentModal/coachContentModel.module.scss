@@ -1,0 +1,32 @@
+@import '../variables.scss';
+@import '../UI/Button/Button.module.scss';
+
+.button {
+  width: 108px;
+  font-weight: 500;
+}
+
+.coach {
+  &_data {
+    color: $secondary;
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  &_occupation {
+    color: $secondary;
+    font-weight: 400;
+    font-size: 24px;
+  }
+
+  &_description {
+    color: #666;
+    font-weight: 400;
+    line-height: 20px;
+    font-size: 16px;
+  }
+}
+
+.image {
+  border-radius: 100%;
+}
