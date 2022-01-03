@@ -121,8 +121,8 @@ function SelectCoach() {
         </Row>
         <Row className={classes.coachsContainer}>
           {coachs.map((coach, idx) => (
-            <Col xs={12} md={8} lg={5}>
-              <CoachCard data={coach} key={coach.id} />
+            <Col xs={12} md={8} lg={5} key={coach.id}>
+              <CoachCard data={coach} />
             </Col>
           ))}
         </Row>
