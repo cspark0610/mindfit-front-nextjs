@@ -1,7 +1,7 @@
 import 'cypress-file-upload'
 
 // utils
-import { phoneFormatter } from '@commons/index'
+import { phoneFormatter } from '@myCommons/index'
 
 // types
 import { CompanyDataType } from '@myTypes/models/Company'
