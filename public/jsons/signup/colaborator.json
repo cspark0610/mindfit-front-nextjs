@@ -1,0 +1,16 @@
+{
+    "steps": [
+        {
+            "label": "Completa tu perfil",
+            "action": "¡Empecemos!"
+        },
+        {
+            "label": "Realiza la prueba",
+            "action": "Realiza la prueba"
+        },
+        {
+            "label": "Elige un coach",
+            "action": "Ver lista de coach"
+        }
+    ]
+}

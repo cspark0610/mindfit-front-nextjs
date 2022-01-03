@@ -1,6 +1,6 @@
 // main tools
-import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // bootstrap components
 import {
@@ -15,14 +15,17 @@ import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
-import { InputMask } from 'primereact/inputmask'
+import { Dropdown } from 'primereact/dropdown'
 
 // components
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // utils
-import { validateCompanySignup } from './utils'
+import {
+  validateUserSignup,
+  workPositions,
+} from 'components/organisms/ColaboratorSignup/utils'
 
 // styles
 import classes from 'styles/UI/Card/signupCard.module.scss'
@@ -30,23 +33,22 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
-import { InputMaskChangeParams } from 'primereact/inputmask'
+import { DropdownChangeParams } from 'primereact/dropdown'
 
-export const CompanySignup: FC = () => {
+export const ColaboratorSignup: FC = () => {
   const { push } = useRouter()
-  const [companyData, setCompanyData] = useState({
+  const [colaboratorData, setUserData] = useState({
     picture: {} as File,
-    name: '',
-    phone: '',
+    firstName: '',
+    lastName: '',
     email: '',
+    position: '',
   })
 
-  const handleChange = (ev: ChangeType | InputMaskChangeParams) =>
-    setCompanyData({ ...companyData, [ev.target.name]: ev.target.value })
+  const handleChange = (ev: ChangeType | DropdownChangeParams) =>
+    setUserData({ ...colaboratorData, [ev.target.name]: ev.target.value })
 
-  const handleSignupCompany = () => {
-    push('/signup/organization')
-  }
+  const handleSignup = () => push('/signup/colaborator/steps')
 
   const overlayTooltip = () => (
     <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
@@ -54,26 +56,25 @@ export const CompanySignup: FC = () => {
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>Registra tu Empresa</h1>
-      <UploadPicture setData={setCompanyData} />
+      <h1 className={classes.title}>Completa tu perfil</h1>
+      <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>
             <InputText
-              name='name'
-              value={companyData.name}
+              name='firstName'
+              value={colaboratorData.firstName}
               onChange={handleChange}
-              placeholder='Nombre de la Empresa'
+              placeholder='Nombre'
               className={classes.input}
             />
           </Col>
           <Col xs={12}>
-            <InputMask
-              mask='+99 (999) 999-9999'
-              name='phone'
-              value={companyData.phone}
+            <InputText
+              name='lastName'
+              value={colaboratorData.lastName}
               onChange={handleChange}
-              placeholder='Teléfono de Contacto'
+              placeholder='Apellido'
               className={classes.input}
             />
           </Col>
@@ -81,15 +82,26 @@ export const CompanySignup: FC = () => {
             <InputText
               name='email'
               type='email'
-              value={companyData.email}
+              value={colaboratorData.email}
               onChange={handleChange}
-              placeholder='Email Empresarial'
+              placeholder='Email'
               className={classes.input}
+            />
+          </Col>
+          <Col xs={12}>
+            <Dropdown
+              showClear
+              name='position'
+              options={workPositions}
+              onChange={handleChange}
+              placeholder='Posición o Cargo'
+              className={classes.input}
+              value={colaboratorData.position}
             />
           </Col>
         </Row>
         <Row className={classes.row}>
-          {validateCompanySignup(companyData) ? (
+          {validateUserSignup(colaboratorData) ? (
             <Col xs={12} sm={1} className={classes.mark}>
               <Check2 />
             </Col>
@@ -102,10 +114,10 @@ export const CompanySignup: FC = () => {
           )}
           <Col xs={12} sm={10}>
             <Button
-              disabled={!validateCompanySignup(companyData)}
-              onClick={handleSignupCompany}
+              disabled={!validateUserSignup(colaboratorData)}
+              onClick={handleSignup}
               className={classes.button}>
-              Registra tu empresa
+              Completa tu perfil
             </Button>
           </Col>
         </Row>

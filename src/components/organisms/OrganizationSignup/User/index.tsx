@@ -23,7 +23,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // utils
-import { validateUserSignup } from './utils'
+import { validateUserSignup } from 'components/organisms/OrganizationSignup/User/utils'
 
 // commons
 import { regex } from 'commons'

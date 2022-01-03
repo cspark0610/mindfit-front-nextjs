@@ -55,16 +55,16 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
           </div>
         ) : (
           <div className={classes.upload_preview}>
-            <CloseButton
-              onClick={handleDelete}
-              className={classes.upload_preview_close}
-            />
             <Image
               src={picture}
               alt='profile'
               width={120}
               height={120}
               className={classes.upload_preview_img}
+            />
+            <CloseButton
+              onClick={handleDelete}
+              className={classes.upload_preview_close}
             />
           </div>
         )}

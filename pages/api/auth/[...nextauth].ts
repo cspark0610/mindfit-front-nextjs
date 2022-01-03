@@ -20,8 +20,8 @@ export default NextAuth({
        * @returns
        */
       async authorize(credentials) {
-        if (credentials?.email === 'josejmvasquez@gmail.com')
-          return Promise.resolve({ name: '1', image: '' })
+        if (credentials?.email === 'centriadevelopment@gmail.com')
+          return Promise.resolve({ name: '0', image: '' })
         else return null
       },
     }),

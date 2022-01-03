@@ -2,19 +2,15 @@
 @import '../../UI/Input/AppInput.module.scss';
 @import '../../UI/Card/AppCard.module.scss';
 
-.card {
-  padding: 46px 56px;
-  max-width: 424px;
-  min-width: 420px;
-  @media (max-width: 768px) {
-    min-width: 300px;
-    padding: 46px 35px;
+.container {
+  width: 100%;
+  .card {
+    padding: 46px 56px;
+    max-width: 420px;
+    width: 100%;
   }
 }
-
-.textMargin {
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
+.recoveryLabel {
+  text-align: center;
+  cursor: pointer;
 }
