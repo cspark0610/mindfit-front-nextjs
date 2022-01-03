@@ -6,6 +6,7 @@ import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 function SelectCoach() {
   const coachs = [
@@ -102,28 +103,21 @@ function SelectCoach() {
   ]
   return (
     <Layout>
-      <Container fluid className={classes.container}>
+      <Container className={classes.container}>
         <Row>
           <Col>
-            <h3 className='text-center my-4'>Elige tu coach</h3>
+            <h3 className={classes.viewTitle}>Elige tu coach</h3>
           </Col>
         </Row>
-        <Row>
-          <Col
-            lg={{ span: 10, offset: 1 }}
-            className='d-flex flex-wrap justify-content-around'>
-            {coachs.map((coach) => (
-              <CoachCard
-                data={coach}
-                key={`coachCard-${Math.random() * 100 - 1}`}
-              />
-            ))}
-          </Col>
+        <Row className={classes.coachsContainer}>
+          {coachs.map((coach, idx) => (
+            <Col xs={12} md={8} lg={5}>
+              <CoachCard data={coach} key={idx} />
+            </Col>
+          ))}
         </Row>
         <Row>
-          <Link href=''>
-            <a className='text-center'>Explorar</a>
-          </Link>
+          <ExploreBadge />
         </Row>
       </Container>
     </Layout>

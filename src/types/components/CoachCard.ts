@@ -1,4 +1,4 @@
-export type Data = {
+export type CoachDataType = {
   name: string
   title: string
   description: string
