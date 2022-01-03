@@ -38,10 +38,12 @@
   },
   "devDependencies": {
     "@cypress/react": "^5.12.0",
+    "@testing-library/cypress": "^8.0.2",
     "@types/node": "17.0.6",
     "@types/react": "17.0.38",
     "cypress": "^9.2.0",
     "cypress-file-upload": "^5.0.8",
+    "cypress-social-logins": "^1.13.0",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.7",
     "husky": "^7.0.4",
