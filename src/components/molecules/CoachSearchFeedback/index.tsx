@@ -92,6 +92,7 @@ export const CoachSearchFeedback: FC = () => {
               disabled={option !== 'other'}
             />
           </Row>
+          <input type='submit' className={`${classes.button} mt-4`} />
         </form>
       </Container>
       <ExploreBadge />
