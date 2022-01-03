@@ -15,7 +15,7 @@ export const Layout: FC = ({ children }) => (
     </aside>
     <div className={classes.container}>
       <Navbar />
-      <main>{children}</main>
+      <main className='px-5'>{children}</main>
     </div>
   </>
 )
