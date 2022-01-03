@@ -3,5 +3,6 @@ module.exports = {
   reactStrictMode: true,
   env: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    SECRET: process.env.SECRET,
   },
 }

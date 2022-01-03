@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@public/*": ["../public/*"],
+      "@myTypes/*": ["../src/types/*"],
+      "@commons/*": ["commons/*"]
+    },
     "isolatedModules": false,
-    "types": ["cypress"]
+    "types": ["cypress", "cypress-file-upload"]
   },
   "include": ["../node_modules/cypress", "./**/*.ts"]
 }

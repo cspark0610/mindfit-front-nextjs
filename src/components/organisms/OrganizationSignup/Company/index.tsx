@@ -69,7 +69,7 @@ export const CompanySignup: FC = () => {
           </Col>
           <Col xs={12}>
             <InputMask
-              mask='+01 (999) 999-9999'
+              mask='+99 (999) 999-9999'
               name='phone'
               value={companyData.phone}
               onChange={handleChange}
