@@ -14,7 +14,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:run": "cypress run",
+    "test:run": "next build && next start && cypress run",
     "test:open": "cypress open",
     "format": "prettier --write \"src/**/*.tsx\" \"src/**/*.ts\" \"pages/**/*.ts\" \"pages/**/*.tsx\" \"cypress/integration/**/*.ts\""
   },
