@@ -8,8 +8,9 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import classes from 'styles/CoachContentModal/coachContentModel.module.scss'
 
 // Types
+import { FC } from 'react'
 
-export const CoachContentModal = () => {
+export const CoachContentModal: FC = () => {
   return (
     <Container fluid className={classes.container}>
       <Row className='text-center mb-4'>
