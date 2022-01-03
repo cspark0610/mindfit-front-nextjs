@@ -1,7 +1,7 @@
 import 'cypress-file-upload'
 
 // types
-import { UserDataType } from '@myTypes/models/User'
+import { UserDataType } from '../../../src/types/models/User'
 
 // @ts-ignore
 Cypress.Commands.add('userSignupWithForm', (userData: UserDataType) => {

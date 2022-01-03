@@ -4,7 +4,7 @@ import 'cypress-file-upload'
 import { phoneFormatter } from '../../commons'
 
 // types
-import { CompanyDataType } from '@myTypes/models/Company'
+import { CompanyDataType } from '../../../src/types/models/Company'
 
 Cypress.Commands.add(
   // @ts-ignore
