@@ -22,5 +22,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: yarn build
+          build: cross_env SECRET=secret yarn build
           start: yarn start
