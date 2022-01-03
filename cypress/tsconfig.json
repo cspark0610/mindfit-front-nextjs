@@ -2,8 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@myTypes/*": ["../src/types/*"],
-      "@myCommons/*": ["commons/*"]
+      "@myTypes/*": ["../src/types/*"]
     },
     "isolatedModules": false,
     "types": ["cypress", "cypress-file-upload"]
