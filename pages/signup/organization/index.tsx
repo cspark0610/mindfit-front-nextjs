@@ -68,7 +68,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[2].label,
       action: content.steps[2].action,
       completed: !session || session.user.name === '2' ? false : true,
-      url: '/invite-colaborators',
+      url: '/colaborators/add',
     },
   ]
 

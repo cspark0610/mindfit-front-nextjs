@@ -1,5 +1,5 @@
 // bootstrap components
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 
 // styles
@@ -21,10 +21,12 @@ export const PlanCard: FC<{ selected?: boolean }> = ({ selected }) => (
           <CheckCircleFill className={classes.card_items_include} /> Lorem ipsum
         </Col>
         <Col xs={12}>
-          <CheckCircleFill className={classes.card_items_include} /> Lorem ipsum
-        </Col>
-        <Col xs={12}>
           <XCircleFill className={classes.card_items_noinclude} /> Lorem ipsum
+        </Col>
+      </Row>
+      <Row className='mt-5'>
+        <Col xs={12}>
+          <Button className={classes.button_small}>Adquirir</Button>
         </Col>
       </Row>
     </div>

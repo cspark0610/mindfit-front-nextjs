@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
   if (session)
     return {
-      redirect: { destination: '/signup/colaborator', permanent: false },
+      redirect: { destination: '/signup/colaborator/steps', permanent: false },
     }
 
   return { props: {} }
