@@ -1,0 +1,48 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Datatable/datatable.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 770px) {
+    height: auto;
+    display: block;
+    margin-top: 4rem;
+
+    .section {
+      padding: 50px 30px;
+    }
+  }
+
+  .title {
+    text-align: center;
+    color: $lightPrimary;
+    font-size: 24px;
+    font-size: bold;
+  }
+  .description {
+    text-align: center;
+    font-size: 20px;
+    font-size: bold;
+    margin-bottom: 5rem;
+
+    @media (max-width: 770px) {
+      margin-bottom: 2rem;
+    }
+  }
+  .row {
+    margin: 2rem 0;
+
+    @media (max-width: 770px) {
+      margin: 0;
+      > div {
+        margin: 0.7rem 0;
+      }
+    }
+  }
+}

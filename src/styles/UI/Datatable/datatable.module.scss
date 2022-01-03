@@ -1,0 +1,17 @@
+@import '../../variables.scss';
+
+.datatable {
+  width: 100%;
+
+  & td {
+    @media (max-width: 460px) {
+      flex-direction: column;
+      padding: 5px;
+    }
+    .expander {
+      &_right {
+        text-align: right !important;
+      }
+    }
+  }
+}
