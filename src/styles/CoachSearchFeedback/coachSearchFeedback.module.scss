@@ -1,0 +1,26 @@
+@import '../variables.scss';
+@import '../UI/Card/appCard.module.scss';
+
+.section {
+  padding: 70px 100px;
+  max-width: 940px;
+  @media (max-width: 768px) {
+    padding: 35px 50px;
+  }
+  @media (max-width: 425px) {
+    padding: 35px 20px;
+  }
+}
+
+.check {
+  color: $primary;
+}
+
+.uncheck {
+  color: $gray;
+}
+
+.button {
+  background-color: $primary;
+  color: $white;
+}
