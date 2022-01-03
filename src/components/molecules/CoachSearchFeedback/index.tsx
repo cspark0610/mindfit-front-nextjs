@@ -16,8 +16,8 @@ import classes from 'styles/CoachSearchFeedback/coachSearchFeedback.module.scss'
 import { FC } from 'react'
 
 export const CoachSearchFeedback: FC = () => {
-  const [option, setOption] = useState<String>('')
-  const [details, setDetails] = useState<String>('')
+  const [option, setOption] = useState<string>('')
+  const [details, setDetails] = useState<string>('')
   return (
     <div className={classes.section}>
       <h2 className='fw-bold fs-4 mb-5'>
