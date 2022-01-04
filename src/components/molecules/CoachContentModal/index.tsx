@@ -41,12 +41,15 @@ export const CoachContentModal: FC<props> = ({
       </Row>
       <Row className='mb-5'>
         <p className={`mb-4 ${classes.coach_description}`}>{description}</p>
-        {/* <div className='text-end'>
+        <div className='text-end'>
           <Button className={classes.button}>Ver Mas..</Button>
-        </div> */}
+        </div>
       </Row>
       <Row className='mb-5'>
         <video src={urlVideo} controls />
+      </Row>
+      <Row className='d-flex justify-content-end'>
+        <Button className={classes.button}>Siguiente</Button>
       </Row>
     </Container>
   )
