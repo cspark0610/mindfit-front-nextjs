@@ -17,6 +17,7 @@
 import './commands'
 import './User/commands'
 import './Company/commands'
+import './Auth/commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

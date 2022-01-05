@@ -31,7 +31,5 @@ Cypress.Commands.add(
     cy.get('button:not([class^=btn-close])')
       .should('contain', 'Registra tu empresa')
       .should('not.have.attr', 'disabled')
-
-    cy.get('button:not([class^=btn-close])').click()
   }
 )

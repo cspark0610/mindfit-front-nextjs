@@ -44,6 +44,4 @@ Cypress.Commands.add('userSignupWithForm', (userData: UserDataType) => {
   cy.get('button:not([class^=btn-close])')
     .should('contain', 'Registra tu usuario')
     .should('not.have.attr', 'disabled')
-
-  cy.get('div.container-fluid').find('button:not([class^=btn-close])').click()
 })
