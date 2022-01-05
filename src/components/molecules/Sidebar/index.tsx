@@ -16,7 +16,7 @@ export const Sidebar = () => (
   <aside className={classes.container}>
     <div>
       <Image
-        src='/static/icon/MINDFIT_WHITE.svg'
+        src='/assets/icon/MINDFIT_WHITE.svg'
         width={80}
         height={40}
         alt='mindfit'

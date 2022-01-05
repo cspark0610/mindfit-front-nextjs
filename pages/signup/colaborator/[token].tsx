@@ -23,7 +23,7 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       <h1 className={classes.title}>{content.title}</h1>
       <div>
         <Image
-          src='/static/icon/MINDFIT.svg'
+          src='/assets/icon/MINDFIT.svg'
           alt='Mindfit Logo'
           width={420}
           height={150}
