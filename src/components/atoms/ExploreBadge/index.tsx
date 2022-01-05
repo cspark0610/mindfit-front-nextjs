@@ -20,7 +20,7 @@ export const ExploreBadge: FC = () => (
           width={100}
           height={56}
           className={classes.img}
-          src='/static/icon/MINDFIT.svg'
+          src='/assets/icon/MINDFIT.svg'
           alt='Mindfit_Logo'
         />
       </Col>

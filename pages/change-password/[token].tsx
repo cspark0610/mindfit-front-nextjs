@@ -32,7 +32,7 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   return (
     <Container className={classes.pageContainer}>
       <Image
-        src='/static/icon/MINDFIT.svg'
+        src='/assets/icon/MINDFIT.svg'
         alt='Mindfit Logo'
         width={420}
         height={250}
