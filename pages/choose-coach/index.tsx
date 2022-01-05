@@ -16,8 +16,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -26,8 +26,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -36,8 +36,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -46,8 +46,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -56,8 +56,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -66,8 +66,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -76,8 +76,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -86,8 +86,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -96,8 +96,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
     {
@@ -106,8 +106,8 @@ function SelectCoach() {
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
-      picture: '/static/images/avatar.png',
-      videoThumb: '/static/images/video.png',
+      picture: '/assets/images/avatar.png',
+      videoThumb: '/assets/images/video.png',
       videoUrl: 'https:youtube.com',
     },
   ]
