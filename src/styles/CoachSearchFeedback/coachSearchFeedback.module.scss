@@ -2,10 +2,14 @@
 @import '../UI/Button/button.module.scss';
 @import '../UI/Card/AppCard.module.scss';
 @import '../UI/Modal/appModal.module.scss';
+@import '../animations.scss';
 
 .section {
+  opacity: 0;
+  animation: in 0.4s forwards;
   padding: 70px 100px;
   max-width: 940px;
+  margin: 0 auto;
   @media (max-width: 768px) {
     padding: 35px 50px;
   }

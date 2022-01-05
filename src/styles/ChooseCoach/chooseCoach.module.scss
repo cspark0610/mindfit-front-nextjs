@@ -1,5 +1,6 @@
 @import '../variables.scss';
 @import '../UI/Button/button.module.scss';
+@import '../animations.scss';
 
 //Choose Coach view
 .container {
@@ -21,6 +22,8 @@
 
 //Choose coach card component
 .coachCard {
+  opacity: 0;
+  animation: in 0.2s forwards;
   border: 1px solid $primary;
   border-radius: 20px;
   margin-bottom: 24px;

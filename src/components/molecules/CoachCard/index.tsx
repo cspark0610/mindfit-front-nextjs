@@ -15,7 +15,7 @@ interface openModalArgs {
 }
 interface CoachCardProps {
   data: CoachDataType
-  openModal: any
+  openModal: (id: string) => void
 }
 
 export const CoachCard: FC<CoachCardProps> = ({ data, openModal }) => {
@@ -62,7 +62,7 @@ export const CoachCard: FC<CoachCardProps> = ({ data, openModal }) => {
               onClick={() => {
                 openModal(id)
               }}>
-              Elegir Coach
+              Ver Coach
             </Button>
           </div>
         </Col>

@@ -1,5 +1,7 @@
 @import '../../variables.scss';
 @import '../Button/button.module.scss';
+@import '../../animations.scss';
+
 .modal {
   :global(.modal-content) {
     border-radius: 63px;
@@ -17,38 +19,10 @@
   }
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba($background, 1);
-  overflow-y: scroll;
-  animation: in 0.2s forwards;
-  opacity: 0;
-}
-
-@keyframes in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.modalContainer {
-  margin: 30px auto 0px;
-  max-width: 600px;
+.ModalContainer {
   border-radius: 40px;
-  overflow: hidden;
-  border: 1px solid rgba(180, 180, 180, 0.7);
-  animation: in 0.4s forwards;
-  animation-delay: 0.2s;
-  opacity: 0;
+  border: none;
 }
-
 .body {
   position: relative;
   display: flex;
@@ -62,6 +36,7 @@
     position: absolute;
     top: 40px;
     left: 40px;
+    z-index: 100;
   }
   .backButton {
     border-radius: 50%;
