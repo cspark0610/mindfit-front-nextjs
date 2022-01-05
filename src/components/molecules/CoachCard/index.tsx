@@ -10,12 +10,16 @@ import { Youtube } from 'react-bootstrap-icons'
 //types
 import { CoachDataType } from 'types/components/CoachCard'
 
+interface openModalArgs {
+  id: string
+}
 interface CoachCardProps {
   data: CoachDataType
+  openModal: (id: string) => void
 }
 
-export const CoachCard: FC<CoachCardProps> = ({ data }) => {
-  const { name, title, description, picture, videoThumb, videoUrl } = data
+export const CoachCard: FC<CoachCardProps> = ({ data, openModal }) => {
+  const { id, name, title, description, picture, videoThumb, videoUrl } = data
 
   return (
     <div className={classes.coachCard}>
@@ -53,7 +57,13 @@ export const CoachCard: FC<CoachCardProps> = ({ data }) => {
               <hr />
             </div>
             <p>{description}</p>
-            <Button className={classes.button}>Elegir Coach</Button>
+            <Button
+              className={classes.button}
+              onClick={() => {
+                openModal(id)
+              }}>
+              Ver Coach
+            </Button>
           </div>
         </Col>
       </Row>

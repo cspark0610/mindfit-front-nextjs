@@ -1,15 +1,19 @@
-//Next components
-import Link from 'next/link'
+import { useState } from 'react'
 //styles
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { CoachModal } from 'components/molecules/CoachModal'
+import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
+//types
+import { CoachDataType } from 'types/components/CoachCard'
 
 function SelectCoach() {
-  const coachs = [
+  //temporally data
+  const coachs: Array<CoachDataType> = [
     {
       id: '0564654a',
       name: 'Camila Garcia',
@@ -22,7 +26,7 @@ function SelectCoach() {
     },
     {
       id: '0564654d',
-      name: 'Camila Garcia',
+      name: 'Juliana Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -32,7 +36,7 @@ function SelectCoach() {
     },
     {
       id: '0564654w',
-      name: 'Camila Garcia',
+      name: 'Petra Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -42,7 +46,7 @@ function SelectCoach() {
     },
     {
       id: '0564654k',
-      name: 'Camila Garcia',
+      name: 'Ana Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -52,7 +56,7 @@ function SelectCoach() {
     },
     {
       id: '0564654p',
-      name: 'Camila Garcia',
+      name: 'Josefa Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -62,7 +66,7 @@ function SelectCoach() {
     },
     {
       id: '0564654l',
-      name: 'Camila Garcia',
+      name: 'Andrea Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -72,7 +76,7 @@ function SelectCoach() {
     },
     {
       id: '0564654m',
-      name: 'Camila Garcia',
+      name: 'Ada Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -82,7 +86,7 @@ function SelectCoach() {
     },
     {
       id: '0564654b',
-      name: 'Camila Garcia',
+      name: 'Laura Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -92,7 +96,7 @@ function SelectCoach() {
     },
     {
       id: '0564654y',
-      name: 'Camila Garcia',
+      name: 'Amanda Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -102,7 +106,7 @@ function SelectCoach() {
     },
     {
       id: '0564654x',
-      name: 'Camila Garcia',
+      name: 'Cindy Garcia',
       title: 'Especialista en motivación',
       description:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit Eligendi rerum mollitia, id sit voluptas esse beatae.',
@@ -111,24 +115,76 @@ function SelectCoach() {
       videoUrl: 'https:youtube.com',
     },
   ]
+  const [selectedCoach, setSelectedCoach] = useState<CoachDataType>({
+    id: '',
+    name: '',
+    title: '',
+    description: '',
+    picture: '',
+    videoThumb: '',
+    videoUrl: '',
+  })
+  //States
+  const [showModal, setShowModal] = useState(false)
+  const [showedCoachs, setShowedCoachs] = useState(2)
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  //Modal State Handlers
+  const closeModal = () => setShowModal(false)
+
+  const openModal = (id: string) => {
+    setSelectedCoach(coachs.filter((coach) => coach.id === id)[0])
+    setShowModal(true)
+  }
+  //form state handlers
+  const handleShowMoreCoaches = () => setShowFeedbackForm(true)
+
+  const handleCloseFeedBackForm = (e: any) => {
+    setShowFeedbackForm(false)
+    if (e.target.value === 'Enviar' && showedCoachs < 8)
+      setShowedCoachs(showedCoachs + 3)
+  }
+
   return (
     <Layout>
       <Container className={classes.container}>
-        <Row>
-          <Col>
-            <h3 className={classes.viewTitle}>Elige tu coach</h3>
-          </Col>
-        </Row>
-        <Row className={classes.coachsContainer}>
-          {coachs.map((coach, idx) => (
-            <Col xs={12} md={8} lg={5} key={coach.id}>
-              <CoachCard data={coach} />
-            </Col>
-          ))}
-        </Row>
-        <Row>
-          <ExploreBadge />
-        </Row>
+        {showFeedbackForm ? (
+          <CoachSearchFeedback handleCloseForm={handleCloseFeedBackForm} />
+        ) : (
+          <>
+            <Row>
+              <Col>
+                <h3 className={classes.viewTitle}>Elige tu coach</h3>
+              </Col>
+            </Row>
+            <Row className={classes.coachsContainer}>
+              {coachs.map((coach, index) => {
+                if (index <= showedCoachs) {
+                  return (
+                    <Col xs={12} md={8} lg={5} key={coach.id}>
+                      <CoachCard data={coach} openModal={openModal} />
+                    </Col>
+                  )
+                }
+              })}
+            </Row>
+            <Row>
+              {showedCoachs < 8 && (
+                <Button
+                  variant='link'
+                  className={classes.sugestBtn}
+                  onClick={handleShowMoreCoaches}>
+                  Sugerir otros coaches
+                </Button>
+              )}
+              <ExploreBadge />
+            </Row>
+            <CoachModal
+              selectedCoach={selectedCoach}
+              showModal={showModal}
+              closeModal={closeModal}
+            />
+          </>
+        )}
       </Container>
     </Layout>
   )

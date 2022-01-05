@@ -1,4 +1,6 @@
 @import '../../variables.scss';
+@import '../Button/button.module.scss';
+@import '../../animations.scss';
 
 .modal {
   :global(.modal-content) {
@@ -14,5 +16,39 @@
   &_footer {
     padding: 15px 50px 25px 50px;
     border: 0;
+  }
+}
+
+.ModalContainer {
+  border-radius: 40px;
+  border: none;
+}
+.body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: $lightBlue;
+  border-radius: 40px;
+  overflow: hidden;
+  .backButtonContainer {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 100;
+  }
+  .backButton {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $secondary;
+    border: none;
+    svg {
+      margin-left: -6px;
+    }
   }
 }
