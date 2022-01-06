@@ -14,7 +14,7 @@ export const RecommendedContentItem: FC = () => {
   return (
     <div className={classes.section}>
       <Image
-        src='/static/icon/MINDFIT.svg'
+        src='/assets/icon/MINDFIT.svg'
         width={220}
         height={211}
         alt='image'

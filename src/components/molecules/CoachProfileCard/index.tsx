@@ -12,7 +12,7 @@ export const CoachProfileCard = () => {
     <Container className={classes.section}>
       <div className='text-center mb-4'>
         <Image
-          src='/static/images/avatar.png'
+          src='/assets/images/avatar.png'
           alt='Mindfit Logo'
           width={182}
           height={182}
