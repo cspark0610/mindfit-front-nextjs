@@ -1,11 +1,14 @@
 // Bootstrap components
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { CoachObjectivesItem } from 'components/atoms/CoachObjectivesItem'
+import { Container, Row } from 'react-bootstrap'
 
 // Styles
-// import classes from 'styles/CoachObjectives/coachObjectives.module.scss'
 import classes from 'styles/CoachObjectives/coachObjectives.module.scss'
 
-export const CoachObjectives = () => {
+// Type
+import { FC } from 'react'
+
+export const CoachObjectives: FC = () => {
   return (
     <Container>
       <p className={`mb-2 fs-5 fw-bold ${classes.subtitle}`}>
@@ -19,6 +22,13 @@ export const CoachObjectives = () => {
       <p className={`mb-3 fs-5 fw-bold ${classes.subtitle}`}>
         Tareas cumplidas
       </p>
+      <Container>
+        <Row>
+          <CoachObjectivesItem />
+          <CoachObjectivesItem />
+          <CoachObjectivesItem />
+        </Row>
+      </Container>
     </Container>
   )
 }
