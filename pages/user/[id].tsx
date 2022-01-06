@@ -1,25 +1,46 @@
 // Main tools
-import { useState } from 'react'
-import Image from 'next/image'
+import { getSession } from 'next-auth/react'
 
 // Components
+import { CoachProfileCard } from 'components/molecules/CoachProfileCard'
+import { CoachObjectives } from 'components/molecules/CoachObjectives'
+import { RecommendedContentList } from 'components/molecules/RecommendedContentList'
 
 // bootstrap components
 import { Container, Row, Col } from 'react-bootstrap'
 
-// Styles
-// import classes from 'styles/Login/page.module.scss'
-
 // Types
-import { NextPage, GetServerSidePropsContext } from 'next'
-import { GetSSPropsType } from 'types'
+import { NextPage, GetServerSideProps } from 'next'
+import { Layout } from 'components/organisms/Layout'
 
 const UserDashboard: NextPage = () => {
   return (
-    <div>
-      <h1>Soy el UserDashboard</h1>
-    </div>
+    <Layout>
+      <Container className='m-4' fluid>
+        <Row className='mb-5 justify-content-center'>
+          <Col xs={12} md={3}>
+            <CoachProfileCard />
+          </Col>
+          <Col xs={12} md={5}>
+            <CoachObjectives />
+          </Col>
+        </Row>
+        <Row>
+          <RecommendedContentList />
+        </Row>
+      </Container>
+    </Layout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx)
+  if (!session)
+    return {
+      redirect: { destination: '/login', permanent: false },
+    }
+
+  return { props: {} }
 }
 
 export default UserDashboard
