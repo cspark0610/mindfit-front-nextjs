@@ -1,19 +1,24 @@
+// main tools
 import { useState } from 'react'
-//styles
+
+// bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
+
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
-import { CoachModal } from 'components/molecules/CoachModal'
 import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
-//types
-import { CoachDataType } from 'types/components/CoachCard'
 
-function SelectCoach() {
-  //temporally data
-  const coachs: Array<CoachDataType> = [
+//styles
+import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
+
+//types
+import { NextPage } from 'next'
+import { CoachDataType } from 'types/models/Coach'
+
+const SelectCoach: NextPage = () => {
+  const coachs: CoachDataType[] = [
     {
       id: '0564654a',
       name: 'Camila Garcia',
@@ -115,74 +120,61 @@ function SelectCoach() {
       videoUrl: 'https:youtube.com',
     },
   ]
-  const [selectedCoach, setSelectedCoach] = useState<CoachDataType>({
-    id: '',
-    name: '',
-    title: '',
-    description: '',
-    picture: '',
-    videoThumb: '',
-    videoUrl: '',
-  })
   //States
-  const [showModal, setShowModal] = useState(false)
   const [showedCoachs, setShowedCoachs] = useState(2)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
-  //Modal State Handlers
-  const closeModal = () => setShowModal(false)
 
-  const openModal = (id: string) => {
-    setSelectedCoach(coachs.filter((coach) => coach.id === id)[0])
-    setShowModal(true)
-  }
   //form state handlers
-  const handleShowMoreCoaches = () => setShowFeedbackForm(true)
+  const handleOpenFeedBackForm = () => setShowFeedbackForm(true)
+  const handleCloseFeedBackForm = () => setShowFeedbackForm(false)
 
-  const handleCloseFeedBackForm = (e: any) => {
-    setShowFeedbackForm(false)
-    if (e.target.value === 'Enviar' && showedCoachs < 8)
+  const handleSubmit = () => {
+    if (showedCoachs < 8) {
       setShowedCoachs(showedCoachs + 3)
+      handleCloseFeedBackForm()
+    }
   }
 
   return (
     <Layout>
       <Container className={classes.container}>
         {showFeedbackForm ? (
-          <CoachSearchFeedback handleCloseForm={handleCloseFeedBackForm} />
+          <Row className='justify-content-center'>
+            <Col md={9}>
+              <CoachSearchFeedback
+                submit={handleSubmit}
+                cancel={handleCloseFeedBackForm}
+              />
+            </Col>
+          </Row>
         ) : (
           <>
-            <Row>
-              <Col>
-                <h3 className={classes.viewTitle}>Elige tu coach</h3>
+            <h1 className={classes.title}>Elige tu coach</h1>
+            <Row className='justify-content-center'>
+              <Col xs={12} md={9}>
+                <Row>
+                  {coachs.map(
+                    (coach, idx) =>
+                      idx <= showedCoachs && (
+                        <Col className='mb-4' xs={12} md={6} key={coach.id}>
+                          <CoachCard data={coach} />
+                        </Col>
+                      )
+                  )}
+                </Row>
               </Col>
-            </Row>
-            <Row className={classes.coachsContainer}>
-              {coachs.map((coach, index) => {
-                if (index <= showedCoachs) {
-                  return (
-                    <Col xs={12} md={8} lg={5} key={coach.id}>
-                      <CoachCard data={coach} openModal={openModal} />
-                    </Col>
-                  )
-                }
-              })}
             </Row>
             <Row>
               {showedCoachs < 8 && (
                 <Button
                   variant='link'
                   className={classes.sugestBtn}
-                  onClick={handleShowMoreCoaches}>
+                  onClick={handleOpenFeedBackForm}>
                   Sugerir otros coaches
                 </Button>
               )}
-              <ExploreBadge />
             </Row>
-            <CoachModal
-              selectedCoach={selectedCoach}
-              showModal={showModal}
-              closeModal={closeModal}
-            />
+            <ExploreBadge />
           </>
         )}
       </Container>
