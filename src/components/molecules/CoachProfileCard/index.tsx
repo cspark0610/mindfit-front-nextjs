@@ -2,15 +2,15 @@
 import Image from 'next/image'
 
 // Bootstrap components
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 
 // Styles
-import classes from 'styles/CoachProfileCard/CoachProfileCard.module.scss'
+import classes from 'styles/CoachProfileCard/coachProfileCard.module.scss'
 
 export const CoachProfileCard = () => {
   return (
-    <Container>
-      <div>
+    <Container className={classes.section}>
+      <div className='text-center mb-4'>
         <Image
           src='/static/images/avatar.png'
           alt='Mindfit Logo'
@@ -20,9 +20,42 @@ export const CoachProfileCard = () => {
           className={classes.images}
         />
       </div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div className={`text-center mb-4 ${classes.description_container}`}>
+        <h3 className='fs-5 fw-bold'>Katherine Smit</h3>
+        <p className='fs-6 mb-0'>
+          Licenciada en Sociología e investigadora del desarrollo humano por
+          vocacion y pasión.
+        </p>
+      </div>
+      <div className={`text-center mb-5 ${classes.specialization_container}`}>
+        <h3 className='fs-5 fw-bold'>Especializacion del Coach</h3>
+        <ul>
+          <li className={`fs-5 ${classes.especialization_skill}`}>
+            Desarrollo de Liderazgo
+          </li>
+          <li className={`fs-5 ${classes.especialization_skill}`}>
+            Psiología Positiva
+          </li>
+          <li className={`fs-5 ${classes.especialization_skill}`}>
+            Desarrollo de liderazgo
+          </li>
+          <li className={`fs-5 ${classes.especialization_skill}`}>
+            Psicologí Positiva
+          </li>
+        </ul>
+      </div>
+      <div className='mb-5 d-flex justify-content-around'>
+        <Button
+          className={`d-flex flex-column justify-content-center align-items-center ${classes.button}`}>
+          <i className='pi pi-calendar' />
+          <p className='fs-6'>10/11/21 10:00 AM</p>
+        </Button>
+        <Button
+          className={`d-flex flex-column justify-content-center align-items-center ${classes.button}`}>
+          <i className='pi pi-comments' />
+          <p className='fs-6'>CHAT</p>
+        </Button>
+      </div>
     </Container>
   )
 }

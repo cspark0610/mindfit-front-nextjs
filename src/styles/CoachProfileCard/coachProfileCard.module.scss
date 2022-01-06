@@ -3,7 +3,6 @@
 
 .section {
   padding: 40px 45px;
-  width: 412px;
   border-radius: 25px;
 }
 
@@ -20,4 +19,32 @@
 
 .specialization_container {
   color: $gray;
+}
+
+.especialization_skill {
+  &::marker {
+    color: $secondary;
+    content: '>>';
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+.button {
+  width: 78px;
+  height: 113px;
+  padding: 0;
+  background: none;
+  color: $secondary;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  &:hover {
+    background: $secondary;
+    border: 1px solid $secondary;
+  }
+
+  & > i {
+    font-size: 22px;
+    padding-bottom: 10px;
+  }
 }
