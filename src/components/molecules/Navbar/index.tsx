@@ -31,7 +31,7 @@ export const Navbar: FC = () => (
       <Col className={classes.profile} xs={1}>
         <Image
           className={classes.avatar}
-          src='/static/images/avatar.png'
+          src='/assets/images/avatar.png'
           width={72}
           height={72}
           alt='user avatar'
@@ -47,7 +47,7 @@ export const Navbar: FC = () => (
           <BsNavbar.Offcanvas className={classes.sidebar}>
             <Offcanvas.Header closeButton>
               <Image
-                src='/static/icon/MINDFIT.svg'
+                src='/assets/icon/MINDFIT.svg'
                 alt='mindfit'
                 width={150}
                 height={72}
