@@ -1,0 +1,25 @@
+@import '../variables.scss';
+@import '../UI/Card/appCard.module.scss';
+
+.section {
+  padding: 22px 15px;
+  max-width: 311px;
+  height: 280px;
+  border-radius: 15.7569px;
+  margin: 0 22px 22px 0;
+  &_header {
+    color: $secondary;
+  }
+  &_header > p {
+    margin-left: 13px;
+  }
+}
+
+.task {
+  color: $primary;
+  font-size: 12px;
+  margin: 5px 0 20px 0;
+  &_title {
+    margin-bottom: 14px;
+  }
+}
