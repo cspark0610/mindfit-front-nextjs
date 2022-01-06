@@ -4,6 +4,9 @@ import Image from 'next/image'
 // Bootstrap components
 import { Container, Button } from 'react-bootstrap'
 
+// Primeicons
+import { PrimeIcons } from 'primereact/api'
+
 // Styles
 import classes from 'styles/CoachProfileCard/coachProfileCard.module.scss'
 
@@ -47,12 +50,12 @@ export const CoachProfileCard = () => {
       <div className='mb-5 d-flex justify-content-around'>
         <Button
           className={`d-flex flex-column justify-content-center align-items-center ${classes.button}`}>
-          <i className='pi pi-calendar' />
+          <i className={PrimeIcons.CALENDAR} />
           <p className='fs-6'>10/11/21 10:00 AM</p>
         </Button>
         <Button
           className={`d-flex flex-column justify-content-center align-items-center ${classes.button}`}>
-          <i className='pi pi-comments' />
+          <i className={PrimeIcons.COMMENTS} />
           <p className='fs-6'>CHAT</p>
         </Button>
       </div>

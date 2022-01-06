@@ -4,6 +4,9 @@ import Image from 'next/image'
 // Bootstrap component
 import { Container, Row, Col } from 'react-bootstrap'
 
+// Primeicons
+import { PrimeIcons } from 'primereact/api'
+
 // Styles
 import classes from 'styles/RecommendedContentItem/recommendedContentItem.module.scss'
 
@@ -23,7 +26,7 @@ export const RecommendedContentItem: FC = () => {
       <Container fluid>
         <Row className={`text-center align-items-center ${classes.card_info}`}>
           <Col xs={3} className={`px-0 ${classes.card_type}`}>
-            <i className='pi pi-book' />
+            <i className={PrimeIcons.BOOK} />
             <p className={`my-0 `}>ARTICULO</p>
           </Col>
           <Col xs={6} className='px-0'>
