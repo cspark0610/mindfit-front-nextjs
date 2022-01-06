@@ -1,5 +1,3 @@
-//Next components
-import Link from 'next/link'
 //styles
 import { Col, Container, Row } from 'react-bootstrap'
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
