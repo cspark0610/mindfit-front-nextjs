@@ -8,7 +8,8 @@ Cypress.Commands.add('logout', () => {
 Cypress.Commands.add('loginWithCredentials', () => {
   const cookieName = Cypress.env('COOKIE_NAME')
   const loginOptions = {
-    headless: false,
+    headless: true,
+    args: ['--no-sandbox'],
     loginUrl: `${Cypress.env('SITE_NAME')}/login`,
     usernameField: 'input[name=email]',
     passwordField: 'input[name=password]',
