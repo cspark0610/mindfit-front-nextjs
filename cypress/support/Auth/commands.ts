@@ -8,7 +8,7 @@ Cypress.Commands.add('logout', () => {
 Cypress.Commands.add('loginWithCredentials', () => {
   const cookieName = Cypress.env('COOKIE_NAME')
   const loginOptions = {
-    headless: true,
+    headless: false,
     args: ['--no-sandbox'],
     loginUrl: `${Cypress.env('SITE_NAME')}/login`,
     usernameField: 'input[name=email]',
@@ -19,7 +19,7 @@ Cypress.Commands.add('loginWithCredentials', () => {
     postLoginSelector: 'img[alt="user avatar"]',
   }
 
-  cy.task('CredentialsLoginTask', loginOptions).then((res: any) => {
+  return cy.task('CredentialsLoginTask', loginOptions).then((res: any) => {
     cy.clearCookies()
     const cookie = res.cookies.find((cookie: any) => cookie.name === cookieName)
     if (cookie) {
