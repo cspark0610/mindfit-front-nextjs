@@ -18,9 +18,9 @@ Cypress.Commands.add('loginWithCredentials', () => {
     postLoginSelector: 'img[alt="user avatar"]',
   }
 
-  cy.task('CredentialsLoginTask', loginOptions).then(({ cookies }) => {
+  cy.task('CredentialsLoginTask', loginOptions).then((res: any) => {
     cy.clearCookies()
-    const cookie = cookies.find((cookie) => cookie.name === cookieName)
+    const cookie = res.cookies.find((cookie: any) => cookie.name === cookieName)
     if (cookie) {
       cy.setCookie(cookie.name, cookie.value, {
         domain: cookie.domain,
