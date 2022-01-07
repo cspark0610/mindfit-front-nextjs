@@ -3,7 +3,7 @@
     "chromeWebSecurity": false,
     "projectId": "ehizxk",
     "env": {
-        "NEXTAUTH_URL": "http://localhost:3000",
+        "SITE_NAME": "http://localhost:3000",
         "COOKIE_NAME": "next-auth.session-token"
     }
 }
