@@ -16,11 +16,12 @@ Cypress.Commands.add('loginWithCredentials', () => {
     username: 'centriadevelopment@gmail.com',
     password: '123qwe!@#',
     passwordSubmitBtn: 'button[type=submit]',
-    postLoginSelector: 'img[alt="user avatar"]',
+    postLoginSelector: 'body',
   }
 
   return cy.task('CredentialsLoginTask', loginOptions).then((res: any) => {
     cy.clearCookies()
+    cy.get('body')
     const cookie = res.cookies.find((cookie: any) => cookie.name === cookieName)
     if (cookie) {
       cy.setCookie(cookie.name, cookie.value, {
