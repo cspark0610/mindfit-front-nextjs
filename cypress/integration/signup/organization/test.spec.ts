@@ -38,5 +38,8 @@ describe('User organization signup', () => {
       phone: '+584147545160',
       email: 'centriadevelopment@gmail.com',
     })
+
+    // @ts-ignore
+    cy.logout()
   })
 })

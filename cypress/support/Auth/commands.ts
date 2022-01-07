@@ -1,26 +1,36 @@
 // @ts-ignore
+Cypress.Commands.add('logout', () => {
+  cy.visit('/api/auth/signout')
+  cy.get('form').submit()
+})
+
+// @ts-ignore
 Cypress.Commands.add('loginWithCredentials', () => {
-  cy.visit('/api/auth/signin/credentials')
+  const cookieName = Cypress.env('COOKIE_NAME')
+  const loginOptions = {
+    headless: true,
+    loginUrl: `${Cypress.env('SITE_NAME')}/login`,
+    usernameField: 'input[name=email]',
+    passwordField: 'input[name=password]',
+    username: 'centriadevelopment@gmail.com',
+    password: '123qwe!@#',
+    passwordSubmitBtn: 'button[type=submit]',
+    postLoginSelector: 'img[alt="user avatar"]',
+  }
 
-  cy.get('input[name=email]')
-    .type('centriadevelopment@gmail.com')
-    .should('have.value', 'centriadevelopment@gmail.com')
+  cy.task('CredentialsLoginTask', loginOptions).then(({ cookies }) => {
+    cy.clearCookies()
+    const cookie = cookies.find((cookie) => cookie.name === cookieName)
+    if (cookie) {
+      cy.setCookie(cookie.name, cookie.value, {
+        domain: cookie.domain,
+        expiry: cookie.expires,
+        httpOnly: cookie.httpOnly,
+        path: cookie.path,
+        secure: cookie.secure,
+      })
 
-  cy.get('input[name=password]')
-    .type('123qwe!@#')
-    .should('have.value', '123qwe!@#')
-
-  cy.get('form')
-    .invoke(
-      'attr',
-      'action',
-      'http://localhost:3000/api/auth/callback/credentials'
-    )
-    .should(
-      'have.attr',
-      'action',
-      'http://localhost:3000/api/auth/callback/credentials'
-    )
-
-  cy.get('button[type=submit]').click()
+      Cypress.Cookies.defaults({ preserve: cookieName })
+    }
+  })
 })

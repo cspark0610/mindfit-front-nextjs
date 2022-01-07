@@ -12,7 +12,7 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-// import { Plugins } from 'cypress-social-logins'
+const { CustomizedLogin } = require('cypress-social-logins').plugins
 
 /**
  * @type {Cypress.PluginConfig}
@@ -20,4 +20,6 @@
 module.exports = (
   on: Cypress.PluginEvents,
   config: Cypress.PluginConfigOptions
-) => {}
+) => {
+  on('task', { CredentialsLoginTask: (options) => CustomizedLogin(options) })
+}
