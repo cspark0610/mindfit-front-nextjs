@@ -1,6 +1,6 @@
 // @ts-ignore
 Cypress.Commands.add('loginWithCredentials', () => {
-  cy.visit(`${Cypress.env('BASE_URL')}/api/auth/signin/credentials`)
+  cy.visit('/api/auth/signin/credentials')
 
   cy.get('input[name=email]')
     .type('centriadevelopment@gmail.com')
