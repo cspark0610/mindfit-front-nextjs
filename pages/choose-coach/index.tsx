@@ -5,8 +5,17 @@ import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { useQuery } from '@apollo/client'
+import LAUNCH_LIST from 'gql/queries/LaunchList.graphql'
 
 function SelectCoach() {
+  //test gql query
+  const { data } = useQuery(LAUNCH_LIST, {
+    onCompleted: () => {
+      console.log(data)
+    },
+  })
+  //end test
   const coachs = [
     {
       id: '0564654a',

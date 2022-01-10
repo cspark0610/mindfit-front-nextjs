@@ -1,6 +1,7 @@
 // main tools
 import { SessionProvider } from 'next-auth/react'
-import UseApollo from '../lib/apollo'
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../lib/apollo'
 
 // styles
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
@@ -12,11 +13,14 @@ import 'styles/theme.scss'
 import type { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps.initialApolloState)
   return (
-    <SessionProvider session={pageProps.session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <ApolloProvider client={apolloClient}>
+      <SessionProvider session={pageProps.session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </ApolloProvider>
   )
 }
 //wrapps all pages with apollo provider
-export default UseApollo(MyApp)
+export default MyApp
