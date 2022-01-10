@@ -1,0 +1,50 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  padding: 40px 45px;
+  border-radius: 25px;
+}
+
+.images {
+  border-radius: 100%;
+}
+
+.description_container {
+  background-color: $primary;
+  color: $white;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+
+.specialization_container {
+  color: $gray;
+}
+
+.especialization_skill {
+  &::marker {
+    color: $secondary;
+    content: '>>';
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+.button {
+  width: 78px;
+  height: 113px;
+  padding: 0;
+  background: none;
+  color: $secondary;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  &:hover {
+    background: $secondary;
+    border: 1px solid $secondary;
+  }
+
+  & > i {
+    font-size: 22px;
+    padding-bottom: 10px;
+  }
+}

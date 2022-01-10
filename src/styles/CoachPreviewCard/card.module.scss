@@ -1,0 +1,27 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  padding: 2rem;
+  .container {
+    padding: 3rem;
+    background: $lightBlue;
+    border-radius: 38px;
+
+    .close {
+      border-radius: 50%;
+      background-color: $secondary;
+      padding: 10px;
+      border: none;
+    }
+    .name {
+      font-weight: bold;
+      font-size: 24px;
+      color: $secondary;
+    }
+    .position {
+      font-size: 24px;
+      color: $secondary;
+    }
+  }
+}

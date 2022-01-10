@@ -1,11 +1,18 @@
 describe('User organization signup', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/signup/organization')
+    cy.visit('/signup/organization')
   })
 
-  it('verify render', () => cy.get('a').should('contain.text', '¡Empecemos!'))
+  it('verify render', () => {
+    cy.get('.container-fluid > div[class^="stepsCard"]').then((steps) => {
+      expect(steps, '3 items').to.have.length(3)
+      expect(steps.eq(0), 'first item').to.contain('Registra a tu empresa')
+      expect(steps.eq(1), 'second item').to.contain('Elige un plan')
+      expect(steps.eq(2), 'third item').to.contain('Invita a tus colaboradores')
+    })
+  })
 
-  it('signup verify', () => {
+  it('verify complete user signup', () => {
     cy.get('a').should('contain.text', '¡Empecemos!').click()
 
     // @ts-ignore
@@ -16,6 +23,13 @@ describe('User organization signup', () => {
       email: 'centriadevelopment@gmail.com',
       password: '123qwe!@#',
     })
+  })
+
+  it('verify complete company signup', () => {
+    // @ts-ignore
+    cy.loginWithCredentials()
+
+    cy.visit('/signup/organization/company')
 
     // @ts-ignore
     cy.companySignupWithForm({
@@ -24,5 +38,8 @@ describe('User organization signup', () => {
       phone: '+584147545160',
       email: 'centriadevelopment@gmail.com',
     })
+
+    // @ts-ignore
+    cy.logout()
   })
 })
