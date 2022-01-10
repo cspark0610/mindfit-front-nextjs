@@ -7,7 +7,7 @@ import {
 import { useRouter } from 'next/router'
 import nextWithApollo from 'next-with-apollo'
 
-const useApollo = nextWithApollo(
+const UseApollo = nextWithApollo(
   ({ initialState, headers }) => {
     return new ApolloClient({
       ssrMode: typeof window === 'undefined',
@@ -22,14 +22,13 @@ const useApollo = nextWithApollo(
   },
   {
     render: ({ Page, props }) => {
-      const router = useRouter()
       return (
         <ApolloProvider client={props.apollo}>
-          <Page {...props} {...router} />
+          <Page {...props} {...useRouter} />
         </ApolloProvider>
       )
     },
   }
 )
 
-export default useApollo
+export default UseApollo
