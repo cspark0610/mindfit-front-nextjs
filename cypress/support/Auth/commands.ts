@@ -10,7 +10,6 @@ Cypress.Commands.add('verifyActiveSession', (isActive: boolean) => {
 
 // @ts-ignore custom command
 Cypress.Commands.add('logout', () => {
-  // @ts-ignore custom command
   cy.visit('/api/auth/signout')
   cy.get('form').submit()
 })
