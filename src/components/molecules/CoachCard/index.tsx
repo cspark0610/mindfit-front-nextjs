@@ -1,62 +1,77 @@
-import { FC } from 'react'
 //next components
+import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-//styles
-import { Button, Col, Row } from 'react-bootstrap'
-import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
-//icons
+
+// bootstrap components
+import { Button, Col, Row, Modal } from 'react-bootstrap'
 import { Youtube } from 'react-bootstrap-icons'
+
+// components
+import { CoachPreviewCard } from 'components/molecules/CoachPreviewCard'
+
+//styles
+import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
+
 //types
-import { CoachDataType } from 'types/components/CoachCard'
+import { FC } from 'react'
+import { CoachDataType } from 'types/models/Coach'
 
 interface CoachCardProps {
   data: CoachDataType
 }
 
 export const CoachCard: FC<CoachCardProps> = ({ data }) => {
-  const { name, title, description, picture, videoThumb, videoUrl } = data
+  const [showModal, setShowModal] = useState(false)
+
+  const handleCloseModal = () => setShowModal(false)
+  const handleOpenModal = () => setShowModal(true)
 
   return (
-    <div className={classes.coachCard}>
-      <Row>
-        <Col xs={12} sm={4} className={classes.cardCol}>
-          <div className={classes.leftSide}>
-            <div className={classes.photo}>
-              <Image src={picture} width={100} height={100} alt='coach photo' />
+    <>
+      <div className={classes.coachCard}>
+        <Row>
+          <Col xs={12} sm={4} className={classes.leftSide}>
+            <Image
+              src={data.picture}
+              width={100}
+              height={100}
+              alt='coach photo'
+            />
+            <div className={classes.video}>
+              <Image
+                src={data.videoThumb}
+                width={80}
+                height={80}
+                alt='video thumbnail'
+              />
+              <Youtube size={36} className={classes.video_icon} />
             </div>
-            <Link href={videoUrl}>
-              <a target='_blank'>
-                <div className={classes.video}>
-                  <Image
-                    src={videoThumb}
-                    width={80}
-                    height={80}
-                    alt='coach photo'
-                  />
-                  <Youtube
-                    width={36}
-                    height={36}
-                    className={classes.ytIcon}
-                    color='white'
-                  />
-                </div>
-              </a>
-            </Link>
-          </div>
-        </Col>
-        <Col>
-          <div className={classes.rightSide}>
+          </Col>
+          <Col className={classes.rightSide}>
             <div>
-              <h4>{name}</h4>
-              <p>{title}</p>
+              <h4>{data.name}</h4>
+              <p>{data.title}</p>
               <hr />
             </div>
-            <p>{description}</p>
-            <Button className={classes.button}>Elegir Coach</Button>
-          </div>
-        </Col>
-      </Row>
-    </div>
+            <p>{data.description}</p>
+            <Button
+              className={classes.button}
+              onClick={() => handleOpenModal()}>
+              Ver Coach
+            </Button>
+          </Col>
+        </Row>
+      </div>
+      <Modal
+        centered
+        contentClassName={classes.coachModal}
+        show={showModal}
+        onHide={handleCloseModal}
+        size='lg'>
+        <Modal.Body>
+          <CoachPreviewCard coach={data} handleCloseModal={handleCloseModal} />
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }

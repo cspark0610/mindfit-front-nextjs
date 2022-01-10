@@ -24,6 +24,8 @@ jobs:
         env:
           NEXTAUTH_URL: http://localhost:3000
           SECRET: p/brjw5iCKJjHAyq5AOS42hC53srJr3FvKhZzNpjY/g=
+          CYPRESS_RECORD_KEY: 3c67b30b-0d63-4e43-9b41-75d9715d15bb
         with:
           build: yarn build
           start: yarn start
+          record: true
