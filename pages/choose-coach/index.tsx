@@ -1,9 +1,7 @@
 // main tools
 import { useState } from 'react'
-
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
-
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
