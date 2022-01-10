@@ -1,6 +1,7 @@
 // main tools
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 
 export default NextAuth({
   pages: { error: '/login' }, // custom error page with query string as ?error=
@@ -8,6 +9,10 @@ export default NextAuth({
   secret: process.env.SECRET,
 
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_PUBLIC_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET_ID as string,
+    }),
     CredentialsProvider({
       name: 'credentials',
       id: 'credentials',
