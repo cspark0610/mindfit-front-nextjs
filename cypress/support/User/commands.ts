@@ -3,7 +3,7 @@ import 'cypress-file-upload'
 // types
 import { UserDataType } from '../../../src/types/models/User'
 
-// @ts-ignore
+// @ts-ignore custom command
 Cypress.Commands.add('userSignupWithForm', (userData: UserDataType) => {
   cy.get('button:not([class^=btn-close])')
     .should('contain', 'Registra tu usuario')

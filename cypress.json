@@ -1,9 +1,7 @@
 {
     "baseUrl": "http://localhost:3000",
-    "chromeWebSecurity": false,
     "projectId": "ehizxk",
     "env": {
-        "SITE_NAME": "http://localhost:3000",
         "COOKIE_NAME": "next-auth.session-token"
     }
 }
