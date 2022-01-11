@@ -18,6 +18,9 @@ describe('User organization signup', () => {
   it("verify organization's signup forms", () => {
     cy.get('a').should('contain.text', '¡Empecemos!').click()
 
+    cy.wait(3000)
+    cy.url().should('contain', 'signup/organization/user')
+
     // @ts-ignore custom command
     cy.userSignupWithForm({
       picture: 'avatar.png',
@@ -31,7 +34,8 @@ describe('User organization signup', () => {
       .contains('Registra tu usuario')
       .click()
 
-    cy.url().should('contain', '/company')
+    cy.wait(3000)
+    cy.url().should('contain', 'signup/organization/company')
 
     // @ts-ignore custom command
     cy.verifyActiveSession(true)
@@ -48,6 +52,7 @@ describe('User organization signup', () => {
       .contains('Registra tu empresa')
       .click()
 
+    cy.wait(3000)
     cy.url().should('contain', '/signup/organization')
 
     // @ts-ignore custom command
