@@ -16,16 +16,16 @@ import { FC } from 'react'
 import { CreditMethod, PaypalMethod } from 'components/atoms/PaymentMethods'
 
 interface props {
-  handleClose: any
+  handleCloseModal: any
 }
 
-export const PaymentMethodCard: FC<props> = ({ handleClose }) => {
+export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {
   const [paymentOption, setPaymentOption] = useState('')
   return (
     <Container className='p-5'>
       <Button
         className={`rounded-circle d-flex ${classes.button_close}`}
-        onClick={handleClose}>
+        onClick={handleCloseModal}>
         <ChevronLeft width={32} height={32} />
       </Button>
       <h2 className={classes.title}>Metodo de pago</h2>
