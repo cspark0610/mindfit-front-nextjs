@@ -1,0 +1,30 @@
+@import '../variables.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Button/button.module.scss';
+
+.button {
+  &_close {
+    width: 46px;
+  }
+}
+
+.title {
+  color: $primary;
+  text-align: center;
+  font-weight: bold;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  color: $primary;
+}
+
+.option {
+  cursor: pointer;
+  &_selected {
+    color: $primary;
+    border-bottom: 1px solid $primary;
+    filter: drop-shadow(0px 4px 4px rgba(26, 123, 238, 0.2));
+  }
+}
