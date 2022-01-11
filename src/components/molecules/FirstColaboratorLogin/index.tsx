@@ -74,8 +74,8 @@ export const FirstColaboratorLogin: FC<{ token: string; content: any }> = ({
           className={`${classes.card} ${classes.section}`}>
           <Row>
             <InputText
-              disabled={error !== ''}
-              type={'email'}
+              disabled={true}
+              type='email'
               name='email'
               className={`mb-4 ${classes.input}`}
               value={user.email}
