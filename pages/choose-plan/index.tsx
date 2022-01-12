@@ -22,13 +22,13 @@ const ChoosePlanPage: NextPage = () => (
       <ActualPlan />
       <Row className='mt-5'>
         {[0, 1, 2, 3].map((plan) => (
-          <Col key={plan} xs={3}>
+          <Col className='my-3' key={plan} xs={12} md={6} xl={3}>
             <PlanCard selected={plan === 1 ? true : false} />
           </Col>
         ))}
       </Row>
       <Row className='mt-5 flex-row-reverse'>
-        <Col xs={12} sm={2}>
+        <Col xs={12} sm={5} lg={2}>
           <Link passHref href='/signup/organization'>
             <Button className={classes.button}>Siguiente</Button>
           </Link>
