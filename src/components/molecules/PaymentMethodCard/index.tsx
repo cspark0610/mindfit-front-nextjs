@@ -22,7 +22,7 @@ interface props {
 export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {
   const [paymentOption, setPaymentOption] = useState('')
   return (
-    <Container className='p-5'>
+    <Container className='py-2 p-md-4 p-lg-5'>
       <Button
         className={`rounded-circle d-flex ${classes.button_close}`}
         onClick={handleCloseModal}>
