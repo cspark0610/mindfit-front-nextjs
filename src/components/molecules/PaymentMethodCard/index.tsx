@@ -16,7 +16,7 @@ import { FC } from 'react'
 import { CreditMethod, PaypalMethod } from 'components/atoms/PaymentMethods'
 
 interface props {
-  handleCloseModal: any
+  handleCloseModal: () => void
 }
 
 export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {

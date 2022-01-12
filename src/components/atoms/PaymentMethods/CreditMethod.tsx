@@ -1,3 +1,6 @@
+// main tools
+import { useState } from 'react'
+
 // prime components
 import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
@@ -7,7 +10,6 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 
 // styles
 import classes from 'styles/CreditMethod/creditMethod.module.scss'
-import { useState } from 'react'
 
 // Types
 import { FC } from 'react'
