@@ -1,6 +1,7 @@
 // types
 import { FormEvent, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { GetServerSideProps } from 'next'
+import { DocumentNode } from 'graphql'
 
 export interface ChangeType extends ChangeEvent<HTMLInputElement> {}
 export interface SubmitType extends FormEvent<HTMLFormElement> {}
@@ -28,5 +29,11 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   export interface JWT {
     user: UserType
+  }
+}
+
+declare module 'graphql' {
+  export interface graphql {
+    content: DocumentNode
   }
 }
