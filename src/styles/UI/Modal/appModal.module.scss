@@ -4,18 +4,7 @@
 
 .modal {
   :global(.modal-content) {
-    border-radius: 63px;
-    width: 100%;
-    max-width: 672px;
-  }
-  &_header {
-    padding: 25px 50px 15px 50px;
-    border: 0;
-  }
-
-  &_footer {
-    padding: 15px 50px 25px 50px;
-    border: 0;
+    border-radius: 49px;
   }
 }
 
