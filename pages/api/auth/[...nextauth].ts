@@ -3,6 +3,14 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
+// gql
+import { initializeApolloClient } from 'lib/apollo'
+import LOGIN from 'lib/mutations/Auth/login.gql'
+import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
+
+// utils
+import jwt_decoder from 'jwt-decode'
+
 export default NextAuth({
   pages: { error: '/login' }, // custom error page with query string as ?error=
   session: { maxAge: 30 * 60 }, // initial value in seconds, logout on a half hour of inactivity
@@ -25,9 +33,24 @@ export default NextAuth({
        * @returns
        */
       async authorize(credentials) {
-        if (credentials?.email === 'centriadevelopment@gmail.com')
-          return Promise.resolve({ name: '0', image: '' })
-        else return null
+        const apolloClient = initializeApolloClient()
+
+        const { data } = await apolloClient
+          .mutate({
+            variables: {
+              data: {
+                email: credentials?.email,
+                password: credentials?.password,
+              },
+            },
+            mutation: LOGIN,
+          })
+          .catch((err) => {
+            throw new Error(err.graphQLErrors[0].message)
+          })
+
+        if (data.signIn) return data.signIn
+        return null
       },
     }),
   ],
@@ -40,7 +63,10 @@ export default NextAuth({
      * @return jwt that will be send to session callback
      */
     jwt: async ({ token, user }) => {
-      if (user) token.user = user
+      if (user) {
+        token.backendRefresh = user.refreshToken as string
+        token.backendToken = user.token as string
+      }
 
       return Promise.resolve(token)
     },
@@ -52,9 +78,24 @@ export default NextAuth({
      * @return session that will be returned to the client
      */
     session: async ({ session, token }) => {
-      if (token) session.user = token.user
+      const decoded: { sub?: number; email?: string } = jwt_decoder(
+        token.backendToken
+      )
 
-      return Promise.resolve({ ...token, ...session })
+      if (decoded.sub) {
+        const apolloClient = initializeApolloClient()
+
+        const res = await apolloClient.query({
+          variables: { id: decoded.sub },
+          query: GET_USER_BY_ID,
+        })
+
+        session.token = token.backendToken
+        session.refreshToken = token.backendRefresh
+        session.user = { ...decoded, ...res.data.findUserById }
+      }
+
+      return Promise.resolve({ ...session })
     },
   },
 })

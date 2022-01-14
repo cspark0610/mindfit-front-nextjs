@@ -17,7 +17,6 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <main className={styles.main}>
-        {console.log(data, status)}
         <h1 className={styles.title}>
           {data && (
             <span onClick={() => signOut({ callbackUrl: '/login' })}>
