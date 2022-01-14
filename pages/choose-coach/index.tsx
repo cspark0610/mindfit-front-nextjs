@@ -1,14 +1,16 @@
 // main tools
 import { useState } from 'react'
-
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
-
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
+
+//gql
+import { useQuery } from '@apollo/client'
+import LAUNCH_LIST from 'gql/queries/LaunchList.gql'
 
 //styles
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
@@ -18,6 +20,14 @@ import { NextPage } from 'next'
 import { CoachDataType } from 'types/models/Coach'
 
 const SelectCoach: NextPage = () => {
+  //test gql query
+  const { data } = useQuery(LAUNCH_LIST, {
+    onCompleted: () => {
+      console.log(data)
+    },
+  })
+  //end test
+
   const coachs: CoachDataType[] = [
     {
       id: '0564654a',
