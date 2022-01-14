@@ -7,7 +7,7 @@ import { phoneFormatter } from '../../commons'
 import { CompanyDataType } from '../../../src/types/models/Company'
 
 Cypress.Commands.add(
-  // @ts-ignore
+  // @ts-ignore custom command
   'companySignupWithForm',
   (companyData: CompanyDataType) => {
     cy.get('button:not([class^=btn-close])')

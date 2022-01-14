@@ -1,38 +1,30 @@
-// @ts-ignore
+// @ts-ignore custom command
+Cypress.Commands.add('verifyActiveSession', (isActive: boolean) => {
+  cy.request('/api/auth/session').then((res) => {
+    expect(res.status).to.eq(200)
+    isActive
+      ? expect(res.body.user).to.have.property('name')
+      : expect(res.body).not.to.have.property('user')
+  })
+})
+
+// @ts-ignore custom command
 Cypress.Commands.add('logout', () => {
   cy.visit('/api/auth/signout')
   cy.get('form').submit()
 })
 
-// @ts-ignore
-Cypress.Commands.add('loginWithCredentials', () => {
-  const cookieName = Cypress.env('COOKIE_NAME')
-  const loginOptions = {
-    headless: false,
-    args: ['--no-sandbox'],
-    loginUrl: `${Cypress.env('SITE_NAME')}/login`,
-    usernameField: 'input[name=email]',
-    passwordField: 'input[name=password]',
-    username: 'centriadevelopment@gmail.com',
-    password: '123qwe!@#',
-    passwordSubmitBtn: 'button[type=submit]',
-    postLoginSelector: 'body',
-  }
+// @ts-ignore custom command
+Cypress.Commands.add('loginWithAPICredentials', () => {
+  cy.visit('/api/auth/signin')
 
-  return cy.task('CredentialsLoginTask', loginOptions).then((res: any) => {
-    cy.clearCookies()
-    cy.get('body')
-    const cookie = res.cookies.find((cookie: any) => cookie.name === cookieName)
-    if (cookie) {
-      cy.setCookie(cookie.name, cookie.value, {
-        domain: cookie.domain,
-        expiry: cookie.expires,
-        httpOnly: cookie.httpOnly,
-        path: cookie.path,
-        secure: cookie.secure,
-      })
+  cy.get('input[name=email]')
+    .type('centriadevelopment@gmail.com')
+    .should('have.value', 'centriadevelopment@gmail.com')
 
-      Cypress.Cookies.defaults({ preserve: cookieName })
-    }
-  })
+  cy.get('input[name=password]')
+    .type('123qwe!@#')
+    .should('have.value', '123qwe!@#')
+
+  cy.get('button').contains('credentials').click()
 })
