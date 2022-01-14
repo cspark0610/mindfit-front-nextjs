@@ -19,9 +19,12 @@
     "format": "prettier --write \"src/**/*.tsx\" \"src/**/*.ts\" \"pages/**/*.ts\" \"pages/**/*.tsx\" \"cypress/integration/**/*.ts\""
   },
   "dependencies": {
+    "@apollo/client": "^3.5.6",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.7.2",
+    "graphql": "^16.2.0",
     "framer-motion": "^5.5.7",
+
     "jwt-decode": "^3.1.2",
     "next": "12.0.7",
     "next-auth": "4.0.6",
@@ -48,6 +51,6 @@
     "eslint-config-next": "12.0.7",
     "husky": "^7.0.4",
     "prettier": "^2.5.1",
-    "typescript": "4.5.4"
+    "typescript": "^4.5.4"
   }
 }
