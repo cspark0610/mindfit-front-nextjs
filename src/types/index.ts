@@ -21,12 +21,14 @@ type UserType = {
 
 declare module 'next-auth' {
   export interface Session {
+    token: string
     user: UserType
   }
 }
 
 declare module 'next-auth/jwt' {
   export interface JWT {
-    user: UserType
+    backendToken: string
+    backendRefresh: string
   }
 }

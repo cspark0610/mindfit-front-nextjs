@@ -1,0 +1,9 @@
+query GetUserById($id: Int!) {
+  findUserById(id: $id) {
+    isActive
+    isStaff
+    isSuperUser
+    isVerified
+    name
+  }
+}
