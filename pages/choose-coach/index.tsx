@@ -10,7 +10,7 @@ import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
 
 //gql
 import { useQuery } from '@apollo/client'
-import LAUNCH_LIST from 'gql/queries/LaunchList.graphql'
+import LAUNCH_LIST from 'gql/queries/LaunchList.gql'
 
 //styles
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'

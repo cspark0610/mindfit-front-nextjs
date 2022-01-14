@@ -1,7 +1,7 @@
 // main tools
 import { SessionProvider } from 'next-auth/react'
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../lib/apollo'
+import { useApollo } from '../src/lib/apollo'
 
 // styles
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
