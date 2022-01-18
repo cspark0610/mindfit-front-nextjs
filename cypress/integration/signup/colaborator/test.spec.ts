@@ -36,8 +36,8 @@ describe('User colaborator signup', () => {
 
     cy.get('input[name=password]')
       .focus()
-      .type('123qwe!@#')
-      .should('have.value', '123qwe!@#')
+      .type('123456789#')
+      .should('have.value', '123456789#')
 
     cy.get('div.p-password-panel')
       .find('ul li')

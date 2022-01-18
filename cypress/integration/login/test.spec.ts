@@ -26,7 +26,7 @@ describe('User login', () => {
   it('verify login with form', () => {
     cy.get('input[name=email]').type('centriadevelopment@gmail.com')
 
-    cy.get('input[name=password]').type('123qwe!@#')
+    cy.get('input[name=password]').type('123456789#')
 
     cy.get('button').contains('Iniciar sesión').click()
 

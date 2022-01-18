@@ -27,7 +27,7 @@ describe('User organization signup', () => {
       firstName: 'Centria',
       lastName: 'Group',
       email: 'centriadevelopment@gmail.com',
-      password: '123qwe!@#',
+      password: '123456789#',
     })
 
     cy.get('button:not([class^=btn-close])')
