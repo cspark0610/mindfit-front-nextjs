@@ -23,8 +23,8 @@ Cypress.Commands.add('loginWithAPICredentials', () => {
     .should('have.value', 'centriadevelopment@gmail.com')
 
   cy.get('input[name=password]')
-    .type('123qwe!@#')
-    .should('have.value', '123qwe!@#')
+    .type('123456789#')
+    .should('have.value', '123456789#')
 
   cy.get('button').contains('credentials').click()
 })

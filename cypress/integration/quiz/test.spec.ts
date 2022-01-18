@@ -2,40 +2,70 @@ describe('Quiz user', () => {
   beforeEach(() => {
     // @ts-ignore custom command
     cy.loginWithAPICredentials()
+    cy.wait(3000)
     cy.visit('/quiz')
   })
 
   it('verify render', () => {
-    const questionIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    cy.contains('Prueba de auto - diagnóstico')
-    questionIndex.forEach((index) => {
-      cy.contains(`Texto de la pregunta ${index}`)
+    cy.get('h1').should('have.text', 'Prueba de auto - diagnóstico')
+
+    cy.get('button').then((button) => {
+      expect(button).to.be.disabled
     })
-    cy.contains('Total desacuerdo')
-    cy.contains('En desacuerdo')
-    cy.contains('De acuerdo')
-    cy.contains('Muy de acuerdo')
-    cy.get('button').contains('Pregunta anterior').should('be.disabled')
-    cy.get('button').contains('Siguiente pregunta').should('be.disabled')
   })
 
   it('verify that the test can be completed', () => {
-    const answers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    answers.forEach((index) => {
-      cy.get(
-        `input[id=Texto_de_la_pregunta_${index}-${Math.floor(
-          Math.random() * (3 - 0 + 1) + 0
-        )}]`
-      ).click({ force: true })
-      if (index % 3 === 0) {
-        if (index === 9) {
-          cy.get('button').contains('Terminar test').click()
+    let slidesQuantity = 0
+
+    cy.get('div.carousel-inner')
+      .find('div.carousel-item')
+      .then((slides) => (slidesQuantity = slides.length))
+
+    cy.get('div.carousel-inner')
+      .find('div.carousel-item')
+      .each((slide, idx) => {
+        const actualSlide = idx + 1
+
+        if (actualSlide === 1)
+          cy.get('div[class^=page_row] button')
+            .first()
+            .should('have.attr', 'disabled')
+        else
+          cy.get('div[class^=page_row] button')
+            .first()
+            .should('not.have.attr', 'disabled')
+
+        if (actualSlide < slidesQuantity)
+          cy.get('button').contains(actualSlide).should('have.attr', 'disabled')
+        else
+          cy.get('button')
+            .contains('Terminar test')
+            .should('have.attr', 'disabled')
+
+        slide.find('.row').each((index, question) => {
+          const answer = question.querySelector('div')
+          answer.className = `${question.className} ${idx}-${index}`
+
+          cy.get(`.${idx}-${index}`)
+            .next()
+            .find('.p-radiobutton')
+            .first()
+            .click()
+        })
+
+        if (actualSlide < slidesQuantity) {
+          cy.get('button')
+            .contains(actualSlide)
+            .should('not.have.attr', 'disabled')
+
+          cy.get('button').contains(actualSlide).click()
         } else {
-          cy.get('button').contains('Siguiente pregunta').click()
-          cy.get('button').contains('Pregunta anterior').click()
-          cy.get('button').contains('Siguiente pregunta').click()
+          cy.get('button')
+            .contains('Terminar test')
+            .should('not.have.attr', 'disabled')
+
+          cy.get('button').contains('Terminar test').click()
         }
-      }
-    })
+      })
   })
 })
