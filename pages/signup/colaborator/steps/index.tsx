@@ -33,9 +33,9 @@ const ColaboratorStepsPage: NextPage<
         })}
         <Row>
           <Col xs={12}>
-            <Link passHref href={steps[stepIndex].url}>
+            <Link passHref href={steps[stepIndex]?.url || '#'}>
               <Button className={classes.button}>
-                {steps[stepIndex].action}
+                {steps[stepIndex]?.action}
               </Button>
             </Link>
           </Col>
