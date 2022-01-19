@@ -2,6 +2,9 @@
 Cypress.Commands.add('verifyActiveSession', (isActive: boolean) => {
   cy.request('/api/auth/session').then((res) => {
     expect(res.status).to.eq(200)
+
+    cy.log(JSON.stringify(res.allRequestResponses[0]['Request URL']))
+
     isActive
       ? expect(res.body.user).to.have.property('name')
       : expect(res.body).not.to.have.property('user')
@@ -23,8 +26,8 @@ Cypress.Commands.add('loginWithAPICredentials', () => {
     .should('have.value', 'centriadevelopment@gmail.com')
 
   cy.get('input[name=password]')
-    .type('123qwe!@#')
-    .should('have.value', '123qwe!@#')
+    .type('123456789#')
+    .should('have.value', '123456789#')
 
   cy.get('button').contains('credentials').click()
 })
