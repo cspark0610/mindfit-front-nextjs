@@ -1,20 +1,21 @@
-// Main tools
-import { useState } from 'react'
-
-// Components
-import { ExploreBadge } from 'components/atoms/ExploreBadge'
-
 // Styles
 import { InputText } from 'primereact/inputtext'
 import { Row, Col, Button } from 'react-bootstrap'
 import classes from 'styles/Login/ForgottenPassword/forgottenPassword.module.scss'
 
+// Components
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
+
 // Types
 import { ChangeType, SetStateType } from 'types'
-import { FC } from 'react'
 import { useMutation } from '@apollo/client'
+import { SubmitType } from 'types/index'
+
+//Mutations
 import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
-import { validateEmail } from 'utils/validateEmail'
+
+// Main tools
+import { useState, FC } from 'react'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -36,7 +37,6 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
 
   const [requestResetPassword] = useMutation(RESET_PASSWORD, {
     onCompleted: ({ requestedResetPassword }) => {
-      console.log('holi', requestedResetPassword)
       setShowError(false)
       setRequestedPassword(requestedResetPassword)
     },
@@ -46,13 +46,12 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
     },
   })
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: SubmitType) => {
     e.preventDefault()
     try {
-      if (validateEmail(userEmail))
-        requestResetPassword({ variables: { email: userEmail } })
+      requestResetPassword({ variables: { email: userEmail } })
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -64,6 +63,7 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
           className={`${classes.card} ${classes.section}`}>
           <Row>
             <InputText
+              type='email'
               className={`${classes.marginInput} ${classes.input}`}
               value={userEmail}
               onChange={handleChange}
