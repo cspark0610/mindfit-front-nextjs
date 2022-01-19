@@ -1,30 +1,36 @@
+// main tools
+import Image from 'next/image'
+
 // bootstrap components
 import { Toast, ToastContainer } from 'react-bootstrap'
 
 // types
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { ToastProps } from 'react-bootstrap'
+import { ToastContainerProps } from 'react-bootstrap'
 
-interface Props {
-  title: string
-  message: string
-  visible: boolean
-  background: string
+interface Props extends ToastProps, ToastContainerProps {
+  title?: string
+  message?: string
+  subtitle?: string
 }
 
-export const Toasts: FC<Props> = ({ title, message, visible, background }) => {
-  const [show, setShow] = useState(visible)
+export const Toasts: FC<Props> = ({ title, subtitle, message, ...props }) => {
   return (
-    <ToastContainer position='bottom-center'>
-      <Toast
-        className='d-inline-block m-1'
-        show={show}
-        onClose={() => setShow(false)}
-        bg={background}
-        autohide>
+    <ToastContainer {...props}>
+      <Toast {...props}>
         <Toast.Header>
-          <strong className='me-auto'>{title}</strong>
+          <img
+            src='/assets/icon/MINDFIT-ICON.svg'
+            alt='logo'
+            width={40}
+            height={40}
+            className={title ?? 'me-auto'}
+          />
+          {title && <strong className='me-auto'>{title}</strong>}
+          {subtitle && <small>{subtitle}</small>}
         </Toast.Header>
-        <Toast.Body>{message}</Toast.Body>
+        {message && <Toast.Body>{message}</Toast.Body>}
       </Toast>
     </ToastContainer>
   )
