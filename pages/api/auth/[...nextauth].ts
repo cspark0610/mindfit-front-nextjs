@@ -12,6 +12,7 @@ import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
 
 // utils
 import jwt_decoder from 'jwt-decode'
+import { microServices } from 'commons'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -54,6 +55,7 @@ export default NextAuth({
               },
             },
             mutation: LOGIN,
+            context: { ms: microServices.backend },
           })
           .catch((err) => {
             throw new Error(err.graphQLErrors[0].message)
@@ -86,6 +88,7 @@ export default NextAuth({
               variables: { data: { token: account?.id_token } },
               mutation:
                 LOGIN_RRSS[account?.provider as keyof typeof LOGIN_RRSS],
+              context: { ms: microServices.backend },
             })
             .then(({ data }) => {
               token.backendRefresh = data.signInWithGoogle
@@ -99,6 +102,7 @@ export default NextAuth({
                 variables: { data: { token: account?.id_token } },
                 mutation:
                   SIGNUP_RRSS[account?.provider as keyof typeof SIGNUP_RRSS],
+                context: { ms: microServices.backend },
               })
               .then(({ data }) => {
                 token.backendRefresh = data.signUpWithGoogle
@@ -131,6 +135,7 @@ export default NextAuth({
         const res = await apolloClient.query({
           variables: { id: decoded.sub },
           query: GET_USER_BY_ID,
+          context: { ms: microServices.backend },
         })
 
         session.token = token.backendToken

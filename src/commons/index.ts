@@ -1,3 +1,5 @@
+import { getSession } from 'next-auth/react'
+
 export const regex = {
   minSize: /(?=.{8,})/,
   hasLetters: /(?=.*[a-z])/,
@@ -15,4 +17,18 @@ export const regexValidation = (data: string) => {
   const isEmail = regex.isEmail.test(data)
 
   return { minSize, hasLetters, hasNumbers, hasSpecials, isEmail }
+}
+
+/**
+ * getToken
+ * Function to get Token saved in the localStorage of the app
+ */
+export const getToken = async (): Promise<string> => {
+  const session = await getSession()
+  return session?.token as string
+}
+
+export const microServices = {
+  backend: 'backend',
+  strapi: 'strapi',
 }

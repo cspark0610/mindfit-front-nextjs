@@ -3,8 +3,6 @@ Cypress.Commands.add('verifyActiveSession', (isActive: boolean) => {
   cy.request('/api/auth/session').then((res) => {
     expect(res.status).to.eq(200)
 
-    cy.log(JSON.stringify(res.allRequestResponses[0]['Request URL']))
-
     isActive
       ? expect(res.body.user).to.have.property('name')
       : expect(res.body).not.to.have.property('user')

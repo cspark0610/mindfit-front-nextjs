@@ -1,0 +1,7 @@
+mutation CreateUser($user: CreateUserDto!) {
+  createUser(data: $user) {
+    email
+    name
+    password
+  }
+}
