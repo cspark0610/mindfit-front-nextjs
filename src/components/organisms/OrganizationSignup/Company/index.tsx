@@ -93,14 +93,13 @@ export const CompanySignup: FC = () => {
           </Col>
           <Col xs={12}>
             <InputTextarea
-              name='about'
-              placeholder='Descripcion de la empresa'
-              className={`h-50 ${classes.input} ${classes.textarea}`}
-              rows={12}
-              cols={27}
-              value={companyData.about}
-              onChange={handleChange}
               autoResize
+              rows={5}
+              name='about'
+              onChange={handleChange}
+              value={companyData.about}
+              placeholder='Descripcion de la empresa'
+              className={`${classes.input} ${classes.textarea}`}
             />
           </Col>
         </Row>

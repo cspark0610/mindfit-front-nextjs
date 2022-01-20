@@ -5,7 +5,7 @@ describe('User login', () => {
     cy.get('img[alt="Mindfit Logo"]')
     cy.get('input[name=email]').should('have.value', '')
     cy.get('input[name=password]').should('have.value', '')
-    cy.get('button').should('have.text', 'Iniciar sesión')
+    cy.get('button').contains('Iniciar sesión').should('exist')
   })
 
   it('verify wrong login with form', () => {

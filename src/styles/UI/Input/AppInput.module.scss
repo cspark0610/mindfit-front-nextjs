@@ -69,6 +69,7 @@
 
 .textarea {
   @extend .input;
-  height: inherit;
+  height: inherit !important;
+  overflow: auto !important;
   border-color: $primary;
 }
