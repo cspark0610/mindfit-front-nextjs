@@ -30,7 +30,7 @@ import { validateUserSignup } from 'components/organisms/OrganizationSignup/User
 import CREATE_USER from 'lib/mutations/Signup/createUser.gql'
 
 // commons
-import { regex } from 'commons'
+import { microServices, regex } from 'commons'
 
 // styles
 import classes from 'styles/UI/Card/signupCard.module.scss'
@@ -60,19 +60,22 @@ export const UserSignup: FC = () => {
     })
   }
 
-  const handeSubmit = () => createUser()
+  const handeSubmit = () => {
+    createUser({
+      variables: {
+        user: {
+          email: userData.email,
+          name: `${userData.firstName} ${userData.lastName}`,
+          password: userData.password,
+        },
+      },
+    })
+  }
 
   const [createUser] = useMutation(CREATE_USER, {
-    variables: {
-      user: {
-        email: userData.email,
-        name: `${userData.firstName} ${userData.lastName}`,
-        password: userData.password,
-      },
-    },
-
     onCompleted: handleSignup,
     onError: (error) => console.log(error),
+    context: { ms: microServices.backend },
   })
 
   const overlayTooltip = () => (

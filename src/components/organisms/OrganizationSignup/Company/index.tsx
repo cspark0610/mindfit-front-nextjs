@@ -19,6 +19,9 @@ import { Check2, Question } from 'react-bootstrap-icons'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 
+// Commons
+import { microServices } from 'commons'
+
 // components
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
@@ -33,22 +36,21 @@ import { validateCompanySignup } from './utils'
 import classes from 'styles/UI/Card/signupCard.module.scss'
 
 // types
-import { FC } from 'react'
+import { FC, ChangeEvent } from 'react'
 import { ChangeType } from 'types'
 import { CompanyDataType } from 'types/models/Company'
-import { InputMaskChangeParams } from 'primereact/inputmask'
 
 export const CompanySignup: FC = () => {
   const { data } = useSession()
   console.log(data)
   const { push } = useRouter()
   const [companyData, setCompanyData] = useState<CompanyDataType>({
-    picture: {} as File,
+    profilePicture: {} as File,
     name: '',
-    description: '',
+    about: '',
   })
 
-  const handleChange = (ev: ChangeType | InputMaskChangeParams) =>
+  const handleChange = (ev: ChangeType | ChangeEvent<HTMLTextAreaElement>) =>
     setCompanyData({ ...companyData, [ev.target.name]: ev.target.value })
 
   const handleSignupCompany = () => {
@@ -64,9 +66,10 @@ export const CompanySignup: FC = () => {
       company: {
         name: companyData.name,
         ownerId: data?.user.sub,
-        about: companyData.description,
+        about: companyData.about,
         profilePicture: 'imagen_de_la_empresa',
       },
+      context: { ms: microServices.backend },
     },
     onCompleted: handleSignupCompany,
     onError: (error) => console.log(error),
@@ -93,12 +96,12 @@ export const CompanySignup: FC = () => {
           </Col>
           <Col xs={12}>
             <InputTextarea
-              name='description'
+              name='about'
               placeholder='Descripcion de la empresa'
               className={`h-50 ${classes.input} ${classes.textarea}`}
               rows={12}
               cols={27}
-              value={companyData.description}
+              value={companyData.about}
               onChange={handleChange}
               autoResize
             />
