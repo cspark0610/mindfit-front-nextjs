@@ -1,7 +1,7 @@
 // Main tools
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+import { signIn, getProviders } from 'next-auth/react'
 
 // Components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
@@ -13,12 +13,14 @@ import { XLg } from 'react-bootstrap-icons'
 // prime components
 import { Password } from 'primereact/password'
 import { InputText } from 'primereact/inputtext'
+import { Skeleton } from 'primereact/skeleton'
 
 //Styles
 import classes from 'styles/Login/LoginCard/loginCard.module.scss'
 
 // Types
 import { ChangeType, SetStateType, SubmitType } from 'types'
+import { ClientSafeProvider } from 'next-auth/react'
 import { FC } from 'react'
 
 interface Props {
@@ -27,17 +29,18 @@ interface Props {
 }
 
 export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
-  const [user, setUser] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
   const { query } = useRouter()
+  const [error, setError] = useState('')
+  const [user, setUser] = useState({ email: '', password: '' })
+  const [providers, setProviders] = useState<ClientSafeProvider[] | undefined>(
+    undefined
+  )
 
-  const handleChange = (ev: ChangeType) => {
+  const handleChange = (ev: ChangeType) =>
     setUser({ ...user, [ev.target.name]: ev.target.value })
-  }
 
-  const handleToggleChange = () => {
+  const handleToggleChange = () =>
     setToggleView((currentValue) => !currentValue)
-  }
 
   const handleSubmit = (ev: SubmitType) => {
     ev.preventDefault()
@@ -47,6 +50,15 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
   useEffect(() => {
     query.error && setError('Usuario o Contraseña incorrectos')
   }, [query])
+
+  useEffect(() => {
+    ;(async () => {
+      const prov = await getProviders().then((res) =>
+        Object.values(res as Record<string, ClientSafeProvider>)
+      )
+      setProviders(prov)
+    })()
+  }, [])
 
   return (
     <Row className={classes.container}>
@@ -91,6 +103,23 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
           <p className={classes.recoveryLabel} onClick={handleToggleChange}>
             {content.passwordRecovery}
           </p>
+          {!providers ? (
+            <Skeleton width='100%' height='3rem' borderRadius='16px' />
+          ) : (
+            <Row>
+              {providers?.map(
+                (provider) =>
+                  provider.id !== 'credentials' && (
+                    <Button
+                      key={provider.id}
+                      onClick={() => signIn(provider.id)}
+                      className={`my-3 ${classes.button}`}>
+                      {provider.name}
+                    </Button>
+                  )
+              )}
+            </Row>
+          )}
           <ExploreBadge />
         </form>
       </Col>
