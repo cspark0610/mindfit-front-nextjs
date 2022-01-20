@@ -1,0 +1,13 @@
+mutation CreateOrganization($company: CreateOrganizationDto!) {
+  createOrganization(data: $company) {
+    id
+    name
+    isActive
+    owner {
+      id
+      name
+      email
+    }
+    profilePicture
+  }
+}
