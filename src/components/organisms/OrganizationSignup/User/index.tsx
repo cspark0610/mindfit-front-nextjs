@@ -1,6 +1,7 @@
 // main tools
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
+import { useMutation } from '@apollo/client'
 
 // bootstrap components
 import {
@@ -24,6 +25,9 @@ import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestion
 
 // utils
 import { validateUserSignup } from 'components/organisms/OrganizationSignup/User/utils'
+
+// gql
+import CREATE_USER from 'lib/mutations/Signup/createUser.gql'
 
 // commons
 import { regex } from 'commons'
@@ -54,6 +58,21 @@ export const UserSignup: FC = () => {
       callbackUrl: '/signup/organization/company',
     })
   }
+
+  const handeSubmit = () => createUser()
+
+  const [createUser] = useMutation(CREATE_USER, {
+    variables: {
+      user: {
+        email: userData.email,
+        name: `${userData.firstName} ${userData.lastName}`,
+        password: userData.password,
+      },
+    },
+
+    onCompleted: handleSignup,
+    onError: (error) => console.log(error),
+  })
 
   const overlayTooltip = () => (
     <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
@@ -127,7 +146,7 @@ export const UserSignup: FC = () => {
           <Col xs={12} sm={10}>
             <Button
               disabled={!validateUserSignup(userData)}
-              onClick={handleSignup}
+              onClick={handeSubmit}
               className={classes.button}>
               Registra tu usuario
             </Button>
