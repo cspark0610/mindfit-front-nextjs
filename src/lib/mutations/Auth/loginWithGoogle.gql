@@ -1,0 +1,6 @@
+mutation SignInWithGoogle($data: RRSSDto!) {
+  signInWithGoogle(data: $data) {
+    refreshToken
+    token
+  }
+}
