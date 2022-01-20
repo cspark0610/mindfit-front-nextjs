@@ -41,9 +41,8 @@ import { ChangeType } from 'types'
 import { CompanyDataType } from 'types/models/Company'
 
 export const CompanySignup: FC = () => {
-  const { data } = useSession()
-  console.log(data)
   const { push } = useRouter()
+  const { data } = useSession()
   const [companyData, setCompanyData] = useState<CompanyDataType>({
     profilePicture: {} as File,
     name: '',
@@ -53,24 +52,22 @@ export const CompanySignup: FC = () => {
   const handleChange = (ev: ChangeType | ChangeEvent<HTMLTextAreaElement>) =>
     setCompanyData({ ...companyData, [ev.target.name]: ev.target.value })
 
-  const handleSignupCompany = () => {
-    push('/signup/organization')
-  }
+  const handleSignupCompany = () => push('/signup/organization')
 
-  const handleSubmit = () => {
-    createCompany()
-  }
+  const handleClick = () =>
+    createCompany({
+      variables: {
+        company: {
+          name: companyData.name,
+          ownerId: data?.user.sub,
+          about: companyData.about,
+          profilePicture: 'imagen_de_la_empresa',
+        },
+      },
+    })
 
   const [createCompany] = useMutation(CREATE_COMPANY, {
-    variables: {
-      company: {
-        name: companyData.name,
-        ownerId: data?.user.sub,
-        about: companyData.about,
-        profilePicture: 'imagen_de_la_empresa',
-      },
-      context: { ms: microServices.backend },
-    },
+    context: { ms: microServices.backend },
     onCompleted: handleSignupCompany,
     onError: (error) => console.log(error),
   })
@@ -122,7 +119,7 @@ export const CompanySignup: FC = () => {
           <Col xs={12} sm={10}>
             <Button
               disabled={!validateCompanySignup(companyData)}
-              onClick={handleSubmit}
+              onClick={handleClick}
               className={classes.button}>
               Registra tu empresa
             </Button>
