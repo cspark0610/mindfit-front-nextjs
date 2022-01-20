@@ -1,5 +1,10 @@
+import { UserDataType } from './User'
+
 export type CompanyDataType = {
-  picture: File
-  name: string
-  description: string
+  profilePicture?: File
+  id?: number
+  name?: string
+  about?: string
+  isActive?: boolean
+  owner?: UserDataType
 }

@@ -2,6 +2,9 @@
 import { FormEvent, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { GetServerSideProps } from 'next'
 
+// models
+import { UserDataType } from 'types/models/User'
+
 export interface ChangeType extends ChangeEvent<HTMLInputElement> {}
 export interface SubmitType extends FormEvent<HTMLFormElement> {}
 export type GetSSPropsType<PropsType> = PropsType extends GetServerSideProps<
@@ -12,17 +15,10 @@ export type GetSSPropsType<PropsType> = PropsType extends GetServerSideProps<
   : PropsType
 export type SetStateType<objectType> = Dispatch<SetStateAction<objectType>>
 
-type UserType = {
-  email?: string | null
-  id?: string | null
-  image?: string | null
-  name?: string | null
-}
-
 declare module 'next-auth' {
   export interface Session {
     token: string
-    user: UserType
+    user: UserDataType
   }
 }
 

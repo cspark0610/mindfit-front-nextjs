@@ -6,10 +6,20 @@ import GoogleProvider from 'next-auth/providers/google'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import LOGIN from 'lib/mutations/Auth/login.gql'
+import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
+import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
 
 // utils
 import jwt_decoder from 'jwt-decode'
+
+const SIGNUP_RRSS = {
+  google: SIGNUP_WITH_GOOGLE,
+}
+
+const LOGIN_RRSS = {
+  google: LOGIN_WITH_GOOGLE,
+}
 
 export default NextAuth({
   pages: { error: '/login' }, // custom error page with query string as ?error=
@@ -58,14 +68,47 @@ export default NextAuth({
   callbacks: {
     /**
      * @param token decrypted jwt
-     * @param data user received afther authorize method
+     * @param user user received afther authorize method
+     * @param account rrss account like google, facebook, etc.
      *
      * @return jwt that will be send to session callback
      */
-    jwt: async ({ token, user }) => {
-      if (user) {
+    jwt: async ({ token, user, account }) => {
+      if (user && account?.provider === 'credentials') {
         token.backendRefresh = user.refreshToken as string
         token.backendToken = user.token as string
+      } else if (account) {
+        const apolloClient = initializeApolloClient()
+
+        try {
+          await apolloClient
+            .mutate({
+              variables: { data: { token: account?.id_token } },
+              mutation:
+                LOGIN_RRSS[account?.provider as keyof typeof LOGIN_RRSS],
+            })
+            .then(({ data }) => {
+              token.backendRefresh = data.signInWithGoogle
+                .refreshToken as string
+              token.backendToken = data.signInWithGoogle.token as string
+            })
+        } catch (error) {
+          try {
+            await apolloClient
+              .mutate({
+                variables: { data: { token: account?.id_token } },
+                mutation:
+                  SIGNUP_RRSS[account?.provider as keyof typeof SIGNUP_RRSS],
+              })
+              .then(({ data }) => {
+                token.backendRefresh = data.signUpWithGoogle
+                  .refreshToken as string
+                token.backendToken = data.signUpWithGoogle.token as string
+              })
+          } catch (error: any) {
+            throw new Error(error.graphQLErrors[0].message)
+          }
+        }
       }
 
       return Promise.resolve(token)

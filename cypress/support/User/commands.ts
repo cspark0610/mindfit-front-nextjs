@@ -9,24 +9,24 @@ Cypress.Commands.add('userSignupWithForm', (userData: UserDataType) => {
     .should('contain', 'Registra tu usuario')
     .should('have.attr', 'disabled')
 
-  cy.get('div.p-fileupload > span > input').attachFile(userData.picture)
+  cy.get('div.p-fileupload > span > input').attachFile(userData.picture as File)
 
   cy.get('input[name=firstName]')
-    .type(userData.firstName)
-    .should('have.value', userData.firstName)
+    .type(userData.firstName as string)
+    .should('have.value', userData.firstName as string)
 
   cy.get('input[name=lastName]')
-    .type(userData.lastName)
-    .should('have.value', userData.lastName)
+    .type(userData.lastName as string)
+    .should('have.value', userData.lastName as string)
 
   cy.get('input[name=email]')
-    .type(userData.email)
-    .should('have.value', userData.email)
+    .type(userData.email as string)
+    .should('have.value', userData.email as string)
 
   cy.get('input[name=password]')
     .focus()
-    .type(userData.password)
-    .should('have.value', userData.password)
+    .type(userData.password as string)
+    .should('have.value', userData.password as string)
 
   cy.get('div.p-password-panel')
     .find('ul li')

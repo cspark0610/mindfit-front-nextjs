@@ -2,10 +2,9 @@
 @import '../UI/Card/AppCard.module.scss';
 
 .container {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   max-width: 620px;
+  margin-bottom: 4rem;
 }

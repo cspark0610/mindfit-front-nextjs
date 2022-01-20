@@ -6,11 +6,11 @@ import { UserDataType } from 'types/models/User'
 
 export const validateUserSignup = (userData: UserDataType) => {
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
-    userData.password
+    userData.password as string
   )
 
   if (
-    !userData.picture.type ||
+    !userData.picture?.type ||
     !userData.firstName ||
     !userData.lastName ||
     !userData.email ||

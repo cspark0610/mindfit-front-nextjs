@@ -1,3 +1,6 @@
+// Main tools
+import { useState } from 'react'
+
 // Styles
 import { InputText } from 'primereact/inputtext'
 import { Row, Col, Button } from 'react-bootstrap'
@@ -7,15 +10,13 @@ import classes from 'styles/Login/ForgottenPassword/forgottenPassword.module.scs
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // Types
+import { FC } from 'react'
 import { ChangeType, SetStateType } from 'types'
 import { useMutation } from '@apollo/client'
 import { SubmitType } from 'types/index'
 
 //Mutations
 import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
-
-// Main tools
-import { useState, FC } from 'react'
 
 interface Props {
   setToggleView: SetStateType<boolean>
