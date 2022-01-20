@@ -1,17 +1,21 @@
-// Main tools
-import { useState } from 'react'
-
-// Components
-import { ExploreBadge } from 'components/atoms/ExploreBadge'
-
 // Styles
 import { InputText } from 'primereact/inputtext'
 import { Row, Col, Button } from 'react-bootstrap'
 import classes from 'styles/Login/ForgottenPassword/forgottenPassword.module.scss'
 
+// Components
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
+
 // Types
 import { ChangeType, SetStateType } from 'types'
-import { FC } from 'react'
+import { useMutation } from '@apollo/client'
+import { SubmitType } from 'types/index'
+
+//Mutations
+import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
+
+// Main tools
+import { useState, FC } from 'react'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -20,29 +24,59 @@ interface Props {
 
 export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
   const [userEmail, setUserEmail] = useState('')
+  const [showError, setShowError] = useState(false)
+  const [requestedPassword, setRequestedPassword] = useState(false)
 
   const handleToggleChange = () => {
     setToggleView((currentValue) => !currentValue)
   }
 
   const handleChange = (ev: ChangeType) => {
-    setUserEmail(ev.target.value)
+    setUserEmail(ev.target.value.trim())
+  }
+
+  const [requestResetPassword] = useMutation(RESET_PASSWORD, {
+    onCompleted: ({ requestedResetPassword }) => {
+      setShowError(false)
+      setRequestedPassword(requestedResetPassword)
+    },
+    onError: () => {
+      setShowError(true)
+      setRequestedPassword(false)
+    },
+  })
+
+  const handleSubmit = (e: SubmitType) => {
+    e.preventDefault()
+    try {
+      requestResetPassword({ variables: { email: userEmail } })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
     <Row className={classes.container}>
       <Col xs={12} className='d-flex justify-content-center'>
-        <form className={`${classes.card} ${classes.section}`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`${classes.card} ${classes.section}`}>
           <Row>
             <InputText
+              type='email'
               className={`${classes.marginInput} ${classes.input}`}
               value={userEmail}
               onChange={handleChange}
               placeholder={content.email.placeholder}
             />
+            {showError && (
+              <span className={classes.errorText}>
+                Error: No se encuentra el usuario
+              </span>
+            )}
           </Row>
           <Row>
-            <Button className={`my-5 ${classes.button}`}>
+            <Button type='submit' className={`my-5 ${classes.button}`}>
               {content.sendEmailButton}
             </Button>
           </Row>
