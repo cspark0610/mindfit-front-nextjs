@@ -1,8 +1,7 @@
 // main tools
-import { ApolloClient, InMemoryCache, ApolloLink, split } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
-import { getMainDefinition } from '@apollo/client/utilities'
 import { getToken } from 'commons'
 
 /**
@@ -36,26 +35,16 @@ export const createApolloClient = () => {
     const token = await getToken()
 
     return {
-      headers: { ...headers, authorization: token ? `JWT ${token}` : '' },
+      headers: { ...headers, authorization: token ? `Bearer ${token}` : '' },
     }
   })
 
   // @ts-ignore
   const link = uriMapper.concat(apolloHeaders.concat(httpLink))
 
-  const myLink = process.browser
-    ? split(({ query }) => {
-        const definition = getMainDefinition(query)
-        return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        )
-      }, link)
-    : link
-
   const client = new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: myLink,
+    link,
     cache: new InMemoryCache(),
   })
 

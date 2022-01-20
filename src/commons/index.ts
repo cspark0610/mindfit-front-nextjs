@@ -25,7 +25,7 @@ export const regexValidation = (data: string) => {
  */
 export const getToken = async (): Promise<string> => {
   const session = await getSession()
-  return session?.accessToken as string
+  return session?.token as string
 }
 
 export const microServices = {
