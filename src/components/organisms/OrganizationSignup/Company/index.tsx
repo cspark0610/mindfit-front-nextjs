@@ -1,6 +1,8 @@
 // main tools
-import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
+import { useMutation } from '@apollo/client'
 
 // bootstrap components
 import {
@@ -15,11 +17,14 @@ import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
-import { InputMask } from 'primereact/inputmask'
+import { InputTextarea } from 'primereact/inputtextarea'
 
 // components
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+
+// gql
+import CREATE_COMPANY from 'lib/mutations/Signup/createCompany.gql'
 
 // utils
 import { validateCompanySignup } from './utils'
@@ -33,12 +38,13 @@ import { ChangeType } from 'types'
 import { InputMaskChangeParams } from 'primereact/inputmask'
 
 export const CompanySignup: FC = () => {
+  const { data } = useSession()
+  console.log(data)
   const { push } = useRouter()
   const [companyData, setCompanyData] = useState({
     picture: {} as File,
     name: '',
-    phone: '',
-    email: '',
+    description: '',
   })
 
   const handleChange = (ev: ChangeType | InputMaskChangeParams) =>
@@ -47,6 +53,23 @@ export const CompanySignup: FC = () => {
   const handleSignupCompany = () => {
     push('/signup/organization')
   }
+
+  const handleSubmit = () => {
+    createCompany()
+  }
+
+  const [createCompany] = useMutation(CREATE_COMPANY, {
+    variables: {
+      company: {
+        name: companyData.name,
+        ownerId: data?.user.sub,
+        about: companyData.description,
+        profilePicture: 'imagen_de_la_empresa',
+      },
+    },
+    onCompleted: handleSignupCompany,
+    onError: (error) => console.log(error),
+  })
 
   const overlayTooltip = () => (
     <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
@@ -68,23 +91,15 @@ export const CompanySignup: FC = () => {
             />
           </Col>
           <Col xs={12}>
-            <InputMask
-              mask='+99 (999) 999-9999'
-              name='phone'
-              value={companyData.phone}
+            <InputTextarea
+              name='description'
+              placeholder='Descripcion de la empresa'
+              className={`h-50 ${classes.input} ${classes.textarea}`}
+              rows={12}
+              cols={27}
+              value={companyData.description}
               onChange={handleChange}
-              placeholder='Teléfono de Contacto'
-              className={classes.input}
-            />
-          </Col>
-          <Col xs={12}>
-            <InputText
-              name='email'
-              type='email'
-              value={companyData.email}
-              onChange={handleChange}
-              placeholder='Email Empresarial'
-              className={classes.input}
+              autoResize
             />
           </Col>
         </Row>
@@ -103,7 +118,7 @@ export const CompanySignup: FC = () => {
           <Col xs={12} sm={10}>
             <Button
               disabled={!validateCompanySignup(companyData)}
-              onClick={handleSignupCompany}
+              onClick={handleSubmit}
               className={classes.button}>
               Registra tu empresa
             </Button>
