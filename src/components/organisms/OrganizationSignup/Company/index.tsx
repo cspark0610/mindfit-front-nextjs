@@ -30,11 +30,12 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
+import { CompanyDataType } from 'types/models/Company'
 import { InputMaskChangeParams } from 'primereact/inputmask'
 
 export const CompanySignup: FC = () => {
   const { push } = useRouter()
-  const [companyData, setCompanyData] = useState({
+  const [companyData, setCompanyData] = useState<CompanyDataType>({
     picture: {} as File,
     name: '',
     phone: '',

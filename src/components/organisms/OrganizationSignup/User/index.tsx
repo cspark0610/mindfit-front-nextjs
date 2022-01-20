@@ -34,9 +34,10 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
+import { UserDataType } from 'types/models/User'
 
 export const UserSignup: FC = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<UserDataType>({
     picture: {} as File,
     firstName: '',
     lastName: '',

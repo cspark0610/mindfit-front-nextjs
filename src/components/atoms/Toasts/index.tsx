@@ -20,7 +20,7 @@ export const Toasts: FC<Props> = ({ title, subtitle, message, ...props }) => {
     <ToastContainer {...props}>
       <Toast {...props}>
         <Toast.Header>
-          <img
+          <Image
             src='/assets/icon/MINDFIT-ICON.svg'
             alt='logo'
             width={40}

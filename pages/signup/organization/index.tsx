@@ -51,11 +51,12 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   const content = await import('@public/jsons/signup/organization.json')
+
   const steps = [
     {
       label: content.steps[0].label,
       action: content.steps[0].action,
-      completed: !session || session.user.name === '0' ? false : true,
+      completed: !session ? false : true,
       url: '/signup/organization/user',
     },
     {
@@ -67,7 +68,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     {
       label: content.steps[2].label,
       action: content.steps[2].action,
-      completed: !session || session.user.name === '2' ? false : true,
+      completed: !session || session.user.organization ? false : true,
       url: '/colaborators/add',
     },
   ]

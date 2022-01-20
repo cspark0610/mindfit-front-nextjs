@@ -1,6 +1,9 @@
 export type CompanyDataType = {
-  picture: File
-  name: string
+  id?: number
+  picture?: File
+  name?: string
+  about?: string
   phone: string
   email: string
+  isActive?: boolean
 }
