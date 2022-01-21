@@ -1,7 +1,7 @@
 // main tools
 import { SessionProvider } from 'next-auth/react'
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../src/lib/apollo'
+import { useApollo } from 'lib/apollo'
 
 // styles
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
@@ -22,5 +22,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   )
 }
-//wrapps all pages with apollo provider
+
 export default MyApp

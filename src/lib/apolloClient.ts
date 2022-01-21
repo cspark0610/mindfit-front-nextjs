@@ -10,18 +10,16 @@ import { getToken } from 'commons'
  */
 export const createApolloClient = () => {
   const httpLink = createUploadLink({
-    fetch(uri, ctx) {
-      return fetch(uri, ctx)
-    },
+    fetch: (uri, ctx) => fetch(uri, ctx),
   })
 
-  //   list of microservices
+  // list of microservices
   const microservicesUris = {
-    backend: process.env.BASE_API_URL,
     strapi: process.env.BASE_STRAPI_URL,
+    backend: process.env.BASE_API_URL,
   }
 
-  //   mapper of the micro service selected
+  // mapper of the micro service selected
   const uriMapper = new ApolloLink((operation, forward) => {
     const { ms } = operation.getContext()
     operation.setContext({
