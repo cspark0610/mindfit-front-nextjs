@@ -4,33 +4,28 @@ import { getSession } from 'next-auth/react'
 // bootstrap components
 import { Container } from 'react-bootstrap'
 
+// components
+import { UserSignup } from 'components/organisms/Signup'
+
 // styles
 import classes from 'styles/signup/org.module.scss'
 
 // types
 import { GetServerSideProps, NextPage } from 'next'
-import { CompanySignup } from 'components/organisms/OrganizationSignup/Company'
 
-const SignupOrgCompanyPage: NextPage = () => (
+const Signup: NextPage = () => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <CompanySignup />
+      <UserSignup />
     </Container>
   </Container>
 )
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
-  if (!session)
-    return {
-      redirect: { destination: '/signup/organization/user', permanent: false },
-    }
-  if (session.user.name === '1')
-    return {
-      redirect: { destination: '/signup/organization', permanent: false },
-    }
+  if (session) return { redirect: { destination: '/', permanent: false } }
 
   return { props: {} }
 }
 
-export default SignupOrgCompanyPage
+export default Signup

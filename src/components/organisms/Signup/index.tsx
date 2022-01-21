@@ -24,7 +24,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // utils
-import { validateUserSignup } from 'components/organisms/OrganizationSignup/User/utils'
+import { validateUserSignup } from 'components/organisms/Signup/utils'
 
 // gql
 import CREATE_USER from 'lib/mutations/Signup/createUser.gql'
@@ -56,7 +56,7 @@ export const UserSignup: FC = () => {
     signIn('credentials', {
       email: userData.email,
       password: userData.password,
-      callbackUrl: '/signup/organization/company',
+      callbackUrl: '/',
     })
   }
 
