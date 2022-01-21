@@ -1,0 +1,20 @@
+query {
+  quiz {
+    data {
+      id
+      attributes {
+        quiz_steps {
+          data {
+            attributes {
+              questions {
+                options {
+                  label
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
