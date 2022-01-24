@@ -37,7 +37,7 @@ import { DropdownChangeParams } from 'primereact/dropdown'
 
 interface InvitedColaborators extends InvitedColaboratorType {
   status: boolean
-  labelPositon: string
+  labelPosition: string
   labelDepartment: string
   labelStatus: string
   stateSent: string
@@ -52,6 +52,11 @@ const AddColaboratorPage: NextPage<
   const [expandedRows, setExpandedRows] = useState<InvitedColaboratorType[]>([])
   const [colaborator, setColaborator] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
+
+  const labelFullName = contentForm.input1
+  const labelPosition = contentForm.input2
+  const labelDepartment = contentForm.input3
+  const labelEmail = contentForm.input4
 
   const handleChange = (ev: ChangeType | DropdownChangeParams) => {
     error && setError('')
@@ -70,8 +75,8 @@ const AddColaboratorPage: NextPage<
         {
           ...colaborator,
           status: true,
-          labelDepartment: contentForm.input3,
-          labelPositon: contentForm.input2,
+          labelDepartment: labelDepartment,
+          labelPosition: labelPosition,
           labelStatus: content.status.label,
           stateSent: content.status.value,
         },
@@ -92,7 +97,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.fullName}
-              placeholder={contentForm.input1}
+              placeholder={labelFullName}
             />
           </Col>
           <Col md={4}>
@@ -102,7 +107,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.position}
-              placeholder={contentForm.input2}
+              placeholder={labelPosition}
             />
           </Col>
           <Col md={4}>
@@ -111,7 +116,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               options={['Development']}
-              placeholder={contentForm.input3}
+              placeholder={labelDepartment}
               value={colaborator.department}
             />
           </Col>
@@ -121,7 +126,7 @@ const AddColaboratorPage: NextPage<
             <InputText
               name='email'
               type='email'
-              placeholder={contentForm.input4}
+              placeholder={labelEmail}
               onChange={handleChange}
               value={colaborator.email}
               className={classes.input}

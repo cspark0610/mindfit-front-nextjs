@@ -1,3 +1,5 @@
+import { regexValidation } from "commons"
+
 export const INITIAL_STATE = {
   fullName: '',
   position: '',
@@ -10,6 +12,7 @@ export const verifyInviteColaboratorData = (
   fillFields: string,
   validEmail: string
 ) => {
+  const validated = regexValidation(colaboratorData.email)
   if (
     !colaboratorData.fullName ||
     !colaboratorData.position ||
@@ -17,7 +20,7 @@ export const verifyInviteColaboratorData = (
     !colaboratorData.email
   )
     return { message: fillFields }
-  if (!colaboratorData.email.includes('@'))
+    if (!validated.isEmail)
     return { message: validEmail }
   return { success: true }
 }

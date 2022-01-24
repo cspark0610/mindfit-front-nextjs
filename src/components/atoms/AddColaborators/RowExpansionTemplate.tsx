@@ -11,7 +11,7 @@ import { InvitedColaboratorType } from 'types/models/Colaborator'
 export const rowExpansionTemplate: FC<
   InvitedColaboratorType & {
     status: boolean
-    labelPositon: string
+    labelPosition: string
     labelDepartment: string
     labelStatus: string
     stateSent: string
@@ -24,7 +24,7 @@ export const rowExpansionTemplate: FC<
         <p>{props.department}</p>
       </Col>
       <Col className='text-center' md={12} lg={4}>
-        <h5>{props.labelPositon}</h5>
+        <h5>{props.labelPosition}</h5>
         <p>{props.position}</p>
       </Col>
       <Col className='text-center' md={12} lg={4}>
