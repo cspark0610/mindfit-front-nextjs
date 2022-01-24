@@ -6,7 +6,9 @@ export const INITIAL_STATE = {
 }
 
 export const verifyInviteColaboratorData = (
-  colaboratorData: typeof INITIAL_STATE
+  colaboratorData: typeof INITIAL_STATE,
+  fillFields: string,
+  validEmail: string
 ) => {
   if (
     !colaboratorData.fullName ||
@@ -14,8 +16,8 @@ export const verifyInviteColaboratorData = (
     !colaboratorData.department ||
     !colaboratorData.email
   )
-    return { message: 'Por favor, complete todos los campos' }
+    return { message: fillFields }
   if (!colaboratorData.email.includes('@'))
-    return { message: 'Por favor, ingrese un correo electronico valido' }
+    return { message: validEmail }
   return { success: true }
 }
