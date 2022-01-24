@@ -17,6 +17,7 @@ import { SubmitType } from 'types/index'
 
 //Mutations
 import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
+import { microServices } from 'commons'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -45,6 +46,7 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
       setShowError(true)
       setRequestedPassword(false)
     },
+    context: { ms: microServices.backend },
   })
 
   const handleSubmit = (e: SubmitType) => {
