@@ -1,0 +1,21 @@
+query companyRegister {
+  companyRegister {
+    data {
+      attributes {
+        tooltip
+        form {
+          data {
+            attributes {
+              title
+              input1
+              input2
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

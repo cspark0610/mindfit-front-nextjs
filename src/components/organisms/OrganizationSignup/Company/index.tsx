@@ -40,7 +40,12 @@ import { FC, ChangeEvent } from 'react'
 import { ChangeType } from 'types'
 import { CompanyDataType } from 'types/models/Company'
 
-export const CompanySignup: FC = () => {
+interface Props {
+  content: any
+  contentForm: any
+}
+
+export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
   const { push } = useRouter()
   const { data } = useSession()
   const [companyData, setCompanyData] = useState<CompanyDataType>({
@@ -48,6 +53,11 @@ export const CompanySignup: FC = () => {
     name: '',
     about: '',
   })
+
+  const label = {
+    name: contentForm.input1,
+    description: contentForm.input2,
+  }
 
   const handleChange = (ev: ChangeType | ChangeEvent<HTMLTextAreaElement>) =>
     setCompanyData({ ...companyData, [ev.target.name]: ev.target.value })
@@ -72,13 +82,11 @@ export const CompanySignup: FC = () => {
     onError: (error) => console.log(error),
   })
 
-  const overlayTooltip = () => (
-    <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
-  )
+  const overlayTooltip = () => <Tooltip>{content.tooltip}</Tooltip>
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>Registra tu Empresa</h1>
+      <h1 className={classes.title}>{contentForm.title}</h1>
       <UploadPicture setData={setCompanyData} />
       <Container fluid>
         <Row className={classes.row}>
@@ -87,7 +95,7 @@ export const CompanySignup: FC = () => {
               name='name'
               value={companyData.name}
               onChange={handleChange}
-              placeholder='Nombre de la Empresa'
+              placeholder={label.name}
               className={classes.input}
             />
           </Col>
@@ -98,7 +106,7 @@ export const CompanySignup: FC = () => {
               name='about'
               onChange={handleChange}
               value={companyData.about}
-              placeholder='Descripcion de la empresa'
+              placeholder={label.description}
               className={`${classes.input} ${classes.textarea}`}
             />
           </Col>
@@ -120,7 +128,7 @@ export const CompanySignup: FC = () => {
               disabled={!validateCompanySignup(companyData)}
               onClick={handleClick}
               className={classes.button}>
-              Registra tu empresa
+              {contentForm.button.label}
             </Button>
           </Col>
         </Row>
