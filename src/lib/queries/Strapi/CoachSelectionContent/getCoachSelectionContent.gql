@@ -17,6 +17,22 @@ query CoachSelectionContent($locale: I18NLocaleCode) {
         nextButton {
           label
         }
+        suggestedCoachesTitle
+        suggestedCoachesDescription
+        suggestedCoachesOptions {
+          label
+          value
+        }
+        suggestedCoachesTextarea {
+          label
+          placeholder
+        }
+        suggestedCoachesSubmitButton {
+          label
+        }
+        suggestedCoachesCancelButton {
+          label
+        }
       }
     }
   }
