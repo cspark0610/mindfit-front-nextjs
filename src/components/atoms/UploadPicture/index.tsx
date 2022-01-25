@@ -28,12 +28,12 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
   const handleDelete = () => {
     uploader.current?.clear()
     setPicture('')
-    setData((prev: any) => ({ ...prev, picture: {} }))
+    setData((prev: any) => ({ ...prev, profilePicture: {} }))
   }
 
   const handleSelect = (ev: FileUploadSelectParams) => {
     const picture = ev.files[0]
-    setData((prev: any) => ({ ...prev, picture: picture }))
+    setData((prev: any) => ({ ...prev, profilePicture: picture }))
     setPicture(URL.createObjectURL(ev.files[0]))
   }
 

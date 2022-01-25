@@ -11,26 +11,31 @@ import { ColaboratorSignup } from 'components/organisms/ColaboratorSignup'
 import classes from 'styles/signup/colaborator.module.scss'
 
 // types
-import { GetServerSideProps, NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
+import { GetSSPropsType } from 'types'
+import { Session } from 'next-auth'
 
-const SignupColaboratorUserPage: NextPage = () => (
+const SignupColaboratorUserPage: NextPage<
+  GetSSPropsType<typeof getServerSideProps>
+> = ({ session }) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <ColaboratorSignup />
+      <ColaboratorSignup session={session as Session} />
     </Container>
   </Container>
 )
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/signup', permanent: false } }
+    return { redirect: { destination: '/signup', permanent: false }, props: {} }
   if (session?.user.coachee)
     return {
       redirect: { destination: '/signup/colaborator/steps', permanent: false },
+      props: {},
     }
 
-  return { props: {} }
+  return { props: { session } }
 }
 
 export default SignupColaboratorUserPage

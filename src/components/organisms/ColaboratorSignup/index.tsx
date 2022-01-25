@@ -2,6 +2,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
+// gql
+import { useMutation } from '@apollo/client'
+import CREATE_COACHEE from 'lib/mutations/Coachees/create.gql'
+import UPDATE_USER from 'lib/mutations/User/update.gql'
+
 // bootstrap components
 import {
   Container,
@@ -15,6 +20,8 @@ import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
+import { InputTextarea } from 'primereact/inputtextarea'
+import { InputMask } from 'primereact/inputmask'
 import { Dropdown } from 'primereact/dropdown'
 
 // components
@@ -26,29 +33,59 @@ import {
   validateUserSignup,
   workPositions,
 } from 'components/organisms/ColaboratorSignup/utils'
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/UI/Card/signupCard.module.scss'
 
 // types
-import { FC } from 'react'
+import { FC, ChangeEvent } from 'react'
 import { ChangeType } from 'types'
 import { DropdownChangeParams } from 'primereact/dropdown'
+import { UserDataType } from 'types/models/User'
+import { CoacheeDataType } from 'types/models/Coachee'
+import { Session } from 'next-auth'
 
-export const ColaboratorSignup: FC = () => {
+export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
   const { push } = useRouter()
-  const [colaboratorData, setUserData] = useState({
-    picture: {} as File,
-    firstName: '',
-    lastName: '',
-    email: '',
-    position: '',
+  const [colaboratorData, setUserData] = useState<
+    UserDataType & CoacheeDataType
+  >({
+    bio: '',
+    position: null,
+    phoneNumber: '',
+    aboutPosition: '',
+    name: session.user.name,
+    profilePicture: {} as File,
   })
 
-  const handleChange = (ev: ChangeType | DropdownChangeParams) =>
-    setUserData({ ...colaboratorData, [ev.target.name]: ev.target.value })
+  const handleChange = (
+    ev: ChangeType | DropdownChangeParams | ChangeEvent<HTMLTextAreaElement>
+  ) => setUserData({ ...colaboratorData, [ev.target.name]: ev.target.value })
 
-  const handleSignup = () => push('/signup/colaborator/steps')
+  const handleSignup = async () => {
+    const { name, profilePicture, ...coacheeData } = colaboratorData
+    if (colaboratorData.name !== session.user.name) {
+      await UpdateUser({
+        variables: { id: session?.user.sub, data: { name: name } },
+      })
+    }
+    CreateCoachee({
+      variables: {
+        data: { ...coacheeData, profilePicture: 'Coachee_picture' },
+      },
+    })
+  }
+
+  const [CreateCoachee] = useMutation(CREATE_COACHEE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => push('/signup/colaborator/steps'),
+    onError: (err) => console.log(err),
+  })
+  const [UpdateUser] = useMutation(UPDATE_USER, {
+    context: { ms: microServices.backend },
+    onError: (err) => console.log(err),
+  })
 
   const overlayTooltip = () => (
     <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
@@ -60,35 +97,26 @@ export const ColaboratorSignup: FC = () => {
       <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
-          <Col xs={12}>
+          <Col xs={12} sm={6} md={4}>
             <InputText
-              name='firstName'
-              value={colaboratorData.firstName}
+              name='name'
+              value={colaboratorData.name}
               onChange={handleChange}
-              placeholder='Nombre'
+              placeholder='Nombre y apellido'
               className={classes.input}
             />
           </Col>
-          <Col xs={12}>
-            <InputText
-              name='lastName'
-              value={colaboratorData.lastName}
+          <Col xs={12} sm={6} md={4}>
+            <InputMask
+              name='phoneNumber'
               onChange={handleChange}
-              placeholder='Apellido'
+              value={colaboratorData.phoneNumber}
               className={classes.input}
+              mask='+99 (999) 999-9999'
+              placeholder='Numero de celular'
             />
           </Col>
-          <Col xs={12}>
-            <InputText
-              name='email'
-              type='email'
-              value={colaboratorData.email}
-              onChange={handleChange}
-              placeholder='Email'
-              className={classes.input}
-            />
-          </Col>
-          <Col xs={12}>
+          <Col xs={12} md={4}>
             <Dropdown
               showClear
               name='position'
@@ -97,6 +125,29 @@ export const ColaboratorSignup: FC = () => {
               placeholder='Posición o Cargo'
               className={classes.input}
               value={colaboratorData.position}
+            />
+          </Col>
+          <Col xs={12} md={6}>
+            <InputTextarea
+              autoResize
+              rows={8}
+              name='aboutPosition'
+              value={colaboratorData.aboutPosition}
+              onChange={handleChange}
+              className={classes.textarea}
+              placeholder='Descripcion del cargo'
+            />
+          </Col>
+
+          <Col xs={12} md={6}>
+            <InputTextarea
+              autoResize
+              rows={8}
+              name='bio'
+              value={colaboratorData.bio}
+              onChange={handleChange}
+              className={classes.textarea}
+              placeholder='Biografía'
             />
           </Col>
         </Row>

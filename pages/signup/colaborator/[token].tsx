@@ -1,5 +1,6 @@
 // main tools
 import Image from 'next/image'
+import { getSession } from 'next-auth/react'
 
 // bootstrap components
 import { Container } from 'react-bootstrap'
@@ -20,7 +21,7 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }) => {
   return (
     <Container className={classes.container}>
-      <h1 className={classes.title}>{content.title}</h1>
+      <h1 className={classes.title}>{content?.title}</h1>
       <div>
         <Image
           src='/assets/icon/MINDFIT.svg'
@@ -29,12 +30,19 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           height={150}
         />
       </div>
-      <FirstColaboratorLogin token={token} content={content.login} />
+      <FirstColaboratorLogin token={token as string} content={content?.login} />
     </Container>
   )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (session?.user)
+    return {
+      redirect: { destination: '/signup/colaborator/user', permanent: false },
+      props: {},
+    }
+
   const token = ctx.query.token as string
   const contentLoginCard = await import(
     '@public/jsons/firstColaboratorLogin/login.json'

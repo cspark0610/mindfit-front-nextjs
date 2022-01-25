@@ -1,0 +1,5 @@
+mutation CreateCoachee($data: CoacheeDto!) {
+  createCoachee(data: $data) {
+    id
+  }
+}
