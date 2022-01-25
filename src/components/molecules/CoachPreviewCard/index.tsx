@@ -18,10 +18,12 @@ import { CoachDataType } from 'types/models/Coach'
 interface modalCoachInterface {
   coach: CoachDataType
   handleCloseModal?: () => void
+  content: any
 }
 
 export const CoachPreviewCard: FC<modalCoachInterface> = ({
   coach,
+  content,
   handleCloseModal,
 }) => (
   <Container className={classes.section}>
@@ -48,7 +50,9 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
           <p className={classes.description}>{coach.description}</p>
         </Col>
         <Col xs={3} className='ml-auto'>
-          <Button className={classes.button}>Ver Mas</Button>
+          <Button className={classes.button}>
+            {content?.moreInfoButton.label}
+          </Button>
         </Col>
       </Row>
       <Row className='mb-5'>
@@ -56,7 +60,9 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
       </Row>
       <Row className='d-flex justify-content-end'>
         <Col xs={3}>
-          <Button className={classes.button}>Seleccionar</Button>
+          <Button className={classes.button}>
+            {content?.nextButton.label}
+          </Button>
         </Col>
       </Row>
     </div>
