@@ -1,0 +1,6 @@
+mutation RefreshToken {
+  refreshToken {
+    refreshToken
+    token
+  }
+}

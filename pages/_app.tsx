@@ -1,3 +1,6 @@
+// Next components
+import Head from 'next/head'
+
 // main tools
 import { SessionProvider } from 'next-auth/react'
 import { ApolloProvider } from '@apollo/client'
@@ -9,17 +12,33 @@ import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 import 'styles/theme.scss'
 
+// prime components
+import { ScrollTop } from 'primereact/scrolltop'
+
 // types
+import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
+
   return (
-    <ApolloProvider client={apolloClient}>
-      <SessionProvider session={pageProps.session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </ApolloProvider>
+    <>
+      <Head>
+        <title>Mindfit</title>
+        <meta charSet='utf-8' />
+        <meta name='author' content='The Centria Group' />
+        <meta name='copyright' content='The Centria Group' />
+        <meta name='keywords' content='Coach, Coachee, Organization' />
+      </Head>
+
+      <ApolloProvider client={apolloClient}>
+        <SessionProvider refetchInterval={60 * 60} session={pageProps.session}>
+          <Component {...pageProps} />
+          <ScrollTop />
+        </SessionProvider>
+      </ApolloProvider>
+    </>
   )
 }
 

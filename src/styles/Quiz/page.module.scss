@@ -5,13 +5,18 @@
 
 .container {
   padding: 5rem 0;
-  max-width: 825px;
   width: 100%;
 
   .title {
     color: $primary;
     font-size: 26px;
     text-align: center;
+  }
+  .subtitle {
+    color: $primary;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: underline $primary;
   }
   .question {
     margin: 1rem 0;
