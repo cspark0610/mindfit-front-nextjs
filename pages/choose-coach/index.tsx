@@ -1,14 +1,22 @@
 // main tools
 import { useState } from 'react'
+import { useQuery } from '@apollo/client'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
+
+// gql
+import GET_COACH_SELECTION_CONTENT from 'lib/queries/Strapi/CoachSelectionContent/getCoachSelectionContent.gql'
+
+// Commons
+import { microServices } from 'commons'
 
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
+import { ChooseCoachSkeleton } from 'components/molecules/Skeletons/ChooseCoachSkeleton'
 
 //styles
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
@@ -135,6 +143,13 @@ const SelectCoach: NextPage = () => {
     }
   }
 
+  const { data, loading } = useQuery(GET_COACH_SELECTION_CONTENT, {
+    variables: {
+      locale: 'es',
+    },
+    context: { ms: microServices.strapi },
+  })
+
   return (
     <Layout>
       <Container className={classes.container}>
@@ -147,9 +162,13 @@ const SelectCoach: NextPage = () => {
               />
             </Col>
           </Row>
+        ) : loading ? (
+          <ChooseCoachSkeleton />
         ) : (
           <>
-            <h1 className={classes.title}>Elige tu coach</h1>
+            <h1 className={classes.title}>
+              {data?.coachSelection.data.attributes.title}
+            </h1>
             <Row className='justify-content-center'>
               <Col xs={12} md={9}>
                 <Row>
@@ -157,7 +176,10 @@ const SelectCoach: NextPage = () => {
                     (coach, idx) =>
                       idx <= showedCoachs && (
                         <Col className='mb-4' xs={12} md={6} key={coach.id}>
-                          <CoachCard data={coach} />
+                          <CoachCard
+                            data={coach}
+                            content={data?.coachSelection.data.attributes}
+                          />
                         </Col>
                       )
                   )}
@@ -170,7 +192,7 @@ const SelectCoach: NextPage = () => {
                   variant='link'
                   className={classes.sugestBtn}
                   onClick={handleOpenFeedBackForm}>
-                  Sugerir otros coaches
+                  {data?.coachSelection.data.attributes.otherCoachs}
                 </Button>
               )}
             </Row>
