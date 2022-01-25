@@ -1,6 +1,6 @@
 // main tools
 import { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { initializeApolloClient } from 'lib/apollo'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -22,10 +22,13 @@ import { ChooseCoachSkeleton } from 'components/molecules/Skeletons/ChooseCoachS
 import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
 
 //types
-import { NextPage } from 'next'
+import { NextPage, GetServerSidePropsContext } from 'next'
 import { CoachDataType } from 'types/models/Coach'
+import { GetSSPropsType } from 'types'
 
-const SelectCoach: NextPage = () => {
+const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
+}) => {
   const coachs: CoachDataType[] = [
     {
       id: '0564654a',
@@ -143,13 +146,6 @@ const SelectCoach: NextPage = () => {
     }
   }
 
-  const { data, loading } = useQuery(GET_COACH_SELECTION_CONTENT, {
-    variables: {
-      locale: 'es',
-    },
-    context: { ms: microServices.strapi },
-  })
-
   return (
     <Layout>
       <Container className={classes.container}>
@@ -157,18 +153,17 @@ const SelectCoach: NextPage = () => {
           <Row className='justify-content-center'>
             <Col md={9}>
               <CoachSearchFeedback
+                content={content}
                 submit={handleSubmit}
                 cancel={handleCloseFeedBackForm}
               />
             </Col>
           </Row>
-        ) : loading ? (
+        ) : false ? (
           <ChooseCoachSkeleton />
         ) : (
           <>
-            <h1 className={classes.title}>
-              {data?.coachSelection.data.attributes.title}
-            </h1>
+            <h1 className={classes.title}>{content.title}</h1>
             <Row className='justify-content-center'>
               <Col xs={12} md={9}>
                 <Row>
@@ -176,10 +171,7 @@ const SelectCoach: NextPage = () => {
                     (coach, idx) =>
                       idx <= showedCoachs && (
                         <Col className='mb-4' xs={12} md={6} key={coach.id}>
-                          <CoachCard
-                            data={coach}
-                            content={data?.coachSelection.data.attributes}
-                          />
+                          <CoachCard data={coach} content={content} />
                         </Col>
                       )
                   )}
@@ -192,7 +184,7 @@ const SelectCoach: NextPage = () => {
                   variant='link'
                   className={classes.sugestBtn}
                   onClick={handleOpenFeedBackForm}>
-                  {data?.coachSelection.data.attributes.otherCoachs}
+                  {content.otherCoachs}
                 </Button>
               )}
             </Row>
@@ -202,6 +194,20 @@ const SelectCoach: NextPage = () => {
       </Container>
     </Layout>
   )
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    variables: { locale: ctx.locale },
+    query: GET_COACH_SELECTION_CONTENT,
+    context: { ms: microServices.strapi },
+  })
+
+  console.log(data)
+
+  return { props: { content: data.coachSelection.data.attributes } }
 }
 
 export default SelectCoach
