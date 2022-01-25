@@ -6,6 +6,7 @@ import GoogleProvider from 'next-auth/providers/google'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import LOGIN from 'lib/mutations/Auth/login.gql'
+import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
 import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
@@ -13,6 +14,7 @@ import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
 // utils
 import jwt_decoder from 'jwt-decode'
 import { microServices } from 'commons'
+import moment from 'moment'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -24,7 +26,7 @@ const LOGIN_RRSS = {
 
 export default NextAuth({
   pages: { error: '/login' }, // custom error page with query string as ?error=
-  session: { maxAge: 30 * 60 }, // initial value in seconds, logout on a half hour of inactivity
+  session: { maxAge: 60 * 60 }, // initial value in seconds, logout on a half hour of inactivity
   secret: process.env.SECRET,
 
   providers: [
@@ -113,6 +115,24 @@ export default NextAuth({
             throw new Error(error.graphQLErrors[0].message)
           }
         }
+      } else {
+        const now = moment(new Date())
+        const apolloClient = initializeApolloClient()
+        const decoded: { exp: number } = jwt_decoder(token.backendToken)
+        const expireTokenTime = new Date(decoded.exp)
+        const timeToExpireToken = moment(expireTokenTime).add(-2, 'minutes')
+        const expired = timeToExpireToken.diff(now, 'minutes')
+
+        console.log(timeToExpireToken)
+        console.log(expired)
+        // if (expired <= 0) {
+        //   const res = await apolloClient.mutate({
+        //     mutation: REFRESH_TOKEN,
+        //     context: { ms: microServices.backend },
+        //   })
+
+        //   console.log('REFRESH TOKEN RESPONSE', res)
+        // }
       }
 
       return Promise.resolve(token)
