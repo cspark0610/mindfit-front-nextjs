@@ -14,7 +14,7 @@ import { microServices } from 'commons'
 
 //gql
 import { initializeApolloClient } from 'lib/apollo'
-import CHOOSEPLAN_VIEW from 'lib/queries/ChoosePlan/ChoosePlan.gql'
+import CHOOSEPLAN_VIEW from 'lib/queries/ChoosePlan/choosePlan.gql'
 
 // styles
 import classes from 'styles/Choose-plan/page.module.scss'
@@ -25,13 +25,14 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { GetSSPropsType } from 'types'
 
 const ChoosePlanPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  contentChoose, contentPayment
+  contentChoose,
+  contentPayment,
 }) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
       <ActualPlan content={contentChoose.view} />
       <Row className='mt-5'>
-        {contentChoose.card.map((plan:any, idx:number) => (
+        {contentChoose.card.map((plan: any, idx: number) => (
           <Col className='my-3' key={idx} xs={12} md={6} xl={3}>
             <PlanCard
               selected={plan === 1 ? true : false}
@@ -76,11 +77,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: {
       contentChoose: {
         view,
-        card
+        card,
       },
       contentPayment: {
         method,
-        credit
+        credit,
       },
     },
   }

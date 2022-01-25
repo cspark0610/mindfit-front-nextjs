@@ -1,4 +1,4 @@
-import { regexValidation } from "commons"
+import { regexValidation } from 'commons'
 
 export const INITIAL_STATE = {
   fullName: '',
@@ -20,7 +20,6 @@ export const verifyInviteColaboratorData = (
     !colaboratorData.email
   )
     return { message: fillFields }
-    if (!validated.isEmail)
-    return { message: validEmail }
+  if (!validated.isEmail) return { message: validEmail }
   return { success: true }
 }
