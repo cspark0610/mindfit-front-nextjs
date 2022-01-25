@@ -1,0 +1,32 @@
+query collaboratorAdd {
+  collaboratorAdd {
+    data {
+      attributes {
+        fillFields
+        validEmail
+        emptyMessage
+        status {
+          label
+          value
+        }
+        column1
+        column2
+        form {
+          data {
+            attributes {
+              title
+              subtitle
+              input1
+              input2
+              input3
+              input4
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
