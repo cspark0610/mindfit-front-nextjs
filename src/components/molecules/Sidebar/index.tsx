@@ -15,12 +15,16 @@ import classes from 'styles/Sidebar/sidebar.module.scss'
 export const Sidebar = () => (
   <aside className={classes.container}>
     <div>
-      <Image
-        src='/assets/icon/MINDFIT_WHITE.svg'
-        width={80}
-        height={40}
-        alt='mindfit'
-      />
+      <Link href='/'>
+        <a>
+          <Image
+            src='/assets/icon/MINDFIT_WHITE.svg'
+            width={80}
+            height={40}
+            alt='mindfit'
+          />
+        </a>
+      </Link>
       {items.map((item, idx) => (
         <Container key={idx} className={classes.itemContainer}>
           <Link href={item.url}>

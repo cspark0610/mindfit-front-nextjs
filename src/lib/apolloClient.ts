@@ -8,20 +8,18 @@ import { getToken } from 'commons'
  * configure apollo for
  * create a new apollo client
  */
-export const createApolloClient = () => {
+export const createApolloClient = (accessToken: string | null = null) => {
   const httpLink = createUploadLink({
-    fetch(uri, ctx) {
-      return fetch(uri, ctx)
-    },
+    fetch: (uri, ctx) => fetch(uri, ctx),
   })
 
-  //   list of microservices
+  // list of microservices
   const microservicesUris = {
-    backend: process.env.BASE_API_URL,
     strapi: process.env.BASE_STRAPI_URL,
+    backend: process.env.BASE_API_URL,
   }
 
-  //   mapper of the micro service selected
+  // mapper of the micro service selected
   const uriMapper = new ApolloLink((operation, forward) => {
     const { ms } = operation.getContext()
     operation.setContext({
@@ -32,7 +30,9 @@ export const createApolloClient = () => {
   })
 
   const apolloHeaders = setContext(async (_, { headers }) => {
-    const token = await getToken()
+    let token = null
+    if (typeof window !== 'undefined') token = await getToken()
+    else token = accessToken
 
     return {
       headers: { ...headers, authorization: token ? `Bearer ${token}` : '' },

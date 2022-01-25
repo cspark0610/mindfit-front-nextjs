@@ -1,0 +1,8 @@
+query GetMainQuiz {
+  getDefaultSat {
+    id
+    name
+    codename
+    value
+  }
+}
