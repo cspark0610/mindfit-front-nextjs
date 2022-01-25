@@ -1,24 +1,19 @@
 export const verifyTestQuestions = (
-  step: number,
-  questions:
-    | {
-        description: string
-        questions: {
-          title: string
-          options: {
-            label: string
-            value: number
-          }[]
-        }[]
-      }[]
-    | undefined,
-  answers: { [key: string]: { value: number } }[]
+  sectionIndex: number,
+  section: any,
+  answers: any
 ) => {
-  if (questions && answers[step]) {
-    return (
-      Object.keys(answers[step]).length === questions[step].questions.length
-    )
-  }
+  let completed = true
 
-  return false
+  const answerList =
+    (answers.sectionsResult &&
+      answers?.sectionsResult[sectionIndex]?.questions) ||
+    []
+
+  answerList.forEach(({ answersSelected }: any) => {
+    if (answersSelected.length < 1) completed = false
+  })
+  if (answerList.length < section?.questions.length) completed = false
+
+  return completed
 }

@@ -9,6 +9,9 @@ import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 import 'styles/theme.scss'
 
+// prime components
+import { ScrollTop } from 'primereact/scrolltop'
+
 // types
 import type { AppProps } from 'next/app'
 
@@ -18,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ApolloProvider client={apolloClient}>
       <SessionProvider session={pageProps.session}>
         <Component {...pageProps} />
+        <ScrollTop />
       </SessionProvider>
     </ApolloProvider>
   )

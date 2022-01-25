@@ -1,0 +1,5 @@
+mutation SubmitQuiz($data: SatReportDto!) {
+  createSatReport(data: $data) {
+    id
+  }
+}

@@ -1,0 +1,22 @@
+query FindQuiz($id: Int!) {
+  findSatBasicById(id: $id) {
+    id
+    title
+    description
+    sections {
+      id
+      title
+      codename
+      questions {
+        id
+        title
+        type
+        answers {
+          id
+          title
+          value
+        }
+      }
+    }
+  }
+}
