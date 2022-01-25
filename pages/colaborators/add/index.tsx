@@ -53,10 +53,12 @@ const AddColaboratorPage: NextPage<
   const [colaborator, setColaborator] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
 
-  const labelFullName = contentForm.input1
-  const labelPosition = contentForm.input2
-  const labelDepartment = contentForm.input3
-  const labelEmail = contentForm.input4
+  const label = {
+    fullName: contentForm.input1,
+    position: contentForm.input2,
+    department: contentForm.input3,
+    email: contentForm.input4,
+  }
 
   const handleChange = (ev: ChangeType | DropdownChangeParams) => {
     error && setError('')
@@ -75,8 +77,8 @@ const AddColaboratorPage: NextPage<
         {
           ...colaborator,
           status: true,
-          labelDepartment: labelDepartment,
-          labelPosition: labelPosition,
+          labelDepartment: label.department,
+          labelPosition: label.position,
           labelStatus: content.status.label,
           stateSent: content.status.value,
         },
@@ -97,7 +99,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.fullName}
-              placeholder={labelFullName}
+              placeholder={label.fullName}
             />
           </Col>
           <Col md={4}>
@@ -107,7 +109,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.position}
-              placeholder={labelPosition}
+              placeholder={label.position}
             />
           </Col>
           <Col md={4}>
@@ -116,7 +118,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               options={['Development']}
-              placeholder={labelDepartment}
+              placeholder={label.department}
               value={colaborator.department}
             />
           </Col>
@@ -126,7 +128,7 @@ const AddColaboratorPage: NextPage<
             <InputText
               name='email'
               type='email'
-              placeholder={labelEmail}
+              placeholder={label.email}
               onChange={handleChange}
               value={colaborator.email}
               className={classes.input}
@@ -170,7 +172,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.strapi },
   })
   const view = data.collaboratorAdd.data.attributes
-  const form = data.collaboratorAdd.data.attributes.registration.data.attributes
+  const form = data.collaboratorAdd.data.attributes.form.data.attributes
   return {
     props: {
       content: view,
