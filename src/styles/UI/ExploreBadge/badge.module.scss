@@ -3,6 +3,8 @@
 .badgeContainer {
   max-width: 400px;
   .row {
+    text-decoration: none;
+    color: $gray;
     align-items: center;
     justify-content: center;
     font-weight: bold;

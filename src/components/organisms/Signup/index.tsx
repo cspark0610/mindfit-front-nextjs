@@ -40,7 +40,12 @@ import { FC } from 'react'
 import { ChangeType } from 'types'
 import { UserDataType } from 'types/models/User'
 
-export const UserSignup: FC = () => {
+interface Props {
+  content: any
+  contentForm: any
+}
+
+export const UserSignup: FC<Props> = ({ content, contentForm }) => {
   const [userData, setUserData] = useState<UserDataType>({
     profilePicture: {} as File,
     firstName: '',
@@ -48,6 +53,13 @@ export const UserSignup: FC = () => {
     email: '',
     password: '',
   })
+
+  const label = {
+    firstName: contentForm.input1,
+    lasttName: contentForm.input2,
+    email: contentForm.input3,
+    password: contentForm.input4,
+  }
 
   const handleChange = (ev: ChangeType) =>
     setUserData({ ...userData, [ev.target.name]: ev.target.value })
@@ -78,13 +90,11 @@ export const UserSignup: FC = () => {
     context: { ms: microServices.backend },
   })
 
-  const overlayTooltip = () => (
-    <Tooltip>Por favor, complete todos los campos para continuar</Tooltip>
-  )
+  const overlayTooltip = () => <Tooltip>{content.fillFields}</Tooltip>
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>Registra tu usuario</h1>
+      <h1 className={classes.title}>{contentForm.title}</h1>
       <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
@@ -93,7 +103,7 @@ export const UserSignup: FC = () => {
               name='firstName'
               value={userData.firstName}
               onChange={handleChange}
-              placeholder='Nombre'
+              placeholder={label.firstName}
               className={classes.input}
             />
           </Col>
@@ -102,7 +112,7 @@ export const UserSignup: FC = () => {
               name='lastName'
               value={userData.lastName}
               onChange={handleChange}
-              placeholder='Apellido'
+              placeholder={label.lasttName}
               className={classes.input}
             />
           </Col>
@@ -112,7 +122,7 @@ export const UserSignup: FC = () => {
               type='email'
               value={userData.email}
               onChange={handleChange}
-              placeholder='Email'
+              placeholder={label.email}
               className={classes.input}
             />
           </Col>
@@ -121,12 +131,12 @@ export const UserSignup: FC = () => {
               toggleMask
               className='w-100'
               name='password'
-              placeholder='Contraseña'
-              promptLabel='Sugerencias'
-              weakLabel='Contraseña muy corta'
-              mediumLabel='Por favor, tenga en cuenta las sugerencias'
-              strongLabel='Contraseña aceptada'
-              mediumRegex={regex.minSize.source}
+              placeholder={label.password}
+              promptLabel={content.promptLabel}
+              weakLabel={content.weakLabel}
+              mediumLabel={content.mediumLabel}
+              strongLabel={content.strongLabel}
+              mediumRegex={content.mediumRegex}
               strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
               value={userData.password}
               inputClassName={classes.input}
@@ -152,7 +162,7 @@ export const UserSignup: FC = () => {
               disabled={!validateUserSignup(userData)}
               onClick={handeSubmit}
               className={classes.button}>
-              Registra tu usuario
+              {contentForm.button.label}
             </Button>
           </Col>
         </Row>
