@@ -1,3 +1,5 @@
+import { regexValidation } from 'commons'
+
 export const INITIAL_STATE = {
   fullName: '',
   position: '',
@@ -6,16 +8,18 @@ export const INITIAL_STATE = {
 }
 
 export const verifyInviteColaboratorData = (
-  colaboratorData: typeof INITIAL_STATE
+  colaboratorData: typeof INITIAL_STATE,
+  fillFields: string,
+  validEmail: string
 ) => {
+  const validated = regexValidation(colaboratorData.email)
   if (
     !colaboratorData.fullName ||
     !colaboratorData.position ||
     !colaboratorData.department ||
     !colaboratorData.email
   )
-    return { message: 'Por favor, complete todos los campos' }
-  if (!colaboratorData.email.includes('@'))
-    return { message: 'Por favor, ingrese un correo electronico valido' }
+    return { message: fillFields }
+  if (!validated.isEmail) return { message: validEmail }
   return { success: true }
 }

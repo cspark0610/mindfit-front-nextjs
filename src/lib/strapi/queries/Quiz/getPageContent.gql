@@ -1,0 +1,17 @@
+query GetQuizContent($locale: I18NLocaleCode) {
+  quiz(locale: $locale) {
+    data {
+      attributes {
+        nextButton {
+          label
+        }
+        prevButton {
+          label
+        }
+        finishButton {
+          label
+        }
+      }
+    }
+  }
+}

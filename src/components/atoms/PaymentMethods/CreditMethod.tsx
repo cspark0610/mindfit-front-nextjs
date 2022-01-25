@@ -16,7 +16,7 @@ import { FC } from 'react'
 import { ChangeType } from 'types'
 import { InputMaskChangeParams } from 'primereact/inputmask'
 
-export const CreditMethod: FC = () => {
+export const CreditMethod: FC<{ content: any }> = ({ content }) => {
   const [data, setData] = useState({
     name: '',
     cardNumber: '',
@@ -24,13 +24,20 @@ export const CreditMethod: FC = () => {
     cvc: '',
   })
 
+  const label = {
+    fullName: content.input1,
+    cardNumber: content.input2,
+    expiredDate: content.input3,
+    cvc: content.input4,
+  }
+
   const handleChange = (ev: ChangeType | InputMaskChangeParams) => {
     setData({ ...data, [ev.target.name]: ev.target.value })
   }
 
   return (
     <>
-      <p className={classes.payment_title}>Credit Card</p>
+      <p className={classes.payment_title}>{content.title}</p>
       <Container as='form'>
         <Row>
           <Col xs={12}>
@@ -38,7 +45,7 @@ export const CreditMethod: FC = () => {
               name='name'
               value={data.name}
               className={classes.input}
-              placeholder='Nombre y apellido'
+              placeholder={label.fullName}
               onChange={handleChange}
             />
           </Col>
@@ -49,7 +56,7 @@ export const CreditMethod: FC = () => {
               value={data.cardNumber}
               className={classes.input}
               mask='9999 9999 9999 9999'
-              placeholder='Numero de tarjeta'
+              placeholder={label.cardNumber}
             />
           </Col>
           <Col xs={6}>
@@ -59,7 +66,7 @@ export const CreditMethod: FC = () => {
               onChange={handleChange}
               value={data.expiredDate}
               className={classes.input}
-              placeholder='Fecha de vencimiento'
+              placeholder={label.expiredDate}
             />
           </Col>
           <Col xs={6}>
@@ -67,13 +74,13 @@ export const CreditMethod: FC = () => {
               name='cvc'
               mask='999'
               value={data.cvc}
-              placeholder='CVC'
+              placeholder={label.cvc}
               className={classes.input}
               onChange={handleChange}
             />
           </Col>
           <Col className='text-end'>
-            <Button className={classes.button}>Pagar</Button>
+            <Button className={classes.button}>{content.button.label}</Button>
           </Col>
         </Row>
       </Container>

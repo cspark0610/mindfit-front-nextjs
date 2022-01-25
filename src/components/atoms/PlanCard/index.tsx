@@ -14,32 +14,41 @@ import classes from 'styles/Choose-plan/page.module.scss'
 // types
 import { FC } from 'react'
 
-export const PlanCard: FC<{ selected?: boolean }> = ({ selected }) => {
+interface Props {
+  selected: boolean
+  contentCard: any
+  contentMethod: any
+}
+
+export const PlanCard: FC<Props> = ({
+  selected,
+  contentCard,
+  contentMethod,
+}) => {
   const [showModal, setShowModal] = useState(false)
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
   return (
     <Container className={selected ? classes.banner_selected : classes.banner}>
       <div className={classes.card}>
-        <h4 className={classes.card_title}>Demo</h4>
-        <h5 className={classes.card_price}>120$</h5>
+        <h4 className={classes.card_title}>{contentCard.header.label}</h4>
+        <h5 className={classes.card_price}>{contentCard.header.value}</h5>
         <Row className={classes.card_items}>
-          <Col xs={12}>
-            <CheckCircleFill className={classes.card_items_include} /> Lorem
-            ipsum
-          </Col>
-          <Col xs={12}>
-            <CheckCircleFill className={classes.card_items_include} /> Lorem
-            ipsum
-          </Col>
-          <Col xs={12}>
-            <XCircleFill className={classes.card_items_noinclude} /> Lorem ipsum
-          </Col>
+          {contentCard.items.map((i: any, idx: number) => (
+            <Col xs={12} key={idx}>
+              {i.check ? (
+                <CheckCircleFill className={classes.card_items_include} />
+              ) : (
+                <XCircleFill className={classes.card_items_noinclude} />
+              )}
+              {i.label}
+            </Col>
+          ))}
         </Row>
         <Row className='mt-5'>
           <Col xs={12}>
             <Button className={classes.button_small} onClick={handleShowModal}>
-              Adquirir
+              {contentCard.button.label}
             </Button>
           </Col>
         </Row>
@@ -51,7 +60,10 @@ export const PlanCard: FC<{ selected?: boolean }> = ({ selected }) => {
         onHide={handleCloseModal}
         size='lg'>
         <Modal.Body>
-          <PaymentMethodCard handleCloseModal={handleCloseModal} />
+          <PaymentMethodCard
+            handleCloseModal={handleCloseModal}
+            content={contentMethod}
+          />
         </Modal.Body>
       </Modal>
     </Container>

@@ -17,9 +17,10 @@ import { CreditMethod, PaypalMethod } from 'components/atoms/PaymentMethods'
 
 interface props {
   handleCloseModal: () => void
+  content: any
 }
 
-export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {
+export const PaymentMethodCard: FC<props> = ({ handleCloseModal, content }) => {
   const [paymentOption, setPaymentOption] = useState('')
   return (
     <Container className='py-2 p-md-4 p-lg-5'>
@@ -28,9 +29,9 @@ export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {
         onClick={handleCloseModal}>
         <ChevronLeft width={32} height={32} />
       </Button>
-      <h2 className={classes.title}>Metodo de pago</h2>
+      <h2 className={classes.title}>{content.method.title}</h2>
       <p className={`text-center mb-5 ${classes.subtitle}`}>
-        Seleccione un metodo de pago
+        {content.method.subtitle}
       </p>
       <Row xs={2}>
         <CreditCard
@@ -51,7 +52,9 @@ export const PaymentMethodCard: FC<props> = ({ handleCloseModal }) => {
         />
       </Row>
       <Row>
-        {paymentOption === 'creditCard' && <CreditMethod />}
+        {paymentOption === 'creditCard' && (
+          <CreditMethod content={content.credit} />
+        )}
         {paymentOption === 'paypal' && <PaypalMethod />}
       </Row>
     </Container>

@@ -4,13 +4,17 @@ import { getSession } from 'next-auth/react'
 import { useQuery, useMutation } from '@apollo/client'
 
 // gql
+import { createApolloClient } from 'lib/apolloClient'
+import { initializeApolloClient } from 'lib/apollo'
 import GET_MAIN_QUIZ from 'lib/queries/Quiz/getMainQuiz.gql'
 import GET_QUIZ_CONTENT from 'lib/queries/Quiz/getQuizById.gql'
+import GET_PAGE_CONTENT from 'lib/strapi/queries/Quiz/getPageContent.gql'
 import SUBMIT_QUIZ from 'lib/mutations/Quiz/submitQuiz.gql'
 
 // components
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { QuizSkeleton } from 'components/organisms/Quiz/Skeleton'
 
 // bootstrap components
 import { Container, Carousel, Row, Col, Button } from 'react-bootstrap'
@@ -21,6 +25,7 @@ import { Checkbox } from 'primereact/checkbox'
 
 // utils
 import { verifyTestQuestions } from 'utils/verifyTestQuestions'
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/Quiz/page.module.scss'
@@ -29,12 +34,10 @@ import classes from 'styles/Quiz/page.module.scss'
 import { RadioButtonChangeParams } from 'primereact/radiobutton'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
-import { microServices } from 'commons'
-import { createApolloClient } from 'lib/apolloClient'
-import { QuizSkeleton } from 'components/organisms/Quiz/Skeleton'
 
 const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   quizId,
+  content,
 }) => {
   const [quiz, setQuiz] = useState<any>(undefined)
   const [actualSection, setActualSection] = useState(0)
@@ -244,7 +247,7 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                     disabled={actualSection === 0}
                     onClick={handlePrevQuestion}
                     className={classes.button}>
-                    Pregunta anterior
+                    {content.prevButton.label}
                   </Button>
                 </Col>
                 <Col xs={12} md={6}>
@@ -259,10 +262,10 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                     onClick={handleNextQuestion}
                     className={classes.button}>
                     {actualSection < (quiz?.sections.length as number) - 1
-                      ? `Siguiente pregunta ${actualSection + 1} - ${
+                      ? `${content.nextButton.label} ${actualSection + 1} - ${
                           quiz?.sections.length
                         }`
-                      : 'Terminar test'}
+                      : content.finishButton.label}
                   </Button>
                 </Col>
               </Row>
@@ -281,13 +284,24 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return { redirect: { destination: '/login', permanent: false }, props: {} }
 
   const apolloClient = createApolloClient(session.token)
+  const apolloClientForStrapi = initializeApolloClient()
 
   const { data } = await apolloClient.query({
     query: GET_MAIN_QUIZ,
     context: { ms: microServices.backend },
   })
+  const { data: content } = await apolloClientForStrapi.query({
+    query: GET_PAGE_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
 
-  return { props: { quizId: parseInt(data?.getDefaultSat?.value) } }
+  return {
+    props: {
+      quizId: parseInt(data?.getDefaultSat?.value),
+      content: content.quiz.data.attributes,
+    },
+  }
 }
 
 export default QuizPage
