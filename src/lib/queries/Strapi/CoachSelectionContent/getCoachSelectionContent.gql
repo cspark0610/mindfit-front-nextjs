@@ -20,6 +20,7 @@ query CoachSelectionContent($locale: I18NLocaleCode) {
         suggestedCoachesTitle
         suggestedCoachesDescription
         suggestedCoachesOptions {
+          id
           label
           value
         }
