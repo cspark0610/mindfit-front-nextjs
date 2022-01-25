@@ -15,6 +15,7 @@ import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
 import jwt_decoder from 'jwt-decode'
 import { microServices } from 'commons'
 import moment from 'moment'
+import { createApolloClient } from 'lib/apolloClient'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -117,22 +118,21 @@ export default NextAuth({
         }
       } else {
         const now = moment(new Date())
-        const apolloClient = initializeApolloClient()
+        const apolloClient = createApolloClient(token.backendRefresh)
         const decoded: { exp: number } = jwt_decoder(token.backendToken)
-        const expireTokenTime = new Date(decoded.exp)
-        const timeToExpireToken = moment(expireTokenTime).add(-2, 'minutes')
+        const expireTokenTime = new Date(decoded.exp * 1000)
+        const timeToExpireToken = moment(expireTokenTime).add(-5, 'minutes')
         const expired = timeToExpireToken.diff(now, 'minutes')
 
-        console.log(timeToExpireToken)
-        console.log(expired)
-        // if (expired <= 0) {
-        //   const res = await apolloClient.mutate({
-        //     mutation: REFRESH_TOKEN,
-        //     context: { ms: microServices.backend },
-        //   })
+        if (expired < 5) {
+          const { data } = await apolloClient.mutate({
+            mutation: REFRESH_TOKEN,
+            context: { ms: microServices.backend },
+          })
 
-        //   console.log('REFRESH TOKEN RESPONSE', res)
-        // }
+          token.backendRefresh = data.refreshToken.refreshToken
+          token.backendToken = data.refreshToken.token
+        }
       }
 
       return Promise.resolve(token)

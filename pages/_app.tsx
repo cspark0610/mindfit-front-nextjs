@@ -33,7 +33,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <ApolloProvider client={apolloClient}>
-        <SessionProvider session={pageProps.session}>
+        <SessionProvider refetchInterval={60 * 60} session={pageProps.session}>
           <Component {...pageProps} />
           <ScrollTop />
         </SessionProvider>
