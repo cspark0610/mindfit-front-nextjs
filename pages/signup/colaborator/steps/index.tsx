@@ -40,6 +40,12 @@ const ColaboratorStepsPage: NextPage<
             </Link>
           </Col>
         </Row>
+        <Row className='mt-3 text-center'>
+          <span>quieres crear una organizacion?</span>
+          <Link href='/signup/organization'>
+            <a>Continua como Empresario</a>
+          </Link>
+        </Row>
         <Row>
           <ExploreBadge />
         </Row>
@@ -51,11 +57,12 @@ const ColaboratorStepsPage: NextPage<
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   const content = await import('@public/jsons/signup/colaborator.json')
+
   const steps = [
     {
       label: content.steps[0].label,
       action: content.steps[0].action,
-      completed: !session || session.user.name === '0' ? false : true,
+      completed: !session?.user.coachee ? false : true,
       url: '/signup/colaborator/user',
     },
     {

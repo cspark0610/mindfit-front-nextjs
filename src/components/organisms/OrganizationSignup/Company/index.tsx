@@ -38,12 +38,12 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC, ChangeEvent } from 'react'
 import { ChangeType } from 'types'
-import { CompanyDataType } from 'types/models/Company'
+import { OrganizationDataType } from 'types/models/Organization'
 
 export const CompanySignup: FC = () => {
   const { push } = useRouter()
   const { data } = useSession()
-  const [companyData, setCompanyData] = useState<CompanyDataType>({
+  const [companyData, setCompanyData] = useState<OrganizationDataType>({
     profilePicture: {} as File,
     name: '',
     about: '',

@@ -42,7 +42,7 @@ import { UserDataType } from 'types/models/User'
 
 export const UserSignup: FC = () => {
   const [userData, setUserData] = useState<UserDataType>({
-    picture: {} as File,
+    profilePicture: {} as File,
     firstName: '',
     lastName: '',
     email: '',
@@ -56,7 +56,7 @@ export const UserSignup: FC = () => {
     signIn('credentials', {
       email: userData.email,
       password: userData.password,
-      callbackUrl: '/',
+      callbackUrl: '/signup/organization',
     })
   }
 

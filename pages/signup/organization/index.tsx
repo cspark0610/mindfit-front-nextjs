@@ -40,6 +40,12 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             </Link>
           </Col>
         </Row>
+        <Row className='mt-3 text-center'>
+          <span>No quieres crear una organizacion?</span>
+          <Link href='/signup/colaborator/steps'>
+            <a>Continua como Coachee</a>
+          </Link>
+        </Row>
         <Row>
           <ExploreBadge />
         </Row>
@@ -56,8 +62,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     {
       label: content.steps[0].label,
       action: content.steps[0].action,
-      completed: !session ? false : true,
-      url: '/signup/organization/user',
+      completed: !session?.user.organization ? false : true,
+      url: '/create-organization',
     },
     {
       label: content.steps[1].label,
