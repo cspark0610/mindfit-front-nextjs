@@ -1,6 +1,12 @@
 // main tools
-import { useState, Fragment } from 'react'
+import { useState, useEffect, Fragment, useRef } from 'react'
 import { getSession } from 'next-auth/react'
+import { useQuery, useMutation } from '@apollo/client'
+
+// gql
+import GET_MAIN_QUIZ from 'lib/queries/Quiz/getMainQuiz.gql'
+import GET_QUIZ_CONTENT from 'lib/queries/Quiz/getQuizById.gql'
+import SUBMIT_QUIZ from 'lib/mutations/Quiz/submitQuiz.gql'
 
 // components
 import { Layout } from 'components/organisms/Layout'
@@ -10,7 +16,8 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { Container, Carousel, Row, Col, Button } from 'react-bootstrap'
 
 // prime components
-import { RadioButton, RadioButtonChangeParams } from 'primereact/radiobutton'
+import { RadioButton } from 'primereact/radiobutton'
+import { Checkbox } from 'primereact/checkbox'
 
 // utils
 import { verifyTestQuestions } from 'utils/verifyTestQuestions'
@@ -19,117 +26,248 @@ import { verifyTestQuestions } from 'utils/verifyTestQuestions'
 import classes from 'styles/Quiz/page.module.scss'
 
 // types
+import { RadioButtonChangeParams } from 'primereact/radiobutton'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { microServices } from 'commons'
+import { createApolloClient } from 'lib/apolloClient'
+import { QuizSkeleton } from 'components/organisms/Quiz/Skeleton'
 
 const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  content,
+  quizId,
 }) => {
-  const [actualQuestion, setActualQuestion] = useState(0)
-  const [answers, setAnswers] = useState<
-    { [key: string]: { value: number } }[]
-  >([])
+  const [quiz, setQuiz] = useState<any>(undefined)
+  const [actualSection, setActualSection] = useState(0)
+  const [answers, setAnswers] = useState<any>({})
+  const backToTop = useRef<HTMLHeadingElement>(null)
 
-  const handleChangeQuestion = (index: number) => setActualQuestion(index)
+  const { data, loading } = useQuery(GET_QUIZ_CONTENT, {
+    context: { ms: microServices.backend },
+    variables: { id: quizId },
+  })
 
-  const handleChangeAnswer = (e: RadioButtonChangeParams, idx: number) => {
-    setAnswers((prev) => {
-      const updateAnswers = prev.length > 0 ? [...prev] : []
-      updateAnswers[idx] = {
-        ...updateAnswers[idx],
-        [e.target.name]: { value: e.value },
+  const [SubmitQuiz] = useMutation(SUBMIT_QUIZ, {
+    context: { ms: microServices.backend },
+    onCompleted: (res) => console.log(res),
+  })
+
+  const handleChangeSection = (index: number) => setActualSection(index)
+  const handleNextQuestion = () => {
+    actualSection < (quiz?.sections.length as number) - 1
+      ? setActualSection((prev) => prev + 1)
+      : SubmitQuiz({ variables: { data: { ...answers } } })
+  }
+  const handlePrevQuestion = () =>
+    actualSection > 0 && setActualSection((prev) => prev - 1)
+
+  const handleVerifyCheck = (
+    sectionId: number,
+    questionId: number,
+    answerId: number
+  ) => {
+    const findSection = answers.sectionsResult.find(
+      ({ section }: { section: number }) => section === sectionId
+    )
+
+    if (findSection) {
+      const question = findSection.questions.find(
+        ({ question }: { question: number }) => question === questionId
+      )
+      if (question) return question.answersSelected.includes(answerId)
+      else return false
+    } else return false
+  }
+
+  const handleChangeAnswer = (
+    ev: RadioButtonChangeParams,
+    sectionId: number,
+    questionId: number,
+    type: string
+  ) => {
+    setAnswers((prev: any) => {
+      const sectionToUpdate = prev.sectionsResult.find(
+        ({ section }: any) => section === sectionId
+      )
+
+      if (sectionToUpdate) {
+        const questionToUpdate = sectionToUpdate.questions.find(
+          ({ question }: any) => question === questionId
+        )
+        if (questionToUpdate) {
+          if (type === 'MULTISELECT') {
+            const answer = questionToUpdate.answersSelected.find(
+              (answerId: number) => answerId === ev.value.id
+            )
+            if (answer) {
+              questionToUpdate.answersSelected =
+                questionToUpdate.answersSelected.filter(
+                  (answerId: number) => answerId !== answer
+                )
+            } else questionToUpdate.answersSelected.push(ev.value.id)
+          } else {
+            questionToUpdate.answersSelected = [ev.value.id]
+          }
+        } else {
+          sectionToUpdate.questions.push({
+            question: questionId,
+            answersSelected: [ev.value.id],
+          })
+        }
+      } else
+        return {
+          ...prev,
+          sectionsResult: [
+            ...prev.sectionsResult,
+            {
+              section: sectionId,
+              questions: [
+                { question: questionId, answersSelected: [ev.value.id] },
+              ],
+            },
+          ],
+        }
+
+      return {
+        ...prev,
+        sectionsResult: [
+          ...prev.sectionsResult.filter(
+            (item: any) => item.section !== sectionId
+          ),
+          sectionToUpdate,
+        ],
       }
-
-      return updateAnswers
     })
   }
 
-  const handleNextQuestion = () => {
-    actualQuestion < (content?.test.length as number) - 1
-      ? setActualQuestion((prev) => prev + 1)
-      : console.log(answers)
-  }
-  const handlePrevQuestion = () =>
-    actualQuestion > 0 && setActualQuestion((prev) => prev - 1)
+  useEffect(() => {
+    if (data) {
+      setQuiz(data.findSatBasicById)
+      setAnswers({
+        satRealizedId: data.findSatBasicById.id,
+        sectionsResult: [],
+      })
+    }
+  }, [data])
+
+  useEffect(
+    () => backToTop.current?.scrollIntoView({ block: 'center' }),
+    [actualSection]
+  )
 
   return (
     <Layout>
       <Container className={classes.container}>
         <Container className={classes.section}>
-          <h1 className={classes.title}>Prueba de auto - diagnóstico</h1>
-          {console.log(answers)}
-          <Carousel
-            indicators={false}
-            controls={false}
-            interval={null}
-            activeIndex={actualQuestion}
-            onSelect={handleChangeQuestion}>
-            {content?.test.map((page, idx) => (
-              <Carousel.Item key={idx}>
-                <p className='my-4'>{page.description}</p>
-                {page.questions.map((question, index) => (
-                  <Fragment key={`${idx}-${index}`}>
-                    <p className={classes.question}>
-                      {index + 1} - {question.title}
-                    </p>
-                    <Row>
-                      {question.options.map((option, optionIdx) => {
-                        const formattedKey = question?.title.replace(/ /g, '_')
-                        return (
-                          <Col
-                            className={classes.question_option}
-                            key={`${idx}-${index}-${optionIdx}`}
-                            xs={6}
-                            md={3}>
-                            <RadioButton
-                              inputId={`${formattedKey}-${optionIdx}`}
-                              name={formattedKey}
-                              value={option.value}
-                              onChange={(ev) => handleChangeAnswer(ev, idx)}
-                              checked={
-                                answers[idx] &&
-                                answers[idx][formattedKey]?.value ===
-                                  option.value
-                              }
-                            />{' '}
-                            <div className={classes.question_option_label}>
-                              <label htmlFor={`${formattedKey}-${optionIdx}`}>
-                                {option.label}
-                              </label>
-                            </div>
-                          </Col>
-                        )
-                      })}
-                    </Row>
-                  </Fragment>
+          {loading ? (
+            <QuizSkeleton />
+          ) : (
+            <>
+              <h1 ref={backToTop} className={classes.title}>
+                {quiz?.title}
+              </h1>
+              <Carousel
+                indicators={false}
+                controls={false}
+                interval={null}
+                activeIndex={actualSection}
+                onSelect={handleChangeSection}>
+                {quiz?.sections.map((section: any) => (
+                  <Carousel.Item key={section.id}>
+                    <h2 className={classes.subtitle}>{section.title}</h2>
+                    {section.questions.map((question: any, idx: number) => (
+                      <Fragment key={`${section.id}-${question.id}`}>
+                        <p className={classes.question}>
+                          {idx + 1} - {question.title}
+                        </p>
+                        <Row>
+                          {question.answers.map((answer: any) => (
+                            <Col
+                              className={classes.question_option}
+                              key={`${section.id}-${question.id}-${answer.id}`}
+                              xs={6}
+                              md={3}>
+                              {question.type === 'SELECT' && (
+                                <RadioButton
+                                  inputId={`${section.id}-${question.id}-${answer.id}`}
+                                  value={answer}
+                                  onChange={(ev) =>
+                                    handleChangeAnswer(
+                                      ev,
+                                      section.id,
+                                      question.id,
+                                      question.type
+                                    )
+                                  }
+                                  checked={handleVerifyCheck(
+                                    section.id,
+                                    question.id,
+                                    answer.id
+                                  )}
+                                />
+                              )}
+                              {question.type === 'MULTISELECT' && (
+                                <Checkbox
+                                  inputId={`${section.id}-${question.id}-${answer.id}`}
+                                  value={answer}
+                                  onChange={(ev) =>
+                                    handleChangeAnswer(
+                                      ev,
+                                      section.id,
+                                      question.id,
+                                      question.type
+                                    )
+                                  }
+                                  checked={handleVerifyCheck(
+                                    section.id,
+                                    question.id,
+                                    answer.id
+                                  )}
+                                />
+                              )}{' '}
+                              <div className={classes.question_option_label}>
+                                <label
+                                  htmlFor={`${section.id}-${question.id}-${answer.id}`}>
+                                  {answer.title}
+                                </label>
+                              </div>
+                            </Col>
+                          ))}
+                        </Row>
+                      </Fragment>
+                    ))}
+                  </Carousel.Item>
                 ))}
-              </Carousel.Item>
-            ))}
-          </Carousel>
-          <Row className={classes.row}>
-            <Col xs={12} md={6}>
-              <Button
-                disabled={actualQuestion === 0}
-                onClick={handlePrevQuestion}
-                className={classes.button}>
-                Pregunta anterior
-              </Button>
-            </Col>
-            <Col xs={12} md={6}>
-              <Button
-                disabled={
-                  !verifyTestQuestions(actualQuestion, content?.test, answers)
-                }
-                onClick={handleNextQuestion}
-                className={classes.button}>
-                {actualQuestion < (content?.test.length as number) - 1
-                  ? `Siguiente pregunta ${actualQuestion + 1} - ${
-                      content?.test.length
-                    }`
-                  : 'Terminar test'}
-              </Button>
-            </Col>
-          </Row>
+              </Carousel>
+              <Row className={classes.row}>
+                <Col xs={12} md={6}>
+                  <Button
+                    disabled={actualSection === 0}
+                    onClick={handlePrevQuestion}
+                    className={classes.button}>
+                    Pregunta anterior
+                  </Button>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Button
+                    disabled={
+                      !verifyTestQuestions(
+                        actualSection,
+                        quiz?.sections[actualSection],
+                        answers
+                      )
+                    }
+                    onClick={handleNextQuestion}
+                    className={classes.button}>
+                    {actualSection < (quiz?.sections.length as number) - 1
+                      ? `Siguiente pregunta ${actualSection + 1} - ${
+                          quiz?.sections.length
+                        }`
+                      : 'Terminar test'}
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
           <ExploreBadge />
         </Container>
       </Container>
@@ -142,9 +280,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session)
     return { redirect: { destination: '/login', permanent: false }, props: {} }
 
-  const content = await import('@public/jsons/quiz/test.json')
+  const apolloClient = createApolloClient(session.token)
 
-  return { props: { content: content.default } }
+  const { data } = await apolloClient.query({
+    query: GET_MAIN_QUIZ,
+    context: { ms: microServices.backend },
+  })
+
+  return { props: { quizId: parseInt(data?.getDefaultSat?.value) } }
 }
 
 export default QuizPage

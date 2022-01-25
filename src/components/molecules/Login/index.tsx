@@ -112,7 +112,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
                   provider.id !== 'credentials' && (
                     <Button
                       key={provider.id}
-                      onClick={() => signIn(provider.id)}
+                      onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                       className={`my-3 ${classes.button}`}>
                       {provider.name}
                     </Button>

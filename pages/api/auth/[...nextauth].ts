@@ -6,6 +6,7 @@ import GoogleProvider from 'next-auth/providers/google'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import LOGIN from 'lib/mutations/Auth/login.gql'
+import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
 import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
@@ -13,6 +14,8 @@ import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
 // utils
 import jwt_decoder from 'jwt-decode'
 import { microServices } from 'commons'
+import moment from 'moment'
+import { createApolloClient } from 'lib/apolloClient'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -24,7 +27,7 @@ const LOGIN_RRSS = {
 
 export default NextAuth({
   pages: { error: '/login' }, // custom error page with query string as ?error=
-  session: { maxAge: 30 * 60 }, // initial value in seconds, logout on a half hour of inactivity
+  session: { maxAge: 60 * 60 }, // initial value in seconds, logout on a half hour of inactivity
   secret: process.env.SECRET,
 
   providers: [
@@ -112,6 +115,23 @@ export default NextAuth({
           } catch (error: any) {
             throw new Error(error.graphQLErrors[0].message)
           }
+        }
+      } else {
+        const now = moment(new Date())
+        const apolloClient = createApolloClient(token.backendRefresh)
+        const decoded: { exp: number } = jwt_decoder(token.backendToken)
+        const expireTokenTime = new Date(decoded.exp * 1000)
+        const timeToExpireToken = moment(expireTokenTime).add(-5, 'minutes')
+        const expired = timeToExpireToken.diff(now, 'minutes')
+
+        if (expired < 5) {
+          const { data } = await apolloClient.mutate({
+            mutation: REFRESH_TOKEN,
+            context: { ms: microServices.backend },
+          })
+
+          token.backendRefresh = data.refreshToken.refreshToken
+          token.backendToken = data.refreshToken.token
         }
       }
 

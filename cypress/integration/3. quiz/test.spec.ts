@@ -7,7 +7,7 @@ describe('Quiz user', () => {
   })
 
   it('verify render', () => {
-    cy.get('h1').should('have.text', 'Prueba de auto - diagnóstico')
+    cy.get('h1').should('exist')
 
     cy.get('button').then((button) => {
       expect(button).to.be.disabled
@@ -46,11 +46,7 @@ describe('Quiz user', () => {
           const answer = question.querySelector('div')
           answer.className = `${question.className} ${idx}-${index}`
 
-          cy.get(`.${idx}-${index}`)
-            .next()
-            .find('.p-radiobutton')
-            .first()
-            .click()
+          cy.get(`.${idx}-${index}`).next().find('.p-component').first().click()
         })
 
         if (actualSlide < slidesQuantity) {
@@ -63,8 +59,6 @@ describe('Quiz user', () => {
           cy.get('button')
             .contains('Terminar test')
             .should('not.have.attr', 'disabled')
-
-          cy.get('button').contains('Terminar test').click()
         }
       })
   })

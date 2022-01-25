@@ -13,6 +13,8 @@ First, add the environment variables.
 ```bash
 NEXTAUTH_URL=[YOUR_HOST_URL] # by default is 3000
 SECRET=[NEXT_AUTH_SECRET] # set base64 secret key
+BASE_API_URL=[BACKEND_URL] # set your backend uri
+BASE_STRAPI_URL=[CMS_URL] # set your cms uri
 GOOGLE_PUBLIC_ID=[GOOGLE_ID] # set google oauth public id
 GOOGLE_SECRET_ID=[GOOGLE_SECRET] # set google oauth secret id
 ```
