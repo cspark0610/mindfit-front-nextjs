@@ -4,9 +4,6 @@ import { Col, Row } from 'react-bootstrap'
 // PrimeComponents
 import { Skeleton } from 'primereact/skeleton'
 
-// Style
-import classes from 'styles/ChooseCoachSkeleton/chooseCoachSkeleton.module.scss'
-
 export const ChooseCoachSkeleton = () => {
   const skeletons = [1, 2, 3]
   return (
@@ -15,7 +12,7 @@ export const ChooseCoachSkeleton = () => {
         <Row className='mt-3'>
           {skeletons.map((skeleton) => (
             <Col key={skeleton} className='mb-4' xs={12} md={6}>
-              <div className={`${classes.skeleton_card} p-3 d-flex`}>
+              <div className='p-3 d-flex'>
                 <div>
                   <Skeleton shape='circle' width='100px' height='6rem' />
                   <Skeleton
@@ -26,12 +23,7 @@ export const ChooseCoachSkeleton = () => {
                   />
                 </div>
                 <div className='mx-4 w-100'>
-                  <Skeleton width='100%' height='1rem' className='mb-1' />
-                  <Skeleton width='100%' height='1rem' className='mb-1' />
-                  <Skeleton width='100%' height='1rem' className='mb-1' />
-                  <Skeleton width='100%' height='1rem' className='mb-1' />
-                  <Skeleton width='100%' height='1rem' className='mb-1' />
-                  <Skeleton width='100%' height='3rem' className='mt-5' />
+                  <Skeleton width='100%' height='12rem' className='mt-2' />
                 </div>
               </div>
             </Col>
