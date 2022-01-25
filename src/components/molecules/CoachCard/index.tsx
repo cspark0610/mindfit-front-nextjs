@@ -18,9 +18,10 @@ import { CoachDataType } from 'types/models/Coach'
 
 interface CoachCardProps {
   data: CoachDataType
+  content: any
 }
 
-export const CoachCard: FC<CoachCardProps> = ({ data }) => {
+export const CoachCard: FC<CoachCardProps> = ({ data, content }) => {
   const [showModal, setShowModal] = useState(false)
 
   const handleCloseModal = () => setShowModal(false)
@@ -57,7 +58,7 @@ export const CoachCard: FC<CoachCardProps> = ({ data }) => {
             <Button
               className={classes.button}
               onClick={() => handleOpenModal()}>
-              Ver Coach
+              {content?.sugestionButton.label}
             </Button>
           </Col>
         </Row>
@@ -69,7 +70,11 @@ export const CoachCard: FC<CoachCardProps> = ({ data }) => {
         onHide={handleCloseModal}
         size='lg'>
         <Modal.Body>
-          <CoachPreviewCard coach={data} handleCloseModal={handleCloseModal} />
+          <CoachPreviewCard
+            coach={data}
+            content={content}
+            handleCloseModal={handleCloseModal}
+          />
         </Modal.Body>
       </Modal>
     </>

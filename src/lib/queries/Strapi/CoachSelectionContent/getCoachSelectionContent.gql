@@ -1,0 +1,40 @@
+query CoachSelectionContent($locale: I18NLocaleCode) {
+  coachSelection(locale: $locale) {
+    data {
+      id
+      attributes {
+        title
+        sugestionButton {
+          label
+        }
+        otherCoachs
+        moreInfoButton {
+          label
+        }
+        prevButton {
+          label
+        }
+        nextButton {
+          label
+        }
+        suggestedCoachesTitle
+        suggestedCoachesDescription
+        suggestedCoachesOptions {
+          id
+          label
+          value
+        }
+        suggestedCoachesTextarea {
+          label
+          placeholder
+        }
+        suggestedCoachesSubmitButton {
+          label
+        }
+        suggestedCoachesCancelButton {
+          label
+        }
+      }
+    }
+  }
+}
