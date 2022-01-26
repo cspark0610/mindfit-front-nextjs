@@ -1,5 +1,5 @@
 // main tools
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
@@ -19,12 +19,14 @@ import { microServices } from 'commons'
 // utils
 import {
   INITIAL_STATE,
+  saveColaborator,
   verifyInviteColaboratorData,
 } from 'utils/addColaborator'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import COLLABORATOR_VIEW from 'lib/queries/CollaboratorAdd/collaboratorAdd.gql'
+import INVITE_COACHEE from 'lib/mutations/Coachee/inviteCoachee.gql'
 
 // styles
 import classes from 'styles/Colaborators/addPage.module.scss'
@@ -35,10 +37,12 @@ import { ChangeType, GetSSPropsType } from 'types'
 import { InvitedColaboratorType } from 'types/models/Colaborator'
 import { DropdownChangeParams } from 'primereact/dropdown'
 
+import { useSession } from 'next-auth/react'
+import { useMutation } from '@apollo/client'
+
 interface InvitedColaborators extends InvitedColaboratorType {
   status: boolean
   labelPosition: string
-  labelDepartment: string
   labelStatus: string
   stateSent: string
 }
@@ -52,11 +56,11 @@ const AddColaboratorPage: NextPage<
   const [expandedRows, setExpandedRows] = useState<InvitedColaboratorType[]>([])
   const [colaborator, setColaborator] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
+  const [addColaborator] = useMutation(INVITE_COACHEE)
 
   const label = {
     fullName: contentForm.input1,
     position: contentForm.input2,
-    department: contentForm.input3,
     email: contentForm.input4,
   }
 
@@ -72,12 +76,15 @@ const AddColaboratorPage: NextPage<
       content.validEmail
     )
     if (success) {
+      const { saved } = await saveColaborator(
+        colaborator,
+        addColaborator
+      )
       setInvitedColaborators([
         ...invitedColaborators,
         {
           ...colaborator,
-          status: true,
-          labelDepartment: label.department,
+          status: saved,
           labelPosition: label.position,
           labelStatus: content.status.label,
           stateSent: content.status.value,
@@ -95,10 +102,10 @@ const AddColaboratorPage: NextPage<
         <Row className={classes.row}>
           <Col md={4}>
             <InputText
-              name='fullName'
+              name='name'
               onChange={handleChange}
               className={classes.input}
-              value={colaborator.fullName}
+              value={colaborator.name}
               placeholder={label.fullName}
             />
           </Col>
@@ -110,16 +117,6 @@ const AddColaboratorPage: NextPage<
               className={classes.input}
               value={colaborator.position}
               placeholder={label.position}
-            />
-          </Col>
-          <Col md={4}>
-            <Dropdown
-              name='department'
-              onChange={handleChange}
-              className={classes.input}
-              options={['Development']}
-              placeholder={label.department}
-              value={colaborator.department}
             />
           </Col>
         </Row>
@@ -155,7 +152,7 @@ const AddColaboratorPage: NextPage<
             rowExpansionTemplate={rowExpansionTemplate}
             onRowToggle={(e) => setExpandedRows(e.data)}
             emptyMessage={content.emptyMessage}>
-            <Column field='fullName' header={content.column1} />
+            <Column field='name' header={content.column1} />
             <Column field='email' header={content.column2} />
             <Column expander className={classes.expander_right} />
           </DataTable>

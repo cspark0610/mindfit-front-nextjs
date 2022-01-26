@@ -12,17 +12,12 @@ export const rowExpansionTemplate: FC<
   InvitedColaboratorType & {
     status: boolean
     labelPosition: string
-    labelDepartment: string
     labelStatus: string
     stateSent: string
   }
 > = (props) => (
   <Container className={classes.section}>
     <Row>
-      <Col className='text-center' md={12} lg={4}>
-        <h5>{props.labelDepartment}</h5>
-        <p>{props.department}</p>
-      </Col>
       <Col className='text-center' md={12} lg={4}>
         <h5>{props.labelPosition}</h5>
         <p>{props.position}</p>

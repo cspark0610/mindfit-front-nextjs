@@ -1,9 +1,9 @@
-import { regexValidation } from 'commons'
+// Commons
+import { microServices, regexValidation } from 'commons'
 
 export const INITIAL_STATE = {
-  fullName: '',
+  name: '',
   position: '',
-  department: '',
   email: '',
 }
 
@@ -14,12 +14,28 @@ export const verifyInviteColaboratorData = (
 ) => {
   const validated = regexValidation(colaboratorData.email)
   if (
-    !colaboratorData.fullName ||
+    !colaboratorData.name ||
     !colaboratorData.position ||
-    !colaboratorData.department ||
     !colaboratorData.email
   )
     return { message: fillFields }
   if (!validated.isEmail) return { message: validEmail }
   return { success: true }
+}
+
+export const saveColaborator = async (
+  colaborator: typeof INITIAL_STATE,
+  addColaborator: Function
+) => {
+  let saved = false
+  try {
+    const { data } = await addColaborator({
+      variables: colaborator,
+      context: { ms: microServices.backend },
+    })
+    saved = !!data
+  } catch (error) {
+    console.log(error)
+  }
+  return { saved }
 }
