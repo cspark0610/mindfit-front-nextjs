@@ -1,8 +1,4 @@
-mutation inviteCoachee(
-  $name: String!
-  $email: String!
-  $position: String!
-) {
+mutation inviteCoachee($name: String!, $email: String!, $position: String!) {
   inviteCoachee(
     data: { user: { name: $name, email: $email }, position: $position }
   ) {

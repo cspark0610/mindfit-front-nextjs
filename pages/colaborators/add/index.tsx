@@ -56,6 +56,7 @@ const AddColaboratorPage: NextPage<
   const [expandedRows, setExpandedRows] = useState<InvitedColaboratorType[]>([])
   const [colaborator, setColaborator] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
+  const [addColaborator] = useMutation(INVITE_COACHEE)
 
   const label = {
     fullName: contentForm.input1,
@@ -67,8 +68,6 @@ const AddColaboratorPage: NextPage<
     error && setError('')
     setColaborator({ ...colaborator, [ev.target.name]: ev.target.value })
   }
-
-  const [addColaborator] = useMutation(INVITE_COACHEE)
 
   const handleInvite = async () => {
     const { message, success } = verifyInviteColaboratorData(

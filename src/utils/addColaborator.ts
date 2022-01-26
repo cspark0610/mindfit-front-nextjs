@@ -28,7 +28,6 @@ export const saveColaborator = async (
   addColaborator: Function
 ) => {
   let saved = false
-
   try {
     const { data } = await addColaborator({
       variables: colaborator,
@@ -38,6 +37,5 @@ export const saveColaborator = async (
   } catch (error) {
     console.log(error)
   }
-
   return { saved }
 }
