@@ -16,8 +16,9 @@ import { useMutation } from '@apollo/client'
 import { SubmitType } from 'types/index'
 
 //Mutations
-import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
+import RESET_PASSWORD from 'lib/mutations/requestResetPassword.gql'
 import { microServices } from 'commons'
+import { CheckSquare } from 'react-bootstrap-icons'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -38,9 +39,9 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
   }
 
   const [requestResetPassword] = useMutation(RESET_PASSWORD, {
-    onCompleted: ({ requestedResetPassword }) => {
+    onCompleted: () => {
       setShowError(false)
-      setRequestedPassword(requestedResetPassword)
+      setRequestedPassword(true)
     },
     onError: () => {
       setShowError(true)
@@ -75,6 +76,12 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
             {showError && (
               <span className={classes.errorText}>
                 Error: No se encuentra el usuario
+              </span>
+            )}
+            {requestedPassword && (
+              <span className={classes.successText}>
+                <CheckSquare width={24} height={24} />
+                Email de recuperación enviado con éxito
               </span>
             )}
           </Row>
