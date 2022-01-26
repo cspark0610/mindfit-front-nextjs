@@ -1,0 +1,23 @@
+mutation inviteCoachee(
+  $name: String!
+  $email: String!
+  $position: String!
+) {
+  inviteCoachee(
+    data: { user: { name: $name, email: $email }, position: $position }
+  ) {
+    id
+    user {
+      id
+      name
+    }
+    organization {
+      id
+      name
+    }
+    id
+    position
+    invited
+    invitationAccepted
+  }
+}
