@@ -1,5 +1,6 @@
 // Main tools
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 // Components
@@ -7,18 +8,21 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 import { AlertText } from 'components/atoms/AlertText'
 
+// prime components
+import { Password } from 'primereact/password'
+
+// bootstrap components
+import { Container, Row, Col, Button } from 'react-bootstrap'
+
 // commons
 import { microServices, regex } from 'commons'
 
 // Styles
-import { Password } from 'primereact/password'
-import { Container, Row, Col, Button } from 'react-bootstrap'
 import classes from 'styles/Login/ChangePassword/changePassword.module.scss'
 
 // Types
 import { NextPage, GetServerSidePropsContext } from 'next'
 import { ChangeType, GetSSPropsType, SubmitType } from 'types'
-import { useRouter } from 'next/router'
 
 //Apollo
 import { useMutation } from '@apollo/client'
@@ -29,92 +33,32 @@ import { resetPasswordValidation } from 'utils/resetPasswordValidation'
 
 const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
+  hash,
 }) => {
-  //state declarations
+  // state declarations
   const [password, setPassword] = useState({
-    newPassword: '',
-    repeatNewPassword: '',
+    password: '',
+    confirmPassword: '',
   })
+  const validation = resetPasswordValidation(hash as string, password)
+  const { push } = useRouter()
 
-  const [passwordError, setPasswordError] = useState({
-    error: false,
-    showAlert: false,
-    text: 'Algo malió sal',
-  })
-
-  //Required token and email
-  const queryValues = useRouter().query
-
-  //password validation
-  const [validation, setValidation] = useState(
-    resetPasswordValidation(password.newPassword, password.repeatNewPassword)
-  )
-
-  //mutation
+  // mutation
   const [resetPassword] = useMutation(RESET_PASSWORD, {
-    onCompleted: () => {
-      setPasswordError({
-        error: false,
-        showAlert: true,
-        text: 'Contraseña cambiada con éxito',
-      })
-    },
-    onError: () => {
-      setPasswordError({
-        error: true,
-        showAlert: true,
-        text: 'No se encuentra el usuario o no está activo',
-      })
-    },
+    onCompleted: () => push('/login'),
+    onError: (err) => console.log(err),
     context: { ms: microServices.backend },
   })
 
-  useEffect(() => {
-    if (!validation.isValid) {
-      setPasswordError({
-        error: !validation.isValid,
-        showAlert: true,
-        text: validation.message || '',
-      })
-    } else {
-      setPasswordError({
-        error: false,
-        showAlert: false,
-        text: validation?.message || '',
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [password.newPassword, password.repeatNewPassword])
-
-  //handlers
-  const handleChange = (ev: ChangeType) => {
+  // handlers
+  const handleChange = (ev: ChangeType) =>
     setPassword({ ...password, [ev.target.name]: ev.target.value })
-    if (ev.target.name === 'newPassword') {
-      setValidation(
-        resetPasswordValidation(ev.target.value, password.repeatNewPassword)
-      )
-    } else {
-      setValidation(
-        resetPasswordValidation(password.newPassword, ev.target.value)
-      )
-    }
-  }
 
   const handleSubmit = (e: SubmitType) => {
     e.preventDefault()
 
-    if (validation.isValid && queryValues?.email && queryValues?.token) {
-      resetPassword({
-        variables: {
-          data: {
-            email: queryValues.email,
-            hash: queryValues.token,
-            password: password.newPassword,
-            confirmPassword: password.repeatNewPassword,
-          },
-        },
-      })
-    }
+    if (validation.alertType === 'success')
+      resetPassword({ variables: { data: { ...password, hash } } })
   }
 
   return (
@@ -137,15 +81,15 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             <Row>
               <Password
                 toggleMask
-                name='newPassword'
+                name='password'
                 onChange={handleChange}
                 className={`mb-4 px-0 `}
                 promptLabel='Sugerencias'
-                value={password.newPassword}
+                value={password.password}
                 weakLabel='Contraseña muy corta'
                 strongLabel='Contraseña aceptada'
                 mediumRegex={regex.minSize.source}
-                inputClassName={`${classes.input}`}
+                inputClassName={classes.input}
                 footer={passwordSuggestionsTemplate}
                 mediumLabel='Por favor, tenga en cuenta las sugerencias'
                 placeholder={content.changePassword.newPassword.placeholder}
@@ -156,29 +100,22 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               <Password
                 toggleMask
                 feedback={false}
-                name='repeatNewPassword'
-                inputClassName={`${classes.input}`}
                 className='px-0'
-                value={password.repeatNewPassword}
+                name='confirmPassword'
                 onChange={handleChange}
+                value={password.confirmPassword}
+                inputClassName={classes.input}
                 placeholder={
                   content.changePassword.repeatNewPassword.placeholder
                 }
               />
             </Row>
-            <Row>
-              {passwordError.showAlert === true && (
-                <AlertText
-                  alertType={passwordError.error ? 'error' : 'success'}
-                  text={passwordError.text}
-                />
-              )}
-            </Row>
+            <Row>{validation.showAlert && <AlertText {...validation} />}</Row>
             <Row>
               <Button
-                disabled={!validation.isValid}
+                disabled={validation.alertType !== 'success'}
                 type='submit'
-                className={`my-5 ${classes.button}`}>
+                className={`mt-5 ${classes.button}`}>
                 {content.changePassword.changuePasswordButton}
               </Button>
             </Row>
@@ -192,8 +129,9 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const content = await import('@public/jsons/changePassword.json')
+  const hash = ctx.query.token || ''
 
-  return { props: { content: content.default } }
+  return { props: { content: content.default, hash } }
 }
 
 export default ChangePassword

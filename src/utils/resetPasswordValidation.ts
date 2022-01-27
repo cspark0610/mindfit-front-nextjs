@@ -1,34 +1,57 @@
 import { regexValidation } from 'commons'
 
 export const resetPasswordValidation = (
-  password: string,
-  confirmation: string
-) => {
-  if (password.length >= 8 || confirmation.length >= 8) {
-    //no send diff
-    if (password === confirmation) {
-      const { minSize, hasLetters, hasNumbers, hasSpecials } =
-        regexValidation(password)
-      //validate chars
-      if (minSize && hasLetters && hasNumbers && hasSpecials) {
-        //ok
-        return { isValid: true }
-      } else {
-        //error
-        return {
-          isValid: false,
-          message: 'La contraseña no cumple los requisitos',
-        }
-      }
-    } else {
-      //error
-      return { isValid: false, message: 'Las contraseñas no coinciden' }
-    }
-  } else {
-    //error
-    return {
-      isValid: false,
-      message: 'La contraseña debe tener minimo 8 caracteres',
-    }
+  hash: string,
+  data: {
+    password: string
+    confirmPassword: string
   }
+) => {
+  const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
+    data.password
+  )
+
+  if (hash === '')
+    return {
+      showAlert: true,
+      alertType: 'error',
+      text: 'Por favor, solicite un cambio de contraseña e ingrese desde el enlace recibido en su correo',
+    }
+
+  if (data.password === '' && data.confirmPassword === '')
+    return {
+      showAlert: false,
+      alertType: 'error',
+      text: '',
+    }
+
+  if (data.password !== data.confirmPassword)
+    return {
+      showAlert: true,
+      alertType: 'error',
+      text: 'Las contraseñas no coinciden',
+    }
+
+  if (!minSize)
+    return {
+      showAlert: true,
+      alertType: 'error',
+      text: 'Contraseña muy corta',
+    }
+
+  if (!hasSpecials)
+    return {
+      showAlert: true,
+      alertType: 'error',
+      text: 'Debe ingresar al menos un caracter especial',
+    }
+
+  if (!hasLetters || !hasNumbers)
+    return {
+      showAlert: true,
+      alertType: 'error',
+      text: 'Debe ingresar al menos un caracter numerico o alfabetico',
+    }
+
+  return { alertType: 'success', showAlert: false, text: '' }
 }
