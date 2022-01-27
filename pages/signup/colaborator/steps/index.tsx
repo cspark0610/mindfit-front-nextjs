@@ -68,8 +68,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     {
       label: content.steps[1].label,
       action: content.steps[1].action,
-      completed: !session || session.user.name === '1' ? false : true,
-      url: '/test',
+      completed: !session?.user.coach ? false : true,
+      url: '/quiz',
     },
     {
       label: content.steps[2].label,

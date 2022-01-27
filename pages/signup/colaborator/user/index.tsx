@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap'
 import { ColaboratorSignup } from 'components/organisms/ColaboratorSignup'
 
 // styles
-import classes from 'styles/signup/colaborator.module.scss'
+import classes from 'styles/signup/userColaborator.module.scss'
 
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
@@ -29,9 +29,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
     return { redirect: { destination: '/signup', permanent: false }, props: {} }
-  if (session?.user.coachee)
+  if (!session?.user.coachee)
     return {
-      redirect: { destination: '/signup/colaborator/steps', permanent: false },
+      redirect: { destination: '/signup', permanent: false },
       props: {},
     }
 

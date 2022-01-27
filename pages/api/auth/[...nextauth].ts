@@ -87,22 +87,24 @@ export default NextAuth({
       async authorize(credentials) {
         const apolloClient = initializeApolloClient()
 
-        const { data } = await apolloClient
-          .mutate({
+        try {
+          const { data } = await apolloClient.mutate({
             variables: {
               data: {
                 hash: credentials?.hash,
                 password: credentials?.password,
+                confirmPassword: credentials?.confirmPassword,
               },
             },
             mutation: CREATE_PASSWORD,
             context: { ms: microServices.backend },
           })
-          .catch((err) => {
-            throw new Error(err.graphQLErrors[0].message)
-          })
+          if (data.createPassword) return data.createPassword
+        } catch (error: any) {
+          if (error.graphQLErrors)
+            throw new Error(error.graphQLErrors[0].message)
+        }
 
-        if (data.createPassword) return data.createPassword
         return null
       },
     }),
@@ -117,7 +119,11 @@ export default NextAuth({
      * @return jwt that will be send to session callback
      */
     jwt: async ({ token, user, account }) => {
-      if (user && account?.provider === 'credentials') {
+      if (
+        user &&
+        (account?.provider === 'credentials' ||
+          account?.provider === 'createPassword')
+      ) {
         token.backendRefresh = user.refreshToken as string
         token.backendToken = user.token as string
       } else if (account) {
