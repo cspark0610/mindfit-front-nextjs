@@ -1,0 +1,12 @@
+query organizationSteps {
+   organizationSteps{
+    data{
+      attributes{
+        steps{
+          label
+          value
+        }
+      }
+    }
+  }
+}

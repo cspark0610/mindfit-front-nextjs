@@ -1,0 +1,27 @@
+query userRegister {
+  userRegister {
+    data {
+      attributes {
+        fillFields
+        promptLabel
+        weakLabel
+        mediumLabel
+        strongLabel
+        form {
+          data {
+            attributes {
+              title
+              input1
+              input2
+              input3
+              input4
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

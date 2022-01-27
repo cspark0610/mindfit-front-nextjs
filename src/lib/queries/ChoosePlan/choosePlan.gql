@@ -1,0 +1,54 @@
+query choosePlan {
+  choosePlan {
+    data {
+      attributes {
+        currentPlan {
+          label
+          value
+        }
+        next {
+          label
+        }
+        card_plans {
+          data {
+            attributes {
+              header {
+                label
+                value
+              }
+              items {
+                label
+                check
+              }
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  paymentMethod {
+    data {
+      attributes {
+        title
+        subtitle
+        creditCard {
+          data {
+            attributes {
+              title
+              input1
+              input2
+              input3
+              input4
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 770px) {
+    height: auto;
+    display: block;
+    margin-top: 4rem;
+  }
+
+  .row {
+    margin: 2rem 0;
+
+    @media (max-width: 770px) {
+      margin: 0;
+      text-align: center;
+      > div {
+        margin: 0.7rem 0;
+      }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: $lightGray;
+      font-size: 12px;
+    }
+    .title {
+      text-align: center;
+      color: $lightPrimary;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .img {
+      border-radius: 10px;
+    }
+    .cardPoint {
+      color: $lightBlue;
+      text-align: center;
+      background-color: $lightPrimary;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 10px;
+
+      .point {
+        font-size: calc(1.375rem + 1.5vw);
+      }
+      div {
+        font-size: 12px;
+      }
+    }
+
+    p {
+      font-size: 12px;
+      color: $gray;
+
+      .icon {
+        color: $lightPrimary;
+        margin-right: 5px;
+      }
+    }
+  }
+}
