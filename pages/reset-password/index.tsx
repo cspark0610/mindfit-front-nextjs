@@ -1,5 +1,5 @@
 // Main tools
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 // Components
@@ -8,7 +8,7 @@ import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestion
 import { AlertText } from 'components/atoms/AlertText'
 
 // commons
-import { microServices, regex, regexValidation } from 'commons'
+import { microServices, regex } from 'commons'
 
 // Styles
 import { Password } from 'primereact/password'
@@ -24,96 +24,95 @@ import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
 
+//Utils
+import { resetPasswordValidation } from 'utils/resetPasswordValidation'
+
 const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
+  //state declarations
   const [password, setPassword] = useState({
     newPassword: '',
     repeatNewPassword: '',
   })
-  const [queryError, setqueryError] = useState({
+
+  const [passwordError, setPasswordError] = useState({
     error: false,
     showAlert: false,
+    text: 'Algo malió sal',
   })
-  const [alertTextValues, setalertTextValues] = useState({
-    alertType: 'error',
-    text: 'Opps',
-  })
+
+  //Required token and email
   const queryValues = useRouter().query
 
-  const handleChange = (ev: ChangeType) => {
-    setPassword({ ...password, [ev.target.name]: ev.target.value })
-  }
+  //password validation
+  const [validation, setValidation] = useState(
+    resetPasswordValidation(password.newPassword, password.repeatNewPassword)
+  )
 
+  //mutation
   const [resetPassword] = useMutation(RESET_PASSWORD, {
     onCompleted: () => {
-      setqueryError({
+      setPasswordError({
         error: false,
         showAlert: true,
-      })
-      setalertTextValues({
-        alertType: 'success',
         text: 'Contraseña cambiada con éxito',
       })
     },
     onError: () => {
-      setqueryError({
+      setPasswordError({
         error: true,
         showAlert: true,
+        text: 'No se encuentra el usuario o no está activo',
       })
     },
     context: { ms: microServices.backend },
   })
 
+  useEffect(() => {
+    if (!validation.isValid) {
+      setPasswordError({
+        error: !validation.isValid,
+        showAlert: true,
+        text: validation.message || '',
+      })
+    } else {
+      setPasswordError({
+        error: false,
+        showAlert: false,
+        text: validation?.message || '',
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [password.newPassword, password.repeatNewPassword])
+
+  //handlers
+  const handleChange = (ev: ChangeType) => {
+    setPassword({ ...password, [ev.target.name]: ev.target.value })
+    if (ev.target.name === 'newPassword') {
+      setValidation(
+        resetPasswordValidation(ev.target.value, password.repeatNewPassword)
+      )
+    } else {
+      setValidation(
+        resetPasswordValidation(password.newPassword, ev.target.value)
+      )
+    }
+  }
+
   const handleSubmit = (e: SubmitType) => {
     e.preventDefault()
-    //no send empty
-    if (password.newPassword !== '' && password.repeatNewPassword !== '') {
-      //no send diff
-      if (password.newPassword === password.repeatNewPassword) {
-        const { minSize, hasLetters, hasNumbers, hasSpecials } =
-          regexValidation(password.newPassword)
-        //validate chars
-        if (minSize && hasLetters && hasNumbers && hasSpecials) {
-          //send
-          resetPassword({
-            variables: {
-              data: {
-                email: queryValues.email,
-                hash: queryValues.token,
-                password: password.newPassword,
-                confirmPassword: password.repeatNewPassword,
-              },
-            },
-          })
-        } else {
-          setalertTextValues({
-            alertType: 'error',
-            text: 'Las contraseñas no cumplen los requerimientos',
-          })
-          setqueryError({
-            error: true,
-            showAlert: true,
-          })
-        }
-      } else {
-        setalertTextValues({
-          alertType: 'error',
-          text: 'Las contraseñas no coinciden',
-        })
-        setqueryError({
-          error: true,
-          showAlert: true,
-        })
-      }
-    } else {
-      setalertTextValues({
-        alertType: 'error',
-        text: 'Los campos de contraseña no pueden quedar vacios',
-      })
-      setqueryError({
-        error: true,
-        showAlert: true,
+
+    if (validation.isValid && queryValues?.email && queryValues?.token) {
+      resetPassword({
+        variables: {
+          data: {
+            email: queryValues.email,
+            hash: queryValues.token,
+            password: password.newPassword,
+            confirmPassword: password.repeatNewPassword,
+          },
+        },
       })
     }
   }
@@ -168,21 +167,16 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               />
             </Row>
             <Row>
-              {queryError.error === true && queryError.showAlert === true && (
+              {passwordError.showAlert === true && (
                 <AlertText
-                  alertType={alertTextValues.alertType}
-                  text={alertTextValues.text}
+                  alertType={passwordError.error ? 'error' : 'success'}
+                  text={passwordError.text}
                 />
               )}
             </Row>
             <Row>
               <Button
-                disabled={
-                  password.newPassword === '' &&
-                  password.repeatNewPassword === ''
-                    ? true
-                    : false
-                }
+                disabled={!validation.isValid}
                 type='submit'
                 className={`my-5 ${classes.button}`}>
                 {content.changePassword.changuePasswordButton}
