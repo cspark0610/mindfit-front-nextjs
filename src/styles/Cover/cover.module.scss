@@ -1,6 +1,7 @@
 @import '../variables.scss';
 
 .container {
+  position: relative;
   height: 100vh;
   padding-left: 120px;
   background: linear-gradient(
@@ -8,6 +9,9 @@
     rgba(255, 255, 255, 0.5998774509803921) 50%,
     rgba(0, 212, 255, 1) 100%
   );
+  @media (max-width: 528px) {
+    padding-left: 30px;
+  }
 }
 
 .title {
@@ -15,6 +19,9 @@
   position: relative;
   top: 30%;
   font-size: 68px;
+  @media (max-width: 430px) {
+    font-size: 40px;
+  }
 }
 
 .copyright {
@@ -23,22 +30,12 @@
   left: -130px;
   transform: rotate(-90deg);
   font-size: 18px;
-}
-
-.box {
-  height: 150px;
-  width: 150px;
-  border-radius: 25px;
-  background-color: $white;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  transform: rotate(40deg);
-  position: absolute;
-}
-
-.left {
-  top: -50px;
-  left: -55px;
-}
-
-.right {
+  @media (max-width: 528px) {
+    transform: rotate(0);
+    top: 90%;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+  }
 }

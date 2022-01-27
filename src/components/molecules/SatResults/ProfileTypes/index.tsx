@@ -1,16 +1,22 @@
-import { Container, Row } from 'react-bootstrap'
+// Bootstrap Component
+import { Container, Row, Col } from 'react-bootstrap'
+
+// Styles
 import classes from 'styles/ProfileTypes/profileTypes.module.scss'
 
-export const ProfileTypes = () => {
+// Types
+import { FC } from 'react'
+
+export const ProfileTypes: FC = () => {
   return (
-    <div
+    <Container
       className={`d-flex flex-column justify-content-center ${classes.container}`}>
       <p className={classes.header}>
         Ahora es el turno de conocer qué tipo de perfil no trabas con el equipo
       </p>
       <h1 className={`${classes.title} mb-5`}>Trabajo en equipo</h1>
       <Container>
-        <Row xs={2}>
+        <Row xs={1} md={2}>
           <div>
             <p className={classes.description}>
               ¿Qué <b>perfiles</b> podemos desarrollar si lo viésemos necesario?
@@ -40,6 +46,7 @@ export const ProfileTypes = () => {
               </p>
             </ul>
           </div>
+
           <div>
             <ul>
               <li className={`${classes.profile} mb-2`}>Evaluador</li>
@@ -73,6 +80,6 @@ export const ProfileTypes = () => {
           </div>
         </Row>
       </Container>
-    </div>
+    </Container>
   )
 }

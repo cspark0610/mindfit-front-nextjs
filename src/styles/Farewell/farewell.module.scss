@@ -3,6 +3,14 @@
 
 .container {
   height: 100vh;
+
+  @media (max-width: 990px) {
+    height: auto;
+    margin-top: 4rem;
+  }
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 }
 
 .header {
@@ -23,6 +31,6 @@
   color: $lightPrimary;
   border: 2px solid $lightPrimary;
   border-radius: 0;
-  width: 300px;
+  width: 280px;
   font-weight: bold;
 }

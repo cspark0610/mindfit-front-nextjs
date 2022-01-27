@@ -2,6 +2,10 @@
 
 .container {
   height: 100vh;
+  @media (max-width: 990px) {
+    height: auto;
+    margin-top: 4rem;
+  }
 }
 
 .header {
@@ -17,6 +21,9 @@
 
 .description {
   font-size: 28px;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 }
 
 .profile {

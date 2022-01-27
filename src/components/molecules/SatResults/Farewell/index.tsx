@@ -1,10 +1,18 @@
+// Main tools
+import Image from 'next/image'
+// Bootstrap Component
 import { Container, Row, Button } from 'react-bootstrap'
+
+// Styles
 import classes from 'styles/Farewell/farewell.module.scss'
 
-export const Farewell = () => {
+// Types
+import { FC } from 'react'
+
+export const Farewell: FC = () => {
   return (
     <Container className={`${classes.container} d-flex align-items-center`}>
-      <Row xs={2}>
+      <Row xs={1} md={2}>
         <div>
           <p className={classes.header}>Hacia tu mejor versión</p>
           <h1 className={`${classes.title} mb-4`}>
@@ -23,7 +31,12 @@ export const Farewell = () => {
           </Button>
         </div>
         <div>
-          <img src='/assets/icon/MINDFIT.svg' alt='' />
+          <Image
+            src='/assets/icon/MINDFIT.svg'
+            alt=''
+            width={500}
+            height={500}
+          />
         </div>
       </Row>
     </Container>

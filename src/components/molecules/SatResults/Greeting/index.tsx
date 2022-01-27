@@ -1,12 +1,19 @@
-import { Container, Row, Col, Button } from 'react-bootstrap'
+// Main tools
+import Image from 'next/image'
+
+// Bootstrap Component
+import { Container, Row, Button } from 'react-bootstrap'
 
 // Styles
 import classes from 'styles/Greeting/greeting.module.scss'
 
-export const Greeting = () => {
+// Types
+import { FC } from 'react'
+
+export const Greeting: FC = () => {
   return (
     <Container className={classes.container}>
-      <Row xs={2} className='h-100 align-items-center'>
+      <Row xs={1} md={2} className='h-100 align-items-center'>
         <div>
           <p className={`${classes.header} mb-5`}>
             Camino al autodescubrimiento
@@ -29,7 +36,12 @@ export const Greeting = () => {
           <Button className={classes.button}>Comencemos</Button>
         </div>
         <div>
-          <img src='/assets/icon/MINDFIT.svg' alt='' />
+          <Image
+            src='/assets/icon/MINDFIT.svg'
+            alt=''
+            width={500}
+            height={500}
+          />
         </div>
       </Row>
     </Container>
