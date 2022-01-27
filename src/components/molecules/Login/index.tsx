@@ -107,7 +107,8 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
             <Row>
               {providers?.map(
                 (provider) =>
-                  provider.id !== 'credentials' && (
+                  provider.id !== 'credentials' &&
+                  provider.id !== 'createPassword' && (
                     <Button
                       key={provider.id}
                       onClick={() => signIn(provider.id, { callbackUrl: '/' })}

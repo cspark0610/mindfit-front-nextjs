@@ -17,7 +17,8 @@ import { GetSSPropsType } from 'types'
 
 const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
-  token,
+  hash,
+  error,
 }) => {
   return (
     <Container className={classes.container}>
@@ -30,7 +31,11 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           height={150}
         />
       </div>
-      <FirstColaboratorLogin token={token as string} content={content?.login} />
+      <FirstColaboratorLogin
+        error={error as string}
+        hash={hash as string}
+        content={content?.login}
+      />
     </Container>
   )
 }
@@ -43,12 +48,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {},
     }
 
-  const token = ctx.query.token as string
+  const { token, error } = ctx.query
   const contentLoginCard = await import(
     '@public/jsons/firstColaboratorLogin/login.json'
   )
 
-  return { props: { content: contentLoginCard.default, token } }
+  return {
+    props: {
+      content: contentLoginCard.default,
+      hash: token,
+      error: error ?? '',
+    },
+  }
 }
 
 export default SignupOrgPage

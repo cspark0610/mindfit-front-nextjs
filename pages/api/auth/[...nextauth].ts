@@ -6,6 +6,7 @@ import GoogleProvider from 'next-auth/providers/google'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import LOGIN from 'lib/mutations/Auth/login.gql'
+import CREATE_PASSWORD from 'lib/mutations/Auth/createPassword.gql'
 import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
 import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
@@ -61,10 +62,47 @@ export default NextAuth({
             context: { ms: microServices.backend },
           })
           .catch((err) => {
-            throw new Error(err.graphQLErrors[0].message)
+            throw new Error(err.graphQLErrors[0]?.message)
           })
 
         if (data.signIn) return data.signIn
+        return null
+      },
+    }),
+    CredentialsProvider({
+      name: 'createPassword',
+      id: 'createPassword',
+      credentials: {
+        hash: { type: 'string' },
+        password: { type: 'password' },
+        confirmPassword: { type: 'password' },
+      },
+
+      /**
+       * verify if the user is found in the backend
+       *
+       * @param credentials
+       * @returns
+       */
+      async authorize(credentials) {
+        const apolloClient = initializeApolloClient()
+
+        const { data } = await apolloClient
+          .mutate({
+            variables: {
+              data: {
+                hash: credentials?.hash,
+                password: credentials?.password,
+              },
+            },
+            mutation: CREATE_PASSWORD,
+            context: { ms: microServices.backend },
+          })
+          .catch((err) => {
+            throw new Error(err.graphQLErrors[0].message)
+          })
+
+        if (data.createPassword) return data.createPassword
         return null
       },
     }),
