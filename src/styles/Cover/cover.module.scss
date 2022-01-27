@@ -1,0 +1,44 @@
+@import '../variables.scss';
+
+.container {
+  height: 100vh;
+  padding-left: 120px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5998774509803921) 50%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.title {
+  color: $lightPrimary;
+  position: relative;
+  top: 30%;
+  font-size: 68px;
+}
+
+.copyright {
+  position: absolute;
+  top: 50%;
+  left: -130px;
+  transform: rotate(-90deg);
+  font-size: 18px;
+}
+
+.box {
+  height: 150px;
+  width: 150px;
+  border-radius: 25px;
+  background-color: $white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transform: rotate(40deg);
+  position: absolute;
+}
+
+.left {
+  top: -50px;
+  left: -55px;
+}
+
+.right {
+}
