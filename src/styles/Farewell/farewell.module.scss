@@ -1,0 +1,36 @@
+@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
+
+.container {
+  height: 100vh;
+
+  @media (max-width: 990px) {
+    height: auto;
+    margin-top: 4rem;
+  }
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.header {
+  color: $lightGray;
+}
+
+.title {
+  color: $lightPrimary;
+  font-size: 62px;
+}
+
+.paragraph {
+  font-size: 18px;
+}
+
+.button {
+  background: $white;
+  color: $lightPrimary;
+  border: 2px solid $lightPrimary;
+  border-radius: 0;
+  width: 280px;
+  font-weight: bold;
+}
