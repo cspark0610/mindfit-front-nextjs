@@ -1,0 +1,29 @@
+@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
+
+.container {
+  height: 100vh;
+}
+
+.header {
+  color: $lightGray;
+}
+
+.greeting {
+  color: $lightPrimary;
+  font-size: 64px;
+}
+
+.paragraph {
+  font-size: 18px;
+}
+
+.button {
+  width: 200px;
+  background-color: $white;
+  color: $lightPrimary;
+  height: 60px;
+  border-radius: 0;
+  border: 2px solid $lightPrimary;
+  font-weight: bold;
+}
