@@ -1,0 +1,3 @@
+mutation verifyAccount($data: VerifyAccountDto!) {
+  verifyAccount(data: $data)
+}

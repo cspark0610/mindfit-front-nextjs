@@ -1,0 +1,19 @@
+@import '../variables.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.container {
+  width: 100%;
+  .card {
+    padding: 46px 56px;
+    max-width: 420px;
+    width: 100%;
+  }
+}
+.InputMask {
+  text-transform: uppercase;
+  letter-spacing: 18px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 700;
+}
