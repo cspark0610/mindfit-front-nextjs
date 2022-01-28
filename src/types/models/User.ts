@@ -1,10 +1,14 @@
-import { CompanyDataType } from 'types/models/Company'
+import { OrganizationDataType } from 'types/models/Organization'
+import { CoachDataType } from 'types/models/Coach'
+import { CoacheeDataType } from 'types/models/Coachee'
 
 export type UserDataType = {
   id?: number
   sub?: number
   name?: string
   email?: string
+  coach?: CoachDataType
+  coachee?: CoacheeDataType
   isStaff?: boolean
   password?: string
   lastName?: string
@@ -13,6 +17,6 @@ export type UserDataType = {
   firstName?: string
   isVerified?: boolean
   isSuperUser?: boolean
-  organization?: CompanyDataType
-  picture?: File
+  organization?: OrganizationDataType
+  profilePicture?: File
 }

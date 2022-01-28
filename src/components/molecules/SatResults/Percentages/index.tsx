@@ -1,6 +1,9 @@
 // Main tools
 import Image from 'next/image'
 
+// Animation
+import { motion } from 'framer-motion'
+
 // bootstrap components
 import {
   Button,

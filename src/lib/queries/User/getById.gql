@@ -5,5 +5,14 @@ query GetUserById($id: Int!) {
     isSuperUser
     isVerified
     name
+    coach {
+      id
+    }
+    coachee {
+      id
+    }
+    organization {
+      id
+    }
   }
 }

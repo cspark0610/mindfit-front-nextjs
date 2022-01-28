@@ -1,6 +1,9 @@
 // Main tools
 import Image from 'next/image'
 
+// Animation
+import { motion } from 'framer-motion'
+
 // components
 import { ChartBar } from 'components/atoms/Graphics/ChartBar'
 
@@ -26,8 +29,15 @@ export const Graph: FC = () => {
   ]
   const data = [16.3, 3.8, 3.8, 14.6, 12.1, 4.6, 1.5]
 
+  const ContainerMotion = motion(Container)
+
   return (
-    <Container className={classes.container}>
+    <ContainerMotion
+      initial={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      className={classes.container}>
       <Container>
         <Row className={classes.row}>
           <div className={classes.subtitle}>
@@ -55,6 +65,6 @@ export const Graph: FC = () => {
           </Col>
         </Row>
       </Container>
-    </Container>
+    </ContainerMotion>
   )
 }

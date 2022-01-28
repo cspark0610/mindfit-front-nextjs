@@ -1,8 +1,6 @@
 // Main tools
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
-import jwt_decoder from 'jwt-decode'
 
 // Components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
@@ -10,7 +8,6 @@ import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestion
 
 // bootstrap components
 import { Row, Col, Button } from 'react-bootstrap'
-import { XLg } from 'react-bootstrap-icons'
 
 // prime components
 import { Password } from 'primereact/password'
@@ -25,46 +22,40 @@ import classes from 'styles/Login/LoginCard/loginCard.module.scss'
 // Types
 import { ChangeType, SubmitType } from 'types'
 import { FC } from 'react'
+import { AlertText } from 'components/atoms/AlertText'
 
-export const FirstColaboratorLogin: FC<{ token: string; content: any }> = ({
-  token,
-  content,
-}) => {
-  const [user, setUser] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
-  const { query } = useRouter()
+export const FirstColaboratorLogin: FC<{
+  hash: string
+  error: string
+  content: any
+}> = ({ hash, error, content }) => {
+  const [data, setData] = useState({ hash, password: '', confirmPassword: '' })
+  const [errorMessage, setErrorMessage] = useState(error)
+
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
-    user.password
+    data.password
   )
-  const disableButton = !minSize || !hasSpecials || (!hasLetters && !hasNumbers)
+  const disableButton =
+    data.password !== data.confirmPassword ||
+    !minSize ||
+    !hasSpecials ||
+    (!hasLetters && !hasNumbers)
 
-  const handleChange = (ev: ChangeType) => {
-    setUser({ ...user, [ev.target.name]: ev.target.value })
-  }
+  const handleChange = (ev: ChangeType) =>
+    setData({ ...data, [ev.target.name]: ev.target.value })
 
   const handleSubmit = (ev: SubmitType) => {
     ev.preventDefault()
-    // update password process with token
-
-    signIn('credentials', { ...user, callbackUrl: '/signup/colaborator/steps' })
+    // update password process with hash
+    signIn('createPassword', {
+      ...data,
+      callbackUrl: '/signup/colaborator/steps',
+    })
   }
 
   useEffect(() => {
-    query.error && setError('Usuario o Contraseña incorrectos')
-  }, [query])
-
-  useEffect(() => {
-    if (token) {
-      try {
-        const decoded: { email?: string } = jwt_decoder(token)
-        if (decoded.email)
-          setUser((user) => ({ ...user, email: decoded.email as string }))
-        else setError('Solicite una invitacion para acceder')
-      } catch (error) {
-        setError('Solicite una invitacion para acceder')
-      }
-    }
-  }, [token])
+    !hash && setErrorMessage('Solicite una invitacion para acceder')
+  }, [hash])
 
   return (
     <Row className={classes.container}>
@@ -75,21 +66,20 @@ export const FirstColaboratorLogin: FC<{ token: string; content: any }> = ({
           <Row>
             <InputText
               disabled={true}
-              type='email'
-              name='email'
+              type='password'
+              name='hash'
               className={`mb-4 ${classes.input}`}
-              value={user.email}
+              value={data.hash}
               onChange={handleChange}
               placeholder={content.email.placeholder}
             />
           </Row>
-          <Row className='mb-5'>
+          <Row>
             <Password
               toggleMask
               name='password'
-              value={user.password}
+              value={data.password}
               onChange={handleChange}
-              disabled={error !== ''}
               className={`mb-4 px-0 `}
               promptLabel='Sugerencias'
               weakLabel='Contraseña muy corta'
@@ -102,17 +92,27 @@ export const FirstColaboratorLogin: FC<{ token: string; content: any }> = ({
               strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
             />
           </Row>
-          {error && (
+          <Row>
+            <Password
+              toggleMask
+              feedback={false}
+              className='mb-2 px-0'
+              name='confirmPassword'
+              onChange={handleChange}
+              value={data.confirmPassword}
+              inputClassName={classes.input}
+              placeholder='Confirmar contraseña'
+            />
+          </Row>
+          {errorMessage && (
             <Row className='text-center'>
-              <strong className='p-error'>
-                <XLg className='p-error' /> {error}
-              </strong>
+              <AlertText alertType='error' text={errorMessage} />
             </Row>
           )}
           <Row>
             <Button
-              disabled={error !== '' || disableButton}
               type='submit'
+              disabled={disableButton}
               className={`my-3 ${classes.button}`}>
               {content.loginButton}
             </Button>

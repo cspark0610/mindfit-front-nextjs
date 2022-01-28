@@ -1,6 +1,9 @@
 // Bootstrap Component
 import { Container, Row, Col } from 'react-bootstrap'
 
+// Animation
+import { motion } from 'framer-motion'
+
 // Styles
 import classes from 'styles/ProfileTypes/profileTypes.module.scss'
 
@@ -17,7 +20,10 @@ export const ProfileTypes: FC = () => {
       <h1 className={`${classes.title} mb-5`}>Trabajo en equipo</h1>
       <Container>
         <Row xs={1} md={2}>
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}>
             <p className={classes.description}>
               ¿Qué <b>perfiles</b> podemos desarrollar si lo viésemos necesario?
             </p>
@@ -45,9 +51,12 @@ export const ProfileTypes: FC = () => {
                 del equipo. Tu nivel de adaptación a este perfil es bajo.
               </p>
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}>
             <ul>
               <li className={`${classes.profile} mb-2`}>Evaluador</li>
               <p>
@@ -77,7 +86,7 @@ export const ProfileTypes: FC = () => {
                 este perfil es muy bajo.
               </p>
             </ul>
-          </div>
+          </motion.div>
         </Row>
       </Container>
     </Container>
