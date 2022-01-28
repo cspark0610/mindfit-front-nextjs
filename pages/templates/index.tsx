@@ -12,10 +12,10 @@ const Template = () => {
     <div>
       <Cover />
       <Greeting />
-      <Farewell />
+      <ProfileTypes />
       <Graph />
       <Percentages />
-      <ProfileTypes />
+      <Farewell />
     </div>
   )
 }

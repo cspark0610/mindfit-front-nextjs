@@ -3,9 +3,10 @@ import Image from 'next/image'
 
 // Animation
 import { motion } from 'framer-motion'
+import { viewportFadeIn } from 'commons/animations'
 
 // Bootstrap Component
-import { Container, Row, Button } from 'react-bootstrap'
+import { Row, Button, Container } from 'react-bootstrap'
 
 // Styles
 import classes from 'styles/Greeting/greeting.module.scss'
@@ -17,11 +18,7 @@ export const Greeting: FC = () => {
   return (
     <Container className={classes.container}>
       <Row xs={1} md={2} className='h-100 align-items-center'>
-        <motion.div
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}>
+        <motion.div {...viewportFadeIn}>
           <p className={`${classes.header} mb-5`}>
             Camino al autodescubrimiento
           </p>
@@ -42,10 +39,7 @@ export const Greeting: FC = () => {
           </p>
           <Button className={classes.button}>Comencemos</Button>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}>
+        <motion.div {...viewportFadeIn}>
           <Image
             src='/assets/icon/MINDFIT.svg'
             alt=''

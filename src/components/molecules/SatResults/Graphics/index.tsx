@@ -1,15 +1,18 @@
 // Main tools
 import Image from 'next/image'
 
-// Animation
-import { motion } from 'framer-motion'
-
 // components
 import { ChartBar } from 'components/atoms/Graphics/ChartBar'
 
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
+
+// Animation components
+import { ContainerMotion } from 'components/atoms/AnimateComponents'
+
+// Animation
+import { viewportFadeIn } from 'commons/animations'
 
 // styles
 import classes from 'styles/SatResults/satTemplate.module.scss'
@@ -29,16 +32,9 @@ export const Graph: FC = () => {
   ]
   const data = [16.3, 3.8, 3.8, 14.6, 12.1, 4.6, 1.5]
 
-  const ContainerMotion = motion(Container)
-
   return (
-    <ContainerMotion
-      initial={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      className={classes.container}>
-      <Container>
+    <Container className={classes.container}>
+      <ContainerMotion {...viewportFadeIn}>
         <Row className={classes.row}>
           <div className={classes.subtitle}>
             Ahora es el turno de conocer qué tipo de perfil tienes a la hora de
@@ -64,7 +60,7 @@ export const Graph: FC = () => {
             <ChartBar name='lorem' labels={labels} data={data} />
           </Col>
         </Row>
-      </Container>
-    </ContainerMotion>
+      </ContainerMotion>
+    </Container>
   )
 }

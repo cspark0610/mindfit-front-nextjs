@@ -15,6 +15,12 @@ import {
 } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
+// Animation Components
+import { ContainerMotion } from 'components/atoms/AnimateComponents'
+
+// Animation
+import { viewportFadeIn } from 'commons/animations'
+
 // styles
 import classes from 'styles/SatResults/satTemplate.module.scss'
 
@@ -24,8 +30,8 @@ import { FC } from 'react'
 export const Percentages: FC = () => {
   const overlayTooltip = () => <Tooltip>Loren ipsum</Tooltip>
   return (
-    <Container className={classes.container}>
-      <Container>
+    <Container {...viewportFadeIn} className={classes.container}>
+      <ContainerMotion {...viewportFadeIn}>
         <Row className={classes.row}>
           <div className={classes.subtitle}>
             Ahora es el turno de los resultados referentes a la empresa
@@ -87,7 +93,7 @@ export const Percentages: FC = () => {
             <Button>Adceder a los recursos</Button>
           </Col>
         </Row>
-      </Container>
+      </ContainerMotion>
     </Container>
   )
 }
