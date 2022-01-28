@@ -1,5 +1,5 @@
-query collaboratorAdd {
-  collaboratorAdd {
+query collaboratorAdd($locale: I18NLocaleCode) {
+  collaboratorAdd(locale: $locale) {
     data {
       attributes {
         fillFields
@@ -9,8 +9,8 @@ query collaboratorAdd {
           label
           value
         }
-        column1
-        column2
+        nameColumn
+        emailColumn
         form {
           data {
             attributes {

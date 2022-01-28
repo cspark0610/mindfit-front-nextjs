@@ -1,8 +1,9 @@
 // main tools
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -22,10 +23,12 @@ import {
   saveColaborator,
   verifyInviteColaboratorData,
 } from 'utils/addColaborator'
+import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
 
 // gql
+import { useMutation } from '@apollo/client'
 import { initializeApolloClient } from 'lib/apollo'
-import COLLABORATOR_VIEW from 'lib/queries/CollaboratorAdd/collaboratorAdd.gql'
+import COLLABORATOR_VIEW from 'lib/queries/Strapi/CollaboratorAdd/collaboratorAdd.gql'
 import INVITE_COACHEE from 'lib/mutations/Coachee/inviteCoachee.gql'
 
 // styles
@@ -36,9 +39,6 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import { ChangeType, GetSSPropsType } from 'types'
 import { InvitedColaboratorType } from 'types/models/Colaborator'
 import { DropdownChangeParams } from 'primereact/dropdown'
-
-import { useSession } from 'next-auth/react'
-import { useMutation } from '@apollo/client'
 
 interface InvitedColaborators extends InvitedColaboratorType {
   status: boolean
@@ -76,10 +76,7 @@ const AddColaboratorPage: NextPage<
       content.validEmail
     )
     if (success) {
-      const { saved } = await saveColaborator(
-        colaborator,
-        addColaborator
-      )
+      const { saved } = await saveColaborator(colaborator, addColaborator)
       setInvitedColaborators([
         ...invitedColaborators,
         {
@@ -112,7 +109,7 @@ const AddColaboratorPage: NextPage<
           <Col md={4}>
             <Dropdown
               name='position'
-              options={['Developer']}
+              options={workPositions}
               onChange={handleChange}
               className={classes.input}
               value={colaborator.position}
@@ -152,10 +149,13 @@ const AddColaboratorPage: NextPage<
             rowExpansionTemplate={rowExpansionTemplate}
             onRowToggle={(e) => setExpandedRows(e.data)}
             emptyMessage={content.emptyMessage}>
-            <Column field='name' header={content.column1} />
-            <Column field='email' header={content.column2} />
+            <Column field='name' header={content.nameColumn} />
+            <Column field='email' header={content.emailColumn} />
             <Column expander className={classes.expander_right} />
           </DataTable>
+        </Row>
+        <Row>
+          <ExploreBadge />
         </Row>
       </Container>
     </Container>
@@ -164,18 +164,16 @@ const AddColaboratorPage: NextPage<
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApolloClient()
+
   const { data } = await apolloClient.query({
     query: COLLABORATOR_VIEW,
+    variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
   const view = data.collaboratorAdd.data.attributes
   const form = data.collaboratorAdd.data.attributes.form.data.attributes
-  return {
-    props: {
-      content: view,
-      contentForm: form,
-    },
-  }
+
+  return { props: { content: view, contentForm: form } }
 }
 
 export default AddColaboratorPage
