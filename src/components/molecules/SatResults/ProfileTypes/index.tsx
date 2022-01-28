@@ -1,8 +1,12 @@
 // Bootstrap Component
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
+
+// Animation Component
+import { RowMotion } from 'components/atoms/AnimateComponents'
 
 // Animation
 import { motion } from 'framer-motion'
+import { viewportFadeIn } from 'commons/animations'
 
 // Styles
 import classes from 'styles/ProfileTypes/profileTypes.module.scss'
@@ -13,16 +17,16 @@ import { FC } from 'react'
 export const ProfileTypes: FC = () => {
   return (
     <Container className={classes.container}>
-      <p className={classes.header}>
-        Ahora es el turno de conocer qué tipo de perfil no trabas con el equipo
-      </p>
-      <h1 className={`${classes.title} mb-5`}>Trabajo en equipo</h1>
+      <motion.div {...viewportFadeIn}>
+        <p className={classes.header}>
+          Ahora es el turno de conocer qué tipo de perfil no trabas con el
+          equipo
+        </p>
+        <h1 className={`${classes.title} mb-5`}>Trabajo en equipo</h1>
+      </motion.div>
       <Container>
-        <Row xs={1} md={2}>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}>
+        <RowMotion {...viewportFadeIn} xs={1} md={2}>
+          <div>
             <p className={classes.description}>
               ¿Qué <b>perfiles</b> podemos desarrollar si lo viésemos necesario?
             </p>
@@ -50,12 +54,9 @@ export const ProfileTypes: FC = () => {
                 del equipo. Tu nivel de adaptación a este perfil es bajo.
               </p>
             </ul>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}>
+          <div>
             <ul>
               <li className={`${classes.profile} mb-2`}>Evaluador</li>
               <p>
@@ -85,8 +86,8 @@ export const ProfileTypes: FC = () => {
                 este perfil es muy bajo.
               </p>
             </ul>
-          </motion.div>
-        </Row>
+          </div>
+        </RowMotion>
       </Container>
     </Container>
   )

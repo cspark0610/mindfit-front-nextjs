@@ -15,6 +15,12 @@ import {
 } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
+// Animation Components
+import { ContainerMotion } from 'components/atoms/AnimateComponents'
+
+// Animation
+import { viewportFadeIn } from 'commons/animations'
+
 // styles
 import classes from 'styles/Percentages/percentages.module.scss'
 
@@ -24,7 +30,7 @@ import { FC } from 'react'
 export const Percentages: FC = () => {
   const overlayTooltip = () => <Tooltip>Loren ipsum</Tooltip>
   return (
-    <Container className={classes.container}>
+    <ContainerMotion {...viewportFadeIn } className={classes.container}>
       <Row>
         <p className={classes.header}>
           Ahora es el turno de los resultados referentes a la empresa
@@ -86,6 +92,6 @@ export const Percentages: FC = () => {
           <Button className={classes.button}>Adceder a los recursos</Button>
         </Col>
       </Row>
-    </Container>
+    </ContainerMotion>
   )
 }
