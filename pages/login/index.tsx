@@ -1,6 +1,8 @@
 // Main tools
 import { useState } from 'react'
+import { getSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 // Components
 import { ForgottenPassword } from 'components/molecules/ForgottenPassword'
@@ -22,26 +24,34 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   const [toggleView, setToggleView] = useState(false)
   return (
     <Container className={classes.container}>
-      <Image
-        src='/assets/icon/MINDFIT.svg'
-        alt='Mindfit Logo'
-        width={420}
-        height={250}
-        layout='intrinsic'
-      />
+      <Link href='/'>
+        <a className='text-center'>
+          <Image
+            src='/assets/icon/MINDFIT.svg'
+            alt='Mindfit Logo'
+            width={420}
+            height={250}
+            layout='intrinsic'
+          />
+        </a>
+      </Link>
       {toggleView ? (
         <ForgottenPassword
           setToggleView={setToggleView}
-          content={content.forgottenPassword}
+          content={content?.forgottenPassword}
         />
       ) : (
-        <LoginCard setToggleView={setToggleView} content={content.login} />
+        <LoginCard setToggleView={setToggleView} content={content?.login} />
       )}
     </Container>
   )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+
   const contentLoginCard = await import('@public/jsons/loginCard.json')
   const contentForgottenPasword = await import(
     '@public/jsons/forgottenPassword.json'

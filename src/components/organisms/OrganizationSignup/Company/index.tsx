@@ -38,7 +38,7 @@ import classes from 'styles/UI/Card/signupCard.module.scss'
 // types
 import { FC, ChangeEvent } from 'react'
 import { ChangeType } from 'types'
-import { CompanyDataType } from 'types/models/Company'
+import { OrganizationDataType } from 'types/models/Organization'
 
 interface Props {
   content: any
@@ -48,7 +48,7 @@ interface Props {
 export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
   const { push } = useRouter()
   const { data } = useSession()
-  const [companyData, setCompanyData] = useState<CompanyDataType>({
+  const [companyData, setCompanyData] = useState<OrganizationDataType>({
     profilePicture: {} as File,
     name: '',
     about: '',

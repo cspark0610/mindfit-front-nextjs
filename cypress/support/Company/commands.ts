@@ -1,12 +1,12 @@
 import 'cypress-file-upload'
 
 // types
-import { CompanyDataType } from '../../../src/types/models/Company'
+import { OrganizationDataType } from '../../../src/types/models/Organization'
 
 Cypress.Commands.add(
   // @ts-ignore custom command
   'companySignupWithForm',
-  (companyData: CompanyDataType) => {
+  (companyData: OrganizationDataType) => {
     cy.get('button:not([class^=btn-close])')
       .should('contain', 'Registra tu empresa')
       .should('have.attr', 'disabled')

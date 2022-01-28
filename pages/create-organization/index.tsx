@@ -15,29 +15,28 @@ import COMPANYRREGISTER_VIEW from 'lib/queries/Organization/companyRegister.gql'
 import classes from 'styles/signup/org.module.scss'
 
 // types
-import { GetServerSideProps, NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 import { CompanySignup } from 'components/organisms/OrganizationSignup/Company'
 import { GetSSPropsType } from 'types'
 
-const SignupOrgCompanyPage: NextPage<
-  GetSSPropsType<typeof getServerSideProps>
-> = ({ content }) => (
+const CreateOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
+}) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <CompanySignup content={content.view} contentForm={content.form} />
+      <CompanySignup content={content?.view} contentForm={content?.form} />
     </Container>
   </Container>
 )
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return {
-      redirect: { destination: '/signup/organization/user', permanent: false },
-    }
+    return { redirect: { destination: '/signup', permanent: false }, props: {} }
   if (session.user.name === '1')
     return {
       redirect: { destination: '/signup/organization', permanent: false },
+      props: {},
     }
 
   const apolloClient = initializeApolloClient()
@@ -47,14 +46,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   })
   const view = data.companyRegister.data.attributes
   const form = data.companyRegister.data.attributes.form.data.attributes
-  return {
-    props: {
-      content: {
-        view,
-        form,
-      },
-    },
-  }
+
+  return { props: { content: { view, form } } }
 }
 
-export default SignupOrgCompanyPage
+export default CreateOrgPage
