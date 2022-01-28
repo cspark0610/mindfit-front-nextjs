@@ -1,5 +1,9 @@
 // Main tools
 import Image from 'next/image'
+
+// Animation
+import { motion } from 'framer-motion'
+
 // Bootstrap Component
 import { Container, Row, Button } from 'react-bootstrap'
 
@@ -13,7 +17,10 @@ export const Farewell: FC = () => {
   return (
     <Container className={`${classes.container} d-flex align-items-center`}>
       <Row xs={1} md={2}>
-        <div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}>
           <p className={classes.header}>Hacia tu mejor versión</p>
           <h1 className={`${classes.title} mb-4`}>
             Ahora es tu <b>turno</b>
@@ -29,15 +36,18 @@ export const Farewell: FC = () => {
           <Button className={classes.button}>
             Accede a los recursos que te ayuden a alcanzar tu mejor versión
           </Button>
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}>
           <Image
             src='/assets/icon/MINDFIT.svg'
             alt=''
             width={500}
             height={500}
           />
-        </div>
+        </motion.div>
       </Row>
     </Container>
   )

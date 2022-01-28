@@ -1,6 +1,9 @@
 // Main tools
 import Image from 'next/image'
 
+// Animation
+import { motion } from 'framer-motion'
+
 // Bootstrap Component
 import { Container, Row, Button } from 'react-bootstrap'
 
@@ -14,7 +17,11 @@ export const Greeting: FC = () => {
   return (
     <Container className={classes.container}>
       <Row xs={1} md={2} className='h-100 align-items-center'>
-        <div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}>
           <p className={`${classes.header} mb-5`}>
             Camino al autodescubrimiento
           </p>
@@ -34,15 +41,18 @@ export const Greeting: FC = () => {
             <b>Cerebro humano.</b>
           </p>
           <Button className={classes.button}>Comencemos</Button>
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}>
           <Image
             src='/assets/icon/MINDFIT.svg'
             alt=''
             width={500}
             height={500}
           />
-        </div>
+        </motion.div>
       </Row>
     </Container>
   )
