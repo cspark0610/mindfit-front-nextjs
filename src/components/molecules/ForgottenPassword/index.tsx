@@ -2,21 +2,25 @@
 import { useState } from 'react'
 
 // Styles
-import { InputText } from 'primereact/inputtext'
-import { Row, Col, Button } from 'react-bootstrap'
 import classes from 'styles/Login/ForgottenPassword/forgottenPassword.module.scss'
 
 // Components
+import { InputText } from 'primereact/inputtext'
+import { Row, Col, Button } from 'react-bootstrap'
+import { AlertText } from 'components/atoms/AlertText'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // Types
 import { FC } from 'react'
 import { ChangeType, SetStateType } from 'types'
-import { useMutation } from '@apollo/client'
 import { SubmitType } from 'types/index'
 
-//Mutations
-import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
+//GQL
+import { useMutation } from '@apollo/client'
+import RESET_PASSWORD from 'lib/mutations/requestResetPassword.gql'
+
+//commons
+import { microServices } from 'commons'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -37,14 +41,15 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
   }
 
   const [requestResetPassword] = useMutation(RESET_PASSWORD, {
-    onCompleted: ({ requestedResetPassword }) => {
+    onCompleted: () => {
       setShowError(false)
-      setRequestedPassword(requestedResetPassword)
+      setRequestedPassword(true)
     },
     onError: () => {
       setShowError(true)
       setRequestedPassword(false)
     },
+    context: { ms: microServices.backend },
   })
 
   const handleSubmit = (e: SubmitType) => {
@@ -71,9 +76,13 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
               placeholder={content.email.placeholder}
             />
             {showError && (
-              <span className={classes.errorText}>
-                Error: No se encuentra el usuario
-              </span>
+              <AlertText alertType='error' text='No se encuentra el usuario' />
+            )}
+            {requestedPassword && (
+              <AlertText
+                alertType='success'
+                text='Email de recuperación enviado con éxito'
+              />
             )}
           </Row>
           <Row>

@@ -1,12 +1,15 @@
 // types
-import { ColaboratorDataType } from 'types/models/Colaborator'
+import { CoacheeDataType } from 'types/models/Coachee'
+import { UserDataType } from 'types/models/User'
 
-export const validateUserSignup = (colaboratorData: ColaboratorDataType) => {
+export const validateUserSignup = (
+  colaboratorData: UserDataType & CoacheeDataType
+) => {
   if (
-    !colaboratorData.picture.type ||
-    !colaboratorData.firstName ||
-    !colaboratorData.lastName ||
-    !colaboratorData.email ||
+    !colaboratorData.profilePicture?.type ||
+    !colaboratorData.name ||
+    !colaboratorData.bio ||
+    !colaboratorData.aboutPosition ||
     !colaboratorData.position
   )
     return false

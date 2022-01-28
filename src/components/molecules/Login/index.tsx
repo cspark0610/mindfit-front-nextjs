@@ -8,7 +8,6 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // bootstrap components
 import { Row, Col, Button } from 'react-bootstrap'
-import { XLg } from 'react-bootstrap-icons'
 
 // prime components
 import { Password } from 'primereact/password'
@@ -22,6 +21,7 @@ import classes from 'styles/Login/LoginCard/loginCard.module.scss'
 import { ChangeType, SetStateType, SubmitType } from 'types'
 import { ClientSafeProvider } from 'next-auth/react'
 import { FC } from 'react'
+import { AlertText } from 'components/atoms/AlertText'
 
 interface Props {
   setToggleView: SetStateType<boolean>
@@ -76,7 +76,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
               placeholder={content.email.placeholder}
             />
           </Row>
-          <Row className='mb-5'>
+          <Row className='mb-3'>
             <Password
               toggleMask
               feedback={false}
@@ -90,9 +90,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
           </Row>
           {error && (
             <Row>
-              <strong className='p-error'>
-                <XLg className='p-error' /> {error}
-              </strong>
+              <AlertText alertType='error' text={error} />
             </Row>
           )}
           <Row>
@@ -109,7 +107,8 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
             <Row>
               {providers?.map(
                 (provider) =>
-                  provider.id !== 'credentials' && (
+                  provider.id !== 'credentials' &&
+                  provider.id !== 'createPassword' && (
                     <Button
                       key={provider.id}
                       onClick={() => signIn(provider.id, { callbackUrl: '/' })}

@@ -1,6 +1,6 @@
 import { UserDataType } from './User'
 
-export type CompanyDataType = {
+export type OrganizationDataType = {
   profilePicture?: File
   id?: number
   name?: string

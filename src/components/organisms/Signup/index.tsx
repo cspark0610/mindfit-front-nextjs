@@ -24,7 +24,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // utils
-import { validateUserSignup } from 'components/organisms/OrganizationSignup/User/utils'
+import { validateUserSignup } from 'components/organisms/Signup/utils'
 
 // gql
 import CREATE_USER from 'lib/mutations/Signup/createUser.gql'
@@ -47,7 +47,7 @@ interface Props {
 
 export const UserSignup: FC<Props> = ({ content, contentForm }) => {
   const [userData, setUserData] = useState<UserDataType>({
-    picture: {} as File,
+    profilePicture: {} as File,
     firstName: '',
     lastName: '',
     email: '',
@@ -68,7 +68,7 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
     signIn('credentials', {
       email: userData.email,
       password: userData.password,
-      callbackUrl: '/signup/organization/company',
+      callbackUrl: '/signup/organization',
     })
   }
 

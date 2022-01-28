@@ -1,12 +1,6 @@
-@import '../LoginCard/loginCard.module.scss';
+@import '../variables.scss';
 
-.errorText {
-  color: red;
-  padding: 4px 8px;
-  font-size: 14px;
-}
-.successText {
-  color: $success;
+.span {
   font-size: 14px;
   font-weight: 700;
   padding: 8px 2px;
@@ -17,4 +11,12 @@
   & svg {
     margin-right: 8px;
   }
+}
+.errorText {
+  @extend .span;
+  color: red;
+}
+.successText {
+  @extend .span;
+  color: $success;
 }
