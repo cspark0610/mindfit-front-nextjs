@@ -3,32 +3,33 @@
 
 .container {
   margin-top: 4rem;
+  font-size: 18px;
   @media (max-width: 768px) {
     text-align: center;
   }
 }
 
 .header {
+  text-align: center;
   color: $lightGray;
 }
 
 .title {
   color: $lightPrimary;
+  text-align: center;
+  font-weight: bold;
   font-size: 62px;
+  margin-bottom: 3rem;
   @media (max-width: 430px) {
     font-size: 36px;
   }
 }
 
-.paragraph {
-  font-size: 18px;
+.img {
+  border-radius: 10px;
 }
 
-.button {
-  background: $white;
+.icon {
   color: $lightPrimary;
-  border: 2px solid $lightPrimary;
-  border-radius: 0;
-  width: 280px;
-  font-weight: bold;
+  margin-right: 5px;
 }

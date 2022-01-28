@@ -1,25 +1,14 @@
 // prime components
+import { ChartData } from 'chart.js'
 import { Chart } from 'primereact/chart'
 
 // types
 import { FC } from 'react'
 
-interface Props {
-  name: string
-  labels: object
-  data: object
-}
-
-export const ChartBar: FC<Props> = ({ name, labels, data }) => {
-  const basicData = {
+export const ChartBar: FC<ChartData> = ({ labels, datasets }) => {
+  const graphicData = {
     labels: labels,
-    datasets: [
-      {
-        label: name,
-        backgroundColor: '#1a7bee',
-        data: data,
-      },
-    ],
+    datasets: datasets
   }
 
   const options = {
@@ -45,5 +34,5 @@ export const ChartBar: FC<Props> = ({ name, labels, data }) => {
     },
   }
 
-  return <Chart type='bar' data={basicData} options={options} />
+  return <Chart type='bar' data={graphicData} options={options} />
 }

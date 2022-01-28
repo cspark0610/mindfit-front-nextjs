@@ -12,8 +12,7 @@ import { FC } from 'react'
 
 export const ProfileTypes: FC = () => {
   return (
-    <Container
-      className={`d-flex flex-column justify-content-center ${classes.container}`}>
+    <Container className={classes.container}>
       <p className={classes.header}>
         Ahora es el turno de conocer qué tipo de perfil no trabas con el equipo
       </p>

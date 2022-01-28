@@ -15,7 +15,7 @@ import { FC } from 'react'
 
 export const Farewell: FC = () => {
   return (
-    <Container className={`${classes.container} d-flex align-items-center`}>
+    <Container className={classes.container}>
       <Row xs={1} md={2}>
         <motion.div
           initial={{ opacity: 0 }}

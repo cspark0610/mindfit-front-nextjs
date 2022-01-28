@@ -16,7 +16,7 @@ import { FC } from 'react'
 export const Greeting: FC = () => {
   return (
     <Container className={classes.container}>
-      <Row xs={1} md={2} className='h-100 align-items-center'>
+      <Row xs={1} md={2}>
         <motion.div
           initial={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
