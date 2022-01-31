@@ -44,7 +44,6 @@ export const VerifyUserCard = () => {
       }, 5000)
     },
     onError: (error) => {
-      console.log({ ...error })
       let message = ''
       if (error.message === 'email should not be empty,email must be an email')
         message = 'El campo de email no puede estar vacio'
