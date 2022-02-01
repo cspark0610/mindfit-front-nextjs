@@ -10,36 +10,24 @@ import classes from 'styles/UI/PasswordSuggestions/suggestions.module.scss'
 // types
 import { FC } from 'react'
 
-export const passwordSuggestionsTemplate: FC<{ value: any }> = ({ value }) => {
-  const validated = regexValidation(value)
+export const passwordSuggestionsTemplate: FC<{
+  value?: string
+  suggestionsContent: any
+}> = ({ value, suggestionsContent }) => {
+  const validated = regexValidation(value as string)
 
   return (
     <ul className={classes.container}>
-      <li>
-        Minimo 8 caracteres
-        {validated.minSize && (
-          <i className={`mx-2 ${PrimeIcons.CHECK_CIRCLE}`} />
-        )}
-      </li>
-      <li>
-        Al menos un caracter alfabetico
-        {validated.hasLetters && (
-          <i className={`mx-2 ${PrimeIcons.CHECK_CIRCLE}`} />
-        )}
-      </li>
-      <li>
-        Al menos un caracter numerico
-        {validated.hasNumbers && (
-          <i className={`mx-2 ${PrimeIcons.CHECK_CIRCLE}`} />
-        )}
-      </li>
-
-      <li>
-        Al menos un caracter especial
-        {validated.hasSpecials && (
-          <i className={`mx-2 ${PrimeIcons.CHECK_CIRCLE}`} />
-        )}
-      </li>
+      {suggestionsContent.suggestionList.map(
+        (suggestion: { value: string; label: string }) => (
+          <li key={suggestion.value}>
+            {suggestion.label}
+            {validated[suggestion.value as keyof typeof validated] && (
+              <i className={`mx-2 ${PrimeIcons.CHECK_CIRCLE}`} />
+            )}
+          </li>
+        )
+      )}
     </ul>
   )
 }

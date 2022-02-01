@@ -1,18 +1,12 @@
-query LoginContent($locale: I18NLocaleCode) {
-  userRegister(locale: $locale) {
+query CreatePasswordContent($locale: I18NLocaleCode) {
+  collaboratorCreatePass(locale: $locale) {
     data {
       attributes {
-        title
-        firstNameInput {
-          placeholder
-        }
-        lastNameInput {
-          placeholder
-        }
-        emailInput {
-          placeholder
-        }
+        welcomeLabel
         passwordInput {
+          placeholder
+        }
+        confirmPasswordInput {
           placeholder
         }
         submitButton {

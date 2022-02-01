@@ -1,8 +1,12 @@
-query organizationSteps {
-   organizationSteps{
-    data{
-      attributes{
-        steps{
+query organizationSteps($locale: I18NLocaleCode) {
+  organizationSteps(locale: $locale) {
+    data {
+      attributes {
+        steps {
+          label
+          value
+        }
+        becomeCoacheeLabel {
           label
           value
         }

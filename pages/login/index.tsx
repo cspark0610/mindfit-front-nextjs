@@ -8,6 +8,13 @@ import Link from 'next/link'
 import { ForgottenPassword } from 'components/molecules/ForgottenPassword'
 import { LoginCard } from 'components/molecules/Login'
 
+// utils
+import { microServices } from 'commons'
+
+// gql
+import { initializeApolloClient } from 'lib/apollo'
+import LOGIN_CONTENT from 'lib/strapi/queries/Login/content.gql'
+
 // bootstrap components
 import { Container } from 'react-bootstrap'
 
@@ -36,12 +43,9 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         </a>
       </Link>
       {toggleView ? (
-        <ForgottenPassword
-          setToggleView={setToggleView}
-          content={content?.forgottenPassword}
-        />
+        <ForgottenPassword setToggleView={setToggleView} content={content} />
       ) : (
-        <LoginCard setToggleView={setToggleView} content={content?.login} />
+        <LoginCard setToggleView={setToggleView} content={content} />
       )}
     </Container>
   )
@@ -52,19 +56,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (session)
     return { redirect: { destination: '/', permanent: false }, props: {} }
 
-  const contentLoginCard = await import('@public/jsons/loginCard.json')
-  const contentForgottenPasword = await import(
-    '@public/jsons/forgottenPassword.json'
-  )
+  const apolloClient = initializeApolloClient()
 
-  return {
-    props: {
-      content: {
-        ...contentLoginCard.default,
-        ...contentForgottenPasword.default,
-      },
-    },
-  }
+  const { data } = await apolloClient.query({
+    query: LOGIN_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  return { props: { content: data.login.data.attributes } }
 }
 
 export default LoginPage

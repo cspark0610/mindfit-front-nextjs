@@ -2,6 +2,13 @@
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
 
+// gql
+import { initializeApolloClient } from 'lib/apollo'
+import CREATE_PASS_CONTENT from 'lib/strapi/queries/Colaborator/createPassContent.gql'
+
+// utils
+import { microServices } from 'commons'
+
 // bootstrap components
 import { Container } from 'react-bootstrap'
 
@@ -34,7 +41,7 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       <FirstColaboratorLogin
         error={error as string}
         hash={hash as string}
-        content={content?.login}
+        content={content}
       />
     </Container>
   )
@@ -48,14 +55,19 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {},
     }
 
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: CREATE_PASS_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
   const { token, error } = ctx.query
-  const contentLoginCard = await import(
-    '@public/jsons/firstColaboratorLogin/login.json'
-  )
 
   return {
     props: {
-      content: contentLoginCard.default,
+      content: data.collaboratorCreatePass.data.attributes,
       hash: token,
       error: error ?? '',
     },

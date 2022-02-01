@@ -4,18 +4,19 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
 // gql
-import { initializeApolloClient } from 'lib/apollo'
 import LOGIN from 'lib/mutations/Auth/login.gql'
 import CREATE_PASSWORD from 'lib/mutations/Auth/createPassword.gql'
 import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
 import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
+import ACCEPT_INVITATION from 'lib/mutations/Coachees/acceptInvitation.gql'
 
 // utils
 import jwt_decoder from 'jwt-decode'
 import { microServices } from 'commons'
 import moment from 'moment'
+import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 
 const SIGNUP_RRSS = {
@@ -99,7 +100,26 @@ export default NextAuth({
             mutation: CREATE_PASSWORD,
             context: { ms: microServices.backend },
           })
-          if (data.createPassword) return data.createPassword
+          if (data.createPassword) {
+            const client = createApolloClient(data.createPassword.token)
+            const decoded: { sub?: number } = jwt_decoder(
+              data.createPassword.token
+            )
+
+            const { data: user } = await apolloClient.query({
+              query: GET_USER_BY_ID,
+              variables: { id: decoded.sub },
+              context: { ms: microServices.backend },
+            })
+
+            await client.mutate({
+              mutation: ACCEPT_INVITATION,
+              variables: { id: user.findUserById.coachee.id },
+              context: { ms: microServices.backend },
+            })
+
+            return data.createPassword
+          }
         } catch (error: any) {
           if (error.graphQLErrors)
             throw new Error(error.graphQLErrors[0].message)

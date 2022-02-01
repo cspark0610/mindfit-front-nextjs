@@ -12,7 +12,7 @@ import { microServices } from 'commons'
 
 //gql
 import { initializeApolloClient } from 'lib/apollo'
-import USERREGISTER_VIEW from 'lib/queries/User/userRegister.gql'
+import SIGNUP_CONTENT from 'lib/queries/User/userRegister.gql'
 
 // styles
 import classes from 'styles/signup/org.module.scss'
@@ -26,7 +26,7 @@ const Signup: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <UserSignup content={content?.view} contentForm={content?.form} />
+      <UserSignup content={content} />
     </Container>
   </Container>
 )
@@ -41,14 +41,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
-    query: USERREGISTER_VIEW,
+    query: SIGNUP_CONTENT,
+    variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
 
-  const view = data.userRegister.data.attributes
-  const form = data.userRegister.data.attributes.form.data.attributes
-
-  return { props: { content: { view, form } } }
+  return { props: { content: data.userRegister.data.attributes } }
 }
 
 export default Signup

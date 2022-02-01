@@ -18,14 +18,14 @@ import { Skeleton } from 'primereact/skeleton'
 import classes from 'styles/Login/LoginCard/loginCard.module.scss'
 
 // Types
-import { ChangeType, SetStateType, SubmitType } from 'types'
-import { ClientSafeProvider } from 'next-auth/react'
 import { FC } from 'react'
+import { ClientSafeProvider } from 'next-auth/react'
 import { AlertText } from 'components/atoms/AlertText'
+import { ChangeType, SetStateType, SubmitType } from 'types'
 
 interface Props {
-  setToggleView: SetStateType<boolean>
   content: any
+  setToggleView: SetStateType<boolean>
 }
 
 export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
@@ -73,7 +73,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
               className={`mb-4 ${classes.input}`}
               value={user.email}
               onChange={handleChange}
-              placeholder={content.email.placeholder}
+              placeholder={content.emailInput.placeholder}
             />
           </Row>
           <Row className='mb-3'>
@@ -85,7 +85,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
               className='px-0'
               value={user.password}
               onChange={handleChange}
-              placeholder={content.password.placeholder}
+              placeholder={content.passwordInput.placeholder}
             />
           </Row>
           {error && (
@@ -95,11 +95,11 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
           )}
           <Row>
             <Button type='submit' className={`my-3 ${classes.button}`}>
-              {content.loginButton}
+              {content.loginButton.label}
             </Button>
           </Row>
           <p className={classes.recoveryLabel} onClick={handleToggleChange}>
-            {content.passwordRecovery}
+            {content.recoverPasswordLabel}
           </p>
           {!providers ? (
             <Skeleton width='100%' height='3rem' borderRadius='16px' />
