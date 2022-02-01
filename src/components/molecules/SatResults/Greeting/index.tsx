@@ -28,7 +28,7 @@ export const Greeting: FC = () => {
           <p className={classes.paragraph}>
             Gracias a los datos que has aportado en el cuestionario, vas a poder
             descubrir sobre tu <b>Entorno emocional,</b> y sobre todo de tu{' '}
-            <b>"yo" personal y profesional,</b> aspectos que quizá no
+            <b>{'"yo"'} personal y profesional,</b> aspectos que quizá no
             conocías.
           </p>
           <p className={`${classes.paragraph} mb-5`}>
