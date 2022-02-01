@@ -1,0 +1,6 @@
+mutation AcceptInvitation($id: Int!) {
+  acceptInvitation(id: $id) {
+    id
+    invitationAccepted
+  }
+}

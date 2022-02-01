@@ -11,7 +11,6 @@ import { Row, Col, Button } from 'react-bootstrap'
 
 // prime components
 import { Password } from 'primereact/password'
-import { InputText } from 'primereact/inputtext'
 
 // commons
 import { regex, regexValidation } from 'commons'
@@ -29,6 +28,7 @@ export const FirstColaboratorLogin: FC<{
   error: string
   content: any
 }> = ({ hash, error, content }) => {
+  const suggestionsContent = content.passwordSuggestion.data.attributes
   const [data, setData] = useState({ hash, password: '', confirmPassword: '' })
   const [errorMessage, setErrorMessage] = useState(error)
 
@@ -47,10 +47,12 @@ export const FirstColaboratorLogin: FC<{
   const handleSubmit = (ev: SubmitType) => {
     ev.preventDefault()
     // update password process with hash
-    signIn('createPassword', {
-      ...data,
-      callbackUrl: '/signup/colaborator/steps',
-    })
+    if (!disableButton) {
+      signIn('createPassword', {
+        ...data,
+        callbackUrl: '/signup/colaborator/steps',
+      })
+    }
   }
 
   useEffect(() => {
@@ -64,17 +66,6 @@ export const FirstColaboratorLogin: FC<{
           onSubmit={handleSubmit}
           className={`${classes.card} ${classes.section}`}>
           <Row>
-            <InputText
-              disabled={true}
-              type='password'
-              name='hash'
-              className={`mb-4 ${classes.input}`}
-              value={data.hash}
-              onChange={handleChange}
-              placeholder={content.email.placeholder}
-            />
-          </Row>
-          <Row>
             <Password
               toggleMask
               name='password'
@@ -86,10 +77,15 @@ export const FirstColaboratorLogin: FC<{
               strongLabel='Contraseña aceptada'
               mediumRegex={regex.minSize.source}
               inputClassName={`${classes.input}`}
-              footer={passwordSuggestionsTemplate}
-              placeholder={content.password.placeholder}
+              placeholder={content.passwordInput.placeholder}
               mediumLabel='Por favor, tenga en cuenta las sugerencias'
               strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
+              footer={(ev) =>
+                passwordSuggestionsTemplate({
+                  value: ev.value as string,
+                  suggestionsContent,
+                })
+              }
             />
           </Row>
           <Row>
@@ -101,7 +97,7 @@ export const FirstColaboratorLogin: FC<{
               onChange={handleChange}
               value={data.confirmPassword}
               inputClassName={classes.input}
-              placeholder='Confirmar contraseña'
+              placeholder={content.confirmPasswordInput.placeholder}
             />
           </Row>
           {errorMessage && (
@@ -114,7 +110,7 @@ export const FirstColaboratorLogin: FC<{
               type='submit'
               disabled={disableButton}
               className={`my-3 ${classes.button}`}>
-              {content.loginButton}
+              {content.submitButton.label}
             </Button>
           </Row>
           <ExploreBadge />

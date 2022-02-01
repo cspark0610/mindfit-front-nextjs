@@ -42,10 +42,10 @@ import { UserDataType } from 'types/models/User'
 
 interface Props {
   content: any
-  contentForm: any
 }
 
-export const UserSignup: FC<Props> = ({ content, contentForm }) => {
+export const UserSignup: FC<Props> = ({ content }) => {
+  const suggestionsContent = content.passwordSuggestion.data.attributes
   const [userData, setUserData] = useState<UserDataType>({
     profilePicture: {} as File,
     firstName: '',
@@ -53,13 +53,6 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
     email: '',
     password: '',
   })
-
-  const label = {
-    firstName: contentForm.input1,
-    lasttName: contentForm.input2,
-    email: contentForm.input3,
-    password: contentForm.input4,
-  }
 
   const handleChange = (ev: ChangeType) =>
     setUserData({ ...userData, [ev.target.name]: ev.target.value })
@@ -90,11 +83,13 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
     context: { ms: microServices.backend },
   })
 
-  const overlayTooltip = () => <Tooltip>{content.fillFields}</Tooltip>
+  const overlayTooltip = () => (
+    <Tooltip>{suggestionsContent.fillFieldsLabel}</Tooltip>
+  )
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>{contentForm.title}</h1>
+      <h1 className={classes.title}>{content.title}</h1>
       <UploadPicture setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
@@ -103,7 +98,7 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
               name='firstName'
               value={userData.firstName}
               onChange={handleChange}
-              placeholder={label.firstName}
+              placeholder={content.firstNameInput.placeholder}
               className={classes.input}
             />
           </Col>
@@ -112,7 +107,7 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
               name='lastName'
               value={userData.lastName}
               onChange={handleChange}
-              placeholder={label.lasttName}
+              placeholder={content.lastNameInput.placeholder}
               className={classes.input}
             />
           </Col>
@@ -122,7 +117,7 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
               type='email'
               value={userData.email}
               onChange={handleChange}
-              placeholder={label.email}
+              placeholder={content.emailInput.placeholder}
               className={classes.input}
             />
           </Col>
@@ -131,17 +126,22 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
               toggleMask
               className='w-100'
               name='password'
-              placeholder={label.password}
-              promptLabel={content.promptLabel}
-              weakLabel={content.weakLabel}
-              mediumLabel={content.mediumLabel}
-              strongLabel={content.strongLabel}
+              placeholder={content.passwordInput.placeholder}
+              promptLabel={suggestionsContent.promptLabel}
+              weakLabel={suggestionsContent.weakLabel}
+              mediumLabel={suggestionsContent.mediumLabel}
+              strongLabel={suggestionsContent.strongLabel}
               mediumRegex={content.mediumRegex}
               strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
               value={userData.password}
               inputClassName={classes.input}
-              footer={passwordSuggestionsTemplate}
               onChange={handleChange}
+              footer={(ev) =>
+                passwordSuggestionsTemplate({
+                  value: ev.value as string,
+                  suggestionsContent,
+                })
+              }
             />
           </Col>
         </Row>
@@ -162,7 +162,7 @@ export const UserSignup: FC<Props> = ({ content, contentForm }) => {
               disabled={!validateUserSignup(userData)}
               onClick={handeSubmit}
               className={classes.button}>
-              {contentForm.button.label}
+              {content.submitButton.label}
             </Button>
           </Col>
         </Row>

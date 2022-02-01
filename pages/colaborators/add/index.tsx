@@ -47,9 +47,9 @@ interface InvitedColaborators extends InvitedColaboratorType {
   stateSent: string
 }
 
-const AddColaboratorPage: NextPage<
+const AddCollaboratorPage: NextPage<
   GetSSPropsType<typeof getServerSideProps>
-> = ({ content, contentForm }) => {
+> = ({ content }) => {
   const [invitedColaborators, setInvitedColaborators] = useState<
     InvitedColaborators[]
   >([])
@@ -57,12 +57,6 @@ const AddColaboratorPage: NextPage<
   const [colaborator, setColaborator] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
   const [addColaborator] = useMutation(INVITE_COACHEE)
-
-  const label = {
-    fullName: contentForm.input1,
-    position: contentForm.input2,
-    email: contentForm.input4,
-  }
 
   const handleChange = (ev: ChangeType | DropdownChangeParams) => {
     error && setError('')
@@ -82,7 +76,7 @@ const AddColaboratorPage: NextPage<
         {
           ...colaborator,
           status: saved,
-          labelPosition: label.position,
+          labelPosition: content.positionInput.placeholder,
           labelStatus: content.status.label,
           stateSent: content.status.value,
         },
@@ -94,8 +88,8 @@ const AddColaboratorPage: NextPage<
   return (
     <Container className={classes.container}>
       <Container fluid className={classes.section}>
-        <h1 className={classes.title}>{contentForm.title}</h1>
-        <p className={classes.description}>{contentForm.subtitle}</p>
+        <h1 className={classes.title}>{content.title}</h1>
+        <p className={classes.description}>{content.subtitle}</p>
         <Row className={classes.row}>
           <Col md={4}>
             <InputText
@@ -103,7 +97,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.name}
-              placeholder={label.fullName}
+              placeholder={content.nameInput.placeholder}
             />
           </Col>
           <Col md={4}>
@@ -113,7 +107,7 @@ const AddColaboratorPage: NextPage<
               onChange={handleChange}
               className={classes.input}
               value={colaborator.position}
-              placeholder={label.position}
+              placeholder={content.positionInput.placeholder}
             />
           </Col>
         </Row>
@@ -122,7 +116,7 @@ const AddColaboratorPage: NextPage<
             <InputText
               name='email'
               type='email'
-              placeholder={label.email}
+              placeholder={content.emailInput.placeholder}
               onChange={handleChange}
               value={colaborator.email}
               className={classes.input}
@@ -132,7 +126,7 @@ const AddColaboratorPage: NextPage<
             <Row className='flex-row-reverse'>
               <Col md={6} lg={4}>
                 <Button onClick={handleInvite} className={classes.button}>
-                  {contentForm.button.label}
+                  {content.submitButton.label}
                 </Button>
                 {error && <p className='p-error text-center'>{error}</p>}
               </Col>
@@ -170,10 +164,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-  const view = data.collaboratorAdd.data.attributes
-  const form = data.collaboratorAdd.data.attributes.form.data.attributes
 
-  return { props: { content: view, contentForm: form } }
+  return { props: { content: data.collaboratorAdd.data.attributes } }
 }
 
-export default AddColaboratorPage
+export default AddCollaboratorPage
