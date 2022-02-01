@@ -23,8 +23,8 @@ import RESET_PASSWORD from 'lib/mutations/requestResetPassword.gql'
 import { microServices } from 'commons'
 
 interface Props {
-  setToggleView: SetStateType<boolean>
   content: any
+  setToggleView: SetStateType<boolean>
 }
 
 export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
@@ -32,13 +32,10 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
   const [showError, setShowError] = useState(false)
   const [requestedPassword, setRequestedPassword] = useState(false)
 
-  const handleToggleChange = () => {
+  const handleToggleChange = () =>
     setToggleView((currentValue) => !currentValue)
-  }
 
-  const handleChange = (ev: ChangeType) => {
-    setUserEmail(ev.target.value.trim())
-  }
+  const handleChange = (ev: ChangeType) => setUserEmail(ev.target.value.trim())
 
   const [requestResetPassword] = useMutation(RESET_PASSWORD, {
     onCompleted: () => {
@@ -70,10 +67,10 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
           <Row>
             <InputText
               type='email'
-              className={`${classes.marginInput} ${classes.input}`}
               value={userEmail}
               onChange={handleChange}
-              placeholder={content.email.placeholder}
+              placeholder={content.emailInput.placeholder}
+              className={`${classes.marginInput} ${classes.input}`}
             />
             {showError && (
               <AlertText alertType='error' text='No se encuentra el usuario' />
@@ -86,12 +83,12 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
             )}
           </Row>
           <Row>
-            <Button type='submit' className={`my-5 ${classes.button}`}>
-              {content.sendEmailButton}
+            <Button type='submit' className={`my-4 ${classes.button}`}>
+              {content.sendEmailButton.label}
             </Button>
           </Row>
           <p className={classes.recoveryLabel} onClick={handleToggleChange}>
-            {content.login}
+            {content.haveAccountLabel}
           </p>
           <ExploreBadge />
         </form>
