@@ -1,0 +1,41 @@
+@import '../variables.scss';
+
+.container {
+  position: relative;
+  height: 100vh;
+  padding-left: 120px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  @media (max-width: 528px) {
+    padding-left: 30px;
+  }
+}
+
+.title {
+  color: $lightPrimary;
+  position: relative;
+  top: 30%;
+  font-size: 68px;
+  @media (max-width: 430px) {
+    font-size: 40px;
+  }
+}
+
+.copyright {
+  position: absolute;
+  top: 50%;
+  left: -130px;
+  transform: rotate(-90deg);
+  font-size: 18px;
+  @media (max-width: 528px) {
+    transform: rotate(0);
+    top: 90%;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+  }
+}

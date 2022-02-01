@@ -1,0 +1,6 @@
+export { Cover } from './Cover'
+export { Greeting } from './Greeting'
+export { ProfileTypes } from './ProfileTypes'
+export { Farewell } from './Farewell'
+export { Percentages } from './Percentages'
+export { Graph } from './Graphics'
