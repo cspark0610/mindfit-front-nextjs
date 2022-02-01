@@ -14,7 +14,7 @@ import { microServices } from 'commons'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
-import ORGANIZATIONSTEPS_VIEW from 'lib/queries/Organization/organizationSteps.gql'
+import STEPS_CONTENT from 'lib/queries/Organization/organizationSteps.gql'
 
 // styles
 import classes from 'styles/signup/org.module.scss'
@@ -25,6 +25,7 @@ import { GetSSPropsType } from 'types'
 
 const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   steps,
+  content,
 }) => {
   const stepIndex = steps.findIndex((step) => step.completed === false)
 
@@ -48,9 +49,9 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
         </Row>
         <Row className='mt-3 text-center'>
-          <span>No quieres crear una organizacion?</span>
+          <span>{content?.becomeCoacheeLabel.label}</span>
           <Link href='/signup/colaborator/steps'>
-            <a>Continua como Coachee</a>
+            <a>{content?.becomeCoacheeLabel.value}</a>
           </Link>
         </Row>
         <Row>
@@ -66,7 +67,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
-    query: ORGANIZATIONSTEPS_VIEW,
+    query: STEPS_CONTENT,
+    variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
 
@@ -92,7 +94,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   ]
 
-  return { props: { steps } }
+  return { props: { steps, content } }
 }
 
 export default SignupOrgPage
