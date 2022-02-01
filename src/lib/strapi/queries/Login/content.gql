@@ -1,0 +1,24 @@
+query LoginContent($locale: I18NLocaleCode) {
+  login(locale: $locale) {
+    data {
+      attributes {
+        emailInput {
+          label
+          placeholder
+        }
+        passwordInput {
+          label
+          placeholder
+        }
+        loginButton {
+          label
+        }
+        sendEmailButton {
+          label
+        }
+        recoverPasswordLabel
+        haveAccountLabel
+      }
+    }
+  }
+}
