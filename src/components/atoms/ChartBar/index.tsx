@@ -1,16 +1,10 @@
 // prime components
-import { ChartData } from 'chart.js'
-import { Chart } from 'primereact/chart'
+import { Chart, ChartProps } from 'primereact/chart'
 
 // types
 import { FC } from 'react'
 
-export const ChartBar: FC<ChartData> = ({ labels, datasets }) => {
-  const graphicData = {
-    labels: labels,
-    datasets: datasets
-  }
-
+export const ChartBar: FC<ChartProps> = ({data}) => {
   const options = {
     maintainAspectRatio: false,
     aspectRatio: 0.8,
@@ -34,5 +28,5 @@ export const ChartBar: FC<ChartData> = ({ labels, datasets }) => {
     },
   }
 
-  return <Chart type='bar' data={graphicData} options={options} />
+  return <Chart type='bar' data={data} options={options} />
 }

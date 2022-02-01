@@ -18,7 +18,7 @@ import { FC } from 'react'
 
 export const Farewell: FC = () => {
   return (
-    <Container {...viewportFadeIn} className={classes.container}>
+    <Container className={classes.container}>
       <RowMotion {...viewportFadeIn} xs={1} md={2}>
         <div>
           <p className={classes.header}>Hacia tu mejor versión</p>
