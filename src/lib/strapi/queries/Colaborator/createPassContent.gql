@@ -1,0 +1,33 @@
+query CreatePasswordContent($locale: I18NLocaleCode) {
+  collaboratorCreatePass(locale: $locale) {
+    data {
+      attributes {
+        welcomeLabel
+        passwordInput {
+          placeholder
+        }
+        confirmPasswordInput {
+          placeholder
+        }
+        submitButton {
+          label
+        }
+        passwordSuggestion {
+          data {
+            attributes {
+              promptLabel
+              weakLabel
+              mediumLabel
+              strongLabel
+              fillFieldsLabel
+              suggestionList {
+                label
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
