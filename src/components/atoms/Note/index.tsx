@@ -13,14 +13,14 @@ import { FC } from 'react'
 export const Note: FC = () => {
   return (
     <Container className={classes.section}>
-      <Row xs={2} className={classes.date}>
-        <Col xs='auto'>10/12/21</Col>
-        <Col xs='auto'>09:30 AM</Col>
+      <Row xs='auto' className={classes.date}>
+        <p>10/12/21</p>
+        <p>09:30 AM</p>
       </Row>
       <Row>
         <p className={classes.paragraph}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor
         </p>
         <Link href='/'>Ver mas...</Link>
       </Row>

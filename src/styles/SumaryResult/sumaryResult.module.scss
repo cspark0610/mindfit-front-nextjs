@@ -4,7 +4,6 @@
 .section {
   color: $lightPrimary;
   padding: 20px;
-  margin-bottom: 20px;
   border-radius: 15px;
   justify-content: space-between;
 
@@ -19,8 +18,7 @@
     }
   }
   .point {
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: space-between;
 
     > div {
       border-radius: 25px;

@@ -30,33 +30,38 @@ const CoachSession: NextPage = () => (
       <Row className={classes.container}>
         <Col md={6} lg={3}>
           <Container className={classes.section}>
-            <Image
-              className={classes.avatar}
-              src='/assets/images/avatar.png'
-              width={100}
-              height={100}
-              alt='user avatar'
-            />
-            <h5 className={classes.button}>Nestor García</h5>
-            <h5>Perfil segun SAT</h5>
-            {[0, 1, 2, 3].map((item, idx) => (
-              <Row xs='auto' key={idx} className={classes.results}>
-                <EmojiSmile className={classes.icon} />
-                <h6>Motivación</h6>
-                <h6>10/10</h6>
+            <Row className={classes.row}>
+              <Image
+                className={classes.avatar}
+                src='/assets/images/avatar.png'
+                width={100}
+                height={100}
+                alt='user avatar'
+              />
+              <h5 className={classes.button}>Nestor García</h5>
+              <h5>Perfil segun SAT</h5>
+              <Row>
+                {[0, 1, 2, 3].map((item, idx) => (
+                  <Row xs='auto' key={idx} className={classes.results}>
+                    <EmojiSmile className={classes.icon} />
+                    <p>Motivación 10/10</p>
+                  </Row>
+                ))}
               </Row>
-            ))}
-            {[0, 1, 2].map((item, idx) => (
-              <Row xs='auto' key={idx} className={classes.profile}>
-                <Diagram2 className={classes.icon} />
-                <h6>Organización</h6>
-                <p>Company Minfit</p>
+              <Row>
+                {[0, 1, 2].map((item, idx) => (
+                  <Row xs='auto' key={idx} className={classes.profile}>
+                    <Diagram2 className={classes.icon} />
+                    <h6>Organización</h6>
+                    <p>Company Minfit</p>
+                  </Row>
+                ))}
               </Row>
-            ))}
-            <Row>
               <Col xs={5} className={classes.section_small}>
                 <CalendarCheck className={classes.icon} />
-                <p>10/11/21 <br/> 10:00 AM</p>
+                <p>
+                  10/11/21 <br /> 10:00 AM
+                </p>
               </Col>
               <Col xs={5} className={classes.section_small}>
                 <ChatLeft className={classes.icon} />
@@ -65,24 +70,22 @@ const CoachSession: NextPage = () => (
             </Row>
           </Container>
           <Container className={classes.section}>
-            <h5 className={classes.title}>
-              <StarFill className={classes.icon} />
-              Evolución: Nestor García
-            </h5>
-            <p className={classes.paragraph}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea.
-            </p>
-            <Row>
-              <Col xs={5} md={4}>
+            <Row className={classes.row}>
+              <h5 className={classes.title}>
+                <StarFill className={classes.icon} />
+                Evolución: Nestor García
+              </h5>
+              <p className={classes.paragraph}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea.
+              </p>
+              <Row md='auto' className={classes.buttons} >
                 <Link href='/'>Ver mas...</Link>
-              </Col>
-              <Col xs={5} md={7}>
                 <Button size={'sm'}>Realizar evaluación</Button>
-              </Col>
+              </Row>
             </Row>
           </Container>
         </Col>
@@ -93,25 +96,28 @@ const CoachSession: NextPage = () => (
         </Col>
         <Col md={12} lg={3}>
           <Container className={classes.section}>
-            <h5 className={classes.title}>
-              <Sticky className={classes.icon} />
-              Notas
-            </h5>
-            {[0, 1, 2].map((item, idx) => (
-              <Note key={idx} />
-            ))}
+            <Row className={classes.row}>
+              <h5 className={classes.title}>
+                <Sticky className={classes.icon} />
+                Notas
+              </h5>
+              {[0, 1, 2].map((item, idx) => (
+                <Note key={idx} />
+              ))}
+            </Row>
           </Container>
           <Container className={classes.section}>
-            <h5 className={classes.title_blue}>Resultados Resumen</h5>
-            <p className={classes.paragraph}>
-              Gracias a los datos que has aportado en el cuestionario, vas a
-              poder descubrir aspectos sobre tu entorno emocional, y sobre todo
-              de tu “yo” personal y profesional, aspectos que quizá no conocías.
-            </p>
-            {[0, 1].map((item, idx) => (
-              <SumaryResult key={idx} />
-            ))}
-            <Row>
+            <Row className={classes.row}>
+              <h5 className={classes.title_blue}>Resultados Resumen</h5>
+              <p className={classes.paragraph}>
+                Gracias a los datos que has aportado en el cuestionario, vas a
+                poder descubrir aspectos sobre tu entorno emocional, y sobre
+                todo de tu “yo” personal y profesional, aspectos que quizá no
+                conocías.
+              </p>
+              {[0, 1].map((item, idx) => (
+                <SumaryResult key={idx} />
+              ))}
               <Link href='/'>Ver mas...</Link>
             </Row>
           </Container>

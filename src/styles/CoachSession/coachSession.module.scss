@@ -23,49 +23,57 @@
         border-bottom: 1px solid $primary;
       }
     }
-    > * {
-      margin-top: 20px;
+    .row {
+      max-width: 100%;
+      margin: auto;
       justify-content: space-around;
-    }
-    .button {
-      color: white;
-      background-color: $primary;
-    }
-    .icon {
-      font-size: 28px;
-    }
-    .results {
-      color: $secondary;
-      font-weight: bold;
-      justify-content: center;
-    }
-    .profile {
-      justify-content: center;
-      color: $lightPrimary;
-
-      p {
-        color: $gray;
+      > * {
+        margin-top: 20px;
+        justify-content: space-around;
       }
-    }
-    .title {
-      text-align: left;
-
+      .button {
+        color: white;
+        background-color: $primary;
+      }
       .icon {
+        font-size: 28px;
+      }
+      .results {
         color: $secondary;
-        padding-right: 10px;
+        font-weight: bold;
+        justify-content: center;
       }
-      &_blue {
-        color: $primary;
+      .profile {
+        justify-content: center;
+        color: $lightPrimary;
+  
+        p {
+          color: $gray;
+        }
       }
-    }
-    .paragraph {
-      text-align: left;
-    }
-    a {
-      color: $secondary;
-      font-weight: bold;
-      text-align: right;
-      text-decoration: none;
+      .title {
+        text-align: left;
+  
+        .icon {
+          color: $secondary;
+          padding-right: 10px;
+        }
+        &_blue {
+          color: $primary;
+        }
+      }
+      .paragraph {
+        text-align: left;
+      }
+      .buttons {
+        gap: 10px;
+      }
+      a {
+        color: $secondary;
+        font-weight: bold;
+        text-align: right;
+        text-decoration: none;
+      }
     }
   }
 }
