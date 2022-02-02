@@ -2,30 +2,34 @@
 @import '../UI/Card/AppCard.module.scss';
 
 .section {
+  color: $lightPrimary;
+  padding: 20px;
   margin-bottom: 20px;
-  padding: 10px;
   border-radius: 15px;
   justify-content: space-between;
-  color: $lightPrimary;
 
-  h6 {
+  .title {
     color: $secondary;
     text-align: left;
     padding: 0;
+    
+    .icon {
+      padding-right: 10px;
+      font-size: 36px;
+    }
   }
-  .icon {
-    padding-right: 10px;
-    font-size: 36px;
-  }
-  > div {
-    height: 25px;
-    border-radius: 25px;
-    margin-bottom: 10px;
-  }
-  .fill {
-    background-color: $primary;
-  }
-  .void {
-    background-color: $lightBlue;
+  .point {
+    justify-content: space-around;
+    margin-bottom: 20px;
+
+    > div {
+      border-radius: 25px;
+    }
+    .fill {
+      background-color: $lightPrimary;
+    }
+    .void {
+      background-color: $lightBlue;
+    }
   }
 }

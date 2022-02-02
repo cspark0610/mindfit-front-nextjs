@@ -2,7 +2,7 @@
 import Link from 'next/link'
 
 // bootstrap components
-import { Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 
 // styles
 import classes from 'styles/Note/note.module.scss'
@@ -12,14 +12,18 @@ import { FC } from 'react'
 
 export const Note: FC = () => {
   return (
-    <Row className={classes.section}>
-      <h6>10/12/21</h6>
-      <h6>09:30 AM</h6>
-      <p className={classes.paragraph}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor
-      </p>
-      <Link href='/'>Ver mas...</Link>
-    </Row>
+    <Container className={classes.section}>
+      <Row xs={2} className={classes.date}>
+        <Col xs='auto'>10/12/21</Col>
+        <Col xs='auto'>09:30 AM</Col>
+      </Row>
+      <Row>
+        <p className={classes.paragraph}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor
+        </p>
+        <Link href='/'>Ver mas...</Link>
+      </Row>
+    </Container>
   )
 }
