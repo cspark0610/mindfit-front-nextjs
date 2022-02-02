@@ -1,0 +1,92 @@
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../variables.scss';
+
+.container {
+  margin-block: 2rem;
+
+  .title {
+    color: $primary;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .filter {
+    justify-content: center;
+    margin-block: 3rem;
+    .searcher {
+      width: 100%;
+      margin-bottom: 3rem;
+      .inputIcon {
+        font-size: 20px;
+        cursor: pointer;
+        color: $secondary;
+      }
+      .input {
+        border-radius: 30px;
+      }
+    }
+    .categories {
+      display: flex;
+      color: $primary;
+      font-size: 20px;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      justify-content: space-between;
+
+      &_item {
+        cursor: pointer;
+        width: fit-content;
+        white-space: nowrap;
+        padding-inline: 2rem;
+        padding-block: 0.5rem;
+        transition: transform 0.3s;
+        &:hover {
+          transform: scale(1.2);
+          transition: transform 0.3s;
+        }
+        &_selected {
+          color: $secondary;
+        }
+      }
+    }
+  }
+  .articleCard {
+    border-radius: 20px;
+    transition: filter 0.3s;
+    &:hover {
+      filter: brightness(1.2);
+      transition: filter 0.3s;
+    }
+    &_overlay {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &_header {
+        display: flex;
+        color: $white;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      &_category {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      &_body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      &_title {
+        color: $white;
+        font-size: 24px;
+        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+}

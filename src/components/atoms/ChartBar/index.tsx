@@ -4,7 +4,7 @@ import { Chart, ChartProps } from 'primereact/chart'
 // types
 import { FC } from 'react'
 
-export const ChartBar: FC<ChartProps> = ({data}) => {
+export const ChartBar: FC<ChartProps> = ({ data }) => {
   const options = {
     maintainAspectRatio: false,
     aspectRatio: 0.8,
