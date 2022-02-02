@@ -19,16 +19,16 @@ export const Greeting: FC = () => {
     <Container className={classes.container}>
       <Row xs={1} md={2}>
         <motion.div {...viewportFadeIn}>
-          <p className={`${classes.header} mb-5`}>
+          <h1 className={`${classes.header} mb-5`}>
             Camino al autodescubrimiento
-          </p>
-          <h1 className={`${classes.greeting} mb-4`}>
-            Hola, <b>Néstor</b>
           </h1>
+          <p className={`${classes.greeting} mb-4`}>
+            Hola, <b>Néstor</b>
+          </p>
           <p className={classes.paragraph}>
             Gracias a los datos que has aportado en el cuestionario, vas a poder
             descubrir sobre tu <b>Entorno emocional,</b> y sobre todo de tu{' '}
-            <b>{`"yo"`} personal y profesional,</b> aspectos que quizá no
+            <b>{'"yo"'} personal y profesional,</b> aspectos que quizá no
             conocías.
           </p>
           <p className={`${classes.paragraph} mb-5`}>

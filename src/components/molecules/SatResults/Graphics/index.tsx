@@ -31,21 +31,16 @@ export const Graph: FC = () => {
     { name: 'Finalizador', value: 1.5 },
   ]
 
-  let labels: string[] = []
-  let value: number[] = []
-
-  puntuations.map((item) => {
-    labels.push(item.name)
-    value.push(item.value)
-  })
-
-  const datasets = [
-    {
-      label: 'My data',
-      backgroundColor: '#42A5F5',
-      data: value,
-    },
-  ]
+  const data = {
+    labels: puntuations.map((item) => item.name),
+    datasets: [
+      {
+        label: 'My name',
+        backgroundColor: '#1a7bee',
+        data: puntuations.map((item) => item.value),
+      },
+    ],
+  }
 
   return (
     <ContainerMotion {...viewportFadeIn} className={classes.container}>
@@ -71,7 +66,7 @@ export const Graph: FC = () => {
           </p>
         </Col>
         <Col md={8}>
-          <ChartBar labels={labels} datasets={datasets} />
+          <ChartBar data={data} />
         </Col>
       </Row>
     </ContainerMotion>
