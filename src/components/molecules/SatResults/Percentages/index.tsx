@@ -30,7 +30,7 @@ import { FC } from 'react'
 export const Percentages: FC = () => {
   const overlayTooltip = () => <Tooltip>Loren ipsum</Tooltip>
   return (
-    <ContainerMotion {...viewportFadeIn } className={classes.container}>
+    <ContainerMotion {...viewportFadeIn} className={classes.container}>
       <Row>
         <p className={classes.header}>
           Ahora es el turno de los resultados referentes a la empresa
