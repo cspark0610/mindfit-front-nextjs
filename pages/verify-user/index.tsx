@@ -1,7 +1,8 @@
-import { VerifyUserCard } from 'components/molecules/VerifyUserCard'
+//main tools
 import Image from 'next/image'
-import React from 'react'
+//components
 import { Container } from 'react-bootstrap'
+import { VerifyUserCard } from 'components/molecules/VerifyUserCard'
 
 export default function VerifyUser() {
   return (

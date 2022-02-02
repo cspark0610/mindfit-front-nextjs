@@ -1,6 +1,6 @@
 //main
 import { useEffect, useState } from 'react'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 //components
 import { InputText } from 'primereact/inputtext'
 import { Button, Col, Row } from 'react-bootstrap'
@@ -16,7 +16,6 @@ import { useMutation } from '@apollo/client'
 import VERIFY_USER from 'lib/mutations/verifyUser.gql'
 //commons
 import { microServices } from 'commons'
-import { setTimeout } from 'timers'
 
 export const VerifyUserCard = () => {
   const [userEmail, setuserEmail] = useState('')
@@ -39,20 +38,12 @@ export const VerifyUserCard = () => {
         alertType: 'success',
         text: 'Cuenta verificada con éxito',
       })
-      setTimeout(() => {
-        signOut({ callbackUrl: '/login' })
-      }, 5000)
     },
-    onError: (error) => {
-      let message = ''
-      if (error.message === 'email should not be empty,email must be an email')
-        message = 'El campo de email no puede estar vacio'
-      if (error.message === 'Bad Request')
-        message = 'El codigo es invalido o no existe el usuario'
+    onError: () => {
       setalertTextValues({
         show: true,
         alertType: 'error',
-        text: message,
+        text: 'El codigo es invalido o no existe el usuario',
       })
     },
     context: { ms: microServices.backend },
@@ -84,15 +75,14 @@ export const VerifyUserCard = () => {
   }
 
   return (
-    <Row className=''>
+    <Row>
       <Col xs={12} className='d-flex justify-content-center'>
         <form
           onSubmit={handleSubmit}
           className={`${classes.card} ${classes.section}`}>
-          <Row>
-            <h3 className='text-center mb-3'>Verifica tu cuenta</h3>
-          </Row>
-          {session.status === 'unauthenticated' && (
+          <h3 className='text-center mb-3'>Verifica tu cuenta</h3>
+
+          {!session?.data?.user && (
             <Row>
               <InputText
                 type='email'
@@ -110,7 +100,8 @@ export const VerifyUserCard = () => {
               className={`${classes.InputMask} ${classes.marginInput} ${classes.input} mt-3`}
               mask='********'
               value={verificationCode}
-              onChange={(e) => setverificationCode(e.value)}></InputMask>
+              onChange={(e) => setverificationCode(e.value)}
+            />
           </Row>
 
           <Row>
