@@ -1,0 +1,18 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  color: $gray;
+  border: none;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: $lightBlue;
+
+  .date {
+    font-weight: bold;
+    justify-content: space-between;
+  }
+  .paragraph {
+    text-align: left;
+  }
+}

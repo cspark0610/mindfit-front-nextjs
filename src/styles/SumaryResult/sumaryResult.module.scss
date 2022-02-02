@@ -1,0 +1,33 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  color: $lightPrimary;
+  padding: 20px;
+  border-radius: 15px;
+  justify-content: space-between;
+
+  .title {
+    color: $secondary;
+    text-align: left;
+    padding: 0;
+    
+    .icon {
+      padding-right: 10px;
+      font-size: 36px;
+    }
+  }
+  .point {
+    justify-content: space-between;
+
+    > div {
+      border-radius: 25px;
+    }
+    .fill {
+      background-color: $lightPrimary;
+    }
+    .void {
+      background-color: $lightBlue;
+    }
+  }
+}

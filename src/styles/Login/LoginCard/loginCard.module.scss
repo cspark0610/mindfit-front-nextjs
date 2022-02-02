@@ -8,6 +8,14 @@
     padding: 46px 56px;
     max-width: 420px;
     width: 100%;
+    > * {
+      justify-content: center;
+    }
+    .button_icon {
+      @extend .button;
+      width: auto;
+      color: $white;
+    }
   }
 }
 .recoveryLabel {
