@@ -16,7 +16,7 @@ export const CoachProfileCard = () => {
       <div className='text-center mb-4'>
         <Image
           src='/assets/images/avatar.png'
-          alt='Mindfit Logo'
+          alt='avatar'
           width={182}
           height={182}
           layout='intrinsic'

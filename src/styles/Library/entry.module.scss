@@ -1,0 +1,50 @@
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../variables.scss';
+
+.container {
+  margin-block: 2rem;
+  .section {
+    @media (max-width: 1000px) {
+      padding-inline: 2rem;
+    }
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    @media (max-width: 480px) {
+      flex-direction: column-reverse;
+    }
+    .title {
+      color: $primary;
+      font-size: 48px;
+      font-weight: 600;
+    }
+    .badge {
+      font-size: 26px;
+      border-radius: 14px;
+    }
+  }
+  .owner {
+    display: flex;
+    color: $primary;
+    justify-content: center;
+    .name {
+      display: block;
+      font-size: 23px;
+      font-weight: bold;
+    }
+    .position {
+      font-size: 18px;
+    }
+  }
+  .mainImage {
+    border-radius: 50px;
+  }
+  .related {
+    color: $primary;
+    font-size: 24px;
+  }
+}

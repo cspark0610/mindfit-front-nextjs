@@ -12,7 +12,6 @@ import classes from 'styles/Library/page.module.scss'
 
 // types
 import { NextPage } from 'next'
-import { SubmitType } from 'types'
 
 const LibraryPage: NextPage = () => {
   const refetch = () => console.log('QUERY')
@@ -24,9 +23,9 @@ const LibraryPage: NextPage = () => {
           <h1 className={classes.title}>Biblioteca digital</h1>
           <Filter refetch={refetch} />
           <Row>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((article) => (
-              <Col className='my-3' key={article} md={6} lg={3}>
-                <ArticleCard />
+            {[{ id: 0 }, { id: 1 }, { id: 2 }].map((article) => (
+              <Col className='my-3' key={article.id} md={6} lg={3}>
+                <ArticleCard {...article} />
               </Col>
             ))}
           </Row>

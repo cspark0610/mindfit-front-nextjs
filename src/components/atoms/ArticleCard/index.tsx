@@ -5,14 +5,16 @@ import Link from 'next/link'
 import { Card, Badge } from 'react-bootstrap'
 
 // styles
-import classes from 'styles/Library/page.module.scss'
+import classes from 'styles/Library/articleCard.module.scss'
 
 // types
 import { FC } from 'react'
 
-export const ArticleCard: FC = () => {
+type ArticleCardProps = { id: number }
+
+export const ArticleCard: FC<ArticleCardProps> = ({ id }) => {
   return (
-    <Link href='#'>
+    <Link href={`/library/${id}`}>
       <a>
         <Card className={classes.articleCard}>
           <Card.Img src='/assets/images/article.png' alt='Card image' />
