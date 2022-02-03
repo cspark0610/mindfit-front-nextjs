@@ -30,16 +30,17 @@ a {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-button {
   width: 0px;
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: $primary;
+  background: $lightPrimary;
 }
 ::-webkit-scrollbar-thumb:active {
-  background: $primary;
+  background: $lightPrimary;
 }
 ::-webkit-scrollbar-track {
   background: $black;

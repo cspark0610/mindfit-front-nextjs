@@ -22,6 +22,7 @@ import { FC } from 'react'
 import { ClientSafeProvider } from 'next-auth/react'
 import { AlertText } from 'components/atoms/AlertText'
 import { ChangeType, SetStateType, SubmitType } from 'types'
+import { Google } from 'react-bootstrap-icons'
 
 interface Props {
   content: any
@@ -111,9 +112,10 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
                   provider.id !== 'createPassword' && (
                     <Button
                       key={provider.id}
+                      variant='secondary'
                       onClick={() => signIn(provider.id, { callbackUrl: '/' })}
-                      className={`my-3 ${classes.button}`}>
-                      {provider.name}
+                      className={`my-3 ${classes.button_icon}`}>
+                      <Google />
                     </Button>
                   )
               )}
