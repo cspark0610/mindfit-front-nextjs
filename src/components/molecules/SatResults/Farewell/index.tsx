@@ -18,8 +18,12 @@ import { FC } from 'react'
 
 export const Farewell: FC = () => {
   return (
-    <Container className={classes.container}>
-      <RowMotion {...viewportFadeIn} xs={1} md={2}>
+    <Container fluid className={classes.container}>
+      <RowMotion
+        className='d-flex align-items-center'
+        {...viewportFadeIn}
+        xs={1}
+        lg={2}>
         <div>
           <p className={classes.header}>Hacia tu mejor versión</p>
           <h1 className={`${classes.title} mb-4`}>
@@ -37,7 +41,7 @@ export const Farewell: FC = () => {
             Accede a los recursos que te ayuden a alcanzar tu mejor versión
           </Button>
         </div>
-        <div>
+        <div className='d-flex align-items-center'>
           <Image
             src='/assets/icon/MINDFIT.svg'
             alt=''

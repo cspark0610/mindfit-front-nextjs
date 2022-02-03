@@ -30,7 +30,7 @@ import { FC } from 'react'
 export const Percentages: FC = () => {
   const overlayTooltip = () => <Tooltip>Loren ipsum</Tooltip>
   return (
-    <ContainerMotion {...viewportFadeIn } className={classes.container}>
+    <ContainerMotion fluid {...viewportFadeIn} className={classes.container}>
       <Row>
         <p className={classes.header}>
           Ahora es el turno de los resultados referentes a la empresa
@@ -38,7 +38,7 @@ export const Percentages: FC = () => {
         <h1 className={classes.title}>Comunicación en la empresa</h1>
       </Row>
       <Row>
-        <Col md={4}>
+        <Col lg={4}>
           <Image
             className={classes.img}
             src='/assets/icon/MINDFIT.svg'
@@ -51,7 +51,7 @@ export const Percentages: FC = () => {
             Descubre cómo se comunican los miembros de tu empresa
           </p>
         </Col>
-        <Col md={3}>
+        <Col lg={3}>
           {[0, 1, 2].map((item) => (
             <OverlayTrigger
               key={item}
@@ -66,7 +66,7 @@ export const Percentages: FC = () => {
             </OverlayTrigger>
           ))}
         </Col>
-        <Col md={5}>
+        <Col lg={5}>
           <p className={classes.subtitle}>¿Qué significan estos factores?</p>
           <p>
             Los resultados obtenidos en estos tres factores, se encuentran
