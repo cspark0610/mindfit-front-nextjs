@@ -1,18 +1,8 @@
 // Main tools
 import Image from 'next/image'
 
-// Animation
-import { motion } from 'framer-motion'
-
 // bootstrap components
-import {
-  Button,
-  Col,
-  Container,
-  OverlayTrigger,
-  Row,
-  Tooltip,
-} from 'react-bootstrap'
+import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
 // Animation Components
