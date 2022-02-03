@@ -4,6 +4,7 @@ import { useState } from 'react'
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { Toasts } from 'components/atoms/Toasts'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -58,6 +59,9 @@ const AddCollaboratorPage: NextPage<
   const [error, setError] = useState('')
   const [addColaborator] = useMutation(INVITE_COACHEE)
 
+  const defaultToast = { show: false, message: '' }
+  const [toast, setToast] = useState(defaultToast)
+
   const handleChange = (ev: ChangeType | DropdownChangeParams) => {
     error && setError('')
     setColaborator({ ...colaborator, [ev.target.name]: ev.target.value })
@@ -70,7 +74,10 @@ const AddCollaboratorPage: NextPage<
       content.validEmail
     )
     if (success) {
-      const { saved } = await saveColaborator(colaborator, addColaborator)
+      const { saved, message } = await saveColaborator(
+        colaborator,
+        addColaborator
+      )
       setInvitedColaborators([
         ...invitedColaborators,
         {
@@ -82,6 +89,7 @@ const AddCollaboratorPage: NextPage<
         },
       ])
       setColaborator(INITIAL_STATE)
+      setToast({ show: true, message: message })
     } else setError(message as string)
   }
 
@@ -133,6 +141,13 @@ const AddCollaboratorPage: NextPage<
             </Row>
           </Col>
         </Row>
+        <Toasts
+          show={toast.show}
+          title='collaborator add'
+          message={toast.message}
+          position='bottom-center'
+          onClose={() => setToast(defaultToast)}
+        />
         <Row className={classes.row}>
           <DataTable
             breakpoint='960px'

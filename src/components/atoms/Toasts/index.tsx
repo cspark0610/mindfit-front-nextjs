@@ -15,10 +15,10 @@ interface Props extends ToastProps, ToastContainerProps {
   subtitle?: string
 }
 
-export const Toasts: FC<Props> = ({ title, subtitle, message, ...props }) => {
+export const Toasts: FC<Props> = ({ title, subtitle, message, show, ...props }) => {
   return (
     <ToastContainer {...props}>
-      <Toast {...props}>
+      <Toast show={show} {...props}>
         <Toast.Header>
           <Image
             src='/assets/icon/MINDFIT-ICON.svg'
