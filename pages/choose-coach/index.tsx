@@ -1,5 +1,5 @@
 // main tools
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { initializeApolloClient } from 'lib/apollo'
 
 // bootstrap components
@@ -25,6 +25,8 @@ import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
 import { NextPage, GetServerSidePropsContext } from 'next'
 import { CoachDataType } from 'types/models/Coach'
 import { GetSSPropsType } from 'types'
+
+import { Carousel } from 'primereact/carousel'
 
 const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
@@ -146,6 +148,18 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     }
   }
 
+  const responsiveOptions = [
+    {
+      breakpoint: '988px',
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ]
+
+  const coachsTemplate = (coach: any) => (
+    <CoachCard data={coach} content={content} />
+  )
+
   return (
     <Layout>
       <Container className={classes.container}>
@@ -167,14 +181,14 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             <Row className='justify-content-center'>
               <Col xs={12} md={9}>
                 <Row>
-                  {coachs.map(
-                    (coach, idx) =>
-                      idx <= showedCoachs && (
-                        <Col className='mb-4' xs={12} md={6} key={coach.id}>
-                          <CoachCard data={coach} content={content} />
-                        </Col>
-                      )
-                  )}
+                  <Carousel
+                    indicatorsContentClassName={classes.carousel_point}
+                    value={coachs}
+                    numVisible={2}
+                    numScroll={1}
+                    responsiveOptions={responsiveOptions}
+                    itemTemplate={coachsTemplate}
+                  />
                 </Row>
               </Col>
             </Row>
