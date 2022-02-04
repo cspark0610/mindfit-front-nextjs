@@ -66,9 +66,9 @@ export const UserSignup: FC<Props> = ({ content }) => {
   }
 
   const handeSubmit = () => {
-    createUser({
+    signUp({
       variables: {
-        user: {
+        data: {
           email: userData.email,
           name: `${userData.firstName} ${userData.lastName}`,
           password: userData.password,
@@ -77,7 +77,7 @@ export const UserSignup: FC<Props> = ({ content }) => {
     })
   }
 
-  const [createUser] = useMutation(CREATE_USER, {
+  const [signUp] = useMutation(CREATE_USER, {
     onCompleted: handleSignup,
     onError: (error) => console.log(error),
     context: { ms: microServices.backend },

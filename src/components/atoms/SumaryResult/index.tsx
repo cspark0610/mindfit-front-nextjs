@@ -18,10 +18,10 @@ export const SumaryResult: FC = () => {
       {[0, 1, 2].map((item, idx) => (
         <Row key={idx} className={classes.point}>
           <p>Delegar tres tareas dentro de tu equipo</p>
-            <Col xs={2} className={classes.fill} />
-            <Col xs={2} className={classes.fill} />
-            <Col xs={2} className={classes.void} />
-            <Col xs='auto'>2/3</Col>
+          <Col xs={2} className={classes.fill} />
+          <Col xs={2} className={classes.fill} />
+          <Col xs={2} className={classes.void} />
+          <Col xs='auto'>2/3</Col>
         </Row>
       ))}
     </Container>

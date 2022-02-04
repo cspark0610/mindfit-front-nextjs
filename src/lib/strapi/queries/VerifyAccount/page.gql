@@ -1,0 +1,11 @@
+query VerificationAccount($locale: I18NLocaleCode) {
+  verifyUser(locale: $locale) {
+    data {
+      attributes {
+        title
+        claimCodeLabel
+        warningLabel
+      }
+    }
+  }
+}
