@@ -17,7 +17,7 @@ import { FC } from 'react'
 export const Greeting: FC = () => {
   return (
     <Container className={classes.container}>
-      <Row xs={1} md={2}>
+      <Row xs={1} lg={2}>
         <motion.div {...viewportFadeIn}>
           <h1 className={`${classes.header} mb-5`}>
             Camino al autodescubrimiento
@@ -39,7 +39,7 @@ export const Greeting: FC = () => {
           </p>
           <Button className={classes.button}>Comencemos</Button>
         </motion.div>
-        <motion.div {...viewportFadeIn}>
+        <motion.div {...viewportFadeIn} className='d-flex align-items-center'>
           <Image
             src='/assets/icon/MINDFIT.svg'
             alt=''

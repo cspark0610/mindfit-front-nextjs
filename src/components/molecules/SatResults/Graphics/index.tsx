@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { ChartBar } from 'components/atoms/ChartBar'
 
 // bootstrap components
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
 // Animation components
@@ -43,7 +43,7 @@ export const Graph: FC = () => {
   }
 
   return (
-    <ContainerMotion {...viewportFadeIn} className={classes.container}>
+    <ContainerMotion fluid {...viewportFadeIn} className={classes.container}>
       <Row>
         <p className={classes.header}>
           Ahora es el turno de conocer qué tipo de perfil tienes a la hora de
@@ -52,7 +52,7 @@ export const Graph: FC = () => {
         <h1 className={classes.title}>Trabajo en equipo</h1>
       </Row>
       <Row>
-        <Col md={4}>
+        <Col lg={4}>
           <Image
             className={classes.img}
             src='/assets/icon/MINDFIT.svg'
@@ -65,7 +65,7 @@ export const Graph: FC = () => {
             Descubre cómo se comunican los miembros de tu empresa
           </p>
         </Col>
-        <Col md={8}>
+        <Col lg={8}>
           <ChartBar data={data} />
         </Col>
       </Row>
