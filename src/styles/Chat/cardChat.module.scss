@@ -1,0 +1,17 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  padding: 20px;
+  margin-bottom: 1rem;
+  background-color: $lightBlue;
+
+  .data {
+    font-weight: bold;
+    justify-content: space-between;
+  }
+  .notification {
+    color: $white;
+    text-align: end;
+  }
+}

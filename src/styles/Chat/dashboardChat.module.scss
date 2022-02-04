@@ -1,0 +1,46 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  height: 95vh;
+  padding: 40px;
+  border: none;
+  margin-bottom: 20px;
+  background: linear-gradient(to bottom, $lightBlue, $primary);
+  position: relative;
+  > * {
+    justify-content: space-between;
+  }
+  .searcher {
+    margin-bottom: 50px;
+    .inputIcon {
+      color: $secondary;
+      font-size: 20px;
+      padding-right: 1rem;
+      cursor: pointer;
+    }
+    .input {
+      width: 100%;
+      border-radius: 30px;
+      border: 1px solid $primary;
+    }
+  }
+  h5 {
+    color: $primary;
+  }
+  .buttonIcon {
+    background-color: $lightBlue;
+    color: $secondary;
+  }
+  .container {
+    top: 200px;
+    bottom: 40px;
+    left: 40px;
+    right: 40px;
+    position: absolute;
+    max-height: 100%;
+    overflow: auto;
+    border-radius: 38px;
+  }
+}
+
