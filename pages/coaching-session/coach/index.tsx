@@ -82,7 +82,7 @@ const CoachSession: NextPage = () => (
                 nisi ut aliquip ex ea. Ut enim ad minim veniam, quis nostrud
                 exercitation ullamco laboris nisi ut aliquip ex ea.
               </p>
-              <Row md='auto' className={classes.buttons} >
+              <Row md='auto' className={classes.buttons}>
                 <Link href='/'>Ver mas...</Link>
                 <Button size={'sm'}>Realizar evaluación</Button>
               </Row>

@@ -1,0 +1,16 @@
+query CollaboratorStepsContent($locale: I18NLocaleCode) {
+  collaboratorStep(locale: $locale) {
+    data {
+      attributes {
+        steps {
+          label
+          value
+        }
+        becomeOrgLabel {
+          label
+          value
+        }
+      }
+    }
+  }
+}

@@ -12,8 +12,8 @@ import classes from 'styles/Chat/messageChat.module.scss'
 import { FC } from 'react'
 
 export const MessageChat: FC = () => {
-  const [user, setUser] = useState('received') 
-  
+  const [user, setUser] = useState('received')
+
   return (
     <Container className={classes.section}>
       <Row className={classes[user]}>
@@ -31,9 +31,7 @@ export const MessageChat: FC = () => {
             <p>Camila</p>
             <p>33 min</p>
           </Row>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Col>
       </Row>
     </Container>

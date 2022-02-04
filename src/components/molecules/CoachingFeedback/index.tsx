@@ -29,7 +29,7 @@ export const CoachingFeedback: FC = () => {
         centered
         contentClassName={classes.section}
         show={showModal}
-        onHide={()=> setShowModal(false)}
+        onHide={() => setShowModal(false)}
         size='lg'>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
@@ -52,11 +52,11 @@ export const CoachingFeedback: FC = () => {
         centered
         contentClassName={classes.section}
         show={showCheck}
-        onHide={()=> setShowCheck(false)}>
+        onHide={() => setShowCheck(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <h1>Gracias por tu feedback</h1>
-          <CheckSquare className={classes.icon}/>
+          <CheckSquare className={classes.icon} />
         </Modal.Body>
       </Modal>
     </>
