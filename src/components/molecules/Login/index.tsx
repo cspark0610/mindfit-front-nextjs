@@ -22,7 +22,7 @@ import { FC } from 'react'
 import { ClientSafeProvider } from 'next-auth/react'
 import { AlertText } from 'components/atoms/AlertText'
 import { ChangeType, SetStateType, SubmitType } from 'types'
-import { Google } from 'react-bootstrap-icons'
+import { Facebook, Google, Linkedin } from 'react-bootstrap-icons'
 
 interface Props {
   content: any
@@ -60,6 +60,12 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
       setProviders(prov)
     })()
   }, [])
+
+  const rrssIcons: any = {
+    google: <Google />,
+    facebook: <Facebook />,
+    linkedin: <Linkedin />,
+  }
 
   return (
     <Row className={classes.container}>
@@ -115,7 +121,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
                       variant='secondary'
                       onClick={() => signIn(provider.id, { callbackUrl: '/' })}
                       className={`my-3 ${classes.button_icon}`}>
-                      <Google />
+                      {rrssIcons[provider.id] ?? null}
                     </Button>
                   )
               )}

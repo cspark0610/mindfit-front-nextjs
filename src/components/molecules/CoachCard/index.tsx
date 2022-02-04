@@ -57,6 +57,7 @@ export const CoachCard: FC<CoachCardProps> = ({ data, content }) => {
             <p>{data.description}</p>
             <Button
               className={classes.button}
+              variant='secondary'
               onClick={() => handleOpenModal()}>
               {content?.sugestionButton.label}
             </Button>
