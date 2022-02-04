@@ -2,6 +2,13 @@
 
 .container {
   margin-top: 4rem;
+  padding: 0 10rem;
+  @media (max-width: 992px) {
+    padding: 0 4rem;
+  }
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 }
 
 .header {

@@ -25,7 +25,7 @@ export const ProfileTypes: FC = () => {
         <h1 className={`${classes.title} mb-5`}>Trabajo en equipo</h1>
       </motion.div>
       <Container>
-        <RowMotion {...viewportFadeIn} xs={1} md={2}>
+        <RowMotion {...viewportFadeIn} xs={1} lg={2}>
           <div>
             <p className={classes.description}>
               ¿Qué <b>perfiles</b> podemos desarrollar si lo viésemos necesario?
