@@ -67,7 +67,7 @@ const CoacheeSession: NextPage = () => (
           </Container>
         </Col>
         <Col lg={6}>
-          <DashboardChat/>
+          <DashboardChat />
         </Col>
       </Row>
     </Container>

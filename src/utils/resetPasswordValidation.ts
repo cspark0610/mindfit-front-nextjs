@@ -5,7 +5,8 @@ export const resetPasswordValidation = (
   data: {
     password: string
     confirmPassword: string
-  }
+  },
+  content: any
 ) => {
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
     data.password
@@ -15,7 +16,7 @@ export const resetPasswordValidation = (
     return {
       showAlert: true,
       alertType: 'error',
-      text: 'Por favor, solicite un cambio de contraseña e ingrese desde el enlace recibido en su correo',
+      text: content.requestChangeWarning,
     }
 
   if (data.password === '' && data.confirmPassword === '')

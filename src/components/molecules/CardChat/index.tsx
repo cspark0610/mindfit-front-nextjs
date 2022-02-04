@@ -28,11 +28,11 @@ export const CardChat: FC = () => {
             <p>Camila</p>
             <p>33 min</p>
           </Row>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
           <div className={classes.notification}>
-            <Button className={classes.notification} variant='secondary'>1</Button>
+            <Button className={classes.notification} variant='secondary'>
+              1
+            </Button>
           </div>
         </Col>
       </Row>

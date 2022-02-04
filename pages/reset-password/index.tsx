@@ -43,7 +43,9 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     password: '',
     confirmPassword: '',
   })
-  const validation = resetPasswordValidation(hash as string, password)
+  const validation = resetPasswordValidation(hash as string, password, {
+    requestChangeWarning: content.requestChangeWarning,
+  })
   const { push } = useRouter()
 
   // mutation
