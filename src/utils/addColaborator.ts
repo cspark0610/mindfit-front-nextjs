@@ -32,8 +32,8 @@ export const saveColaborator = async (
       variables: colaborator,
       context: { ms: microServices.backend },
     })
-    return { saved: !!data, message: "invitación realizada con exito" }
+    return { saved: !!data, message: 'invitación realizada con exito' }
   } catch {
-    return { saved: false, message: "invitación fallida"}
+    return { saved: false, message: 'invitación fallida' }
   }
 }

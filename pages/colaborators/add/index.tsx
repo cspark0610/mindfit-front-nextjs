@@ -4,7 +4,7 @@ import { useState } from 'react'
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
-import { Toasts, INITIAL_TOAST_STATE  } from 'components/atoms/Toasts'
+import { Toasts, INITIAL_TOAST_STATE } from 'components/atoms/Toasts'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'

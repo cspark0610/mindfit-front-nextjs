@@ -20,7 +20,13 @@ export const INITIAL_TOAST_STATE = {
   message: '',
 }
 
-export const Toasts: FC<Props> = ({ title, subtitle, message, show, ...props }) => {
+export const Toasts: FC<Props> = ({
+  title,
+  subtitle,
+  message,
+  show,
+  ...props
+}) => {
   return (
     <ToastContainer {...props}>
       <Toast show={show} {...props}>

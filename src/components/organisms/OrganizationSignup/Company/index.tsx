@@ -42,10 +42,9 @@ import { OrganizationDataType } from 'types/models/Organization'
 
 interface Props {
   content: any
-  contentForm: any
 }
 
-export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
+export const CompanySignup: FC<Props> = ({ content }) => {
   const { push } = useRouter()
   const { data } = useSession()
   const [companyData, setCompanyData] = useState<OrganizationDataType>({
@@ -53,11 +52,6 @@ export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
     name: '',
     about: '',
   })
-
-  const label = {
-    name: contentForm.input1,
-    description: contentForm.input2,
-  }
 
   const handleChange = (ev: ChangeType | ChangeEvent<HTMLTextAreaElement>) =>
     setCompanyData({ ...companyData, [ev.target.name]: ev.target.value })
@@ -82,21 +76,21 @@ export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
     onError: (error) => console.log(error),
   })
 
-  const overlayTooltip = () => <Tooltip>{content.tooltip}</Tooltip>
+  const overlayTooltip = () => <Tooltip>{content.helpText}</Tooltip>
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>{contentForm.title}</h1>
+      <h1 className={classes.title}>{content.title}</h1>
       <UploadPicture setData={setCompanyData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>
             <InputText
               name='name'
-              value={companyData.name}
               onChange={handleChange}
-              placeholder={label.name}
+              value={companyData.name}
               className={classes.input}
+              placeholder={content.nameInput.placeholder}
             />
           </Col>
           <Col xs={12}>
@@ -106,8 +100,8 @@ export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
               name='about'
               onChange={handleChange}
               value={companyData.about}
-              placeholder={label.description}
               className={`${classes.input} ${classes.textarea}`}
+              placeholder={content.descriptionInput.placeholder}
             />
           </Col>
         </Row>
@@ -128,7 +122,7 @@ export const CompanySignup: FC<Props> = ({ content, contentForm }) => {
               disabled={!validateCompanySignup(companyData)}
               onClick={handleClick}
               className={classes.button}>
-              {contentForm.button.label}
+              {content.submitButton.label}
             </Button>
           </Col>
         </Row>
