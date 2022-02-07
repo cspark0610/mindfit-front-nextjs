@@ -16,17 +16,19 @@ import { Layout } from 'components/organisms/Layout'
 const UserDashboard: NextPage = () => {
   return (
     <Layout>
-      <Container className='m-4' fluid>
+      <Container className='my-4' fluid>
         <Row className='mb-5 justify-content-center'>
-          <Col xs={12} md={3}>
+          <Col xs={12} lg={6} xl={3}>
             <CoachProfileCard />
           </Col>
-          <Col xs={12} md={5}>
+          <Col xs={12} lg={6} xl={7}>
             <CoachObjectives />
           </Col>
         </Row>
-        <Row>
-          <RecommendedContentList />
+        <Row className='justify-content-center'>
+          <Col xs={12} md={10}>
+            <RecommendedContentList />
+          </Col>
         </Row>
       </Container>
     </Layout>
