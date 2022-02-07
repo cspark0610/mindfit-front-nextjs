@@ -10,7 +10,7 @@ import { FC } from 'react'
 
 export const CoachObjectives: FC = () => {
   return (
-    <Container>
+    <Container className='mt-5 mt-lg-0'>
       <p className={`mb-2 fs-5 fw-bold ${classes.subtitle}`}>
         ¡Cumpliste tus objetivos!
       </p>
@@ -23,7 +23,7 @@ export const CoachObjectives: FC = () => {
         Tareas cumplidas
       </p>
       <Container>
-        <Row>
+        <Row className='justify-content-center'>
           <CoachObjectivesItem />
           <CoachObjectivesItem />
           <CoachObjectivesItem />
