@@ -14,10 +14,8 @@ import { FC } from 'react'
 
 export const RecommendedContentList: FC = () => {
   return (
-    <div className='mb-5'>
-      <p className={`fw-bold fs-5 mb-5 ${classes.section_title}`}>
-        Contenidos Recomendados
-      </p>
+    <div>
+      <p className={classes.section_title}>Contenidos Recomendados</p>
       <Container fluid>
         <Row className='justify-content-center'>
           <RecommendedContentItem />

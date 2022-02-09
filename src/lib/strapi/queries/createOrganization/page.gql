@@ -1,0 +1,19 @@
+query CreateOrgContent($locale: I18NLocaleCode) {
+  createOrganization(locale: $locale) {
+    data {
+      attributes {
+        title
+        nameInput {
+          placeholder
+        }
+        descriptionInput {
+          placeholder
+        }
+        submitButton {
+          label
+        }
+        helpText
+      }
+    }
+  }
+}
