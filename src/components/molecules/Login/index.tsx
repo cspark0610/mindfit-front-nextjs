@@ -75,7 +75,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
           className={`${classes.card} ${classes.section}`}>
           <Row>
             <InputText
-              type={'email'}
+              type='email'
               name='email'
               className={`mb-4 ${classes.input}`}
               value={user.email}
