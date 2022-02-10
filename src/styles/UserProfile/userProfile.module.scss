@@ -1,0 +1,28 @@
+@import '../variables.scss';
+@import '../UI/Card/signupCard.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Modal/appModal.module.scss';
+@import '../Login/LoginCard/loginCard.module.scss';
+
+.row {
+  text-align: center;
+  .rigth {
+    margin-left: auto !important;
+  }
+  .check {
+    color: $success;
+  }
+}
+
+.close {
+  padding: 40px 40px 0;
+  border-bottom: none;
+}
+.section_modal {
+  @extend .section;
+  border: none;
+  .button {
+    color: $white;
+  }
+}
+

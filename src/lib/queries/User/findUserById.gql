@@ -1,0 +1,13 @@
+query user($id:Int!) {
+  findUserById(id:$id){
+    id
+    name
+    email
+    password
+    coachee{
+      id
+      profilePicture
+      position
+    }
+  }
+}
