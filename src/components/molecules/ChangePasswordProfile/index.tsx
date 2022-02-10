@@ -25,22 +25,24 @@ import classes from 'styles/UserProfile/userProfile.module.scss'
 
 // types
 import { FC } from 'react'
-import { ChangeType, SubmitType } from 'types'
+import { ChangeType, SetStateType, SubmitType } from 'types'
 import { UserDataType } from 'types/models/User'
 
 export const ChangePasswordProfile: FC<{
-  userSession: UserDataType
+  data: UserDataType
   content: any
-  modalShow: boolean
-  onHide: Function
-}> = ({ userSession, content, modalShow, onHide }) => {
+  onHide: SetStateType<boolean>
+}> = ({ data, content, onHide }) => {
   const suggestionsContent = content.passwordSuggestion.data.attributes
-
-  const [NewPassword] = useMutation(PASSWORD_DATA)
   const [passwordData, setPasswordData] = useState({
     password: '',
     confirmPassword: '',
   })
+
+  const [NewPassword] = useMutation(PASSWORD_DATA)
+
+  const handleChangePassword = (ev: ChangeType | any) =>
+    setPasswordData({ ...passwordData, [ev.target.name]: ev.target.value })
 
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
     passwordData.password
@@ -54,84 +56,65 @@ export const ChangePasswordProfile: FC<{
 
   const changePassword = async (ev: SubmitType) => {
     ev.preventDefault()
-    const { succes } = await savePassword(
-      userSession,
-      passwordData,
-      NewPassword
-      )
-    if (succes)
-    onHide(false)
-  }
-
-  const handleChangePassword = (ev: ChangeType | any) => {
-    setPasswordData({ ...passwordData, [ev.target.name]: ev.target.value })
+    const { succes } = await savePassword(data, passwordData, NewPassword)
+    if (succes) onHide(false)
   }
 
   return (
-    <Modal
-      size='lg'
-      centered
-      className={classes.modal}
-      show={modalShow}
-      onHide={() => onHide(false)}>
-      <Modal.Header closeButton className={classes.close} />
-      <Modal.Body className={classes.section_modal}>
-        <form onSubmit={changePassword}>
-          <section className={classes.container}>
-            <h1 className={classes.title}>{content.title}</h1>
-            <Container fluid>
-              <Row className={classes.row}>
-                <Col xs={12}>
-                  <Password
-                    toggleMask
-                    name='password'
-                    value={passwordData.password}
-                    onChange={handleChangePassword}
-                    className='w-100'
-                    promptLabel={suggestionsContent.promptLabel}
-                    weakLabel={suggestionsContent.weakLabel}
-                    strongLabel={suggestionsContent.strongLabel}
-                    mediumRegex={regex.minSize.source}
-                    inputClassName={`${classes.input}`}
-                    placeholder={content.passwordInput.placeholder}
-                    mediumLabel={suggestionsContent.fillFieldsLabel}
-                    strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
-                  />
-                </Col>
-                <Col xs={12}>
-                  <Password
-                    toggleMask
-                    feedback={false}
-                    className='w-100'
-                    name='confirmPassword'
-                    onChange={handleChangePassword}
-                    value={passwordData.confirmPassword}
-                    inputClassName={classes.input}
-                    placeholder={content.confirmPasswordInput.placeholder}
-                  />
-                </Col>
-                <Col xs={12}>
-                  {passwordSuggestionsTemplate({
-                    value: passwordData.password,
-                    suggestionsContent,
-                  })}
-                </Col>
-              </Row>
-              <Row className={classes.row}>
-                <Col xs={12}>
-                  <Button
-                    type='submit'
-                    disabled={disableButton}
-                    className={classes.button}
-                    variant='secondary'>
-                      {content.submitButton.label}
-                  </Button>
-                </Col>
-              </Row>
-            </Container>
-          </section>
-        </form>
-      </Modal.Body>
-    </Modal>
+    <form onSubmit={changePassword}>
+      <section className={classes.container}>
+        <h1 className={classes.title}>{content.title}</h1>
+        <Container fluid>
+          <Row className={classes.row}>
+            <Col xs={12}>
+              <Password
+                toggleMask
+                name='password'
+                value={passwordData.password}
+                onChange={handleChangePassword}
+                className='w-100'
+                promptLabel={suggestionsContent.promptLabel}
+                weakLabel={suggestionsContent.weakLabel}
+                strongLabel={suggestionsContent.strongLabel}
+                mediumRegex={regex.minSize.source}
+                inputClassName={`${classes.input}`}
+                placeholder={content.passwordInput.placeholder}
+                mediumLabel={suggestionsContent.fillFieldsLabel}
+                strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
+              />
+            </Col>
+            <Col xs={12}>
+              <Password
+                toggleMask
+                feedback={false}
+                className='w-100'
+                name='confirmPassword'
+                onChange={handleChangePassword}
+                value={passwordData.confirmPassword}
+                inputClassName={classes.input}
+                placeholder={content.confirmPasswordInput.placeholder}
+              />
+            </Col>
+            <Col xs={12}>
+              {passwordSuggestionsTemplate({
+                value: passwordData.password,
+                suggestionsContent,
+              })}
+            </Col>
+          </Row>
+          <Row className={classes.row}>
+            <Col xs={12}>
+              <Button
+                type='submit'
+                disabled={disableButton}
+                className={classes.button}
+                variant='secondary'>
+                {content.submitButton.label}
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </form>
   )
 }

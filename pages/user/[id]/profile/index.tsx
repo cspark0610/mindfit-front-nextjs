@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
-import { UserProfile } from 'components/organisms/UserProfile'
+import { ProfileForm } from 'components/organisms/ProfileForm'
 
 // commons
 import { microServices } from 'commons'
@@ -24,15 +24,14 @@ import classes from 'styles/signup/org.module.scss'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
-const DashboardUser: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  session,
+const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  data,
   content,
-  contentPass,
 }) => (
   <Layout>
     <Container className={classes.container}>
       <Container fluid className={classes.section}>
-        <UserProfile userSession={session} content={content} contentPass={contentPass} />
+        <ProfileForm data={data} content={content} />
       </Container>
     </Container>
   </Layout>
@@ -62,11 +61,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      session: data.findUserById,
-      content: content.userProfile.data.attributes,
-      contentPass: contentPass.changePassword.data.attributes
+      data: data.findUserById,
+      content: {
+        ...content.userProfile.data.attributes,
+        ...contentPass.changePassword.data.attributes,
+      },
     },
   }
 }
 
-export default DashboardUser
+export default UserProfile

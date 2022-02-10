@@ -4,35 +4,35 @@ import { microServices } from 'commons'
 // Types
 import { UserDataType } from 'types/models/User'
 
-export const initialState = (userSession:any) => {
-  const name = userSession.name.split(' ')
+export const initialState = (userData: UserDataType): UserDataType => {
+  const name = userData.name?.split(' ')
   const INITIAL_STATE = {
-    firstName: name[0],
-    lastName: name[1],
-    email: userSession?.email,
-    password: userSession?.password,
+    firstName: name ? name[0] : '',
+    lastName: name ? name[1] : '',
+    email: userData.email,
+    password: userData.password,
     coachee: {
-      profilePicture: userSession?.coachee?.profilePicture as File,
-      position: userSession?.coachee?.position,
+      profilePicture: userData.coachee?.profilePicture as File,
+      position: userData.coachee?.position,
     },
   }
   return INITIAL_STATE
 }
 
-export const validateUserProfile = (profileData: UserDataType) => {
+export const validateUserProfile = (userData: UserDataType) => {
   if (
-    !profileData.firstName ||
-    !profileData.lastName ||
-    !profileData.email ||
-    !profileData.coachee?.position ||
-    !profileData.coachee?.profilePicture
+    !userData.firstName ||
+    !userData.lastName ||
+    !userData.email ||
+    !userData.coachee?.position ||
+    !userData.coachee?.profilePicture
   )
     return false
   return true
 }
 
 export const saveData = async (
-  userSession: UserDataType,
+  data: UserDataType,
   userData: UserDataType,
   newData: Function
 ) => {
@@ -43,9 +43,9 @@ export const saveData = async (
           name: `${userData.firstName} ${userData.lastName}`,
           email: userData.email,
         },
-        user_id: userSession.id,
+        user_id: data.id,
         coachee_data: userData.coachee,
-        coachee_id: userSession.coachee?.id,
+        coachee_id: data.coachee?.id,
       },
       context: { ms: microServices.backend },
     })
@@ -56,7 +56,7 @@ export const saveData = async (
 }
 
 export const savePassword = async (
-  userSession: UserDataType,
+  data: UserDataType,
   passwordData: UserDataType,
   newPassword: Function
 ) => {
@@ -64,9 +64,9 @@ export const savePassword = async (
     await newPassword({
       variables: {
         user_data: {
-          password: passwordData.password
+          password: passwordData.password,
         },
-        user_id: userSession.id,
+        user_id: data.id,
       },
       context: { ms: microServices.backend },
     })

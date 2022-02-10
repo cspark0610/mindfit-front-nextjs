@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 
 // bootstrap components
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
@@ -29,38 +29,36 @@ import { FC } from 'react'
 import { ChangeType } from 'types'
 import { UserDataType } from 'types/models/User'
 
-export const UserProfile: FC<{
-  userSession: UserDataType
+export const ProfileForm: FC<{
+  data: UserDataType
   content: any
-  contentPass: any
-}> = ({ userSession, content, contentPass}) => {
-  const [NewData] = useMutation(USER_DATA)
+}> = ({ data, content }) => {
+  const [userData, setUserData] = useState<UserDataType>(initialState(data))
   const [passwordShow, setPasswordShow] = useState(false)
-  const [userData, setUserData] = useState<UserDataType>(
-    initialState(userSession)
-  )
+  const [validate, setValidate] = useState(false)
+  const [NewData] = useMutation(USER_DATA)
+
+  const handleChangeUser = (ev: ChangeType | DropdownChangeParams) =>
+    setUserData({ ...userData, [ev.target.name]: ev.target.value })
+
+  const getValidate = () => setValidate(validateUserProfile(userData))
 
   const save = async () => {
-    const { succes } = await saveData(userSession, userData, NewData)
+    const { succes } = await saveData(data, userData, NewData)
     if (succes) {
       setValidate(false)
     }
   }
 
-  const [validate, setValidate] = useState(false)
-  const getValidate = () => setValidate(validateUserProfile(userData))
   useEffect(() => {
     const userData_str = JSON.stringify(userData)
-    const initial_str = JSON.stringify(initialState(userSession))
+    const initial_str = JSON.stringify(initialState(data))
     if (userData_str == initial_str) {
       setValidate(false)
     } else {
       getValidate()
     }
   }, [userData])
-
-  const handleChangeUser = (ev: ChangeType | DropdownChangeParams) =>
-    setUserData({ ...userData, [ev.target.name]: ev.target.value })
 
   return (
     <>
@@ -122,12 +120,21 @@ export const UserProfile: FC<{
           <ExploreBadge />
         </Container>
       </section>
-      <ChangePasswordProfile
-        userSession={userSession}
-        content={contentPass}
-        modalShow={passwordShow}
-        onHide={setPasswordShow}
-      />
+      <Modal
+        size='lg'
+        centered
+        className={classes.modal}
+        show={passwordShow}
+        onHide={() => setPasswordShow(false)}>
+        <Modal.Header closeButton className={classes.close} />
+        <Modal.Body className={classes.section_modal}>
+          <ChangePasswordProfile
+            data={data}
+            content={content}
+            onHide={setPasswordShow}
+          />
+        </Modal.Body>
+      </Modal>
     </>
   )
 }
