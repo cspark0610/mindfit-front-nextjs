@@ -15,7 +15,7 @@ export const Cover: FC<any> = (props) => {
   return (
     <CardMotion {...fadeIn} className={`${classes.container} ${classes.bg}`}>
       <Card.Img
-        className='opacity-25'
+        className={`${classes.cardImg} opacity-25 `}
         src={props.background.data.attributes.url}
       />
       <Card.ImgOverlay className={classes.bg}>
