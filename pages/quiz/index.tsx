@@ -2,6 +2,7 @@
 import { useState, useEffect, Fragment, useRef } from 'react'
 import { getSession } from 'next-auth/react'
 import { useQuery, useMutation } from '@apollo/client'
+import { useRouter } from 'next/router'
 
 // gql
 import { createApolloClient } from 'lib/apolloClient'
@@ -43,6 +44,7 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   const [actualSection, setActualSection] = useState(0)
   const [answers, setAnswers] = useState<any>({})
   const backToTop = useRef<HTMLHeadingElement>(null)
+  const { push } = useRouter()
 
   const { data, loading } = useQuery(GET_QUIZ_CONTENT, {
     context: { ms: microServices.backend },
@@ -55,11 +57,15 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   })
 
   const handleChangeSection = (index: number) => setActualSection(index)
-  const handleNextQuestion = () => {
-    actualSection < (quiz?.sections.length as number) - 1
-      ? setActualSection((prev) => prev + 1)
-      : SubmitQuiz({ variables: { data: { ...answers } } })
+  const handleNextQuestion = async () => {
+    if (actualSection < (quiz?.sections.length as number) - 1) {
+      setActualSection((prev) => prev + 1)
+    } else {
+      const { data } = await SubmitQuiz({ variables: { data: { ...answers } } })
+      push(`/quiz/${data.createSatReport.id}`)
+    }
   }
+
   const handlePrevQuestion = () =>
     actualSection > 0 && setActualSection((prev) => prev - 1)
 
