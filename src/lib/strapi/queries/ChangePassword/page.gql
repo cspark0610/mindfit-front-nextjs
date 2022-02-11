@@ -1,0 +1,34 @@
+query SatReportContent($locale: I18NLocaleCode) {
+  changePassword(locale: $locale) {
+    data {
+      attributes {
+        title
+        passwordInput {
+          placeholder
+        }
+        confirmPasswordInput {
+          placeholder
+        }
+        submitButton {
+          label
+        }
+        requestChangeWarning
+        passwordSuggestion {
+          data {
+            attributes {
+              promptLabel
+              weakLabel
+              mediumLabel
+              strongLabel
+              fillFieldsLabel
+              suggestionList {
+                label
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

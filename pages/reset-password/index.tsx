@@ -26,13 +26,16 @@ import { ChangeType, GetSSPropsType, SubmitType } from 'types'
 
 //Apollo
 import { useMutation } from '@apollo/client'
+import { initializeApolloClient } from 'lib/apollo'
 import RESET_PASSWORD from 'lib/mutations/resetPassword.gql'
+import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
 //Utils
 import { resetPasswordValidation } from 'utils/resetPasswordValidation'
 
 const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
+  suggestionsContent,
   hash,
 }) => {
   // state declarations
@@ -40,7 +43,9 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     password: '',
     confirmPassword: '',
   })
-  const validation = resetPasswordValidation(hash as string, password)
+  const validation = resetPasswordValidation(hash as string, password, {
+    requestChangeWarning: content.requestChangeWarning,
+  })
   const { push } = useRouter()
 
   // mutation
@@ -75,24 +80,28 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <form
             onSubmit={handleSubmit}
             className={`${classes.card} ${classes.section}`}>
-            <p className={`mb-4 ${classes.textDescription}`}>
-              Cambio de contraseña
-            </p>
+            <p className={`mb-4 ${classes.textDescription}`}>{content.title}</p>
             <Row>
+              {console.log(suggestionsContent)}
               <Password
                 toggleMask
                 name='password'
                 onChange={handleChange}
                 className={`mb-4 px-0 `}
-                promptLabel='Sugerencias'
+                promptLabel={suggestionsContent.promptLabel}
                 value={password.password}
-                weakLabel='Contraseña muy corta'
-                strongLabel='Contraseña aceptada'
+                weakLabel={suggestionsContent.weakLabel}
+                strongLabel={suggestionsContent.strongLabel}
                 mediumRegex={regex.minSize.source}
                 inputClassName={classes.input}
-                footer={passwordSuggestionsTemplate}
-                mediumLabel='Por favor, tenga en cuenta las sugerencias'
-                placeholder={content.changePassword.newPassword.placeholder}
+                footer={(ev) =>
+                  passwordSuggestionsTemplate({
+                    value: ev.value as string,
+                    suggestionsContent,
+                  })
+                }
+                mediumLabel={suggestionsContent.fillFieldsLabel}
+                placeholder={content.passwordInput.placeholder}
                 strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
               />
             </Row>
@@ -105,18 +114,16 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 onChange={handleChange}
                 value={password.confirmPassword}
                 inputClassName={classes.input}
-                placeholder={
-                  content.changePassword.repeatNewPassword.placeholder
-                }
+                placeholder={content.confirmPasswordInput.placeholder}
               />
             </Row>
             <Row>{validation.showAlert && <AlertText {...validation} />}</Row>
             <Row>
               <Button
-                disabled={validation.alertType !== 'success'}
                 type='submit'
-                className={`mt-5 ${classes.button}`}>
-                {content.changePassword.changuePasswordButton}
+                className={`mt-5 ${classes.button}`}
+                disabled={validation.alertType !== 'success'}>
+                {content.submitButton.label}
               </Button>
             </Row>
             <ExploreBadge />
@@ -128,10 +135,20 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const content = await import('@public/jsons/changePassword.json')
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: CHANGE_PASSWORD_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  const content = data.changePassword.data.attributes
+  const suggestionsContent = content.passwordSuggestion.data.attributes
+
   const hash = ctx.query.token || ''
 
-  return { props: { content: content.default, hash } }
+  return { props: { content, suggestionsContent, hash } }
 }
 
 export default ChangePassword

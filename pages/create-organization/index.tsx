@@ -9,7 +9,7 @@ import { microServices } from 'commons'
 
 //gql
 import { initializeApolloClient } from 'lib/apollo'
-import COMPANYRREGISTER_VIEW from 'lib/queries/Organization/companyRegister.gql'
+import REGISTER_ORG_CONTENT from 'lib/strapi/queries/createOrganization/page.gql'
 
 // styles
 import classes from 'styles/signup/org.module.scss'
@@ -24,7 +24,7 @@ const CreateOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <CompanySignup content={content?.view} contentForm={content?.form} />
+      <CompanySignup content={content} />
     </Container>
   </Container>
 )
@@ -33,7 +33,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
     return { redirect: { destination: '/signup', permanent: false }, props: {} }
-  if (session.user.name === '1')
+  if (session.user.organization)
     return {
       redirect: { destination: '/signup/organization', permanent: false },
       props: {},
@@ -41,13 +41,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
-    query: COMPANYRREGISTER_VIEW,
+    query: REGISTER_ORG_CONTENT,
+    variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-  const view = data.companyRegister.data.attributes
-  const form = data.companyRegister.data.attributes.form.data.attributes
 
-  return { props: { content: { view, form } } }
+  return { props: { content: data.createOrganization.data.attributes } }
 }
 
 export default CreateOrgPage

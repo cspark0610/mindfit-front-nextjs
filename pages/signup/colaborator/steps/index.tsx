@@ -9,6 +9,13 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { CompletedStep, ActualStep, NextStep } from 'components/atoms/StepsCard'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
+// gql
+import { initializeApolloClient } from 'lib/apollo'
+import GET_STEPS_CONTENT from 'lib/strapi/queries/Colaborator/stepsContent.gql'
+
+// utils
+import { microServices } from 'commons'
+
 // styles
 import classes from 'styles/signup/colaborator.module.scss'
 
@@ -18,7 +25,7 @@ import { GetSSPropsType } from 'types'
 
 const ColaboratorStepsPage: NextPage<
   GetSSPropsType<typeof getServerSideProps>
-> = ({ steps }) => {
+> = ({ steps, content }) => {
   const stepIndex = steps.findIndex((step) => step.completed === false)
 
   return (
@@ -41,9 +48,9 @@ const ColaboratorStepsPage: NextPage<
           </Col>
         </Row>
         <Row className='mt-3 text-center'>
-          <span>quieres crear una organizacion?</span>
+          <span>{content.label}</span>
           <Link href='/signup/organization'>
-            <a>Continua como Empresario</a>
+            <a>{content.value}</a>
           </Link>
         </Row>
         <Row>
@@ -56,30 +63,39 @@ const ColaboratorStepsPage: NextPage<
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  const content = await import('@public/jsons/signup/colaborator.json')
+
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: GET_STEPS_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  const content = data.collaboratorStep.data.attributes
 
   const steps = [
     {
       label: content.steps[0].label,
-      action: content.steps[0].action,
+      action: content.steps[0].value,
       completed: !session?.user.coachee ? false : true,
       url: '/signup/colaborator/user',
     },
     {
       label: content.steps[1].label,
-      action: content.steps[1].action,
+      action: content.steps[1].value,
       completed: !session?.user.coach ? false : true,
       url: '/quiz',
     },
     {
       label: content.steps[2].label,
-      action: content.steps[2].action,
+      action: content.steps[2].value,
       completed: !session || session.user.name === '2' ? false : true,
       url: '/coaches',
     },
   ]
 
-  return { props: { content: content.default, steps } }
+  return { props: { content: content.becomeOrgLabel, steps } }
 }
 
 export default ColaboratorStepsPage

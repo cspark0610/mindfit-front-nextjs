@@ -4,6 +4,7 @@ import { useState } from 'react'
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { Toasts, INITIAL_TOAST_STATE } from 'components/atoms/Toasts'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -58,6 +59,8 @@ const AddCollaboratorPage: NextPage<
   const [error, setError] = useState('')
   const [addColaborator] = useMutation(INVITE_COACHEE)
 
+  const [toast, setToast] = useState(INITIAL_TOAST_STATE)
+
   const handleChange = (ev: ChangeType | DropdownChangeParams) => {
     error && setError('')
     setColaborator({ ...colaborator, [ev.target.name]: ev.target.value })
@@ -70,7 +73,10 @@ const AddCollaboratorPage: NextPage<
       content.validEmail
     )
     if (success) {
-      const { saved } = await saveColaborator(colaborator, addColaborator)
+      const { saved, message } = await saveColaborator(
+        colaborator,
+        addColaborator
+      )
       setInvitedColaborators([
         ...invitedColaborators,
         {
@@ -82,77 +88,87 @@ const AddCollaboratorPage: NextPage<
         },
       ])
       setColaborator(INITIAL_STATE)
+      setToast({ show: true, message: message })
     } else setError(message as string)
   }
 
   return (
-    <Container className={classes.container}>
-      <Container fluid className={classes.section}>
-        <h1 className={classes.title}>{content.title}</h1>
-        <p className={classes.description}>{content.subtitle}</p>
-        <Row className={classes.row}>
-          <Col md={4}>
-            <InputText
-              name='name'
-              onChange={handleChange}
-              className={classes.input}
-              value={colaborator.name}
-              placeholder={content.nameInput.placeholder}
-            />
-          </Col>
-          <Col md={4}>
-            <Dropdown
-              name='position'
-              options={workPositions}
-              onChange={handleChange}
-              className={classes.input}
-              value={colaborator.position}
-              placeholder={content.positionInput.placeholder}
-            />
-          </Col>
-        </Row>
-        <Row className={classes.row}>
-          <Col md={4}>
-            <InputText
-              name='email'
-              type='email'
-              placeholder={content.emailInput.placeholder}
-              onChange={handleChange}
-              value={colaborator.email}
-              className={classes.input}
-            />
-          </Col>
-          <Col md={8}>
-            <Row className='flex-row-reverse'>
-              <Col md={6} lg={4}>
-                <Button onClick={handleInvite} className={classes.button}>
-                  {content.submitButton.label}
-                </Button>
-                {error && <p className='p-error text-center'>{error}</p>}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row className={classes.row}>
-          <DataTable
-            breakpoint='960px'
-            responsiveLayout='stack'
-            value={invitedColaborators}
-            expandedRows={expandedRows}
-            tableClassName={classes.datatable}
-            rowExpansionTemplate={rowExpansionTemplate}
-            onRowToggle={(e) => setExpandedRows(e.data)}
-            emptyMessage={content.emptyMessage}>
-            <Column field='name' header={content.nameColumn} />
-            <Column field='email' header={content.emailColumn} />
-            <Column expander className={classes.expander_right} />
-          </DataTable>
-        </Row>
-        <Row>
-          <ExploreBadge />
-        </Row>
+    <>
+      <Container className={classes.container}>
+        <Container fluid className={classes.section}>
+          <h1 className={classes.title}>{content.title}</h1>
+          <p className={classes.description}>{content.subtitle}</p>
+          <Row className={classes.row}>
+            <Col md={4}>
+              <InputText
+                name='name'
+                onChange={handleChange}
+                className={classes.input}
+                value={colaborator.name}
+                placeholder={content.nameInput.placeholder}
+              />
+            </Col>
+            <Col md={4}>
+              <Dropdown
+                name='position'
+                options={workPositions}
+                onChange={handleChange}
+                className={classes.input}
+                value={colaborator.position}
+                placeholder={content.positionInput.placeholder}
+              />
+            </Col>
+          </Row>
+          <Row className={classes.row}>
+            <Col md={4}>
+              <InputText
+                name='email'
+                type='email'
+                placeholder={content.emailInput.placeholder}
+                onChange={handleChange}
+                value={colaborator.email}
+                className={classes.input}
+              />
+            </Col>
+            <Col md={8}>
+              <Row className='flex-row-reverse'>
+                <Col md={6} lg={4}>
+                  <Button onClick={handleInvite} className={classes.button}>
+                    {content.submitButton.label}
+                  </Button>
+                  {error && <p className='p-error text-center'>{error}</p>}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row className={classes.row}>
+            <DataTable
+              breakpoint='960px'
+              responsiveLayout='stack'
+              value={invitedColaborators}
+              expandedRows={expandedRows}
+              tableClassName={classes.datatable}
+              rowExpansionTemplate={rowExpansionTemplate}
+              onRowToggle={(e) => setExpandedRows(e.data)}
+              emptyMessage={content.emptyMessage}>
+              <Column field='name' header={content.nameColumn} />
+              <Column field='email' header={content.emailColumn} />
+              <Column expander className={classes.expander_right} />
+            </DataTable>
+          </Row>
+          <Row>
+            <ExploreBadge />
+          </Row>
+        </Container>
       </Container>
-    </Container>
+      <Toasts
+        show={toast.show}
+        title='collaborator add'
+        message={toast.message}
+        position='bottom-center'
+        onClose={() => setToast(INITIAL_TOAST_STATE)}
+      />
+    </>
   )
 }
 

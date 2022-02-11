@@ -26,13 +26,23 @@
   font-size: 18px;
 }
 
+.carousel_point {
+  margin-top: 50px;
+  li button{
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 50% !important;
+  }
+}
+
 //Choose coach card component
 .coachCard {
   animation: in 0.2s forwards;
   border: 1px solid $primary;
   border-radius: 20px;
   overflow: hidden;
-  padding: 12px;
+  padding: 20px;
+  margin: 0 10px;
 
   .leftSide {
     display: flex;
@@ -59,9 +69,15 @@
     }
 
     > div {
-      color: $secondary;
+      color: $primary;
       margin-bottom: 0;
     }
+    h4 {
+      font-weight: bold;
+    }
+  }
+  .button {
+    color: $white;
   }
 }
 

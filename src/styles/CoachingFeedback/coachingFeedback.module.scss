@@ -1,0 +1,25 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  color: $primary;
+  text-align: center;
+  padding: 20px;
+  .close {
+    border-bottom: none;
+  }
+  .body {
+    margin: auto;
+    > * {
+      margin: 40px 0;
+    }
+    &_button {
+      margin-left: auto;
+    }
+  }
+  .icon {
+    color: $success;
+    margin: 50px;
+    font-size: 100px;
+  }
+}

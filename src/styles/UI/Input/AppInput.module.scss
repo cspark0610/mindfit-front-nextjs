@@ -19,6 +19,9 @@
   :global(.p-dropdown-label) {
     padding: 10px 0;
   }
+  &:focus {
+    box-shadow: none !important;
+  }
   @media (max-width: 910px) {
     height: 40px;
     padding: 5px 10px;

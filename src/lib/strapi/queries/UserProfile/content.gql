@@ -1,0 +1,27 @@
+query UserProfileContent {
+  userProfile {
+    data {
+      attributes {
+        title
+        firstNameInput {
+          placeholder
+        }
+        lastNameInput {
+          placeholder
+        }
+        emailInput {
+          placeholder
+        }
+        positionInput {
+          placeholder
+        }
+        changePasswordButton {
+          label
+        }
+        saveButton {
+          label
+        }
+      }
+    }
+  }
+}

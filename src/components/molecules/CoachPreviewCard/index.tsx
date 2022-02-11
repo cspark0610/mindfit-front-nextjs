@@ -50,7 +50,7 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
           <p className={classes.description}>{coach.description}</p>
         </Col>
         <Col xs={3} className='ml-auto'>
-          <Button className={classes.button}>
+          <Button className={classes.button} variant='secondary'>
             {content?.moreInfoButton.label}
           </Button>
         </Col>

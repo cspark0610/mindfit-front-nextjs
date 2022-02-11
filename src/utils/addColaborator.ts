@@ -27,15 +27,13 @@ export const saveColaborator = async (
   colaborator: typeof INITIAL_STATE,
   addColaborator: Function
 ) => {
-  let saved = false
   try {
     const { data } = await addColaborator({
       variables: colaborator,
       context: { ms: microServices.backend },
     })
-    saved = !!data
-  } catch (error) {
-    console.log(error)
+    return { saved: !!data, message: 'invitación realizada con exito' }
+  } catch {
+    return { saved: false, message: 'invitación fallida' }
   }
-  return { saved }
 }
