@@ -1,12 +1,12 @@
 describe('User colaborator signup', () => {
   // beforeEach(() =>
   //   cy.visit(
-  //     '/signup/colaborator/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNlbnRyaWFkZXZlbG9wbWVudEBnbWFpbC5jb20ifQ.w_Aeo8Y-XE3W5kBT5oBaFiD4b1Cxu5wvbJZeyDFw1Uc'
+  //     '/signup/coachee/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNlbnRyaWFkZXZlbG9wbWVudEBnbWFpbC5jb20ifQ.w_Aeo8Y-XE3W5kBT5oBaFiD4b1Cxu5wvbJZeyDFw1Uc'
   //   )
   // )
   // it('verify render', () => cy.get('h1').should('have.text', 'Bienvenido a'))
   // it('verify non invited user', () => {
-  //   cy.visit('/signup/colaborator/non_invited')
+  //   cy.visit('/signup/coachee/non_invited')
   //   cy.get('button')
   //     .contains('Registrar Contraseña')
   //     .should('have.attr', 'disabled')

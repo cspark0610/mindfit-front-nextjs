@@ -27,6 +27,8 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   steps,
   content,
 }) => {
+  if (!steps) return null
+
   const stepIndex = steps.findIndex((step) => step.completed === false)
 
   return (
@@ -50,7 +52,7 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         </Row>
         <Row className='mt-3 text-center'>
           <span>{content?.becomeCoacheeLabel.label}</span>
-          <Link href='/signup/colaborator/steps'>
+          <Link href='/signup/coachee/steps'>
             <a>{content?.becomeCoacheeLabel.value}</a>
           </Link>
         </Row>
@@ -64,6 +66,8 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/signup', permanent: false }, props: {} }
 
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
@@ -90,7 +94,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[2].label,
       action: content.steps[2].value,
       completed: !session || session.user.organization ? false : true,
-      url: '/colaborators/add',
+      url: '/coachees/add',
     },
   ]
 
