@@ -29,9 +29,10 @@ export const createApolloClient = (accessToken: string | null = null) => {
     return forward(operation)
   })
 
-  const apolloHeaders = setContext(async (_, { headers }) => {
+  const apolloHeaders = setContext(async (_, { ms, headers }) => {
     let token = null
     if (typeof window !== 'undefined') token = await getToken()
+    else if (ms === 'strapi') token = process.env.STRAPI_TOKEN
     else token = accessToken
 
     return {
