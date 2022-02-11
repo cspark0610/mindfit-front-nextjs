@@ -1,0 +1,15 @@
+@import '../variables.scss';
+@import '../UI/Input/AppInput.module.scss';
+
+.content {
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: $white;
+  
+  .button_input {
+    color: $lightPrimary;
+    border: none;
+    background-color: $white;
+  }
+}
+
