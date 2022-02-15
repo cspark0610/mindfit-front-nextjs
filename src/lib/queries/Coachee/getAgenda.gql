@@ -1,0 +1,14 @@
+query GetCoacheeAgenda($from: DateTime!, $to: DateTime!) {
+  getCoacheeAgenda(from: $from, to: $to) {
+    appointments {
+      id
+      startDate
+      endDate
+      accomplished
+    }
+    satsRealized {
+      id
+      createdAt
+    }
+  }
+}

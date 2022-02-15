@@ -1,5 +1,6 @@
 // main tools
 import { useState } from 'react'
+import { getSession } from 'next-auth/react'
 
 // components
 import { rowExpansionTemplate } from 'components/atoms/AddColaborators/RowExpansionTemplate'
@@ -173,6 +174,13 @@ const AddCollaboratorPage: NextPage<
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (!session) return { redirect: { destination: '/login', permanent: false } }
+  else if (!session.user.organization)
+    return {
+      redirect: { destination: '/signup/organization', permanent: false },
+    }
+
   const apolloClient = initializeApolloClient()
 
   const { data } = await apolloClient.query({

@@ -1,5 +1,5 @@
-query choosePlan {
-  choosePlan {
+query choosePlan($locale: I18NLocaleCode) {
+  choosePlan(locale: $locale) {
     data {
       attributes {
         currentPlan {
@@ -29,21 +29,44 @@ query choosePlan {
       }
     }
   }
-  paymentMethod {
+  payment(locale: $locale) {
     data {
       attributes {
         title
-        subtitle
-        creditCard {
+        submitButton {
+          label
+        }
+        paymentMethods {
           data {
             attributes {
-              title
-              input1
-              input2
-              input3
-              input4
-              button {
-                label
+              paymentMethodLabel
+              paymentMethod
+              methodIcon {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+              nameInput {
+                placeholder
+              }
+              emailInput {
+                placeholder
+              }
+              cardInput {
+                placeholder
+              }
+              expireDateInput {
+                placeholder
+              }
+              cvcInput {
+                placeholder
+              }
+              dniInput {
+                placeholder
               }
             }
           }

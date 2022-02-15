@@ -50,7 +50,7 @@ export const FirstColaboratorLogin: FC<{
     if (!disableButton) {
       signIn('createPassword', {
         ...data,
-        callbackUrl: '/signup/colaborator/steps',
+        callbackUrl: '/signup/coachee/steps',
       })
     }
   }

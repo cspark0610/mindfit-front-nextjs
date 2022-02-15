@@ -79,7 +79,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
 
   const [CreateCoachee] = useMutation(CREATE_COACHEE, {
     context: { ms: microServices.backend },
-    onCompleted: () => push('/signup/colaborator/steps'),
+    onCompleted: () => push('/signup/coachee/steps'),
     onError: (err) => console.log(err),
   })
   const [UpdateUser] = useMutation(UPDATE_USER, {

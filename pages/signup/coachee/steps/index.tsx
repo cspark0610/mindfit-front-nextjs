@@ -79,7 +79,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[0].label,
       action: content.steps[0].value,
       completed: !session?.user.coachee ? false : true,
-      url: '/signup/colaborator/user',
+      url: '/signup/coachee/user',
     },
     {
       label: content.steps[1].label,

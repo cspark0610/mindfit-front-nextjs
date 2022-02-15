@@ -13,16 +13,8 @@ module.exports = {
     GOOGLE_PUBLIC_ID: process.env.GOOGLE_PUBLIC_ID,
     GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
   },
-  /**
-   * Webpack extension for support gql files
-   */
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(graphql|gql)$/,
-      exclude: /node_modules/,
-      loader: 'graphql-tag/loader',
-    })
-    return config
+  images: {
+    domains: ['d1ogzn4icpoye1.cloudfront.net'],
   },
   i18n: {
     /**
@@ -35,5 +27,16 @@ module.exports = {
      * visiting a non-locale prefixed path e.g. `/hello`
      */
     defaultLocale: 'es',
+  },
+  /**
+   * Webpack extension for support gql files
+   */
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(graphql|gql)$/,
+      exclude: /node_modules/,
+      loader: 'graphql-tag/loader',
+    })
+    return config
   },
 }
