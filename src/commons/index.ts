@@ -32,3 +32,6 @@ export const microServices = {
   backend: 'backend',
   strapi: 'strapi',
 }
+
+export const formatDate = (date: string | Date) =>
+  typeof date === 'string' ? new Date(date) : date

@@ -16,31 +16,27 @@ import { FC } from 'react'
 
 interface Props {
   selected: boolean
-  contentCard: any
-  contentMethod: any
+  content: any
 }
 
-export const PlanCard: FC<Props> = ({
-  selected,
-  contentCard,
-  contentMethod,
-}) => {
+export const PlanCard: FC<Props> = ({ selected, content }) => {
   const [showModal, setShowModal] = useState(false)
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = () => setShowModal(true)
+
   return (
     <Container className={selected ? classes.banner_selected : classes.banner}>
       <div className={classes.card}>
-        <h4 className={classes.card_title}>{contentCard.header.label}</h4>
-        <h5 className={classes.card_price}>{contentCard.header.value}</h5>
+        <h4 className={classes.card_title}>{content.header.label}</h4>
+        <h5 className={classes.card_price}>{content.header.value}</h5>
         <Row className={classes.card_items}>
-          {contentCard.items.map((i: any, idx: number) => (
+          {content.items.map((i: any, idx: number) => (
             <Col xs={12} key={idx}>
               {i.check ? (
                 <CheckCircleFill className={classes.card_items_include} />
               ) : (
                 <XCircleFill className={classes.card_items_noinclude} />
-              )}
+              )}{' '}
               {i.label}
             </Col>
           ))}
@@ -48,7 +44,7 @@ export const PlanCard: FC<Props> = ({
         <Row className='mt-5'>
           <Col xs={12}>
             <Button className={classes.button_small} onClick={handleShowModal}>
-              {contentCard.button.label}
+              {content.button.label}
             </Button>
           </Col>
         </Row>
@@ -62,7 +58,7 @@ export const PlanCard: FC<Props> = ({
         <Modal.Body>
           <PaymentMethodCard
             handleCloseModal={handleCloseModal}
-            content={contentMethod}
+            content={content.payment}
           />
         </Modal.Body>
       </Modal>

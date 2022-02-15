@@ -25,28 +25,28 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { GetSSPropsType } from 'types'
 
 const ChoosePlanPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  contentChoose,
-  contentPayment,
+  content,
 }) => (
   <Container className={classes.container}>
     <Container fluid className={classes.section}>
-      <ActualPlan content={contentChoose.view} />
+      <ActualPlan content={content?.choosePlan.currentPlan} />
       <Row className='mt-5'>
-        {contentChoose.card.map((plan: any, idx: number) => (
-          <Col className='my-3' key={idx} xs={12} md={6} xl={3}>
-            <PlanCard
-              selected={plan === 1 ? true : false}
-              contentCard={plan.attributes}
-              contentMethod={contentPayment}
-            />
-          </Col>
-        ))}
+        {content?.choosePlan.card_plans.data.map(
+          ({ attributes }: any, idx: number) => (
+            <Col className='my-3' key={idx} xs={12} md={6} xl={3}>
+              <PlanCard
+                selected={false}
+                content={{ ...attributes, payment: content.payment }}
+              />
+            </Col>
+          )
+        )}
       </Row>
       <Row className='mt-5 flex-row-reverse'>
         <Col xs={12} sm={5} lg={2}>
           <Link passHref href='/signup/organization'>
             <Button className={classes.button}>
-              {contentChoose.view.next.label}
+              {content?.choosePlan.next.label}
             </Button>
           </Link>
         </Col>
@@ -58,30 +58,26 @@ const ChoosePlanPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (!session) return { redirect: { destination: '/login', permanent: false } }
+  if (!session)
+    return { redirect: { destination: '/login', permanent: false }, props: {} }
   if (session.user.name === '0')
     return {
       redirect: { destination: '/signup/organization', permanent: false },
+      props: {},
     }
 
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: CHOOSEPLAN_VIEW,
+    variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-  const view = data.choosePlan.data.attributes
-  const card = data.choosePlan.data.attributes.card_plans.data
-  const method = data.paymentMethod.data.attributes
-  const credit = data.paymentMethod.data.attributes.creditCard.data.attributes
+
   return {
     props: {
-      contentChoose: {
-        view,
-        card,
-      },
-      contentPayment: {
-        method,
-        credit,
+      content: {
+        choosePlan: data.choosePlan.data.attributes,
+        payment: data.payment.data.attributes,
       },
     },
   }

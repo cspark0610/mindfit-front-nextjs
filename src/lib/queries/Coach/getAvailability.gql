@@ -1,0 +1,13 @@
+query getCoachAvailability(
+  $coachAgendaId: Float!
+  $from: DateTime!
+  $to: DateTime!
+) {
+  getCoachAvailability(coachAgendaId: $coachAgendaId, from: $from, to: $to) {
+    date
+    availability {
+      from
+      to
+    }
+  }
+}

@@ -6,14 +6,14 @@ import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
 
 // bootstrap components
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 
 // styles
-import classes from 'styles/CreditMethod/creditMethod.module.scss'
+import classes from 'styles/PaymentMethodCard/paymentMethodCard.module.scss'
 
 // Types
 import { FC } from 'react'
-import { ChangeType } from 'types'
+import { ChangeType, SubmitType } from 'types'
 import { InputMaskChangeParams } from 'primereact/inputmask'
 
 export const CreditMethod: FC<{ content: any }> = ({ content }) => {
@@ -24,66 +24,66 @@ export const CreditMethod: FC<{ content: any }> = ({ content }) => {
     cvc: '',
   })
 
-  const label = {
-    fullName: content.input1,
-    cardNumber: content.input2,
-    expiredDate: content.input3,
-    cvc: content.input4,
-  }
-
-  const handleChange = (ev: ChangeType | InputMaskChangeParams) => {
+  const handleChange = (ev: ChangeType | InputMaskChangeParams) =>
     setData({ ...data, [ev.target.name]: ev.target.value })
+
+  const handleSubmit = (ev: SubmitType) => {
+    ev.preventDefault()
+
+    console.log(content.paymentMethodLabel)
   }
 
   return (
-    <>
-      <p className={classes.payment_title}>{content.title}</p>
-      <Container as='form'>
-        <Row>
-          <Col xs={12}>
-            <InputText
-              name='name'
-              value={data.name}
-              className={classes.input}
-              placeholder={label.fullName}
-              onChange={handleChange}
-            />
-          </Col>
-          <Col xs={12}>
-            <InputMask
-              name='cardNumber'
-              onChange={handleChange}
-              value={data.cardNumber}
-              className={classes.input}
-              mask='9999 9999 9999 9999'
-              placeholder={label.cardNumber}
-            />
-          </Col>
-          <Col xs={6}>
-            <InputMask
-              name='expiredDate'
-              mask='99/99/9999'
-              onChange={handleChange}
-              value={data.expiredDate}
-              className={classes.input}
-              placeholder={label.expiredDate}
-            />
-          </Col>
-          <Col xs={6}>
-            <InputMask
-              name='cvc'
-              mask='999'
-              value={data.cvc}
-              placeholder={label.cvc}
-              className={classes.input}
-              onChange={handleChange}
-            />
-          </Col>
-          <Col className='text-end'>
-            <Button className={classes.button}>{content.button.label}</Button>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <form onSubmit={handleSubmit}>
+      <Row>
+        <p className={classes.subtitle}>{content.paymentMethodLabel}</p>
+        <Col xs={12}>
+          <InputText
+            required
+            name='name'
+            value={data.name}
+            onChange={handleChange}
+            className={classes.input}
+            placeholder={content.nameInput.placeholder}
+          />
+        </Col>
+        <Col xs={12}>
+          <InputMask
+            required
+            name='cardNumber'
+            onChange={handleChange}
+            value={data.cardNumber}
+            className={classes.input}
+            mask='9999 9999 9999 9999'
+            placeholder={content.cardInput.placeholder}
+          />
+        </Col>
+        <Col xs={6}>
+          <InputMask
+            required
+            mask='99/99/9999'
+            name='expiredDate'
+            onChange={handleChange}
+            value={data.expiredDate}
+            className={classes.input}
+            placeholder={content.expireDateInput.placeholder}
+          />
+        </Col>
+        <Col xs={6}>
+          <InputMask
+            required
+            name='cvc'
+            mask='999'
+            value={data.cvc}
+            onChange={handleChange}
+            className={classes.input}
+            placeholder={content.cvcInput.placeholder}
+          />
+        </Col>
+        <Button type='submit' className={classes.button}>
+          {content.submitButton.label}
+        </Button>
+      </Row>
+    </form>
   )
 }
