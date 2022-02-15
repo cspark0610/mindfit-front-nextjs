@@ -2,6 +2,10 @@
 import Image from 'next/image'
 import { PrimeIcons } from 'primereact/api'
 
+// components
+import { DropdownMenu } from 'components/atoms/Dropdown'
+import { Notifications } from 'components/atoms/Dropdown/Notifications'
+
 // bootstrap components
 import {
   Col,
@@ -29,17 +33,21 @@ export const Navbar: FC = () => (
   <Container fluid className={classes.container}>
     <Row className={classes.row}>
       <Col className={classes.profile} xs={1}>
-        <Image
-          className={classes.avatar}
-          src='/assets/images/avatar.png'
-          width={72}
-          height={72}
-          alt='user avatar'
-        />
-        <i
-          className={`p-overlay-badge ${PrimeIcons.BELL} ${classes.notifications}`}>
-          <Badge value={3} className={classes.notifications_badge} />
-        </i>
+        <DropdownMenu>
+          <Image
+            className={classes.avatar}
+            src='/assets/images/avatar.png'
+            width={72}
+            height={72}
+            alt='user avatar'
+          />
+        </DropdownMenu>
+        <Notifications>
+          <i
+            className={`p-overlay-badge ${PrimeIcons.BELL} ${classes.notifications}`}>
+            <Badge value={3} className={classes.notifications_badge} />
+          </i>
+        </Notifications>
       </Col>
       <Col xs={1}>
         <BsNavbar className={classes.menuMobile} expand={false} variant='light'>

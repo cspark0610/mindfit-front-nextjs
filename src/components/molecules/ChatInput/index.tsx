@@ -28,9 +28,8 @@ import { IEmojiData } from 'emoji-picker-react'
 import { InputTextRef } from 'types/components/InputText'
 import { UploadPicturesRef } from 'types/components/UploadPicture'
 
-
 export const InputChat: FC = () => {
-  const [message, setMessageForm] = useState<string>('')
+  const [message, setMessageForm] = useState('')
   const [picture, setPicture] = useState('')
 
   const inputText = useRef<InputTextRef>(null)
@@ -50,11 +49,7 @@ export const InputChat: FC = () => {
     uploader.current?.choose()
   }
   const fileSelect = (ev: FileUploadSelectParams) => {
-    console.log(ev.files);
-    
     setPicture(URL.createObjectURL(ev.files[0]))
-    console.log(picture);
-    
   }
 
   const popover = (
