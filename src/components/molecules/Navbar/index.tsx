@@ -1,7 +1,10 @@
 // main tools
 import Image from 'next/image'
-import { PrimeIcons } from 'primereact/api'
 import { useSession } from 'next-auth/react'
+
+// components
+import { DropdownMenu } from 'components/atoms/Dropdown'
+import { Notifications } from 'components/atoms/Dropdown/Notifications'
 
 // bootstrap components
 import {
@@ -13,9 +16,6 @@ import {
   Nav,
 } from 'react-bootstrap'
 import { Nut } from 'react-bootstrap-icons'
-
-// prime components
-import { Badge } from 'primereact/badge'
 
 // sidebar items
 import { items } from 'components/molecules/Sidebar/items'
@@ -31,24 +31,10 @@ export const Navbar: FC = () => {
   return (
     <Container fluid className={classes.container}>
       <Row className={classes.row}>
-        {data?.user && (
-          <Col className={classes.profile} xs={1}>
-            <Image
-              className={classes.avatar}
-              src={
-                (data.user.coachee?.profilePicture as string) ||
-                '/assets/images/avatar.png'
-              }
-              width={72}
-              height={72}
-              alt='user avatar'
-            />
-            <i
-              className={`p-overlay-badge ${PrimeIcons.BELL} ${classes.notifications}`}>
-              <Badge value={3} className={classes.notifications_badge} />
-            </i>
-          </Col>
-        )}
+        <Col className={classes.profile} xs={1}>
+          <DropdownMenu />
+          {data && <Notifications />}
+        </Col>
         <Col xs={1}>
           <BsNavbar
             className={classes.menuMobile}

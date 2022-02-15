@@ -11,6 +11,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .dropdown {
+        border: none;
+        background-color: transparent;
+        &:focus {
+          box-shadow: none;
+        }
+        &::after {
+          display: none;
+        }
+        &_menu {
+          max-width: 25rem;
+          padding: 0.5rem;
+          @media (max-width: 768px) {
+            max-width: 15rem;
+          }
+        }
+      }
       .avatar {
         border-radius: 50%;
       }
