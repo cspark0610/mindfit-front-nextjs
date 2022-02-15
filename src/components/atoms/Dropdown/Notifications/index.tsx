@@ -1,53 +1,40 @@
-// Components
+// main tools
+import { useState } from 'react'
+
+// components
 import { Toasts } from 'components/atoms/Toasts'
 
 // bootstrap components
-import { Col, Dropdown, Row } from 'react-bootstrap'
+import { Dropdown } from 'react-bootstrap'
+
+// prime components
+import { PrimeIcons } from 'primereact/api'
+import { Badge } from 'primereact/badge'
 
 // styles
-import classes from 'styles/UI/Dropdown/dropdown.module.scss'
+import classes from 'styles/Navbar/navbar.module.scss'
 
 // types
-import React, { ComponentType, FC, useState } from 'react'
-import { DropdownMenuProps } from 'react-bootstrap/esm/DropdownMenu'
+import { FC } from 'react'
 
-export const Notifications: FC = ({ children }) => {
+export const Notifications: FC = () => {
   const notifications = ['notification 1', 'notification 2', 'notification 3']
   const [list, setList] = useState(notifications)
 
-  const remove = (e: any) => {
+  const remove = (e: number) => {
     const newData = list.filter((item, idx) => idx != e)
     setList(newData)
   }
 
-  const CustomToggle: ComponentType<{
-    onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {}
-  }> = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      ref={ref}
-      href=''
-      onClick={(e) => {
-        e.preventDefault()
-        onClick(e) ?? null
-      }}>
-      {children}
-    </a>
-  ))
-
-  const CustomMenu: FC<DropdownMenuProps> = React.forwardRef(
-    ({ children, className }, ref) => (
-      <Row ref={ref} className={`${classes.menu} ${className}`}>
-        <Col>{children}</Col>
-      </Row>
-    )
-  )
-
   return (
-    <Dropdown>
-      <Dropdown.Toggle as={CustomToggle} id='dropdown-custom-components'>
-        {children}
+    <Dropdown align='end'>
+      <Dropdown.Toggle className={classes.dropdown} id='notifications'>
+        <i
+          className={`p-overlay-badge ${PrimeIcons.BELL} ${classes.notifications}`}>
+          <Badge value={3} className={classes.notifications_badge} />
+        </i>
       </Dropdown.Toggle>
-      <Dropdown.Menu as={CustomMenu}>
+      <Dropdown.Menu className={classes.dropdown_menu}>
         {list.length != 0 ? (
           list.map((item, idx) => (
             <Toasts
@@ -58,7 +45,7 @@ export const Notifications: FC = ({ children }) => {
             />
           ))
         ) : (
-          <p>sin notificaciones</p>
+          <h6>sin notificaciones...</h6>
         )}
       </Dropdown.Menu>
     </Dropdown>
