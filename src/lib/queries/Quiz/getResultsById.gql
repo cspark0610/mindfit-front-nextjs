@@ -1,0 +1,14 @@
+query GetResultsById($id: Int!) {
+  findSatReportById(id: $id) {
+    id
+    result {
+      area
+      areaCodeName
+      puntuations {
+        name
+        value
+        base
+      }
+    }
+  }
+}

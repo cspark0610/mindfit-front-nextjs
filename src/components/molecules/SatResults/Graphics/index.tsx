@@ -20,7 +20,7 @@ import classes from 'styles/Graphics/graphics.module.scss'
 // types
 import { FC } from 'react'
 
-export const Graph: FC = () => {
+export const Graph: FC<any> = (props) => {
   const puntuations = [
     { name: 'Implantador', value: 16.3 },
     { name: 'Coordinador', value: 3.8 },
@@ -32,7 +32,7 @@ export const Graph: FC = () => {
   ]
 
   const data = {
-    labels: puntuations.map((item) => item.name),
+    labels: puntuations.map((item: any) => item.name),
     datasets: [
       {
         label: 'My name',
@@ -43,13 +43,13 @@ export const Graph: FC = () => {
   }
 
   return (
-    <ContainerMotion fluid {...viewportFadeIn} className={classes.container}>
+    <ContainerMotion
+      fluid
+      {...viewportFadeIn}
+      className={`${classes.container} ${classes.bg}`}>
       <Row>
-        <p className={classes.header}>
-          Ahora es el turno de conocer qué tipo de perfil tienes a la hora de
-          trabajar en equipo
-        </p>
-        <h1 className={classes.title}>Trabajo en equipo</h1>
+        <p className={classes.header}>{props.title}</p>
+        <h1 className={classes.title}>{props.subtitle}</h1>
       </Row>
       <Row>
         <Col lg={4}>
@@ -62,7 +62,7 @@ export const Graph: FC = () => {
           />
           <p>
             <Send className={classes.icon} />
-            Descubre cómo se comunican los miembros de tu empresa
+            {props.anchorText}
           </p>
         </Col>
         <Col lg={8}>

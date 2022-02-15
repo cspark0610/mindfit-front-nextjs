@@ -6,48 +6,51 @@ import { motion } from 'framer-motion'
 import { viewportFadeIn } from 'commons/animations'
 
 // Bootstrap Component
-import { Row, Button, Container } from 'react-bootstrap'
+import { Row, Button, Container, Card } from 'react-bootstrap'
 
 // Styles
 import classes from 'styles/Greeting/greeting.module.scss'
 
 // Types
 import { FC } from 'react'
+import { useSession } from 'next-auth/react'
 
-export const Greeting: FC = () => {
+export const Greeting: FC<any> = (props) => {
+  const { data } = useSession()
+
   return (
-    <Container className={classes.container}>
-      <Row xs={1} lg={2}>
-        <motion.div {...viewportFadeIn}>
-          <h1 className={`${classes.header} mb-5`}>
-            Camino al autodescubrimiento
-          </h1>
-          <p className={`${classes.greeting} mb-4`}>
-            Hola, <b>Néstor</b>
-          </p>
-          <p className={classes.paragraph}>
-            Gracias a los datos que has aportado en el cuestionario, vas a poder
-            descubrir sobre tu <b>Entorno emocional,</b> y sobre todo de tu{' '}
-            <b>{'"yo"'} personal y profesional,</b> aspectos que quizá no
-            conocías.
-          </p>
-          <p className={`${classes.paragraph} mb-5`}>
-            Y todo, basado en el conocimiento de la evidencia cientifíca de los
-            últimos años, que está permitiendo conocer mejor el comportamiento
-            de la estructura más compleja del universo conocido, el{' '}
-            <b>Cerebro humano.</b>
-          </p>
-          <Button className={classes.button}>Comencemos</Button>
-        </motion.div>
-        <motion.div {...viewportFadeIn} className='d-flex align-items-center'>
-          <Image
-            src='/assets/icon/MINDFIT.svg'
-            alt=''
-            width={500}
-            height={500}
-          />
-        </motion.div>
-      </Row>
-    </Container>
+    <Card className={classes.cardContainer}>
+      <Card.Img></Card.Img>
+      <Card.ImgOverlay className={classes.bg}>
+        <Container className={classes.container}>
+          <Row xs={1} lg={2}>
+            <motion.div {...viewportFadeIn}>
+              <h1 className={`${classes.header} mb-5`}>{props.title}</h1>
+              <p className={`${classes.greeting} mb-4`}>
+                {props.subtitle}, <b>{data?.user?.name}</b>
+              </p>
+              <p
+                className={classes.paragraph}
+                dangerouslySetInnerHTML={{ __html: props.details }}
+              />
+
+              <Button className={classes.button}>
+                {props.actionButton.label}
+              </Button>
+            </motion.div>
+            <motion.div
+              {...viewportFadeIn}
+              className='d-flex align-items-center'>
+              <Image
+                src='/assets/icon/MINDFIT.svg'
+                alt=''
+                width={500}
+                height={500}
+              />
+            </motion.div>
+          </Row>
+        </Container>
+      </Card.ImgOverlay>
+    </Card>
   )
 }

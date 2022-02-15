@@ -16,7 +16,7 @@ import classes from 'styles/Farewell/farewell.module.scss'
 // Types
 import { FC } from 'react'
 
-export const Farewell: FC = () => {
+export const Farewell: FC<any> = (props) => {
   return (
     <Container fluid className={classes.container}>
       <RowMotion
@@ -25,7 +25,7 @@ export const Farewell: FC = () => {
         xs={1}
         lg={2}>
         <div>
-          <p className={classes.header}>Hacia tu mejor versión</p>
+          <p className={classes.header}>Hacia tu mejor veión</p>
           <h1 className={`${classes.title} mb-4`}>
             Ahora es tu <b>turno</b>
           </h1>

@@ -1,8 +1,12 @@
 @import '../variables.scss';
 @import '../UI/Button/button.module.scss';
+@import '../SatTemplates/satTemplates.module.scss';
+
+.cardContainer {
+  height: 100%;
+}
 
 .container {
-  margin-top: 4rem;
   padding: 0 10rem;
   @media (max-width: 768px) {
     text-align: center;
@@ -12,6 +16,7 @@
 
 .header {
   color: $lightGray;
+  margin-top: 4rem;
 }
 
 .greeting {
@@ -30,7 +35,6 @@
   width: 200px;
   background-color: $white;
   color: $lightPrimary;
-  height: 60px;
   border-radius: 0;
   border: 2px solid $lightPrimary;
   font-weight: bold;

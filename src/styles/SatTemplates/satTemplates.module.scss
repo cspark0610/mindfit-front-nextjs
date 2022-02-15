@@ -16,23 +16,14 @@
   background-size: 110% 115%;
   background-position: center center;
   background-attachment: fixed;
-  overflow: auto !important;
-  height: 87vh;
+
   @media (max-width: 768px) {
     background: none;
   }
-  border-radius: 18px;
 }
 
-.gradient {
-  background: url('/assets/images/satBackground.png'),
-    linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(0, 212, 255, 1) 100%
-    );
-  background-repeat: no-repeat;
-  background-size: 100% 115%;
-  background-position: center center;
-  background-attachment: fixed;
+.cardContainer {
+  overflow: auto !important;
+  height: 87vh;
+  border-radius: 18px;
 }
