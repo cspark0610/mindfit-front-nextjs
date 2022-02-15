@@ -13,6 +13,15 @@
   &_header > p {
     margin-left: 13px;
   }
+  .progress {
+    background: $lightGray;
+    :global(.p-progressbar-value) {
+      background-color: $primary;
+    }
+    :global(.p-progressbar-label) {
+      color: $white;
+    }
+  }
 }
 
 .task {

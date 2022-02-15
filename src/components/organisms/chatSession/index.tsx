@@ -43,7 +43,7 @@ export const ChatSession: FC = () => {
           ))}
         </div>
       </Row>
-      <InputChat/>
+      <InputChat />
     </Container>
   )
 }

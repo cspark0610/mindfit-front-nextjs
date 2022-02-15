@@ -15,7 +15,10 @@ import classes from 'styles/coachAgenda/page.module.scss'
 // types
 import { FC } from 'react'
 
-export const CoachEvent: FC<{ date: string }> = ({ date }) => {
+export const CoachEvent: FC<{
+  date: string
+  availability: { from: string; to: string }
+}> = ({ date, availability }) => {
   const { locale } = useRouter()
   const formatedDate = formatDate(date)
 

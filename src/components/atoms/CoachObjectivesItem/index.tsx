@@ -21,19 +21,19 @@ export const CoachObjectivesItem: FC = () => {
         <p className={classes.task_title}>
           Delegar 3 tareas dentro de tu equipo
         </p>
-        <ProgressBar value='50' />
+        <ProgressBar className={classes.progress} value='50' />
       </div>
       <div className={`text-center ${classes.task}`}>
         <p className={classes.task_title}>
           Delegar 3 tareas dentro de tu equipo
         </p>
-        <ProgressBar value='50' />
+        <ProgressBar className={classes.progress} value='50' />
       </div>
       <div className={`text-center ${classes.task}`}>
         <p className={classes.task_title}>
           Delegar 3 tareas dentro de tu equipo
         </p>
-        <ProgressBar value='50' />
+        <ProgressBar className={classes.progress} value='50' />
       </div>
     </div>
   )

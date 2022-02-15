@@ -9,14 +9,14 @@ import {
   Popover,
   Row,
 } from 'react-bootstrap'
-import { EmojiLaughing, Image } from 'react-bootstrap-icons'
+import { EmojiLaughing, Image as ImageIcon } from 'react-bootstrap-icons'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
 import { FileUpload, FileUploadSelectParams } from 'primereact/fileupload'
 
 // components
-import { EmojisPicker } from '../../atoms/EmojisPicker'
+import { EmojisPicker } from 'components/atoms/EmojisPicker'
 
 // styles
 import classes from 'styles/Chat/inputChat.module.scss'
@@ -27,7 +27,6 @@ import { ChangeType } from 'types'
 import { IEmojiData } from 'emoji-picker-react'
 import { InputTextRef } from 'types/components/InputText'
 import { UploadPicturesRef } from 'types/components/UploadPicture'
-
 
 export const InputChat: FC = () => {
   const [message, setMessageForm] = useState<string>('')
@@ -50,11 +49,7 @@ export const InputChat: FC = () => {
     uploader.current?.choose()
   }
   const fileSelect = (ev: FileUploadSelectParams) => {
-    console.log(ev.files);
-    
     setPicture(URL.createObjectURL(ev.files[0]))
-    console.log(picture);
-    
   }
 
   const popover = (
@@ -98,7 +93,7 @@ export const InputChat: FC = () => {
             className={classes.button_input}
             onClick={fileUpload}
             size='lg'>
-            <Image />
+            <ImageIcon />
           </Button>
         </div>
       </Container>
