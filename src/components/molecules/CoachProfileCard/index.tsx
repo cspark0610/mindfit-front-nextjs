@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 // components
-import { DashboardChat } from 'components/organisms/DashboardChat'
+import { ChatSession } from 'components/organisms/chatSession'
 
 // Bootstrap components
 import { Container, Button, Modal } from 'react-bootstrap'
@@ -70,7 +70,7 @@ export const CoachProfileCard = () => {
         className={classes.modal}
         onHide={() => setShowChat(false)}>
         <Modal.Body>
-          <DashboardChat />
+          <ChatSession />
         </Modal.Body>
       </Modal>
     </>

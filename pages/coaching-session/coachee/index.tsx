@@ -7,7 +7,7 @@ import { ChevronDoubleRight } from 'react-bootstrap-icons'
 
 // components
 import { Layout } from 'components/organisms/Layout'
-import { DashboardChat } from 'components/organisms/DashboardChat'
+import { ChatSession } from 'components/organisms/chatSession'
 
 // styles
 import classes from 'styles/CoacheeSession/coacheeSession.module.scss'
@@ -67,7 +67,7 @@ const CoacheeSession: NextPage = () => (
           </Container>
         </Col>
         <Col lg={6}>
-          <DashboardChat />
+          <ChatSession />
         </Col>
       </Row>
     </Container>
