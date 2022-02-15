@@ -29,7 +29,7 @@ import { InputTextRef } from 'types/components/InputText'
 import { UploadPicturesRef } from 'types/components/UploadPicture'
 
 export const InputChat: FC = () => {
-  const [message, setMessageForm] = useState<string>('')
+  const [message, setMessageForm] = useState('')
   const [picture, setPicture] = useState('')
 
   const inputText = useRef<InputTextRef>(null)
