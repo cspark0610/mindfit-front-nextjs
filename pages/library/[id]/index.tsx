@@ -1,5 +1,6 @@
 // main tools
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 // bootstrap components
 import { JournalText } from 'react-bootstrap-icons'
@@ -10,6 +11,13 @@ import { Layout } from 'components/organisms/Layout'
 import { ArticleCard } from 'components/atoms/ArticleCard'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
+// 'commons'
+import { microServices } from 'commons'
+
+// gql
+import { useQuery } from '@apollo/client'
+import POSTS from 'lib/strapi/queries/Library/content.gql'
+
 // styles
 import classes from 'styles/Library/entry.module.scss'
 
@@ -17,6 +25,25 @@ import classes from 'styles/Library/entry.module.scss'
 import { NextPage } from 'next'
 
 const LibraryArticlePage: NextPage = () => {
+  const [content, setContent] = useState([])
+  const [filter, seFilter] = useState({
+    postCategories: { category: { eq: 'Autoayuda' } },
+  })
+
+  const { data, loading } = useQuery(POSTS, {
+    context: { ms: microServices.strapi },
+    variables: {
+      locale: 'en',
+      filters: filter,
+    },
+  })
+
+  useEffect(() => {
+    if (data) {
+      setContent(data.posts.data)
+    }
+  }, [data])
+
   return (
     <Layout>
       <Container className={classes.container}>
@@ -136,11 +163,12 @@ const LibraryArticlePage: NextPage = () => {
           <footer>
             <h3 className={classes.related}>Articulos relacionados</h3>
             <Row>
-              {[{ id: 0 }, { id: 1 }, { id: 2 }].map((article) => (
-                <Col className='my-3' key={article.id} md={6} lg={3}>
-                  <ArticleCard {...article} />
-                </Col>
-              ))}
+              {!loading &&
+                content.map((article:any) => (
+                  <Col className='my-3' key={article.id} md={6} lg={3}>
+                    <ArticleCard {...article} />
+                  </Col>
+                ))}
             </Row>
           </footer>
         </section>
