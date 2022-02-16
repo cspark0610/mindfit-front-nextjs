@@ -1,0 +1,37 @@
+query post(
+  $locale: I18NLocaleCode
+  $pagination: PaginationArg = {}
+  $filters: PostFiltersInput
+  $sort: [String] = []
+) {
+  posts(
+    locale: $locale
+    pagination: $pagination
+    filters: $filters
+    sort: $sort
+  ) {
+    data {
+      id
+      attributes {
+        postCategories {
+          data {
+            attributes {
+              category
+            }
+          }
+        }
+        title
+        badge {
+          label
+        }
+        mainImage {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}
