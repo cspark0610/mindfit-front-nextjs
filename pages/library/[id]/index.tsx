@@ -1,10 +1,10 @@
 // main tools
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // bootstrap components
 import { JournalText } from 'react-bootstrap-icons'
-import { Container, Row, Col, Badge } from 'react-bootstrap'
+import { Container, Row, Col, Badge, Spinner } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
@@ -26,23 +26,17 @@ import { NextPage } from 'next'
 
 const LibraryArticlePage: NextPage = () => {
   const [content, setContent] = useState([])
-  const [filter, seFilter] = useState({
-    postCategories: { category: { eq: 'Autoayuda' } },
-  })
 
-  const { data, loading } = useQuery(POSTS, {
+  const { loading } = useQuery(POSTS, {
     context: { ms: microServices.strapi },
     variables: {
-      locale: 'en',
-      filters: filter,
+      locale: 'es',
+      filters: { postCategories: { category: { eq: 'Autoayuda' } } },
+    },
+    onCompleted: (data) => {
+      setContent(data.posts.data)
     },
   })
-
-  useEffect(() => {
-    if (data) {
-      setContent(data.posts.data)
-    }
-  }, [data])
 
   return (
     <Layout>
@@ -163,12 +157,19 @@ const LibraryArticlePage: NextPage = () => {
           <footer>
             <h3 className={classes.related}>Articulos relacionados</h3>
             <Row>
-              {!loading &&
-                content.map((article:any) => (
-                  <Col className='my-3' key={article.id} md={6} lg={3}>
-                    <ArticleCard {...article} />
-                  </Col>
-                ))}
+              {!loading ? (
+                content.length != 0 ? (
+                  content.map((article: any) => (
+                    <Col className='my-3' key={article.id} md={6} lg={3}>
+                      <ArticleCard {...article} />
+                    </Col>
+                  ))
+                ) : (
+                  <h6>No hay articulos relacionados</h6>
+                )
+              ) : (
+                <Spinner animation='border' />
+              )}
             </Row>
           </footer>
         </section>

@@ -15,7 +15,7 @@ import classes from 'styles/Library/page.module.scss'
 import { FC } from 'react'
 import { SubmitType } from 'types'
 
-type FilterProps = { refetch: (ev:any ) => void }
+type FilterProps = { refetch: (ev: any) => void }
 
 export const Filter: FC<FilterProps> = ({ refetch }) => {
   const formRef = useRef<HTMLFormElement>(null)
@@ -33,7 +33,7 @@ export const Filter: FC<FilterProps> = ({ refetch }) => {
 
   const handleClick = (category: string) => {
     setSelectedCategory(category)
-    const filter = {postCategories: { category: { eq: category } }}
+    const filter = { postCategories: { category: { eq: category } } }
     refetch(filter)
   }
 

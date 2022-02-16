@@ -1,8 +1,8 @@
 // main tools
-import { ComponentType, useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // bootstrap components
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Spinner } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
@@ -25,39 +25,38 @@ import { NextPage } from 'next'
 
 const LibraryPage: NextPage = () => {
   const [content, setContent] = useState([])
-  const [filter, seFilter] = useState({})
 
-  const { data, loading } = useQuery(POSTS, {
+  const { loading, refetch } = useQuery(POSTS, {
     context: { ms: microServices.strapi },
     variables: {
-      locale: 'en',
-      filters: filter,
+      locale: 'es',
+      filters: {},
+    },
+    onCompleted: (data) => {
+      setContent(data.posts.data)
     },
   })
-
-  const refetch = (data: string) => {
-    seFilter(data)
-  }
-
-  useEffect(() => {
-    if (data) {
-      setContent(data.posts.data)
-    }
-  }, [data])
 
   return (
     <Layout>
       <Container className={classes.container}>
         <section className={classes.section}>
           <h1 className={classes.title}>Biblioteca digital</h1>
-          <Filter refetch={refetch} />
+          <Filter refetch={(data) => refetch({ filters: data })} />
           <Row>
-            {!loading &&
-              content.map((article: any) => (
-                <Col className='my-3' key={article.id} md={6} lg={3}>
-                  <ArticleCard {...article} />
-                </Col>
-              ))}
+            {!loading ? (
+              content.length != 0 ? (
+                content.map((article: any) => (
+                  <Col className='my-3' key={article.id} md={6} lg={3}>
+                    <ArticleCard {...article} />
+                  </Col>
+                ))
+              ) : (
+                <h6>No hay articulos relacionados</h6>
+              )
+            ) : (
+              <Spinner animation='border' />
+            )}
           </Row>
         </section>
         <ExploreBadge />
