@@ -39,7 +39,7 @@ export const DropdownMenu: FC = () => {
           </Dropdown.Menu>
         </Dropdown>
       ) : (
-        <Link href='/login' passHref>
+        <Link href='/' passHref>
           <Button>Sign In</Button>
         </Link>
       )}

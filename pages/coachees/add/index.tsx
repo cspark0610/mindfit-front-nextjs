@@ -175,7 +175,7 @@ const AddCollaboratorPage: NextPage<
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (!session) return { redirect: { destination: '/login', permanent: false } }
+  if (!session) return { redirect: { destination: '/', permanent: false } }
   else if (!session.user.organization)
     return {
       redirect: { destination: '/signup/organization', permanent: false },

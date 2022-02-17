@@ -37,10 +37,7 @@ const UserDashboard: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
-  if (!session)
-    return {
-      redirect: { destination: '/login', permanent: false },
-    }
+  if (!session) return { redirect: { destination: '/', permanent: false } }
 
   return { props: {} }
 }

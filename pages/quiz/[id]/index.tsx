@@ -60,7 +60,7 @@ const QuizReport: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/login', permanent: false }, props: {} }
+    return { redirect: { destination: '/', permanent: false }, props: {} }
 
   /**
    * agregar validaciones para que, en caso de que este id

@@ -1,39 +1,65 @@
-// main tools
-import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
+// Main tools
+import { useState } from 'react'
+import { getSession } from 'next-auth/react'
+import Image from 'next/image'
 
-// components
-import { Layout } from 'components/organisms/Layout'
+// Components
+import { ForgottenPassword } from 'components/molecules/ForgottenPassword'
+import { LoginCard } from 'components/molecules/Login'
 
-// styles
-import styles from 'styles/Home.module.scss'
+// utils
+import { microServices } from 'commons'
 
-// types
-import type { NextPage } from 'next'
+// gql
+import { initializeApolloClient } from 'lib/apollo'
+import LOGIN_CONTENT from 'lib/strapi/queries/Login/content.gql'
 
-const Home: NextPage = () => {
-  const { data, status } = useSession()
+// bootstrap components
+import { Container } from 'react-bootstrap'
 
+// Styles
+import classes from 'styles/Login/page.module.scss'
+
+// Types
+import { NextPage, GetServerSidePropsContext } from 'next'
+import { GetSSPropsType } from 'types'
+
+const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
+}) => {
+  const [toggleView, setToggleView] = useState(false)
   return (
-    <Layout>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          {data && (
-            <span onClick={() => signOut({ callbackUrl: '/login' })}>
-              Sign out
-            </span>
-          )}
-          {!data && (
-            <Link href='/login'>
-              <a>
-                <span>Sign in</span>
-              </a>
-            </Link>
-          )}
-        </h1>
-      </main>
-    </Layout>
+    <Container className={classes.container}>
+      <Image
+        src='/assets/icon/MINDFIT.svg'
+        alt='Mindfit Logo'
+        width={420}
+        height={250}
+        layout='intrinsic'
+      />
+      {toggleView ? (
+        <ForgottenPassword setToggleView={setToggleView} content={content} />
+      ) : (
+        <LoginCard setToggleView={setToggleView} content={content} />
+      )}
+    </Container>
   )
 }
 
-export default Home
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (session)
+    return { redirect: { destination: '/user', permanent: false }, props: {} }
+
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: LOGIN_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  return { props: { content: data.login.data.attributes } }
+}
+
+export default LoginPage

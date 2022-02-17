@@ -28,7 +28,7 @@ const LOGIN_RRSS = {
 }
 
 export default NextAuth({
-  pages: { error: '/login' }, // custom error page with query string as ?error=
+  pages: { error: '/' }, // custom error page with query string as ?error=
   session: { maxAge: 60 * 60 }, // initial value in seconds, logout on a half hour of inactivity
   secret: process.env.SECRET,
 

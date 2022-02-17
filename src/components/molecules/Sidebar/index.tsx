@@ -19,16 +19,12 @@ export const Sidebar = () => {
   return (
     <aside className={classes.container}>
       <div>
-        <Link href='/'>
-          <a>
-            <Image
-              src='/assets/icon/MINDFIT_WHITE.svg'
-              width={80}
-              height={40}
-              alt='mindfit'
-            />
-          </a>
-        </Link>
+        <Image
+          src='/assets/icon/MINDFIT_WHITE.svg'
+          width={80}
+          height={40}
+          alt='mindfit'
+        />
         {data?.user &&
           items(data.user.sub).map((item, idx) => (
             <Container key={idx} className={classes.itemContainer}>

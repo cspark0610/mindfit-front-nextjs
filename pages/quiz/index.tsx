@@ -287,7 +287,7 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/login', permanent: false }, props: {} }
+    return { redirect: { destination: '/', permanent: false }, props: {} }
 
   const apolloClient = createApolloClient(session.token)
   const apolloClientForStrapi = initializeApolloClient()

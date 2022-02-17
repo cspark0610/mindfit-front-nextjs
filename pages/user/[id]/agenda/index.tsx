@@ -138,7 +138,7 @@ const AgendaPage: NextPage = () => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/login', permanent: false }, props: {} }
+    return { redirect: { destination: '/', permanent: false }, props: {} }
   // if (!session.user.coach)
   //   return {
   //     redirect: { destination: '/signup/coachee/steps', permanent: false },
