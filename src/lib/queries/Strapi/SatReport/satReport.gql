@@ -49,29 +49,22 @@ query SatReportContent($locale: I18NLocaleCode) {
             }
           }
         }
-        satReportGraph {
+        satReportQualifications {
           data {
             attributes {
               title
               subtitle
               anchorText
-              image {
+              codeName
+              infoTitle
+              infoValue
+              postCategory {
                 data {
                   attributes {
-                    alternativeText
-                    caption
-                    url
+                    category
                   }
                 }
               }
-            }
-          }
-        }
-        satReportQualification {
-          data {
-            attributes {
-              title
-              subtitle
               image {
                 data {
                   attributes {
@@ -86,7 +79,7 @@ query SatReportContent($locale: I18NLocaleCode) {
                   attributes {
                     title
                     description
-                    category
+                    diagnostic
                   }
                 }
               }
@@ -111,17 +104,6 @@ query SatReportContent($locale: I18NLocaleCode) {
                   }
                 }
               }
-            }
-          }
-        }
-        satReportInformation {
-          data {
-            attributes {
-              title
-              subtitle
-              informationTitle
-              leftInformation
-              rightInformation
             }
           }
         }

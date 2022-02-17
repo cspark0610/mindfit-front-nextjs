@@ -32,7 +32,7 @@ export const createApolloClient = (accessToken: string | null = null) => {
   const apolloHeaders = setContext(async (_, { ms, headers }) => {
     let token = null
     if (typeof window !== 'undefined') token = await getToken()
-    else if (ms === 'strapi') token = process.env.STRAPI_TOKEN
+    else if (ms === 'strapi') token = process.env.NEXT_PUBLIC_STRAPI_TOKEN
     else token = accessToken
 
     return {

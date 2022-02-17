@@ -1,54 +1,59 @@
 @import '../variables.scss';
 @import '../SatTemplates/satTemplates.module.scss';
 
-.container {
-  position: relative;
-  height: 100%;
-  background: linear-gradient(
-    140deg,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(0, 212, 255, 1) 100%
-  );
+.cover {
+  background: linear-gradient(140deg, #ffffff99 50%, #00d4ff 100%);
+  @media (max-width: 990px) {
+    height: 70vh;
+  }
 
   @media (max-width: 528px) {
-    background: linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(0, 212, 255, 1) 100%
-    );
-    padding-left: 30px;
+    background: linear-gradient(140deg, #ffffff99 50%, #00d4ff 100%);
   }
-}
 
-.title {
-  color: $lightPrimary;
-  position: relative;
-  top: 30%;
-  padding-left: 90px;
-  font-size: 68px;
-  @media (max-width: 588px) {
-    font-size: 40px;
-    padding-left: 10px;
-  }
-}
-
-.copyright {
-  position: absolute;
-  top: 50%;
-  left: -130px;
-  transform: rotate(-90deg);
-  font-size: 18px;
-  @media (max-width: 588px) {
-    transform: rotate(0);
-    top: 90%;
-    left: 0px;
+  .cardImg {
+    height: 100%;
     width: 100%;
-    text-align: center;
-    font-size: 16px;
+    object-fit: cover;
+    filter: opacity(25%);
   }
-}
 
-.cardImg {
-  height: 100%;
-  width: 100%;
+  .cardContainer {
+    @extend .bg;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .title {
+      color: $lightPrimary;
+      padding-left: 90px;
+      font-size: 68px;
+      @media (max-width: 980px) {
+        font-size: 40px;
+        padding-left: 10px;
+      }
+    }
+
+    .copyright {
+      position: relative;
+      display: -webkit-box;
+      @media (max-width: 980px) {
+        position: initial;
+      }
+      & > p {
+        position: absolute;
+        top: 50%;
+        left: -7em;
+        white-space: nowrap;
+        transform: rotate(-90deg);
+        font-size: 18px;
+        @media (max-width: 788px) {
+          font-size: 14px;
+          transform: rotate(0);
+          top: 10px;
+          left: 10px;
+        }
+      }
+    }
+  }
 }

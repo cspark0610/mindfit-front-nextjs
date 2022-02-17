@@ -4,6 +4,7 @@ query GetResultsById($id: Int!) {
     result {
       area
       areaCodeName
+      diagnostics
       puntuations {
         name
         value

@@ -1,29 +1,34 @@
 @import '../variables.scss';
 
 .container {
-  padding: 0 2rem;
+  margin-block: 1rem 2rem;
 }
 
-.carouselShadow {
+.carousel {
+  border-radius: 18px;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-  border-radius: 18px;
-}
-
-.bg {
-  background: url('/assets/images/satBackground.png');
-  background-repeat: no-repeat;
-  background-size: 110% 115%;
-  background-position: center center;
-  background-attachment: fixed;
-
-  @media (max-width: 768px) {
-    background: none;
+  @media (max-width: 990px) {
+    height: 70vh;
+  }
+  & :global(.carousel-inner),
+  & :global(a[class^='carousel-control-']) {
+    border-radius: 18px;
   }
 }
 
-.cardContainer {
-  overflow: auto !important;
-  height: 87vh;
-  border-radius: 18px;
+.bg {
+  background-image: url('/assets/images/satBackground.png');
+  background-repeat: no-repeat;
+  background-size: 110% 115%;
+  background-position: center center;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  @media (max-width: 1200px) {
+    display: block;
+  }
+  @media (max-width: 990px) {
+    background: none;
+  }
 }
