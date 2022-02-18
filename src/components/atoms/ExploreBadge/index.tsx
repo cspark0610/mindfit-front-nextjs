@@ -1,6 +1,5 @@
 // main tools
 import Image from 'next/image'
-import Link from 'next/link'
 
 // bootstrap components
 import { Container, Row, Col } from 'react-bootstrap'

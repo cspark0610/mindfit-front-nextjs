@@ -10,6 +10,6 @@ export const SAT_TEMPLATES = {
   satReportGreeting: (props: any) => <Greeting {...props} />,
   satReportQualification: (props: any) => <Percentages {...props} />,
   SatReportInformation: (props: any) => <ProfileTypes {...props} />,
-  SatReportGraph: (props: any) => <Graph {...props} />,
+  satReportGraph: (props: any) => <Graph {...props} />,
   satReportFarewell: (props: any) => <Farewell {...props} />,
 }

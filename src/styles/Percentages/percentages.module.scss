@@ -76,27 +76,3 @@
     }
   }
 }
-.container {
-  margin-top: 4rem;
-  font-size: 18px;
-  padding: 0 9rem;
-  @media (max-width: 768px) {
-    text-align: center;
-    padding: 0 4rem;
-  }
-}
-
-.subtitle {
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.button {
-  width: 280px;
-  background-color: $white;
-  color: $lightPrimary;
-  height: 60px;
-  border-radius: 0;
-  border: 2px solid $lightPrimary;
-  font-weight: bold;
-}

@@ -44,7 +44,7 @@
           width: 100%;
           height: 55px;
           & > span {
-            max-width: 62px;
+            max-width: 72px;
             width: 100%;
             height: 55px;
             display: flex;
@@ -66,6 +66,11 @@
         }
       }
     }
+    &_quantity {
+      color: $primary;
+      font-weight: bold;
+      font-size: 17px;
+    }
   }
 
   .container {
@@ -78,6 +83,7 @@
 
     .row {
       align-items: center;
+      width: 100%;
       .calendar {
         position: relative;
         height: 70px;
@@ -126,21 +132,18 @@
       }
 
       .info {
+        text-align: center;
         &_title {
+          display: block;
           font-size: 18px;
           color: $primary;
           font-weight: bold;
-          display: block;
         }
         &_desc {
-          font-size: 15px;
-          font-weight: lighter;
           color: $gray;
+          font-size: 24px;
+          font-weight: bold;
           line-height: 20px;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
         }
       }
     }

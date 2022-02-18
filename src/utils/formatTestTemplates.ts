@@ -13,8 +13,18 @@ export const formatSatResultsTemplates = (
         attributes,
         template: 'satReportQualification',
       }))
+    const graphs = content.satReportGraphs.data
+      .filter(
+        ({ attributes }: any) => attributes.codeName === result.areaCodeName
+      )
+      .map(({ attributes }: any) => ({
+        result,
+        attributes,
+        template: 'satReportGraph',
+      }))
 
     templates.length > 0 && formatedTemplates.push(...templates)
+    graphs.length > 0 && formatedTemplates.push(...graphs)
   })
 
   return formatedTemplates

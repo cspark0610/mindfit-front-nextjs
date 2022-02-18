@@ -74,12 +74,34 @@ query SatReportContent($locale: I18NLocaleCode) {
                   }
                 }
               }
-              qualificationData {
+              qualificationData(pagination: { pageSize: 20 }) {
                 data {
                   attributes {
                     title
                     description
                     diagnostic
+                  }
+                }
+              }
+            }
+          }
+        }
+        satReportGraphs {
+          data {
+            attributes {
+              title
+              subtitle
+              anchorText
+              codeName
+              optionsLabel {
+                label
+              }
+              image {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
                   }
                 }
               }

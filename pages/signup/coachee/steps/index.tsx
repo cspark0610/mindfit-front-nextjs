@@ -11,7 +11,9 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
+import { createApolloClient } from 'lib/apolloClient'
 import GET_STEPS_CONTENT from 'lib/strapi/queries/Colaborator/stepsContent.gql'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 
 // utils
 import { microServices } from 'commons'
@@ -22,16 +24,19 @@ import classes from 'styles/signup/colaborator.module.scss'
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { CoacheeDataType } from 'types/models/Coachee'
 
 const ColaboratorStepsPage: NextPage<
   GetSSPropsType<typeof getServerSideProps>
 > = ({ steps, content }) => {
-  const stepIndex = steps.findIndex((step) => step.completed === false)
+  if (!steps) return null
+
+  const stepIndex = steps?.findIndex((step) => step.completed === false)
 
   return (
     <Container className={classes.container}>
       <Container fluid className={classes.section}>
-        {steps.map((step, idx) => {
+        {steps?.map((step, idx) => {
           if (idx < stepIndex)
             return <CompletedStep key={idx} label={step.label} />
           else if (idx === stepIndex)
@@ -71,26 +76,44 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-
   const content = data.collaboratorStep.data.attributes
+
+  const apollo = createApolloClient(session?.token)
+
+  const { data: coachee } = await apollo.query<{
+    findCoacheeById: CoacheeDataType
+  }>({
+    query: GET_COACHEE_BY_ID,
+    variables: { id: session?.user.coachee?.id },
+    context: { ms: microServices.backend },
+  })
+
+  if (coachee.findCoacheeById.registrationStatus === 'REGISTRATION_COMPLETED')
+    return { redirect: { destination: '/user', permanent: false }, props: {} }
 
   const steps = [
     {
       label: content.steps[0].label,
       action: content.steps[0].value,
-      completed: !session?.user.coachee ? false : true,
+      completed: !coachee ? false : true,
       url: '/signup/coachee/user',
     },
     {
       label: content.steps[1].label,
       action: content.steps[1].value,
-      completed: !session?.user.coach ? false : true,
+      completed:
+        coachee.findCoacheeById.registrationStatus === 'SAT_PENDING'
+          ? false
+          : true,
       url: '/quiz',
     },
     {
       label: content.steps[2].label,
       action: content.steps[2].value,
-      completed: !session || session.user.name === '2' ? false : true,
+      completed:
+        coachee.findCoacheeById.registrationStatus === 'COACH_SELECTION_PENDING'
+          ? false
+          : true,
       url: '/coaches',
     },
   ]

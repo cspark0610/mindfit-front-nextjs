@@ -1,9 +1,12 @@
+import { UserDataType } from './User'
+
 export type CoachDataType = {
-  id: string
-  name: string
-  title: string
-  description: string
-  picture: string
-  videoThumb: string
-  videoUrl: string
+  id: number
+  bio: string
+  isActive: boolean
+  user: UserDataType
+  phoneNumber: string
+  profilePicture: string
+  videoPresentation: string
+  coachingAreas: { id: number; name: string }[]
 }

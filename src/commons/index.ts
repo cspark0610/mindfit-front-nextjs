@@ -35,3 +35,21 @@ export const microServices = {
 
 export const formatDate = (date: string | Date) =>
   typeof date === 'string' ? new Date(date) : date
+
+export const getRandomColor = (colors: string[]) => {
+  const num = (Math.floor(Math.random() * 4) * 4).toString(16)
+  const characters = ['0', 'F', num]
+  let color = '#'
+
+  for (var i = 0; i < 3; i++) {
+    const pos = Math.floor(Math.random() * characters.length)
+    color += characters[pos]
+    characters.splice(pos, 1)
+  }
+
+  //para evitar que se repitan colores
+  if (colors.includes(color)) getRandomColor(colors)
+  else colors.push(color)
+
+  return color
+}
