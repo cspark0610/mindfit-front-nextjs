@@ -15,21 +15,16 @@ import classes from 'styles/Library/page.module.scss'
 import { FC } from 'react'
 import { SubmitType } from 'types'
 
-type FilterProps = { refetch: (ev: any) => void }
+type FilterProps = { 
+  refetch: (ev: any) => void 
+  postCategories: string[]
+}
 
-export const Filter: FC<FilterProps> = ({ refetch }) => {
+export const Filter: FC<FilterProps> = ({ refetch, postCategories }) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [searcher, setSearcher] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('Autoayuda')
-  const categories = [
-    'Autoayuda',
-    'Biografías',
-    'Liderazgo',
-    'Motivación',
-    'Responsabilidad Afectiva',
-    'Responsabilidad Social',
-    'Responsabilidad Laboral',
-  ]
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const categories = postCategories
 
   const handleClick = (category: string) => {
     setSelectedCategory(category)
@@ -42,6 +37,7 @@ export const Filter: FC<FilterProps> = ({ refetch }) => {
     const filter = { title: { contains: searcher } }
     refetch(filter)
     setSearcher('')
+    setSelectedCategory('')
   }
 
   return (

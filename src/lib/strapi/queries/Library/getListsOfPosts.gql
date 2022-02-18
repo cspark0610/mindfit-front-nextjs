@@ -1,4 +1,4 @@
-query post(
+query getListsOfPosts(
   $locale: I18NLocaleCode
   $pagination: PaginationArg = {}
   $filters: PostFiltersInput
