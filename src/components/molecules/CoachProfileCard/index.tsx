@@ -57,14 +57,14 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
             </div>
             <div
               className={`text-center mb-4 ${classes.description_container}`}>
-              <h3 className='fs-5 fw-bold'>{coach?.user.name}</h3>
+              <h3 className='fs-5 fw-bold'>{coach?.user?.name}</h3>
               <p className='fs-6 mb-0'>{coach?.bio}</p>
             </div>
             <div
               className={`text-center mb-5 ${classes.specialization_container}`}>
               <h3 className='fs-5 fw-bold'>Especialización del coach</h3>
               <ul>
-                {coach?.coachingAreas.map((area) => (
+                {coach?.coachingAreas?.map((area) => (
                   <li
                     key={area.id}
                     className={`fs-5 ${classes.especialization_skill}`}>
