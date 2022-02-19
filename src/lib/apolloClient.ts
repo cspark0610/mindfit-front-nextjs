@@ -2,7 +2,7 @@
 import { ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
-import { getToken } from 'commons'
+import { getToken, microServices } from 'commons'
 
 /**
  * configure apollo for
@@ -31,8 +31,11 @@ export const createApolloClient = (accessToken: string | null = null) => {
 
   const apolloHeaders = setContext(async (_, { ms, headers }) => {
     let token = null
-    if (typeof window !== 'undefined') token = await getToken()
-    else if (ms === 'strapi') token = process.env.NEXT_PUBLIC_STRAPI_TOKEN
+    if (typeof window !== 'undefined') {
+      if (ms === microServices.backend) token = await getToken()
+      else token = process.env.NEXT_PUBLIC_STRAPI_TOKEN
+    } else if (ms === microServices.strapi)
+      token = process.env.NEXT_PUBLIC_STRAPI_TOKEN
     else token = accessToken
 
     return {

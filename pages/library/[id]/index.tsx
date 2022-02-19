@@ -1,14 +1,22 @@
 // main tools
 import Image from 'next/image'
+import { useState } from 'react'
 
 // bootstrap components
 import { JournalText } from 'react-bootstrap-icons'
-import { Container, Row, Col, Badge } from 'react-bootstrap'
+import { Container, Row, Col, Badge, Spinner } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
 import { ArticleCard } from 'components/atoms/ArticleCard'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+
+// 'commons'
+import { microServices } from 'commons'
+
+// gql
+import { useQuery } from '@apollo/client'
+import POSTS from 'lib/strapi/queries/Library/content.gql'
 
 // styles
 import classes from 'styles/Library/entry.module.scss'
@@ -17,6 +25,19 @@ import classes from 'styles/Library/entry.module.scss'
 import { NextPage } from 'next'
 
 const LibraryArticlePage: NextPage = () => {
+  const [content, setContent] = useState([])
+
+  const { loading } = useQuery(POSTS, {
+    context: { ms: microServices.strapi },
+    variables: {
+      locale: 'es',
+      filters: { postCategories: { category: { eq: 'Autoayuda' } } },
+    },
+    onCompleted: (data) => {
+      setContent(data.posts.data)
+    },
+  })
+
   return (
     <Layout>
       <Container className={classes.container}>
@@ -136,11 +157,19 @@ const LibraryArticlePage: NextPage = () => {
           <footer>
             <h3 className={classes.related}>Articulos relacionados</h3>
             <Row>
-              {[{ id: 0 }, { id: 1 }, { id: 2 }].map((article) => (
-                <Col className='my-3' key={article.id} md={6} lg={3}>
-                  <ArticleCard {...article} />
-                </Col>
-              ))}
+              {!loading ? (
+                content.length != 0 ? (
+                  content.map((article: any) => (
+                    <Col className='my-3' key={article.id} md={6} lg={3}>
+                      <ArticleCard {...article} />
+                    </Col>
+                  ))
+                ) : (
+                  <h6>No hay articulos relacionados</h6>
+                )
+              ) : (
+                <Spinner animation='border' />
+              )}
             </Row>
           </footer>
         </section>
