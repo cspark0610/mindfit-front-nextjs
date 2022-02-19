@@ -1,0 +1,23 @@
+query GetSuggestedCoaches {
+  getRandomSuggestedCoaches {
+    id
+    rejected
+    rejectionReason
+    coachee {
+      id
+    }
+    coaches {
+      id
+      bio
+      profilePicture
+      videoPresentation
+      user {
+        name
+      }
+      coachingAreas {
+        id
+        name
+      }
+    }
+  }
+}

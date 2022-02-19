@@ -1,15 +1,20 @@
 // main tools
-import { useEffect, useState } from 'react'
-import { initializeApolloClient } from 'lib/apollo'
+import { useState } from 'react'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
 
 // gql
+import { useQuery } from '@apollo/client'
+import { initializeApolloClient } from 'lib/apollo'
+import { createApolloClient } from 'lib/apolloClient'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
 import GET_COACH_SELECTION_CONTENT from 'lib/queries/Strapi/CoachSelectionContent/getCoachSelectionContent.gql'
 
 // Commons
 import { microServices } from 'commons'
+import { coacheeRegistrationStatus } from 'utils/enums'
 
 //components
 import { CoachCard } from 'components/molecules/CoachCard'
@@ -27,11 +32,21 @@ import { CoachDataType } from 'types/models/Coach'
 import { GetSSPropsType } from 'types'
 
 import { Carousel } from 'primereact/carousel'
+import { getSession } from 'next-auth/react'
+import { CoacheeDataType } from 'types/models/Coachee'
 
 const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
-  const coachs: CoachDataType[] = [
+  //States
+  const [coaches, setCoaches] = useState<CoachDataType[]>([])
+  const [showedCoachs, setShowedCoachs] = useState(2)
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const responsiveOptions = [
+    { breakpoint: '988px', numVisible: 1, numScroll: 1 },
+  ]
+
+  const coachs = [
     {
       id: '0564654a',
       name: 'Camila Garcia',
@@ -133,9 +148,11 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       videoUrl: 'https:youtube.com',
     },
   ]
-  //States
-  const [showedCoachs, setShowedCoachs] = useState(2)
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+
+  const { loading, refetch } = useQuery(GET_SUGGESTED_COACHES, {
+    context: { ms: microServices.backend },
+    onCompleted: (data) => console.log(data),
+  })
 
   //form state handlers
   const handleOpenFeedBackForm = () => setShowFeedbackForm(true)
@@ -147,14 +164,6 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       handleCloseFeedBackForm()
     }
   }
-
-  const responsiveOptions = [
-    {
-      breakpoint: '988px',
-      numVisible: 1,
-      numScroll: 1,
-    },
-  ]
 
   const coachsTemplate = (coach: any) => (
     <CoachCard data={coach} content={content} />
@@ -173,7 +182,7 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               />
             </Col>
           </Row>
-        ) : false ? (
+        ) : loading ? (
           <ChooseCoachSkeleton />
         ) : (
           <>
@@ -211,15 +220,39 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApolloClient()
+  const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+  else if (!session.user.coachee || session.user.organization)
+    return {
+      redirect: { destination: '/coachees/add', permanent: false },
+      props: {},
+    }
 
+  const apollo = createApolloClient(session.token)
+  const { data: coachee } = await apollo.query<{
+    findCoacheeById: CoacheeDataType
+  }>({
+    query: GET_COACHEE_BY_ID,
+    variables: { id: session.user.coachee?.id },
+    context: { ms: microServices.backend },
+  })
+
+  if (
+    coachee.findCoacheeById.registrationStatus !==
+    coacheeRegistrationStatus.COACH_SELECTION_PENDING
+  )
+    return {
+      redirect: { destination: '/signup/coachee/steps', permanent: false },
+      props: {},
+    }
+
+  const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     variables: { locale: ctx.locale },
     query: GET_COACH_SELECTION_CONTENT,
     context: { ms: microServices.strapi },
   })
-
-  console.log(data)
 
   return { props: { content: data.coachSelection.data.attributes } }
 }

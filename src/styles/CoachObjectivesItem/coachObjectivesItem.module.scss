@@ -3,12 +3,11 @@
 
 .section {
   padding: 22px 15px;
-  max-width: 311px;
-  height: 280px;
-  border-radius: 15.7569px;
-  margin: 0 22px 22px 0;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  min-height: 301px;
   &_header {
-    color: $secondary;
+    color: $primary;
   }
   &_header > p {
     margin-left: 13px;

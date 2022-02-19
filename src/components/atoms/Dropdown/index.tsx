@@ -30,17 +30,17 @@ export const DropdownMenu: FC = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>
             <Link href={`/user/${data.user.sub}/profile`} passHref>
-              <Dropdown.Item>User Profile</Dropdown.Item>
+              <Dropdown.Item>Perfil de usuario</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => signOut({ callbackUrl: '/' })}>
-              SignOut
+              Cerrar sesión
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Link href='/' passHref>
-          <Button>Sign In</Button>
+          <Button>Iniciar sesión</Button>
         </Link>
       )}
     </>

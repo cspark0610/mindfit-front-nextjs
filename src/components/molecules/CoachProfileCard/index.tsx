@@ -38,8 +38,6 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
     onCompleted: (data) => setCoach(data.findCoachById),
   })
 
-  console.log(coach)
-
   return (
     <>
       {loading ? (
@@ -64,7 +62,7 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
             </div>
             <div
               className={`text-center mb-5 ${classes.specialization_container}`}>
-              <h3 className='fs-5 fw-bold'>Especializacion del Coach</h3>
+              <h3 className='fs-5 fw-bold'>Especialización del coach</h3>
               <ul>
                 {coach?.coachingAreas.map((area) => (
                   <li
@@ -83,8 +81,8 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
               <Button
                 onClick={() => setShowChat(true)}
                 className={classes.button}>
-                <i className={PrimeIcons.COMMENTS} />
-                <p className='fs-6'>CHAT</p>
+                <i className={PrimeIcons.SEND} />
+                <p className='fs-6'>BANDEJA</p>
               </Button>
             </div>
           </Container>
