@@ -5,8 +5,10 @@ import { useRouter } from 'next/router'
 
 // gql
 import { useQuery } from '@apollo/client'
+import { initializeApolloClient } from 'lib/apollo'
 import GET_COACHEE_AGENDA from 'lib/queries/Coachee/getAgenda.gql'
 import GET_COACH_AVAILABILITY from 'lib/queries/Coach/getAvailability.gql'
+import GET_PAGE_CONTENT from 'lib/strapi/queries/UserSchedule/page.gql'
 
 // components
 import { Layout } from 'components/organisms/Layout'
@@ -19,7 +21,7 @@ import { Skeleton } from 'primereact/skeleton'
 import { addLocale } from 'primereact/api'
 
 // bootstrap components
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 
 // utils
 import { formatDate, microServices } from 'commons'
@@ -31,8 +33,11 @@ import classes from 'styles/coachAgenda/page.module.scss'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { CalendarLocaleOptions } from 'commons/calendarLocaleOptions'
 import { CoacheeEvent } from 'components/atoms/CoacheeEvent'
+import { GetSSPropsType } from 'types'
 
-const AgendaPage: NextPage = () => {
+const AgendaPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
+}) => {
   const [appointments, setAppointments] = useState<any[] | undefined>(undefined)
   const [satRealized, setSatRealized] = useState<any[] | undefined>(undefined)
   const [coachAvailability, setCoachAvailability] = useState<any[] | undefined>(
@@ -66,7 +71,7 @@ const AgendaPage: NextPage = () => {
   return (
     <Layout>
       <Container className='my-5'>
-        <h1 className={classes.title}>Próximos eventos</h1>
+        <h1 className={classes.title}>{content.title}</h1>
         <Row className={classes.agenda}>
           <Col className='p-2' xs={12} md={6} lg={7}>
             <div className={classes.availability}>
@@ -94,7 +99,7 @@ const AgendaPage: NextPage = () => {
                   />
                 ))
               ) : (
-                <Row className='justify-content-center'>
+                <Row className='w-100 justify-content-center'>
                   {appointments
                     .filter((item) => {
                       const formatedDate = formatDate(item.startDate)
@@ -108,9 +113,18 @@ const AgendaPage: NextPage = () => {
                     })
                     .map((item, idx) => (
                       <Col key={idx} xs={12} lg={8}>
+                        {console.log(item)}
                         <CoacheeEvent {...item} />
                       </Col>
                     ))}
+                  <Col xs={8} className='mt-3 text-end'>
+                    <strong className={classes.availability_quantity}>
+                      {content.availabilityLabel} 1/2
+                    </strong>
+                    <Button className={classes.button}>
+                      {content.submitButton.label}
+                    </Button>
+                  </Col>
                 </Row>
               )}
             </div>
@@ -127,7 +141,13 @@ const AgendaPage: NextPage = () => {
                 ))
               : coachAvailability
                   .slice(0, 3)
-                  .map((item, idx) => <CoachEvent key={idx} {...item} />)}
+                  .map((item, idx) => (
+                    <CoachEvent
+                      key={idx}
+                      content={content.scheduleButton}
+                      {...item}
+                    />
+                  ))}
           </Col>
         </Row>
       </Container>
@@ -138,14 +158,22 @@ const AgendaPage: NextPage = () => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/login', permanent: false }, props: {} }
+    return { redirect: { destination: '/', permanent: false }, props: {} }
   // if (!session.user.coach)
   //   return {
   //     redirect: { destination: '/signup/coachee/steps', permanent: false },
   //     props: {},
   //   }
 
-  return { props: {} }
+  const apolloClient = initializeApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: GET_PAGE_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  return { props: { content: data.coacheeSchedule.data.attributes } }
 }
 
 export default AgendaPage

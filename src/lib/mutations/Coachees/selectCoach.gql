@@ -1,0 +1,5 @@
+mutation SelectCoach($data: SelectCoachDTO!) {
+  selectCoach(data: $data) {
+    id
+  }
+}

@@ -1,37 +1,49 @@
 @import '../variables.scss';
 @import '../UI/Button/button.module.scss';
+@import '../SatTemplates/satTemplates.module.scss';
 
-.container {
-  margin-top: 4rem;
-  font-size: 18px;
-  padding: 0 8rem;
-  @media (max-width: 768px) {
+.graphics {
+  padding: 4rem 11rem;
+  @media (max-width: 990px) {
+    height: 70vh;
+    padding-inline: 2rem;
+  }
+
+  .header {
     text-align: center;
-    padding: 0 2rem;
+    color: $lightGray;
   }
-}
 
-.header {
-  text-align: center;
-  color: $lightGray;
-}
-
-.title {
-  color: $lightPrimary;
-  text-align: center;
-  font-weight: bold;
-  font-size: 62px;
-  margin-bottom: 3rem;
-  @media (max-width: 430px) {
-    font-size: 36px;
+  .title {
+    color: $lightPrimary;
+    text-align: center;
+    font-weight: bold;
+    font-size: 56px;
+    margin-bottom: 3rem;
+    @media (max-width: 430px) {
+      font-size: 36px;
+    }
   }
-}
 
-.img {
-  border-radius: 10px;
-}
+  .img {
+    border-radius: 10px;
+    object-fit: cover;
+  }
 
-.icon {
-  color: $lightPrimary;
-  margin-right: 5px;
+  .explore {
+    width: 100%;
+    border: none;
+    display: flex;
+    font-size: 13px;
+    color: $primary;
+    max-width: 280px;
+    align-items: center;
+    background: transparent;
+    justify-content: space-between;
+
+    &_icon {
+      font-size: 40px;
+      margin-right: 0.5rem;
+    }
+  }
 }

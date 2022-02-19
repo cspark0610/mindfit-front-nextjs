@@ -59,7 +59,7 @@ const ChoosePlanPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
-    return { redirect: { destination: '/login', permanent: false }, props: {} }
+    return { redirect: { destination: '/', permanent: false }, props: {} }
   if (session.user.name === '0')
     return {
       redirect: { destination: '/signup/organization', permanent: false },

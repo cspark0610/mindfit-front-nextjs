@@ -9,22 +9,8 @@ export const ChartBar: FC<ChartProps> = ({ data }) => {
     maintainAspectRatio: false,
     aspectRatio: 0.8,
     scales: {
-      x: {
-        ticks: {
-          color: '#4d4d4f',
-        },
-        grid: {
-          color: '#ffffff',
-        },
-      },
-      y: {
-        ticks: {
-          color: '#4d4d4f',
-        },
-        grid: {
-          color: '#c4c4c4',
-        },
-      },
+      x: { ticks: { color: '#4d4d4f' }, grid: { color: '#ffffff' } },
+      y: { ticks: { color: '#4d4d4f' }, grid: { color: '#c4c4c4' } },
     },
   }
 

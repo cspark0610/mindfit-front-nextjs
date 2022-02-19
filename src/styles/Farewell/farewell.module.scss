@@ -1,36 +1,53 @@
 @import '../variables.scss';
 @import '../UI/Button/button.module.scss';
+@import '../SatTemplates/satTemplates.module.scss';
 
-.container {
-  margin-top: 4rem;
-  padding: 0 8rem 0 11rem;
-  @media (max-width: 768px) {
-    text-align: center;
-    padding: 0 4rem;
+.farewell {
+  @media (max-width: 990px) {
+    height: 70vh;
   }
-}
 
-.header {
-  color: $lightGray;
-}
-
-.title {
-  color: $lightPrimary;
-  font-size: 62px;
-  @media (max-width: 430px) {
-    font-size: 36px;
+  .cardImg {
+    width: 100%;
+    object-fit: cover;
+    filter: opacity(25%);
   }
-}
 
-.paragraph {
-  font-size: 18px;
-}
+  .container {
+    padding-inline: 12rem;
+    display: flex;
+    flex-direction: column;
 
-.button {
-  background: $white;
-  color: $lightPrimary;
-  border: 2px solid $lightPrimary;
-  border-radius: 0;
-  width: 280px;
-  font-weight: bold;
+    .header {
+      color: $lightGray;
+    }
+
+    .title {
+      color: $lightPrimary;
+      font-size: 56px;
+      @media (max-width: 430px) {
+        font-size: 36px;
+      }
+    }
+
+    .paragraph {
+      font-size: 17px;
+    }
+
+    .button {
+      background: $white;
+      color: $lightPrimary;
+      border: 2px solid $lightPrimary;
+      border-radius: 0;
+      max-width: 280px;
+      width: 100%;
+      font-weight: bold;
+      transition: all 0.3s;
+      &:hover {
+        background: $lightPrimary;
+        color: $white;
+        transition: all 0.3s;
+      }
+    }
+  }
 }

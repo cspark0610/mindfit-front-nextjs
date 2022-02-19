@@ -28,7 +28,7 @@ const LOGIN_RRSS = {
 }
 
 export default NextAuth({
-  pages: { error: '/login' }, // custom error page with query string as ?error=
+  pages: { error: '/' }, // custom error page with query string as ?error=
   session: { maxAge: 60 * 60 }, // initial value in seconds, logout on a half hour of inactivity
   secret: process.env.SECRET,
 
@@ -102,19 +102,8 @@ export default NextAuth({
           })
           if (data.createPassword) {
             const client = createApolloClient(data.createPassword.token)
-            const decoded: { sub?: number } = jwt_decoder(
-              data.createPassword.token
-            )
-
-            const { data: user } = await apolloClient.query({
-              query: GET_USER_BY_ID,
-              variables: { id: decoded.sub },
-              context: { ms: microServices.backend },
-            })
-
             await client.mutate({
               mutation: ACCEPT_INVITATION,
-              variables: { id: user.findUserById.coachee.id },
               context: { ms: microServices.backend },
             })
 
@@ -122,7 +111,7 @@ export default NextAuth({
           }
         } catch (error: any) {
           if (error.graphQLErrors)
-            throw new Error(error.graphQLErrors[0].message)
+            throw new Error(error.graphQLErrors[0]?.message)
         }
 
         return null

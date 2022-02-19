@@ -1,38 +1,34 @@
 @import '../variables.scss';
 
 .container {
-  padding: 0 2rem;
+  margin-block: 1rem 2rem;
 }
 
-.carouselShadow {
+.carousel {
+  border-radius: 18px;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-  border-radius: 18px;
+  @media (max-width: 990px) {
+    height: 70vh;
+  }
+  & :global(.carousel-inner),
+  & :global(a[class^='carousel-control-']) {
+    border-radius: 18px;
+  }
 }
 
 .bg {
-  background: url('/assets/images/satBackground.png');
+  background-image: url('/assets/images/satBackground.png');
   background-repeat: no-repeat;
   background-size: 110% 115%;
   background-position: center center;
-  background-attachment: fixed;
-  overflow: auto !important;
-  height: 87vh;
-  @media (max-width: 768px) {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  @media (max-width: 1200px) {
+    display: block;
+  }
+  @media (max-width: 990px) {
     background: none;
   }
-  border-radius: 18px;
-}
-
-.gradient {
-  background: url('/assets/images/satBackground.png'),
-    linear-gradient(
-      140deg,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(0, 212, 255, 1) 100%
-    );
-  background-repeat: no-repeat;
-  background-size: 100% 115%;
-  background-position: center center;
-  background-attachment: fixed;
 }

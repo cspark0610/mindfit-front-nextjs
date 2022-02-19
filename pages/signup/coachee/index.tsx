@@ -23,29 +23,27 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
 const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  content,
   hash,
   error,
-}) => {
-  return (
-    <Container className={classes.container}>
-      <h1 className={classes.title}>{content?.title}</h1>
-      <div>
-        <Image
-          src='/assets/icon/MINDFIT.svg'
-          alt='Mindfit Logo'
-          width={420}
-          height={150}
-        />
-      </div>
-      <FirstColaboratorLogin
-        error={error as string}
-        hash={hash as string}
-        content={content}
+  content,
+}) => (
+  <Container className={classes.container}>
+    <h1 className={classes.title}>{content?.title}</h1>
+    <div>
+      <Image
+        src='/assets/icon/MINDFIT.svg'
+        alt='Mindfit Logo'
+        width={420}
+        height={150}
       />
-    </Container>
-  )
-}
+    </div>
+    <FirstColaboratorLogin
+      error={error as string}
+      hash={hash as string}
+      content={content}
+    />
+  </Container>
+)
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
@@ -67,9 +65,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      content: data.collaboratorCreatePass.data.attributes,
       hash: token,
       error: error ?? '',
+      content: data.collaboratorCreatePass.data.attributes,
     },
   }
 }

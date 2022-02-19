@@ -50,7 +50,7 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   // mutation
   const [resetPassword] = useMutation(RESET_PASSWORD, {
-    onCompleted: () => push('/login'),
+    onCompleted: () => push('/'),
     onError: (err) => console.log(err),
     context: { ms: microServices.backend },
   })

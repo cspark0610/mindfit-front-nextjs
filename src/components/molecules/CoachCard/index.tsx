@@ -17,7 +17,7 @@ import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
 
 interface CoachCardProps {
-  data: CoachDataType
+  data: any
   content: any
 }
 

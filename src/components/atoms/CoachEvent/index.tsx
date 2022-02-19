@@ -15,7 +15,11 @@ import classes from 'styles/coachAgenda/page.module.scss'
 // types
 import { FC } from 'react'
 
-export const CoachEvent: FC<{ date: string }> = ({ date }) => {
+export const CoachEvent: FC<{
+  date: string
+  availability: { from: string; to: string }
+  content: any
+}> = ({ date, availability, content }) => {
   const { locale } = useRouter()
   const formatedDate = formatDate(date)
 
@@ -50,7 +54,7 @@ export const CoachEvent: FC<{ date: string }> = ({ date }) => {
           />
         </Col>
       </Row>
-      <Button className={classes.button}>Agregar al calendario</Button>
+      <Button className={classes.button}>{content.label}</Button>
     </Container>
   )
 }

@@ -15,7 +15,7 @@ import { FC } from 'react'
 export const RecommendedContentList: FC = () => {
   return (
     <div>
-      <p className={classes.section_title}>Contenidos Recomendados</p>
+      <p className={classes.section_title}>Contenidos recomendados</p>
       <Container fluid>
         <Row className='justify-content-center'>
           <RecommendedContentItem />

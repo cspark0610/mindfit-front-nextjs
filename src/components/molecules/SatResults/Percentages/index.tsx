@@ -1,12 +1,13 @@
 // Main tools
 import Image from 'next/image'
+import Link from 'next/link'
 
 // bootstrap components
-import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
+import { Col, OverlayTrigger, Tooltip, Card, Button } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
 // Animation Components
-import { ContainerMotion } from 'components/atoms/AnimateComponents'
+import { RowMotion } from 'components/atoms/AnimateComponents'
 
 // Animation
 import { viewportFadeIn } from 'commons/animations'
@@ -17,71 +18,83 @@ import classes from 'styles/Percentages/percentages.module.scss'
 // types
 import { FC } from 'react'
 
-export const Percentages: FC = () => {
-  const overlayTooltip = () => <Tooltip>Loren ipsum</Tooltip>
+export const Percentages: FC<any> = (props) => {
+  const qualificationData = props.qualificationData.data
+
+  const getContent = (diagnostic: string) =>
+    qualificationData.find(
+      ({ attributes }: any) => attributes.diagnostic === diagnostic
+    )
+
+  const overlayTooltip = (content: string) => <Tooltip>{content}</Tooltip>
+
   return (
-    <ContainerMotion fluid {...viewportFadeIn} className={classes.container}>
-      <Row>
-        <p className={classes.header}>
-          Ahora es el turno de los resultados referentes a la empresa
-        </p>
-        <h1 className={classes.title}>Comunicación en la empresa</h1>
-      </Row>
-      <Row>
-        <Col lg={4}>
-          <Image
-            className={classes.img}
-            src='/assets/icon/MINDFIT.svg'
-            alt=''
-            width={500}
-            height={500}
-          />
-          <p>
-            <Send className={classes.icon} />
-            Descubre cómo se comunican los miembros de tu empresa
-          </p>
-        </Col>
-        <Col lg={3}>
-          {[0, 1, 2].map((item) => (
-            <OverlayTrigger
-              key={item}
-              placement='bottom'
-              overlay={overlayTooltip()}>
-              <div className={classes.cardPoint}>
-                <h4>
-                  <span className={classes.point}>4,3</span> / 5
-                </h4>
-                <div>Comunicación ascendente</div>
-              </div>
-            </OverlayTrigger>
-          ))}
-        </Col>
-        <Col lg={5}>
-          <p className={classes.subtitle}>¿Qué significan estos factores?</p>
-          <p>
-            Los resultados obtenidos en estos tres factores, se encuentran
-            destacadamente por encima de la media deseable en entornos
-            corporativos, estando la comunicación horizontal ligeramente por
-            debajo de la ascendente o descendente.
-          </p>
-          <p>
-            En las empresas, los efectos positivos de la comunicación son
-            evidentes: mejora la competitividad de la organización, así como la
-            forma en la que se puede adaptar a los cambios que se produzcan en
-            su entorno, con el fin de conseguir los objetivos que se hayan
-            propuesto inicialmente. Al mismo tiempo, la existencia de una
-            comunicación en la empresa eficaz, fomenta la motivación de los
-            empleados, así como el compromiso y la implicación en las tareas
-            corporativas, creando un clima de trabajo integrador.
-          </p>
-          <p>
-            Por ello, a pesar de encontrarnos en niveles por encima de la media
-            deseable, todo esfuerzo por mejorar dicha comunicación corporativa,
-            incidirá en la mejora en todos esos efectos.
-          </p>
-          <Button className={classes.button}>Adceder a los recursos</Button>
-        </Col>
-      </Row>
-    </ContainerMotion>
+    <Card className={classes.bg}>
+      <Card.Body className={classes.percentages}>
+        <p className={classes.header}>{props.subtitle}</p>
+        <h1 className={classes.title}>{props.title}</h1>
+        <RowMotion {...viewportFadeIn} className='justify-content-center'>
+          <Col md={6} xl={3}>
+            <Image
+              width={500}
+              height={500}
+              className={classes.img}
+              src={props.image.data.attributes.url}
+              alt={props.image.data.attributes.caption}
+            />
+            <Link
+              href={`/library?category="${props.postCategory.data.attributes.category}"`}
+              passHref>
+              <Button className={classes.explore}>
+                <Send className={classes.explore_icon} />
+                {props.anchorText}
+              </Button>
+            </Link>
+          </Col>
+          <Col md={6} xl={3}>
+            {props.result.puntuations.map((puntuation: any, idx: number) => (
+              <OverlayTrigger
+                key={idx}
+                placement='left'
+                overlay={overlayTooltip('Lorem ipsum')}>
+                <div className={classes.cardPoint}>
+                  <h4>
+                    <span className={classes.point}>
+                      {puntuation.value.toFixed(1)}
+                    </span>{' '}
+                    / {puntuation.base}
+                  </h4>
+                </div>
+              </OverlayTrigger>
+            ))}
+          </Col>
+          <Col className={classes.description} lg={9} xl={5}>
+            {props.infoTitle && <h4>{props.infoTitle}</h4>}
+            {props.infoValue && (
+              <div dangerouslySetInnerHTML={{ __html: props.infoValue }} />
+            )}
+            {qualificationData.length > 0 && (
+              <ul>
+                {props.result.diagnostics.map(
+                  (diagnostic: string, idx: number) => {
+                    const content = getContent(diagnostic)
+                    return (
+                      <li key={idx}>
+                        <p>{content?.attributes?.title}</p>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: content?.attributes?.description,
+                          }}
+                        />
+                      </li>
+                    )
+                  }
+                )}
+              </ul>
+            )}
+          </Col>
+        </RowMotion>
+      </Card.Body>
+    </Card>
   )
 }

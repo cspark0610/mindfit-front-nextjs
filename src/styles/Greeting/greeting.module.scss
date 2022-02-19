@@ -1,37 +1,40 @@
 @import '../variables.scss';
 @import '../UI/Button/button.module.scss';
+@import '../SatTemplates/satTemplates.module.scss';
 
-.container {
-  margin-top: 4rem;
-  padding: 0 10rem;
-  @media (max-width: 768px) {
-    text-align: center;
-    padding: 0 4rem;
+.greetingCard {
+  @media (max-width: 990px) {
+    height: 70vh;
   }
-}
-
-.header {
-  color: $lightGray;
-}
-
-.greeting {
-  color: $lightPrimary;
-  font-size: 64px;
-  @media (max-width: 430px) {
-    font-size: 36px;
+  .cardImg {
+    width: 100%;
+    object-fit: cover;
+    filter: opacity(25%);
   }
-}
+  .container {
+    padding: 0 10rem;
+    @media (max-width: 990px) {
+      padding: 0 2rem;
+    }
+    @media (max-width: 700px) {
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .header {
+      color: $lightGray;
+      margin-top: 4rem;
+    }
 
-.paragraph {
-  font-size: 18px;
-}
+    .greeting {
+      color: $lightPrimary;
+      font-size: 56px;
+      @media (max-width: 430px) {
+        font-size: 36px;
+      }
+    }
 
-.button {
-  width: 200px;
-  background-color: $white;
-  color: $lightPrimary;
-  height: 60px;
-  border-radius: 0;
-  border: 2px solid $lightPrimary;
-  font-weight: bold;
+    .paragraph {
+      font-size: 18px;
+    }
+  }
 }

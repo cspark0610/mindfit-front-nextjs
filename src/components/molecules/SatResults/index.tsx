@@ -6,10 +6,10 @@ import { Graph } from './Graphics'
 import { Farewell } from './Farewell'
 
 export const SAT_TEMPLATES = {
-  cover: () => <Cover />,
-  greeting: (props: any) => <Greeting {...props} />,
-  percentages: (props: any) => <Percentages {...props} />,
-  profileTypes: (props: any) => <ProfileTypes {...props} />,
-  graphics: (props: any) => <Graph {...props} />,
-  farewell: (props: any) => <Farewell {...props} />,
+  satReportIntro: (props: any) => <Cover {...props} />,
+  satReportGreeting: (props: any) => <Greeting {...props} />,
+  satReportQualification: (props: any) => <Percentages {...props} />,
+  SatReportInformation: (props: any) => <ProfileTypes {...props} />,
+  satReportGraph: (props: any) => <Graph {...props} />,
+  satReportFarewell: (props: any) => <Farewell {...props} />,
 }

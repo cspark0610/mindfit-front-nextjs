@@ -1,0 +1,27 @@
+query GetCoacheeById($id: Int!) {
+  findCoacheeById(id: $id) {
+    bio
+    invited
+    isAdmin
+    position
+    isActive
+    phoneNumber
+    aboutPosition
+    profilePicture
+    canViewDashboard
+    invitationAccepted
+    registrationStatus
+    user {
+      id
+    }
+    organization {
+      id
+    }
+    coachingAreas {
+      name
+    }
+    assignedCoach {
+      id
+    }
+  }
+}

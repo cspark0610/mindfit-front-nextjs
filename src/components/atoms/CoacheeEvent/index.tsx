@@ -32,10 +32,7 @@ export const CoacheeEvent: FC<{ startDate: string }> = ({ startDate }) => {
         <Col className={classes.info} xs={7} md={8}>
           <strong className={classes.info_title}>Sesión de Coaching</strong>
           <span className={classes.info_desc}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, error
-            alias vero soluta similique cupiditate ipsa at voluptatum, harum
-            voluptate itaque qui laboriosam voluptas atque laborum laudantium,
-            dolorum dolor incidunt.
+            {`${formatedDate.getUTCHours()}:${formatedDate.getMinutes()}`}
           </span>
         </Col>
         <Col xs={2}>

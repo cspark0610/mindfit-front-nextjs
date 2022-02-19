@@ -1,0 +1,135 @@
+query SatReportContent($locale: I18NLocaleCode) {
+  satReport(locale: $locale) {
+    data {
+      attributes {
+        satReportIntro {
+          data {
+            attributes {
+              title
+              copyright
+              background {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        satReportGreeting {
+          data {
+            attributes {
+              title
+              subtitle
+              details
+              actionButton {
+                label
+              }
+              background {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+              icon {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        satReportQualifications {
+          data {
+            attributes {
+              title
+              subtitle
+              anchorText
+              codeName
+              infoTitle
+              infoValue
+              postCategory {
+                data {
+                  attributes {
+                    category
+                  }
+                }
+              }
+              image {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+              qualificationData(pagination: { pageSize: 20 }) {
+                data {
+                  attributes {
+                    title
+                    description
+                    diagnostic
+                  }
+                }
+              }
+            }
+          }
+        }
+        satReportGraphs {
+          data {
+            attributes {
+              title
+              subtitle
+              anchorText
+              codeName
+              optionsLabel {
+                label
+              }
+              image {
+                data {
+                  attributes {
+                    alternativeText
+                    caption
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        satReportFarewell {
+          data {
+            attributes {
+              title
+              subtitle
+              details
+              actionButton {
+                label
+              }
+              background {
+                data {
+                  attributes {
+                    url
+                    alternativeText
+                    caption
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

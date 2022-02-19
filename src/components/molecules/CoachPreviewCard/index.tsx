@@ -16,7 +16,7 @@ import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
 
 interface modalCoachInterface {
-  coach: CoachDataType
+  coach: any
   handleCloseModal?: () => void
   content: any
 }
