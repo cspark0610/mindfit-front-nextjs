@@ -14,7 +14,7 @@ import { CoachProfileCardSkeleton } from 'components/atoms/CoachProfileCardSkele
 import { ChatSession } from 'components/organisms/chatSession'
 
 // Bootstrap components
-import { Container, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 
 // Primeicons
 import { PrimeIcons } from 'primereact/api'
@@ -25,6 +25,7 @@ import classes from 'styles/CoachProfileCard/coachProfileCard.module.scss'
 // types
 import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 export const CoachProfileCard: FC<{ coachId: number | null }> = ({
   coachId,
@@ -73,18 +74,23 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
                 ))}
               </ul>
             </div>
-            <div className='mb-5 d-flex justify-content-around'>
-              <Button className={classes.button}>
-                <i className={PrimeIcons.CALENDAR} />
-                <p className='fs-6'>10/11/21 10:00 AM</p>
-              </Button>
-              <Button
-                onClick={() => setShowChat(true)}
-                className={classes.button}>
-                <i className={PrimeIcons.SEND} />
-                <p className='fs-6'>BANDEJA</p>
-              </Button>
-            </div>
+            <Row>
+              <Col xs={6}>
+                <Button className={classes.button}>
+                  <i className={PrimeIcons.CALENDAR} />
+                  <p>10/11/21</p>
+                </Button>
+              </Col>
+              <Col xs={6}>
+                <Button
+                  onClick={() => setShowChat(true)}
+                  className={classes.button}>
+                  <i className={PrimeIcons.SEND} />
+                  <p>BANDEJA</p>
+                </Button>
+              </Col>
+              <ExploreBadge />
+            </Row>
           </Container>
           <Modal
             centered

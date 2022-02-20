@@ -20,7 +20,7 @@ import { CheckboxChangeParams } from 'primereact/checkbox'
 
 interface CoachFeedbackInterface {
   cancel: () => void
-  submit: () => void
+  submit: (reason: string) => void
   content: any
 }
 
@@ -29,11 +29,8 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
   cancel,
   submit,
 }) => {
-  const [option, setOption] = useState('')
+  const [option, setOption] = useState<any>(null)
   const [details, setDetails] = useState('')
-  // const checkboxOptions = ['firstOption', 'secondOption', 'other']
-
-  console.log(content)
 
   const checkStylesValidation = (value: string) =>
     option === value ? classes.check : classes.uncheck
@@ -43,7 +40,8 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
 
   const handleSubmit = (e: SubmitType) => {
     e.preventDefault()
-    if (option !== '') submit()
+    if (option && option?.value !== 'other') submit(option.label)
+    else if (option?.value === 'other' && details !== '') submit(details)
     //else show a toast
   }
 
@@ -61,10 +59,10 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
                 key={options.id}
                 className={`${checkStylesValidation(options.value)} mb-3`}>
                 <Checkbox
-                  className='me-4'
-                  checked={option === options.value}
-                  onChange={handleOptionChange}
                   value={options}
+                  className='me-4'
+                  onChange={handleOptionChange}
+                  checked={option?.value === options.value}
                 />
                 {options.label}
               </label>
@@ -72,21 +70,21 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
           </div>
           <p>{content.suggestedCoachesTextarea.label}</p>
           <InputTextarea
-            autoResize
             rows={8}
-            placeholder={content.suggestedCoachesTextarea.placeholder}
+            autoResize
             value={details}
-            onChange={(ev) => setDetails(ev.target.value)}
-            disabled={option !== 'other'}
             className={classes.textarea}
+            disabled={option?.value !== 'other'}
+            onChange={(ev) => setDetails(ev.target.value)}
+            placeholder={content.suggestedCoachesTextarea.placeholder}
           />
           <Button type='submit' className={`${classes.button} mt-4`}>
             {content.suggestedCoachesSubmitButton.label}
           </Button>
           <Button
             variant='link'
-            className={classes.buttonLink}
-            onClick={cancel}>
+            onClick={cancel}
+            className={classes.buttonLink}>
             {content.suggestedCoachesCancelButton.label}
           </Button>
         </form>

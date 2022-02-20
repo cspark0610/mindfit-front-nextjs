@@ -1,0 +1,6 @@
+mutation RejectSuggestedCoaches($data: RejectSuggestedCoachesDto!) {
+  rejectSuggestedCoaches(data: $data) {
+    rejected
+    rejectionReason
+  }
+}

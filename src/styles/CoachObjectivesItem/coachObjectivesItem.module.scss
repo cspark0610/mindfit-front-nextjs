@@ -1,33 +1,36 @@
 @import '../variables.scss';
 @import '../UI/Card/AppCard.module.scss';
 
-.section {
-  padding: 22px 15px;
-  border-radius: 15px;
-  margin-bottom: 1rem;
-  min-height: 301px;
-  &_header {
-    color: $primary;
-  }
-  &_header > p {
-    margin-left: 13px;
-  }
-  .progress {
-    background: $lightGray;
-    :global(.p-progressbar-value) {
-      background-color: $primary;
+.goalsCard {
+  display: flex;
+  .section {
+    padding: 22px 15px;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    min-height: 301px;
+    &_header {
+      color: $primary;
     }
-    :global(.p-progressbar-label) {
-      color: $white;
+    &_header > p {
+      margin-left: 13px;
+    }
+    .progress {
+      background: $lightGray;
+      :global(.p-progressbar-value) {
+        background-color: $primary;
+      }
+      :global(.p-progressbar-label) {
+        color: $white;
+      }
     }
   }
-}
 
-.task {
-  color: $primary;
-  font-size: 12px;
-  margin: 5px 0 20px 0;
-  &_title {
-    margin-bottom: 14px;
+  .task {
+    color: $primary;
+    font-size: 12px;
+    margin: 5px 0 20px 0;
+    &_title {
+      margin-bottom: 14px;
+    }
   }
 }
