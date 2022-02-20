@@ -26,7 +26,7 @@ import { FC } from 'react'
 export const RecommendedContentList: FC = () => {
   const { locale } = useRouter()
 
-  const { data, loading, refetch } = useQuery(POSTS, {
+  const { data, loading } = useQuery(POSTS, {
     context: { ms: microServices.strapi },
     variables: { locale, filters: {} },
   })
@@ -36,33 +36,18 @@ export const RecommendedContentList: FC = () => {
       <p className={classes.section_title}>Contenidos recomendados</p>
       <Container fluid>
         <Row>
-          {loading ? (
-            [0, 1].map((idx) => (
-              <Skeleton
-                key={idx}
-                width='20rem'
-                height='11rem'
-                className='m-2'
-              />
-            ))
-          ) : (
-            <>
-              {data.posts.data.map((post: any) => (
-                <RecommendedContentItem key={post.is} {...post} />
+          {loading
+            ? [0, 1].map((idx) => (
+                <Skeleton
+                  key={idx}
+                  width='20rem'
+                  height='11rem'
+                  className='m-2'
+                />
+              ))
+            : data.posts.data.map((post: any) => (
+                <RecommendedContentItem key={post.id} {...post} />
               ))}
-            </>
-          )}
-          {/* <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem />
-          <RecommendedContentItem /> */}
         </Row>
       </Container>
     </div>
