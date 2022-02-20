@@ -1,4 +1,5 @@
 // Main tools
+import Link from 'next/link'
 import Image from 'next/image'
 
 // Bootstrap component
@@ -13,15 +14,18 @@ import classes from 'styles/RecommendedContentItem/recommendedContentItem.module
 // Type
 import { FC } from 'react'
 
-export const RecommendedContentItem: FC = () => {
-  return (
-    <div className={classes.section}>
+export const RecommendedContentItem: FC<{ attributes: any; id: number }> = ({
+  id,
+  attributes,
+}) => (
+  <Link href={`library/${id}`}>
+    <a className={classes.section}>
       <Image
-        src='/assets/icon/MINDFIT.svg'
+        alt='image'
         width={220}
         height={211}
-        alt='image'
         className={classes.image}
+        src={attributes.mainImage.data.attributes.url}
       />
       <Container fluid>
         <Row className={`text-center align-items-center ${classes.card_info}`}>
@@ -30,9 +34,10 @@ export const RecommendedContentItem: FC = () => {
             <p className={`my-0 `}>ARTICULO</p>
           </Col>
           <Col xs={6} className='px-0'>
-            <p className={`my-0 px-0 ${classes.card_title}`}>
-              Motivacion para la vida
-            </p>
+            <div
+              className={`my-0 px-0 ${classes.card_title}`}
+              dangerouslySetInnerHTML={{ __html: attributes.title }}
+            />
           </Col>
           <Col xs={3}>
             <Row className='px-0 justify-content-center'>
@@ -44,6 +49,6 @@ export const RecommendedContentItem: FC = () => {
           </Col>
         </Row>
       </Container>
-    </div>
-  )
-}
+    </a>
+  </Link>
+)

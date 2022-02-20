@@ -64,9 +64,13 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
             variables: { id: session?.user.coachee?.id },
           })
 
+          const status = [
+            coacheeRegistrationStatus.REGISTRATION_COMPLETED,
+            coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
+          ]
+
           if (
-            data.findCoacheeById.registrationStatus ===
-            coacheeRegistrationStatus.REGISTRATION_COMPLETED
+            status.includes(data.findCoacheeById.registrationStatus as string)
           )
             push('/user')
           else push('/signup/coachee/steps')

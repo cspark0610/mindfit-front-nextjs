@@ -91,10 +91,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.backend },
   })
 
-  if (
-    coachee.findCoacheeById.registrationStatus ===
-    coacheeRegistrationStatus.REGISTRATION_COMPLETED
-  )
+  const status = [
+    coacheeRegistrationStatus.REGISTRATION_COMPLETED,
+    coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
+  ]
+
+  if (status.includes(coachee.findCoacheeById.registrationStatus as string))
     return { redirect: { destination: '/user', permanent: false }, props: {} }
 
   const steps = [

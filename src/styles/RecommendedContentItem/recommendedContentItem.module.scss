@@ -1,11 +1,12 @@
 @import '../variables.scss';
 
 .section {
+  padding: 0;
   width: 220px;
   height: 211px;
-  position: relative;
-  padding: 0;
   margin: 1rem 0.3rem;
+  position: relative;
+  cursor: pointer;
 }
 
 .image {

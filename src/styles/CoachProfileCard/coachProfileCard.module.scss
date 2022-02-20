@@ -32,20 +32,19 @@
 }
 
 .button {
-  width: 78px;
-  height: 113px;
-  padding: 0;
+  padding: 20px 0 0;
   background: none;
   color: $secondary;
   border: 1px solid $secondary;
   border-radius: 10px;
-  &:hover {
+  &:hover,
+  &:focus {
     background: $secondary;
     border: 1px solid $secondary;
+    box-shadow: none;
   }
 
   & > i {
     font-size: 22px;
-    padding-bottom: 10px;
   }
 }

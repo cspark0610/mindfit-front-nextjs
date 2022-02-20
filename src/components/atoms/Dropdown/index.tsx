@@ -25,7 +25,7 @@ export const DropdownMenu: FC = () => {
               height={72}
               alt='user avatar'
               className={classes.avatar}
-              src='/assets/images/avatar.png'
+              src='/assets/images/userAvatar.svg'
             />
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>

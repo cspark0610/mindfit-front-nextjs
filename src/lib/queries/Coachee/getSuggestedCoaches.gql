@@ -3,9 +3,6 @@ query GetSuggestedCoaches {
     id
     rejected
     rejectionReason
-    coachee {
-      id
-    }
     coaches {
       id
       bio

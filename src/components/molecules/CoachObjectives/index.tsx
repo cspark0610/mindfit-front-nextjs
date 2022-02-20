@@ -19,26 +19,43 @@ export const CoachObjectives: FC = () => {
       category: 'Comunicación',
       icon: PrimeIcons.BOOK,
       tasks: [
-        { description: 'Agendar una sesion con tu coach', progress: 100 },
-        { description: 'Asistir a 2 sesiones con tu coach', progress: 50 },
-        { description: 'Completar 3 tareas asignadas', progress: 66 },
-      ],
-    },
-    {
-      category: 'Liderazgo',
-      icon: PrimeIcons.USERS,
-      tasks: [
-        { description: 'Delegar 3 tareas dentro de tu equipo', progress: 50 },
-        { description: 'Asistir a 1 sesion de coaching grupal', progress: 100 },
+        { description: 'Ser más asertivo', progress: 100 },
+        { description: 'No tomarme nada como personal', progress: 50 },
+        {
+          description: 'Hablar cada día con un compañero sobre vida personal',
+          progress: 66,
+        },
       ],
     },
     {
       category: 'Salud',
       icon: PrimeIcons.HEART,
       tasks: [
-        { description: 'Completar formulario psicologico', progress: 0 },
-        { description: 'Realizar prueba de diagnostico', progress: 0 },
-        { description: 'Asistir a 1 sesion motivacional', progress: 0 },
+        {
+          description: 'Comer frutas u hortalizas en cada comida',
+          progress: 50,
+        },
+        { description: 'Evitar la comida basura', progress: 70 },
+        {
+          description:
+            'Practicar actividad física moderada 5 veces a la semana',
+          progress: 80,
+        },
+      ],
+    },
+    {
+      category: 'Estado emocional',
+      icon: PrimeIcons.THUMBS_UP,
+      tasks: [
+        {
+          description: 'Practicar meditación al menos 1 vez al día',
+          progress: 0,
+        },
+        {
+          description: 'Caminar al aire libre 4 veces a la semana',
+          progress: 0,
+        },
+        { description: 'Vivir más en presente y menos en futuro', progress: 0 },
       ],
     },
   ]
