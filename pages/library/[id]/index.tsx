@@ -17,6 +17,7 @@ import { microServices } from 'commons'
 
 // gql
 import { useQuery } from '@apollo/client'
+import { initializeApolloClient } from 'lib/apollo'
 import GET_LISTS_OF_POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
 import POST from 'lib/strapi/queries/Library/post.gql'
 
@@ -24,44 +25,36 @@ import POST from 'lib/strapi/queries/Library/post.gql'
 import classes from 'styles/Library/entry.module.scss'
 
 // types
-import { NextPage } from 'next'
+import {
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+  NextPage,
+} from 'next'
+import { GetSSPropsType } from 'types'
 
-const LibraryArticlePage: NextPage = () => {
-  const [categories, setCategories] = useState([])
+const LibraryArticlePage: NextPage<GetSSPropsType<typeof getStaticProps>> = ({
+  content,
+}) => {
   const [posts, setPosts] = useState([])
-  const { query } = useRouter()
+  const { query, locale } = useRouter()
 
-  const { data, loading } = useQuery(POST, {
+  const postCategory = content.postCategories.data.map(
+    (category: any) => category.attributes.category
+  )
+
+  const { loading } = useQuery(GET_LISTS_OF_POSTS, {
     context: { ms: microServices.strapi },
     variables: {
-      locale: 'es',
-      id: query.id,
-    },
-    onCompleted: (data) => {
-      const post = data.post.data.attributes
-      const postCategory = post.postCategories.data.map(
-        (category: any) => category.attributes.category
-      )
-      setCategories(postCategory)
-    },
-  })
-
-  useQuery(GET_LISTS_OF_POSTS, {
-    context: { ms: microServices.strapi },
-    variables: {
-      locale: 'es',
+      locale: locale,
       filters: {
-        postCategories: { category: { in: categories } },
+        postCategories: { category: { in: postCategory } },
         not: { id: { eq: query.id } },
       },
     },
-    skip: loading,
     onCompleted: (data) => {
       setPosts(data.posts.data)
     },
   })
-
-  const post = data?.post.data.attributes
 
   return (
     <Layout>
@@ -71,13 +64,15 @@ const LibraryArticlePage: NextPage = () => {
             <header className={classes.header}>
               <h1
                 className={classes.title}
-                dangerouslySetInnerHTML={{ __html: post.title }}
+                dangerouslySetInnerHTML={{ __html: content.title }}
               />
-              <Badge as='span' className={classes.badge} bg='secondary'>
-                {post.badge.label}
-                <br />
-                <JournalText />
-              </Badge>
+              {content.badge.label && (
+                <Badge as='span' className={classes.badge} bg='secondary'>
+                  {content.badge.label}
+                  <br />
+                  <JournalText />
+                </Badge>
+              )}
             </header>
             <Row>
               <Col className={classes.owner} xs={12} md={8} lg={6} xl={4}>
@@ -98,15 +93,15 @@ const LibraryArticlePage: NextPage = () => {
               </Col>
             </Row>
             <div className='mt-5'>
-              {post.postCategories.data.map((category: any, idx: number) => (
+              {postCategory.map((category: string, idx: number) => (
                 <Badge className='mx-2 px-3' key={idx}>
-                  {category.attributes.category}
+                  {category}
                 </Badge>
               ))}
             </div>
             <article
               className='mt-5'
-              dangerouslySetInnerHTML={{ __html: post.article.body }}
+              dangerouslySetInnerHTML={{ __html: content.article.body }}
             />
             <footer>
               <h3 className={classes.related}>Articulos relacionados</h3>
@@ -130,6 +125,33 @@ const LibraryArticlePage: NextPage = () => {
       )}
     </Layout>
   )
+}
+
+export const getStaticPaths = async (ctx: GetStaticPathsContext) => {
+  const apolloClient = initializeApolloClient()
+  const { data } = await apolloClient.query({
+    query: GET_LISTS_OF_POSTS,
+    variables: { locale: ctx.locales, filters: {} },
+    context: { ms: microServices.strapi },
+  })
+
+  const paths = data.posts.data.map((post: any) => {
+    return { params: { id: post.id } }
+  })
+  return { paths, fallback: false }
+}
+
+export const getStaticProps = async (ctx: GetStaticPropsContext) => {
+  const apolloClient = initializeApolloClient()
+  const { data } = await apolloClient.query({
+    query: POST,
+    variables: { locale: ctx.locale, id: ctx.params?.id },
+    context: { ms: microServices.strapi },
+  })
+
+  return {
+    props: { content: data.post.data.attributes },
+  }
 }
 
 export default LibraryArticlePage
