@@ -1,0 +1,8 @@
+query DefaultFeedback {
+  getDefaultFeedbackForCoachingSession {
+    id
+    codename
+    name
+    value
+  }
+}

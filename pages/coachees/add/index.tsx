@@ -169,7 +169,7 @@ const AddCollaboratorPage: NextPage<
         show={toast.show}
         title='collaborator add'
         message={toast.message}
-        position='bottom-center'
+        position='bottom-end'
         onClose={() => setToast(INITIAL_TOAST_STATE)}
       />
     </>

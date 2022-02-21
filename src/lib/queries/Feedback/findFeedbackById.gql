@@ -1,0 +1,11 @@
+query findFeedback($id: Int!) {
+  findFeedbackById(id: $id) {
+    id
+    title
+    description
+    questions {
+      codename
+      defaultText
+    }
+  }
+}
