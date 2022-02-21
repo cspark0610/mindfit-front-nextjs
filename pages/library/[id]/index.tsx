@@ -25,12 +25,12 @@ import POST from 'lib/strapi/queries/Library/post.gql'
 import classes from 'styles/Library/entry.module.scss'
 
 // types
-import { GetStaticPathsContext, GetStaticPropsContext, NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
-const LibraryArticlePage: NextPage<GetSSPropsType<typeof getStaticProps>> = ({
-  content,
-}) => {
+const LibraryArticlePage: NextPage<
+  GetSSPropsType<typeof getServerSideProps>
+> = ({ content }) => {
   const [posts, setPosts] = useState([])
   const { query, locale } = useRouter()
 
@@ -47,9 +47,7 @@ const LibraryArticlePage: NextPage<GetSSPropsType<typeof getStaticProps>> = ({
         not: { id: { eq: query.id } },
       },
     },
-    onCompleted: (data) => {
-      setPosts(data.posts.data)
-    },
+    onCompleted: (data) => setPosts(data.posts.data),
   })
 
   return (
@@ -123,21 +121,21 @@ const LibraryArticlePage: NextPage<GetSSPropsType<typeof getStaticProps>> = ({
   )
 }
 
-export const getStaticPaths = async (ctx: GetStaticPathsContext) => {
-  const apolloClient = initializeApolloClient()
-  const { data } = await apolloClient.query({
-    query: GET_LISTS_OF_POSTS,
-    variables: { locale: ctx.locales, filters: {} },
-    context: { ms: microServices.strapi },
-  })
+// export const getStaticPaths = async (ctx: GetStaticPathsContext) => {
+//   const apolloClient = initializeApolloClient()
+//   const { data } = await apolloClient.query({
+//     query: GET_LISTS_OF_POSTS,
+//     variables: { locale: ctx.locales, filters: {} },
+//     context: { ms: microServices.strapi },
+//   })
 
-  const paths = data.posts.data.map((post: any) => {
-    return { params: { id: post.id } }
-  })
-  return { paths, fallback: false }
-}
+//   const paths = data.posts.data.map((post: any) => {
+//     return { params: { id: post.id } }
+//   })
+//   return { paths, fallback: false }
+// }
 
-export const getStaticProps = async (ctx: GetStaticPropsContext) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: POST,
@@ -145,9 +143,7 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
     context: { ms: microServices.strapi },
   })
 
-  return {
-    props: { content: data.post.data.attributes },
-  }
+  return { props: { content: data.post.data.attributes } }
 }
 
 export default LibraryArticlePage
