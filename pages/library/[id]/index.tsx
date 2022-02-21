@@ -25,11 +25,7 @@ import POST from 'lib/strapi/queries/Library/post.gql'
 import classes from 'styles/Library/entry.module.scss'
 
 // types
-import {
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  NextPage,
-} from 'next'
+import { GetStaticPathsContext, GetStaticPropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
 const LibraryArticlePage: NextPage<GetSSPropsType<typeof getStaticProps>> = ({

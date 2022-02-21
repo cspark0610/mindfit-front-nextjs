@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 // gql
 import { useQuery } from '@apollo/client'
-import POSTS from 'lib/strapi/queries/Library/content.gql'
+import POSTS from 'lib/strapi/queries/Library/post.gql'
 
 // Components
 import { RecommendedContentItem } from 'components/atoms/RecommendedContentItem'
