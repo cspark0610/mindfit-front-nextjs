@@ -25,22 +25,22 @@ export const DropdownMenu: FC = () => {
               height={72}
               alt='user avatar'
               className={classes.avatar}
-              src='/assets/images/avatar.png'
+              src='/assets/images/userAvatar.svg'
             />
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>
             <Link href={`/user/${data.user.sub}/profile`} passHref>
-              <Dropdown.Item>User Profile</Dropdown.Item>
+              <Dropdown.Item>Perfil de usuario</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => signOut({ callbackUrl: '/' })}>
-              SignOut
+              Cerrar sesión
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Link href='/' passHref>
-          <Button>Sign In</Button>
+          <Button>Iniciar sesión</Button>
         </Link>
       )}
     </>

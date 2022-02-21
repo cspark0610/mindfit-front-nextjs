@@ -17,6 +17,7 @@ import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 
 // utils
 import { microServices } from 'commons'
+import { coacheeRegistrationStatus } from 'utils/enums'
 
 // styles
 import classes from 'styles/signup/colaborator.module.scss'
@@ -52,12 +53,12 @@ const ColaboratorStepsPage: NextPage<
             </Link>
           </Col>
         </Row>
-        <Row className='mt-3 text-center'>
+        {/* <Row className='mt-3 text-center'>
           <span>{content.label}</span>
           <Link href='/signup/organization'>
             <a>{content.value}</a>
           </Link>
-        </Row>
+        </Row> */}
         <Row>
           <ExploreBadge />
         </Row>
@@ -68,6 +69,8 @@ const ColaboratorStepsPage: NextPage<
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
 
   const apolloClient = initializeApolloClient()
 
@@ -88,7 +91,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.backend },
   })
 
-  if (coachee.findCoacheeById.registrationStatus === 'REGISTRATION_COMPLETED')
+  const status = [
+    coacheeRegistrationStatus.REGISTRATION_COMPLETED,
+    coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
+  ]
+
+  if (status.includes(coachee.findCoacheeById.registrationStatus as string))
     return { redirect: { destination: '/user', permanent: false }, props: {} }
 
   const steps = [
@@ -102,7 +110,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[1].label,
       action: content.steps[1].value,
       completed:
-        coachee.findCoacheeById.registrationStatus === 'SAT_PENDING'
+        coachee.findCoacheeById.registrationStatus ===
+        coacheeRegistrationStatus.SAT_PENDING
           ? false
           : true,
       url: '/quiz',
@@ -111,10 +120,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[2].label,
       action: content.steps[2].value,
       completed:
-        coachee.findCoacheeById.registrationStatus === 'COACH_SELECTION_PENDING'
+        coachee.findCoacheeById.registrationStatus ===
+        coacheeRegistrationStatus.COACH_SELECTION_PENDING
           ? false
           : true,
-      url: '/coaches',
+      url: '/choose-coach',
     },
   ]
 

@@ -11,29 +11,32 @@ import classes from 'styles/Chat/messageChat.module.scss'
 // types
 import { FC } from 'react'
 
-export const MessageChat: FC = () => {
-  const [user, setUser] = useState('received')
-
-  return (
-    <Container className={classes.section}>
-      <Row className={classes[user]}>
-        <Col xs={4}>
-          <Image
-            className={classes.avatar}
-            src='/assets/images/avatar.png'
-            width={100}
-            height={100}
-            alt='user avatar'
-          />
-        </Col>
-        <Col xs={8}>
-          <Row xs='auto' className={classes.data}>
-            <p>Camila</p>
-            <p>33 min</p>
-          </Row>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </Col>
-      </Row>
-    </Container>
-  )
+type MessageChatProps = {
+  user: { name: string; profilePicture: string }
+  status: string
+  message: string
+  receivedDate: string
 }
+
+export const MessageChat: FC<MessageChatProps> = (props) => (
+  <Container className={classes.section}>
+    <Row className={classes[props.status]}>
+      <Col xs={4}>
+        <Image
+          className={classes.avatar}
+          src={props.user.profilePicture}
+          width={100}
+          height={100}
+          alt='user avatar'
+        />
+      </Col>
+      <Col xs={8}>
+        <Row xs='auto' className={classes.data}>
+          <p>{props.user.name}</p>
+          <p>{props.receivedDate}</p>
+        </Row>
+        <p>{props.message}</p>
+      </Col>
+    </Row>
+  </Container>
+)

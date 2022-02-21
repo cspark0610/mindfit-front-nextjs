@@ -1,21 +1,21 @@
 // main tools
 import { useState, useEffect, Fragment, useRef } from 'react'
-import { getSession } from 'next-auth/react'
 import { useQuery, useMutation } from '@apollo/client'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 // gql
+import GET_PAGE_CONTENT from 'lib/strapi/queries/Quiz/getPageContent.gql'
+import GET_QUIZ_CONTENT from 'lib/queries/Quiz/getQuizById.gql'
+import GET_MAIN_QUIZ from 'lib/queries/Quiz/getMainQuiz.gql'
+import SUBMIT_QUIZ from 'lib/mutations/Quiz/submitQuiz.gql'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
-import GET_MAIN_QUIZ from 'lib/queries/Quiz/getMainQuiz.gql'
-import GET_QUIZ_CONTENT from 'lib/queries/Quiz/getQuizById.gql'
-import GET_PAGE_CONTENT from 'lib/strapi/queries/Quiz/getPageContent.gql'
-import SUBMIT_QUIZ from 'lib/mutations/Quiz/submitQuiz.gql'
 
 // components
-import { Layout } from 'components/organisms/Layout'
-import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { QuizSkeleton } from 'components/organisms/Quiz/Skeleton'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { Layout } from 'components/organisms/Layout'
 
 // bootstrap components
 import { Container, Carousel, Row, Col, Button } from 'react-bootstrap'
@@ -40,14 +40,16 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   quizId,
   content,
 }) => {
-  const [quiz, setQuiz] = useState<any>(undefined)
   const [actualSection, setActualSection] = useState(0)
-  const [answers, setAnswers] = useState<any>({})
   const backToTop = useRef<HTMLHeadingElement>(null)
+  const [loading, setLoading] = useState<any>(true)
+  const [quiz, setQuiz] = useState<any>(undefined)
+  const [answers, setAnswers] = useState<any>({})
   const { push } = useRouter()
 
-  const { data, loading } = useQuery(GET_QUIZ_CONTENT, {
+  const { data } = useQuery(GET_QUIZ_CONTENT, {
     context: { ms: microServices.backend },
+    onCompleted: () => setLoading(false),
     variables: { id: quizId },
   })
 
@@ -61,8 +63,9 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     if (actualSection < (quiz?.sections.length as number) - 1) {
       setActualSection((prev) => prev + 1)
     } else {
+      setLoading(true)
       const { data } = await SubmitQuiz({ variables: { data: { ...answers } } })
-      push(`/quiz/${data.createSatReport.id}`)
+      push('/signup/coachee/steps')
     }
   }
 

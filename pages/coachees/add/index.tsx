@@ -41,6 +41,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import { ChangeType, GetSSPropsType } from 'types'
 import { InvitedColaboratorType } from 'types/models/Colaborator'
 import { DropdownChangeParams } from 'primereact/dropdown'
+import { Layout } from 'components/organisms/Layout'
 
 interface InvitedColaborators extends InvitedColaboratorType {
   status: boolean
@@ -95,73 +96,75 @@ const AddCollaboratorPage: NextPage<
 
   return (
     <>
-      <Container className={classes.container}>
-        <Container fluid className={classes.section}>
-          <h1 className={classes.title}>{content.title}</h1>
-          <p className={classes.description}>{content.subtitle}</p>
-          <Row className={classes.row}>
-            <Col md={4}>
-              <InputText
-                name='name'
-                onChange={handleChange}
-                className={classes.input}
-                value={colaborator.name}
-                placeholder={content.nameInput.placeholder}
-              />
-            </Col>
-            <Col md={4}>
-              <Dropdown
-                name='position'
-                options={workPositions}
-                onChange={handleChange}
-                className={classes.input}
-                value={colaborator.position}
-                placeholder={content.positionInput.placeholder}
-              />
-            </Col>
-          </Row>
-          <Row className={classes.row}>
-            <Col md={4}>
-              <InputText
-                name='email'
-                type='email'
-                placeholder={content.emailInput.placeholder}
-                onChange={handleChange}
-                value={colaborator.email}
-                className={classes.input}
-              />
-            </Col>
-            <Col md={8}>
-              <Row className='flex-row-reverse'>
-                <Col md={6} lg={4}>
-                  <Button onClick={handleInvite} className={classes.button}>
-                    {content.submitButton.label}
-                  </Button>
-                  {error && <p className='p-error text-center'>{error}</p>}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row className={classes.row}>
-            <DataTable
-              breakpoint='960px'
-              responsiveLayout='stack'
-              value={invitedColaborators}
-              expandedRows={expandedRows}
-              tableClassName={classes.datatable}
-              rowExpansionTemplate={rowExpansionTemplate}
-              onRowToggle={(e) => setExpandedRows(e.data)}
-              emptyMessage={content.emptyMessage}>
-              <Column field='name' header={content.nameColumn} />
-              <Column field='email' header={content.emailColumn} />
-              <Column expander className={classes.expander_right} />
-            </DataTable>
-          </Row>
-          <Row>
-            <ExploreBadge />
-          </Row>
+      <Layout>
+        <Container className={classes.container}>
+          <Container fluid className={classes.section}>
+            <h1 className={classes.title}>{content.title}</h1>
+            <p className={classes.description}>{content.subtitle}</p>
+            <Row className={classes.row}>
+              <Col md={4}>
+                <InputText
+                  name='name'
+                  onChange={handleChange}
+                  className={classes.input}
+                  value={colaborator.name}
+                  placeholder={content.nameInput.placeholder}
+                />
+              </Col>
+              <Col md={4}>
+                <Dropdown
+                  name='position'
+                  options={workPositions}
+                  onChange={handleChange}
+                  className={classes.input}
+                  value={colaborator.position}
+                  placeholder={content.positionInput.placeholder}
+                />
+              </Col>
+            </Row>
+            <Row className={classes.row}>
+              <Col md={4}>
+                <InputText
+                  name='email'
+                  type='email'
+                  placeholder={content.emailInput.placeholder}
+                  onChange={handleChange}
+                  value={colaborator.email}
+                  className={classes.input}
+                />
+              </Col>
+              <Col md={8}>
+                <Row className='flex-row-reverse'>
+                  <Col md={6} lg={4}>
+                    <Button onClick={handleInvite} className={classes.button}>
+                      {content.submitButton.label}
+                    </Button>
+                    {error && <p className='p-error text-center'>{error}</p>}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row className={classes.row}>
+              <DataTable
+                breakpoint='960px'
+                responsiveLayout='stack'
+                value={invitedColaborators}
+                expandedRows={expandedRows}
+                tableClassName={classes.datatable}
+                rowExpansionTemplate={rowExpansionTemplate}
+                onRowToggle={(e) => setExpandedRows(e.data)}
+                emptyMessage={content.emptyMessage}>
+                <Column field='name' header={content.nameColumn} />
+                <Column field='email' header={content.emailColumn} />
+                <Column expander className={classes.expander_right} />
+              </DataTable>
+            </Row>
+            <Row>
+              <ExploreBadge />
+            </Row>
+          </Container>
         </Container>
-      </Container>
+      </Layout>
       <Toasts
         show={toast.show}
         title='collaborator add'

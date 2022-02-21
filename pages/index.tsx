@@ -48,8 +48,8 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (session)
-    return { redirect: { destination: '/user', permanent: false }, props: {} }
+  // if (session)
+  //   return { redirect: { destination: '/user', permanent: false }, props: {} }
 
   const apolloClient = initializeApolloClient()
 

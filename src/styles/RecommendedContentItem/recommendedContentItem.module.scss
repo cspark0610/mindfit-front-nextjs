@@ -1,20 +1,22 @@
 @import '../variables.scss';
 
 .section {
+  padding: 0;
   width: 220px;
   height: 211px;
-  position: relative;
-  padding: 0;
   margin: 1rem 0.3rem;
+  position: relative;
+  cursor: pointer;
 }
 
 .image {
-  background: linear-gradient(
-    180deg,
-    rgba(4, 80, 149, 0.9) 0%,
-    rgba(26, 123, 238, 0) 100%
-  );
-  border-radius: 15.213px;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: filter 0.3s;
+  &:hover {
+    filter: brightness(0.8);
+    transition: filter 0.3s;
+  }
 }
 
 .card {

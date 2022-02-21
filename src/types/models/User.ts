@@ -5,6 +5,7 @@ import { CoacheeDataType } from 'types/models/Coachee'
 export type UserDataType = {
   id?: number
   sub?: number
+  role?: 'COACHEE' | 'COACH' | 'SUPER_USER'
   name?: string
   email?: string
   coach?: CoachDataType

@@ -1,10 +1,14 @@
 // Main tools
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { signIn, getProviders } from 'next-auth/react'
+import { signIn, getSession, getProviders } from 'next-auth/react'
 
 // Components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+
+// utils
+import { microServices } from 'commons'
+import { coacheeRegistrationStatus, userRoles } from 'utils/enums'
 
 // bootstrap components
 import { Row, Col, Button } from 'react-bootstrap'
@@ -13,6 +17,10 @@ import { Row, Col, Button } from 'react-bootstrap'
 import { Password } from 'primereact/password'
 import { InputText } from 'primereact/inputtext'
 import { Skeleton } from 'primereact/skeleton'
+
+// gql
+import { useLazyQuery } from '@apollo/client'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 
 //Styles
 import classes from 'styles/Login/LoginCard/loginCard.module.scss'
@@ -30,7 +38,7 @@ interface Props {
 }
 
 export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
-  const { query } = useRouter()
+  const { push } = useRouter()
   const [error, setError] = useState('')
   const [user, setUser] = useState({ email: '', password: '' })
   const [providers, setProviders] = useState<ClientSafeProvider[] | undefined>(
@@ -43,14 +51,37 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
   const handleToggleChange = () =>
     setToggleView((currentValue) => !currentValue)
 
-  const handleSubmit = (ev: SubmitType) => {
+  const handleSubmit = async (ev: SubmitType) => {
     ev.preventDefault()
-    signIn('credentials', { ...user, callbackUrl: '/' })
+    const data: any = await signIn('credentials', { ...user, redirect: false })
+    if (data?.error) setError('Usuario o Contraseña incorrectos')
+    else {
+      const session = await getSession()
+
+      if (session?.user.role === userRoles.COACHEE) {
+        if (session.user.coachee) {
+          const { data } = await getCoacheeById({
+            variables: { id: session?.user.coachee?.id },
+          })
+
+          const status = [
+            coacheeRegistrationStatus.REGISTRATION_COMPLETED,
+            coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
+          ]
+
+          if (
+            status.includes(data.findCoacheeById.registrationStatus as string)
+          )
+            push('/user')
+          else push('/signup/coachee/steps')
+        } else if (session.user.organization) push('/coachees/add')
+      }
+    }
   }
 
-  useEffect(() => {
-    query.error && setError('Usuario o Contraseña incorrectos')
-  }, [query])
+  const [getCoacheeById] = useLazyQuery(GET_COACHEE_BY_ID, {
+    context: { ms: microServices.backend },
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -61,7 +92,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
     })()
   }, [])
 
-  const rrssIcons: any = {
+  const rrssIcons: { [key: string]: JSX.Element } = {
     google: <Google />,
     facebook: <Facebook />,
     linkedin: <Linkedin />,

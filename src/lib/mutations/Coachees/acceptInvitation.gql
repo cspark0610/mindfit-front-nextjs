@@ -1,6 +1,6 @@
-mutation AcceptInvitation($id: Int!) {
-  acceptInvitation(id: $id) {
-    id
+mutation AcceptInvitation {
+  acceptInvitation {
     invitationAccepted
+    id
   }
 }

@@ -1,5 +1,6 @@
 // main tools
 import { useRef, useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 // bootstrap components
 import {
@@ -23,33 +24,50 @@ import classes from 'styles/Chat/inputChat.module.scss'
 
 // types
 import { FC } from 'react'
-import { ChangeType } from 'types'
+import { ChangeType, SetStateType, SubmitType } from 'types'
 import { IEmojiData } from 'emoji-picker-react'
 import { InputTextRef } from 'types/components/InputText'
 import { UploadPicturesRef } from 'types/components/UploadPicture'
 
-export const InputChat: FC = () => {
-  const [message, setMessageForm] = useState('')
+export const InputChat: FC<{ updateChat: SetStateType<any[]> }> = ({
+  updateChat,
+}) => {
+  const { data } = useSession()
+  const [message, setMessage] = useState('')
   const [picture, setPicture] = useState('')
 
   const inputText = useRef<InputTextRef>(null)
   const uploader = useRef<UploadPicturesRef>(null)
 
-  const inputChange = (ev: ChangeType) => {
-    setMessageForm(ev.target.value)
-  }
+  const inputChange = (ev: ChangeType) => setMessage(ev.target.value)
 
-  const onEmojiClick = (ev: React.MouseEvent, emojiObject: IEmojiData) => {
+  const onEmojiClick = (_: React.MouseEvent, emojiObject: IEmojiData) => {
     const cursor = inputText.current?.selectionStart
     const text =
       message.slice(0, cursor) + emojiObject.emoji + message.slice(cursor)
-    setMessageForm(text)
+    setMessage(text)
   }
-  const fileUpload = () => {
-    uploader.current?.choose()
-  }
-  const fileSelect = (ev: FileUploadSelectParams) => {
+
+  const fileUpload = () => uploader.current?.choose()
+
+  const fileSelect = (ev: FileUploadSelectParams) =>
     setPicture(URL.createObjectURL(ev.files[0]))
+
+  const handleSubmit = (ev: SubmitType) => {
+    ev.preventDefault()
+
+    updateChat((prev) =>
+      prev.concat({
+        user: {
+          name: data?.user.name as string,
+          profilePicture: '/assets/images/userAvatar.svg',
+        },
+        receivedDate: '1 min',
+        message: message,
+        status: 'sent',
+      })
+    )
+    setMessage('')
   }
 
   const popover = (
@@ -63,7 +81,9 @@ export const InputChat: FC = () => {
   return (
     <Row>
       <Container>
-        <div className={`${classes.content} p-inputgroup`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`${classes.content} p-inputgroup`}>
           <InputText
             ref={inputText}
             value={message}
@@ -72,10 +92,10 @@ export const InputChat: FC = () => {
           />
           <OverlayTrigger
             trigger='click'
-            placement='top-end'
-            rootCloseEvent='mousedown'
             rootClose={true}
-            overlay={popover}>
+            overlay={popover}
+            placement='top-end'
+            rootCloseEvent='mousedown'>
             <Button className={classes.button_input} size='lg'>
               <EmojiLaughing />
             </Button>
@@ -83,19 +103,19 @@ export const InputChat: FC = () => {
           <FileUpload
             customUpload
             mode='basic'
-            accept='image/*'
-            maxFileSize={1000000}
-            onSelect={fileSelect}
             ref={uploader}
+            accept='image/*'
+            onSelect={fileSelect}
+            maxFileSize={1000000}
             className={classes.upload_hidden}
           />
           <Button
-            className={classes.button_input}
+            size='lg'
             onClick={fileUpload}
-            size='lg'>
+            className={classes.button_input}>
             <ImageIcon />
           </Button>
-        </div>
+        </form>
       </Container>
     </Row>
   )

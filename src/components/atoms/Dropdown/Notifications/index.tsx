@@ -18,11 +18,14 @@ import classes from 'styles/Navbar/navbar.module.scss'
 import { FC } from 'react'
 
 export const Notifications: FC = () => {
-  const notifications = ['notification 1', 'notification 2', 'notification 3']
-  const [list, setList] = useState(notifications)
+  const [list, setList] = useState([
+    'notification 1',
+    'notification 2',
+    'notification 3',
+  ])
 
   const remove = (e: number) => {
-    const newData = list.filter((item, idx) => idx != e)
+    const newData = list.filter((_, idx) => idx != e)
     setList(newData)
   }
 
@@ -31,7 +34,12 @@ export const Notifications: FC = () => {
       <Dropdown.Toggle className={classes.dropdown} id='notifications'>
         <i
           className={`p-overlay-badge ${PrimeIcons.BELL} ${classes.notifications}`}>
-          <Badge value={3} className={classes.notifications_badge} />
+          {list.length > 0 && (
+            <Badge
+              value={list.length}
+              className={classes.notifications_badge}
+            />
+          )}
         </i>
       </Dropdown.Toggle>
       <Dropdown.Menu className={classes.dropdown_menu}>

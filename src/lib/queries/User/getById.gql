@@ -1,17 +1,28 @@
 query GetUserById($id: Int!) {
   findUserById(id: $id) {
-    isActive
-    isStaff
-    isSuperUser
-    isVerified
+    role
     name
+    isStaff
+    isActive
+    languages
+    isVerified
+    isSuperUser
     coach {
       id
     }
     coachee {
       id
     }
+    testResults {
+      id
+    }
     organization {
+      id
+    }
+    postsProgress {
+      id
+    }
+    favoritesPosts {
       id
     }
   }
