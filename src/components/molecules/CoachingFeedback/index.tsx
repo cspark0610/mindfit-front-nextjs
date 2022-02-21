@@ -7,8 +7,8 @@ import { Button, Col, Modal, Row } from 'react-bootstrap'
 // components
 import { Ratings } from 'components/atoms/Rating'
 
-// gql 
-import COACHING_FEEDBACK from 'lib/mutations/Feedback/CoachingFeedback.gql' 
+// gql
+import COACHING_FEEDBACK from 'lib/mutations/Feedback/CoachingFeedback.gql'
 
 //styles
 import classes from 'styles/CoachingFeedback/coachingFeedback.module.scss'
@@ -27,7 +27,7 @@ export const CoachingFeedback: FC = () => {
     onCompleted: () => setShowCheck(true),
     onError: (err) => console.log(err),
     context: { ms: microServices.backend },
-    variables: { }
+    variables: {},
   })
 
   const handleOpenCheck = () => {

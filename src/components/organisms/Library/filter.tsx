@@ -49,7 +49,7 @@ export const Filter: FC<FilterProps> = ({
       const filter = { postCategories: { category: { eq: defaultCategory } } }
       refetch(filter)
     }
-  }, [defaultCategory])
+  }, [defaultCategory, refetch])
 
   return (
     <Row className={classes.filter}>

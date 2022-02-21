@@ -2,13 +2,28 @@
 @import '../UI/Card/AppCard.module.scss';
 
 .section {
-  padding: 20px;
+  padding: 10px 15px 15px;
   margin-bottom: 1rem;
   background-color: $lightBlue;
 
   .data {
     font-weight: bold;
     justify-content: space-between;
+  }
+  .sent,
+  .received {
+    display: flex;
+    justify-content: space-between;
+
+    & > div > span {
+      font-weight: bold;
+      padding-inline: 0.5rem;
+      @media (max-width: 480px) {
+        display: block;
+        padding-inline: 0;
+        margin-bottom: -5px;
+      }
+    }
   }
   .sent {
     flex-direction: row-reverse;
