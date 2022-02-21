@@ -1,5 +1,5 @@
 // main tools
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { PrimeIcons } from 'primereact/api'
 
 // bootstrap components
@@ -15,21 +15,20 @@ import classes from 'styles/Library/page.module.scss'
 import { FC } from 'react'
 import { SubmitType } from 'types'
 
-type FilterProps = { refetch: (ev: any) => void }
+type FilterProps = {
+  refetch: (ev: any) => void
+  postCategories: string[]
+  defaultCategory: string | string[]
+}
 
-export const Filter: FC<FilterProps> = ({ refetch }) => {
+export const Filter: FC<FilterProps> = ({
+  refetch,
+  postCategories,
+  defaultCategory,
+}) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [searcher, setSearcher] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('Autoayuda')
-  const categories = [
-    'Autoayuda',
-    'Biografías',
-    'Liderazgo',
-    'Motivación',
-    'Responsabilidad Afectiva',
-    'Responsabilidad Social',
-    'Responsabilidad Laboral',
-  ]
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategory)
 
   const handleClick = (category: string) => {
     setSelectedCategory(category)
@@ -42,7 +41,15 @@ export const Filter: FC<FilterProps> = ({ refetch }) => {
     const filter = { title: { contains: searcher } }
     refetch(filter)
     setSearcher('')
+    setSelectedCategory('')
   }
+
+  useEffect(() => {
+    if (defaultCategory) {
+      const filter = { postCategories: { category: { eq: defaultCategory } } }
+      refetch(filter)
+    }
+  }, [defaultCategory])
 
   return (
     <Row className={classes.filter}>
@@ -65,7 +72,7 @@ export const Filter: FC<FilterProps> = ({ refetch }) => {
         </form>
       </Col>
       <Col className={classes.categories} xs={12}>
-        {categories.map((category, idx: number) => (
+        {postCategories.map((category, idx: number) => (
           <span
             key={idx}
             onClick={() => handleClick(category)}

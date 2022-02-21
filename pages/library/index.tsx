@@ -1,5 +1,6 @@
 // main tools
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // bootstrap components
 import { Container, Row, Col, Spinner } from 'react-bootstrap'
@@ -12,7 +13,8 @@ import { Filter } from 'components/organisms/Library/filter'
 
 // gql
 import { useQuery } from '@apollo/client'
-import POSTS from 'lib/strapi/queries/Library/content.gql'
+import { initializeApolloClient } from 'lib/apollo'
+import GET_LISTS_OF_POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
 
 // commons
 import { microServices } from 'commons'
@@ -21,19 +23,24 @@ import { microServices } from 'commons'
 import classes from 'styles/Library/page.module.scss'
 
 // types
-import { NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
+import { GetSSPropsType } from 'types'
 
-const LibraryPage: NextPage = () => {
-  const [content, setContent] = useState([])
+const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  defaultCategory,
+  postsCategories,
+}) => {
+  const [posts, setPosts] = useState([])
+  const { locale } = useRouter()
 
-  const { loading, refetch } = useQuery(POSTS, {
+  const { loading, refetch } = useQuery(GET_LISTS_OF_POSTS, {
     context: { ms: microServices.strapi },
     variables: {
-      locale: 'es',
+      locale: locale,
       filters: {},
     },
     onCompleted: (data) => {
-      setContent(data.posts.data)
+      setPosts(data.posts.data)
     },
   })
 
@@ -42,11 +49,15 @@ const LibraryPage: NextPage = () => {
       <Container className={classes.container}>
         <section className={classes.section}>
           <h1 className={classes.title}>Biblioteca digital</h1>
-          <Filter refetch={(data) => refetch({ filters: data })} />
+          <Filter
+            defaultCategory={defaultCategory}
+            postCategories={postsCategories}
+            refetch={(data) => refetch({ filters: data })}
+          />
           <Row>
             {!loading ? (
-              content.length != 0 ? (
-                content.map((article: any) => (
+              posts.length ? (
+                posts.map((article: any) => (
                   <Col className='my-3' key={article.id} md={6} lg={3}>
                     <ArticleCard {...article} />
                   </Col>
@@ -63,6 +74,36 @@ const LibraryPage: NextPage = () => {
       </Container>
     </Layout>
   )
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApolloClient()
+  const { data } = await apolloClient.query({
+    query: GET_LISTS_OF_POSTS,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  const categories = () => {
+    const postsCategories = data.posts.data.map((post: any) =>
+      post.attributes.postCategories.data.map(
+        (category: any) => category.attributes.category
+      )
+    )
+    return postsCategories.reduce(
+      (prev: string[], curr: string[]) => prev.concat(curr),
+      []
+    )
+  }
+
+  const defaultCategory = !ctx.query.category ? '' : ctx.query.category
+
+  return {
+    props: {
+      defaultCategory: defaultCategory,
+      postsCategories: categories(),
+    },
+  }
 }
 
 export default LibraryPage

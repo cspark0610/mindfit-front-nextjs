@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 // gql
 import { useQuery } from '@apollo/client'
-import POSTS from 'lib/strapi/queries/Library/content.gql'
+import POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
 
 // Components
 import { RecommendedContentItem } from 'components/atoms/RecommendedContentItem'
@@ -28,11 +28,12 @@ export const RecommendedContentList: FC = () => {
 
   const { data, loading } = useQuery(POSTS, {
     context: { ms: microServices.strapi },
-    variables: { locale, filters: {} },
+    variables: { locale },
   })
 
   return (
     <div>
+      {console.log(data)}
       <p className={classes.section_title}>Contenidos recomendados</p>
       <Container fluid>
         <Row>
@@ -45,7 +46,7 @@ export const RecommendedContentList: FC = () => {
                   className='m-2'
                 />
               ))
-            : data.posts.data.map((post: any) => (
+            : data?.posts.data.map((post: any) => (
                 <RecommendedContentItem key={post.id} {...post} />
               ))}
         </Row>
