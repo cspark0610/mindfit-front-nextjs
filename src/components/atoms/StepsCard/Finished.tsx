@@ -11,7 +11,7 @@ import { CompletedStepProps } from 'types/components/StepsCard'
 
 export const CompletedStep: FC<CompletedStepProps> = ({ label }) => (
   <Row className={classes.row}>
-    <Col xs={1} className={classes.mark}>
+    <Col xs={1} className={classes.mark_completed}>
       <Check2 />
     </Col>
     <Col xs={9} className={classes.label}>
