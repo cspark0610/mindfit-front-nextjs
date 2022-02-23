@@ -43,7 +43,7 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Layout>
       <Container className={classes.container}>
         <section className={classes.section}>
-          <h1 className={classes.title}>Biblioteca digital</h1>
+          <h1 className={classes.title}>Digital Library</h1>
           <Filter
             defaultCategory={defaultCategory}
             postCategories={postsCategories}
@@ -58,7 +58,7 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   </Col>
                 ))
               ) : (
-                <h6>No hay articulos relacionados</h6>
+                <h6>There are no related articles</h6>
               )
             ) : (
               <Spinner animation='border' />

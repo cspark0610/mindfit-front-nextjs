@@ -23,11 +23,8 @@ export const ArticleCard: FC<ArticleCardProps> = ({ id, attributes }) => {
           />
           <Card.ImgOverlay className={classes.articleCard_overlay}>
             <header className={classes.articleCard_overlay_header}>
-              <Card.Text className={classes.articleCard_overlay_category}>
-                Article
-              </Card.Text>
               <Badge pill bg='secondary'>
-                {attributes.badge.label}
+                {attributes.badge}
               </Badge>
             </header>
             <Card.Body className={classes.articleCard_overlay_body}>
