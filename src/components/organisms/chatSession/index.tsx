@@ -28,7 +28,7 @@ export const ChatSession: FC = () => {
         profilePicture: '/assets/images/avatar.png',
       },
       receivedDate: '12 min',
-      message: '¿Cómo te fue la semana, Carlos?',
+      message: 'How was your week, Carlos?',
       status: 'received',
     },
     {
@@ -38,7 +38,7 @@ export const ChatSession: FC = () => {
       },
       receivedDate: '8 min',
       message:
-        'Muy bien Sara! Puse en práctica las técnicas para ser más asertivo, y creo que mejoré bastante.',
+        'Very good Sara! I put into practice the techniques to be more assertive, and I think I improved a lot.',
       status: 'sent',
     },
     {
@@ -47,7 +47,7 @@ export const ChatSession: FC = () => {
         profilePicture: '/assets/images/avatar.png',
       },
       receivedDate: '5 min',
-      message: 'Qué bueno. ¿Y qué cambios has notado?',
+      message: "That's good. And what changes have you noticed?",
       status: 'received',
     },
     {
@@ -57,7 +57,7 @@ export const ChatSession: FC = () => {
       },
       receivedDate: '4 min',
       message:
-        'Me siento liberado, con menos carga psicológica. Y lo mejor de todo, es que no me siento culpable por decir que no.',
+        "I feel liberated, with less psychological burden. And best of all, I don't feel guilty about saying no.",
       status: 'sent',
     },
     {
@@ -67,7 +67,7 @@ export const ChatSession: FC = () => {
       },
       receivedDate: '2 min',
       message:
-        'Fantástico lo que me comentas. Nos vemos entonces mañana en la siguiente sesión que tienes agendada.',
+        'Fantastic what you are telling me. See you tomorrow at the next session you have scheduled.',
       status: 'received',
     },
     {
@@ -77,7 +77,7 @@ export const ChatSession: FC = () => {
       },
       receivedDate: '1 min',
       message:
-        'Gracias Sara! Estoy deseando seguir con más técnicas. Me siento ya una persona nueva.',
+        'Thank you Sara! I am looking forward to more techniques. I feel like a new person already.',
       status: 'sent',
     },
     {
@@ -86,7 +86,7 @@ export const ChatSession: FC = () => {
         profilePicture: '/assets/images/userAvatar.svg',
       },
       receivedDate: '1 min',
-      message: 'Hasta mañana!',
+      message: 'See you tomorrow!',
       status: 'sent',
     },
   ])

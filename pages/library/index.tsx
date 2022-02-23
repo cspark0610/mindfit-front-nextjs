@@ -35,13 +35,8 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   const { loading, refetch } = useQuery(GET_LISTS_OF_POSTS, {
     context: { ms: microServices.strapi },
-    variables: {
-      locale: locale,
-      filters: {},
-    },
-    onCompleted: (data) => {
-      setPosts(data.posts.data)
-    },
+    variables: { locale: locale, filters: {} },
+    onCompleted: (data) => setPosts(data.posts.data),
   })
 
   return (
@@ -99,10 +94,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const defaultCategory = !ctx.query.category ? '' : ctx.query.category
 
   return {
-    props: {
-      defaultCategory: defaultCategory,
-      postsCategories: categories(),
-    },
+    props: { defaultCategory: defaultCategory, postsCategories: categories() },
   }
 }
 

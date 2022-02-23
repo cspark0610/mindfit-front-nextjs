@@ -31,7 +31,7 @@ export const RecommendedContentItem: FC<{ attributes: any; id: number }> = ({
         <Row className={`text-center align-items-center ${classes.card_info}`}>
           <Col xs={3} className={`px-0 ${classes.card_type}`}>
             <i className={PrimeIcons.BOOK} />
-            <p className={`my-0 `}>ARTICULO</p>
+            <p className={`my-0 `}>ARTICLE</p>
           </Col>
           <Col xs={6} className='px-0'>
             <div

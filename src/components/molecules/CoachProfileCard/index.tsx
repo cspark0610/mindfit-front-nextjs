@@ -62,19 +62,19 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
               <span>{coach?.bio}</span>
             </div>
             <div className={classes.coachingAreas}>
-              <h3>Especialización del coach</h3>
+              <h3>Coach specialization</h3>
               <ul>
                 <li>
-                  <ChevronDoubleRight /> Desarrollo de liderazgo
+                  <ChevronDoubleRight /> Leadership development
                 </li>
                 <li>
-                  <ChevronDoubleRight /> Psicología Positiva
+                  <ChevronDoubleRight /> Positive Psychology
                 </li>
                 <li>
-                  <ChevronDoubleRight /> Desarrollo Humano
+                  <ChevronDoubleRight /> Human Development
                 </li>
                 <li>
-                  <ChevronDoubleRight /> Bienestar Mental
+                  <ChevronDoubleRight /> Mental Wellness
                 </li>
               </ul>
             </div>
@@ -90,7 +90,7 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
                   onClick={() => setShowChat(true)}
                   className={classes.button}>
                   <i className={PrimeIcons.SEND} />
-                  <p>BANDEJA</p>
+                  <p>TRAY</p>
                 </Button>
               </Col>
               <ExploreBadge />

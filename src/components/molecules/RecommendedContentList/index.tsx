@@ -33,8 +33,7 @@ export const RecommendedContentList: FC = () => {
 
   return (
     <div>
-      {console.log(data)}
-      <p className={classes.section_title}>Contenidos recomendados</p>
+      <p className={classes.section_title}>Recommended contents</p>
       <Container fluid>
         <Row>
           {loading

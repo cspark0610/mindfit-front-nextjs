@@ -1,0 +1,59 @@
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  padding: 1rem;
+  margin-top: 2rem;
+  text-align: center;
+
+  .name {
+    color: $white;
+    display: block;
+    font-size: 18px;
+    margin-block: 1rem;
+    border-radius: 16px;
+    background: $primary;
+    padding-block: 0.5rem;
+  }
+  .coachingArea {
+    display: flex;
+    justify-content: space-between;
+
+    & > p {
+      color: $primary;
+      font-weight: bold;
+    }
+  }
+  .info {
+    color: $lightPrimary;
+    & > svg {
+      font-size: 36px;
+    }
+    & > span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    & > p {
+      color: $gray;
+      font-size: 16px;
+    }
+  }
+  .button {
+    color: $primary;
+    transition: all 0.3s;
+    background: transparent;
+    & > p {
+      margin: 0;
+      margin-top: 5px;
+      border-top: 1px solid $primary;
+    }
+
+    &:hover {
+      color: $secondary;
+      transition: all 0.2s;
+      border-color: $secondary;
+      & > p {
+        border-top: 1px solid $secondary;
+      }
+    }
+  }
+}

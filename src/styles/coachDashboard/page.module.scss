@@ -1,0 +1,36 @@
+@import '../variables.scss';
+@import './coacheeCard.module.scss';
+
+.container {
+  margin-block: 1rem 5rem;
+  .title {
+    font-size: 24px;
+    color: $primary;
+  }
+  .tabs {
+    margin-bottom: 1rem;
+    border-bottom: none;
+    flex-direction: row-reverse;
+    @media (max-width: 400px) {
+      justify-content: center;
+    }
+    & > li {
+      width: 100%;
+      max-width: 150px;
+      margin-inline: 0.5rem;
+    }
+    &_item {
+      width: 100%;
+      color: $primary;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none !important;
+      border-radius: 16px !important;
+    }
+    &_item[aria-selected='true'] {
+      transition: all 0.3s;
+      color: $white !important;
+      background: $secondary !important;
+    }
+  }
+}

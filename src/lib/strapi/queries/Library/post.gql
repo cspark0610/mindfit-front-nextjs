@@ -2,16 +2,15 @@ query post($locale: I18NLocaleCode, $id: ID) {
   post(locale: $locale, id: $id) {
     data {
       attributes {
+        title
+        badge
+        duration
         postCategories {
           data {
             attributes {
               category
             }
           }
-        }
-        title
-        badge {
-          label
         }
         article {
           body
