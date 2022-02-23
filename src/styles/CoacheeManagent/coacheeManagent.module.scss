@@ -1,0 +1,20 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Card/signupCard.module.scss';
+@import '../UI/Modal/appModal.module.scss';
+
+.close {
+  padding: 40px 40px 0;
+  border-bottom: none;
+}
+.section_modal {
+  @extend .section;
+  border: none;
+  @media (max-width: 991px) {
+    padding: 80px 30px;
+  }
+  .button {
+    color: $white;
+  }
+}
+
