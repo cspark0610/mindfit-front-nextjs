@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 // components
 import { DropdownMenu } from 'components/atoms/Dropdown'
 import { Notifications } from 'components/atoms/Dropdown/Notifications'
+import { ChooseLanguage } from 'components/atoms/ChooseLanguage'
 
 // bootstrap components
 import {
@@ -33,6 +34,7 @@ export const Navbar: FC = () => {
       <Row className={classes.row}>
         <Col className={classes.profile} xs={1}>
           <DropdownMenu />
+          <ChooseLanguage />
           {data && <Notifications />}
         </Col>
         <Col xs={1}>
