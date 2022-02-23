@@ -20,23 +20,23 @@ type MessageChatProps = {
 
 export const MessageChat: FC<MessageChatProps> = (props) => (
   <Container className={classes.section}>
-    <Row className={classes[props.status]}>
-      <Col xs={4}>
+    <Row>
+      <Col className={classes[props.status]} xs={12}>
         <Image
+          width={40}
+          height={40}
+          alt='user avatar'
           className={classes.avatar}
           src={props.user.profilePicture}
-          width={100}
-          height={100}
-          alt='user avatar'
         />
+        <div>
+          <span className={classes.name}>{props.user.name}</span>
+          <small>{props.receivedDate}</small>
+        </div>
       </Col>
-      <Col xs={8}>
-        <Row xs='auto' className={classes.data}>
-          <p>{props.user.name}</p>
-          <p>{props.receivedDate}</p>
-        </Row>
-        <p>{props.message}</p>
-      </Col>
+    </Row>
+    <Row className={classes.content}>
+      <span>{props.message}</span>
     </Row>
   </Container>
 )

@@ -15,6 +15,7 @@ import { ChatSession } from 'components/organisms/chatSession'
 
 // Bootstrap components
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
+import { ChevronDoubleRight } from 'react-bootstrap-icons'
 
 // Primeicons
 import { PrimeIcons } from 'primereact/api'
@@ -46,32 +47,35 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
       ) : (
         <>
           <Container className={classes.section}>
-            <div className='text-center mb-4'>
+            <div className='text-center'>
               <Image
                 width={182}
                 height={182}
                 alt='avatar'
                 layout='intrinsic'
-                className={classes.images}
+                className={classes.img}
                 src='/assets/images/avatar.png'
               />
             </div>
-            <div
-              className={`text-center mb-4 ${classes.description_container}`}>
-              <h3 className='fs-5 fw-bold'>{coach?.user?.name}</h3>
-              <p className='fs-6 mb-0'>{coach?.bio}</p>
+            <div className={classes.profile}>
+              <h3>{coach?.user?.name}</h3>
+              <span>{coach?.bio}</span>
             </div>
-            <div
-              className={`text-center mb-5 ${classes.specialization_container}`}>
-              <h3 className='fs-5 fw-bold'>Especialización del coach</h3>
+            <div className={classes.coachingAreas}>
+              <h3>Especialización del coach</h3>
               <ul>
-                {coach?.coachingAreas?.map((area) => (
-                  <li
-                    key={area.id}
-                    className={`fs-5 ${classes.especialization_skill}`}>
-                    {area.name}
-                  </li>
-                ))}
+                <li>
+                  <ChevronDoubleRight /> Desarrollo de liderazgo
+                </li>
+                <li>
+                  <ChevronDoubleRight /> Psicología Positiva
+                </li>
+                <li>
+                  <ChevronDoubleRight /> Desarrollo Humano
+                </li>
+                <li>
+                  <ChevronDoubleRight /> Bienestar Mental
+                </li>
               </ul>
             </div>
             <Row>

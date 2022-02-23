@@ -2,24 +2,36 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Modal, Row } from 'react-bootstrap'
 
 // components
 import { Ratings } from 'components/atoms/Rating'
+
+// gql
+import COACHING_FEEDBACK from 'lib/mutations/Feedback/CoachingFeedback.gql'
 
 //styles
 import classes from 'styles/CoachingFeedback/coachingFeedback.module.scss'
 
 //types
 import { FC } from 'react'
-import { Check, CheckSquare } from 'react-bootstrap-icons'
+import { CheckSquare } from 'react-bootstrap-icons'
+import { useMutation } from '@apollo/client'
+import { microServices } from 'commons'
 
 export const CoachingFeedback: FC = () => {
   const [showModal, setShowModal] = useState(true)
   const [showCheck, setShowCheck] = useState(false)
 
+  const [coachingFeedback] = useMutation(COACHING_FEEDBACK, {
+    onCompleted: () => setShowCheck(true),
+    onError: (err) => console.log(err),
+    context: { ms: microServices.backend },
+    variables: {},
+  })
+
   const handleOpenCheck = () => {
-    setShowCheck(true)
+    coachingFeedback()
     setShowModal(false)
   }
 
