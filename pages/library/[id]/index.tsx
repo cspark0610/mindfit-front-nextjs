@@ -99,7 +99,7 @@ const LibraryArticlePage: NextPage<
             </div>
             <article
               className='mt-5'
-              dangerouslySetInnerHTML={{ __html: content.article.body }}
+              dangerouslySetInnerHTML={{ __html: content.article?.body }}
             />
             <footer>
               <h3 className={classes.related}>Articulos relacionados</h3>
