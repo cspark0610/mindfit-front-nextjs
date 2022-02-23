@@ -1,5 +1,4 @@
 @import '../variables.scss';
-@import '../UI/Card/AppCard.module.scss';
 
 .section {
   color: $gray;
@@ -7,12 +6,20 @@
   padding: 20px;
   border-radius: 15px;
   background-color: $lightBlue;
-
   .date {
     font-weight: bold;
     justify-content: space-between;
   }
   .paragraph {
-    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  a {
+    text-align: right;
+    color: $secondary;
+    font-weight: bold;
+    text-decoration: none;
   }
 }
