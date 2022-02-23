@@ -46,7 +46,7 @@ export const CoacheeProfileCard: FC = () => {
             {[0, 1, 2].map((item) => (
               <div key={item}>
                 <h6 className={`fw-bold ${classes.profile}`}>
-                  <Diagram2 className='me-2'/>
+                  <Diagram2 className='me-2' />
                   Organización
                 </h6>
                 <p>Company Minfit</p>

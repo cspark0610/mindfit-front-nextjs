@@ -1,26 +1,28 @@
-import { CoachDataType } from './Coach'
 import { UserDataType } from './User'
+import { CoachDataType } from './Coach'
+import { OrganizationDataType } from './Organization'
+import { coacheeRegistrationStatus } from 'utils/enums'
 
 export type CoacheeDataType = {
   id?: number
   bio?: string
+  user?: UserDataType
   isAdmin?: boolean
   invited?: boolean
-  user?: UserDataType
   isActive?: boolean
-  phoneNumber?: string
-  aboutPosition?: string
   position?: string | null
-  canViewDashboard?: boolean
-  organization?: { id?: number }
+  phoneNumber?: string
+  organization?: OrganizationDataType
   assignedCoach?: CoachDataType
-  invitationAccepted?: boolean
+  aboutPosition?: string
+  coachingAreas?: {
+    id?: number
+    name?: string
+    value?: number
+    base?: number
+  }[]
   profilePicture?: string | File
-  coachingAreas?: { id?: number; name?: string }
-  registrationStatus?:
-    | 'INVITATION_PENDING'
-    | 'SAT_PENDING'
-    | 'COACH_SELECTION_PENDING'
-    | 'COACH_APPOINTMENT_PENDING'
-    | 'REGISTRATION_COMPLETED'
+  canViewDashboard?: boolean
+  invitationAccepted?: boolean
+  registrationStatus?: keyof typeof coacheeRegistrationStatus
 }

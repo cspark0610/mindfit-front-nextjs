@@ -16,46 +16,48 @@ import { FC } from 'react'
 export const CoachObjectives: FC = () => {
   const data = [
     {
-      category: 'Comunicación',
+      category: 'Communication',
       icon: PrimeIcons.BOOK,
       tasks: [
-        { description: 'Ser más asertivo', progress: 100 },
-        { description: 'No tomarme nada como personal', progress: 50 },
+        { description: 'Be more assertive', progress: 100 },
+        { description: 'Not taking anything personally', progress: 50 },
         {
-          description: 'Hablar cada día con un compañero sobre vida personal',
+          description: 'Talk to a colleague every day about my personal life',
           progress: 66,
         },
       ],
     },
     {
-      category: 'Salud',
+      category: 'Health',
       icon: PrimeIcons.HEART,
       tasks: [
         {
-          description: 'Comer frutas u hortalizas en cada comida',
+          description: 'Eat fruits or vegetables at every meal',
           progress: 50,
         },
-        { description: 'Evitar la comida basura', progress: 70 },
+        { description: 'Avoid junk food', progress: 70 },
         {
-          description:
-            'Practicar actividad física moderada 5 veces a la semana',
+          description: 'Engage in moderate physical activity 5 times a week.',
           progress: 80,
         },
       ],
     },
     {
-      category: 'Estado emocional',
+      category: 'Emotional state',
       icon: PrimeIcons.THUMBS_UP,
       tasks: [
         {
-          description: 'Practicar meditación al menos 1 vez al día',
+          description: 'Practice meditation at least once a day.',
           progress: 0,
         },
         {
-          description: 'Caminar al aire libre 4 veces a la semana',
+          description: 'Practice meditation at least once a day.',
           progress: 0,
         },
-        { description: 'Vivir más en presente y menos en futuro', progress: 0 },
+        {
+          description: 'Living more in the present and less in the future',
+          progress: 0,
+        },
       ],
     },
   ]
@@ -63,15 +65,15 @@ export const CoachObjectives: FC = () => {
   return (
     <Container className='mt-5 mt-lg-0'>
       <p className={`mb-2 fs-5 fw-bold ${classes.subtitle}`}>
-        ¡Cumpliste tus objetivos!
+        You met your goals!
       </p>
-      <p className={`fs-6 fw-bold mb-0 ${classes.paragraph}`}>¡Sigue así!</p>
+      <p className={`fs-6 fw-bold mb-0 ${classes.paragraph}`}>Keep it up!</p>
       <p className={`mb-4 fs-6 ${classes.paragraph}`}>
-        Cumplir estas tareas te ayudará a desarrollar los cambios que necesitas
-        para mejorar tu productividad
+        Accomplishing these tasks will help you develop the changes you need to
+        improve your productivity. to improve your productivity
       </p>
       <p className={`mb-3 fs-5 fw-bold ${classes.subtitle}`}>
-        Tareas cumplidas
+        Tasks accomplished
       </p>
       <Container>
         <Row className='justify-content-between'>

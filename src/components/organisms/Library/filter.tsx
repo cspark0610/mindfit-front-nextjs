@@ -65,7 +65,7 @@ export const Filter: FC<FilterProps> = ({
           <InputText
             type='search'
             value={searcher}
-            placeholder='Buscar'
+            placeholder='Search'
             className={classes.input}
             onChange={(ev) => setSearcher(ev.target.value)}
           />

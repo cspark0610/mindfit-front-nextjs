@@ -13,16 +13,15 @@ query getListsOfPosts(
     data {
       id
       attributes {
+        title
+        badge
+        duration
         postCategories {
           data {
             attributes {
               category
             }
           }
-        }
-        title
-        badge {
-          label
         }
         mainImage {
           data {

@@ -35,20 +35,15 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   const { loading, refetch } = useQuery(GET_LISTS_OF_POSTS, {
     context: { ms: microServices.strapi },
-    variables: {
-      locale: locale,
-      filters: {},
-    },
-    onCompleted: (data) => {
-      setPosts(data.posts.data)
-    },
+    variables: { locale: locale, filters: {} },
+    onCompleted: (data) => setPosts(data.posts.data),
   })
 
   return (
     <Layout>
       <Container className={classes.container}>
         <section className={classes.section}>
-          <h1 className={classes.title}>Biblioteca digital</h1>
+          <h1 className={classes.title}>Digital Library</h1>
           <Filter
             defaultCategory={defaultCategory}
             postCategories={postsCategories}
@@ -63,7 +58,7 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   </Col>
                 ))
               ) : (
-                <h6>No hay articulos relacionados</h6>
+                <h6>There are no related articles</h6>
               )
             ) : (
               <Spinner animation='border' />
@@ -99,10 +94,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const defaultCategory = !ctx.query.category ? '' : ctx.query.category
 
   return {
-    props: {
-      defaultCategory: defaultCategory,
-      postsCategories: categories(),
-    },
+    props: { defaultCategory: defaultCategory, postsCategories: categories() },
   }
 }
 

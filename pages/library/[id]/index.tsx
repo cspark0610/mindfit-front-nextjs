@@ -60,11 +60,15 @@ const LibraryArticlePage: NextPage<
                 className={classes.title}
                 dangerouslySetInnerHTML={{ __html: content.title }}
               />
-              {content.badge.label && (
+              {content.badge && (
                 <Badge as='span' className={classes.badge} bg='secondary'>
-                  {content.badge.label}
-                  <br />
-                  <JournalText />
+                  {content.badge}
+                  {content.duration && (
+                    <Badge as='span' bg='secondary'>
+                      - {content.duration}
+                      min
+                    </Badge>
+                  )}
                 </Badge>
               )}
             </header>
