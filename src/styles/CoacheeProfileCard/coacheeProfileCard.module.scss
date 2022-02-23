@@ -1,0 +1,36 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Modal/appModal.module.scss';
+
+.card {
+  color: $gray;
+  .description_container {
+    background-color: $primary;
+    color: $white;
+    border-radius: 20px;
+    padding: 10px 15px;
+  }
+  .results {
+    color: $secondary;
+  }
+  
+  .profile {
+    color: $lightPrimary;
+  }
+}
+.button {
+  padding: 20px 0 0;
+  background: none;
+  color: $primary;
+  border: 1px solid $primary;
+  border-radius: 10px;
+  &:hover,
+  &:focus {
+    background: $primary;
+    border: 1px solid $primary;
+    box-shadow: none;
+  }
+  & > i {
+    font-size: 22px;
+  }
+}

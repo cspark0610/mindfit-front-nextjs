@@ -2,17 +2,17 @@
 import Link from 'next/link'
 
 // bootstrap components
-import { Col, Container, Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 
 // styles
-import classes from 'styles/Note/note.module.scss'
+import classes from 'styles/CardNote/cardNote.module.scss'
 
 // types
 import { FC } from 'react'
 
-export const Note: FC = () => {
+export const CardNote: FC = () => {
   return (
-    <Container className={classes.section}>
+    <Container className={`mb-3 ${classes.section}`}>
       <Row xs='auto' className={classes.date}>
         <p>10/12/21</p>
         <p>09:30 AM</p>
