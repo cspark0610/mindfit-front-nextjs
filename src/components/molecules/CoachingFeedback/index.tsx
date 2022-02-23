@@ -30,7 +30,7 @@ export const CoachingFeedback: FC = () => {
   })
 
   const handleOpenCheck = () => {
-    coachingFeedback({variables: {}})
+    coachingFeedback({ variables: {} })
     setShowModal(false)
   }
 
