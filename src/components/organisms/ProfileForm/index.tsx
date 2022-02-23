@@ -69,19 +69,10 @@ export const ProfileForm: FC<{
           <Row className={classes.row}>
             <Col xs={12}>
               <InputText
-                name='firstName'
-                value={userData.firstName}
+                name='name'
+                value={userData.name}
                 onChange={handleChangeUser}
                 placeholder={content.firstNameInput.placeholder}
-                className={classes.input}
-              />
-            </Col>
-            <Col xs={12}>
-              <InputText
-                name='lastName'
-                value={userData.lastName}
-                onChange={handleChangeUser}
-                placeholder={content.lastNameInput.placeholder}
                 className={classes.input}
               />
             </Col>

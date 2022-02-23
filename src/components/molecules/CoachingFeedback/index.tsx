@@ -27,11 +27,10 @@ export const CoachingFeedback: FC = () => {
     onCompleted: () => setShowCheck(true),
     onError: (err) => console.log(err),
     context: { ms: microServices.backend },
-    variables: {},
   })
 
   const handleOpenCheck = () => {
-    coachingFeedback()
+    coachingFeedback({variables: {}})
     setShowModal(false)
   }
 

@@ -5,10 +5,8 @@ import { microServices } from 'commons'
 import { UserDataType } from 'types/models/User'
 
 export const initialState = (userData: UserDataType): UserDataType => {
-  const name = userData.name?.split(' ')
   const INITIAL_STATE = {
-    firstName: name ? name[0] : '',
-    lastName: name ? name[1] : '',
+    name: userData.name,
     email: userData.email,
     password: userData.password,
     coachee: {
@@ -40,7 +38,7 @@ export const saveData = async (
     await newData({
       variables: {
         user_data: {
-          name: `${userData.firstName} ${userData.lastName}`,
+          name: userData.name,
           email: userData.email,
         },
         user_id: data.id,
