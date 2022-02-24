@@ -23,14 +23,20 @@ import { ChangeType, SubmitType } from 'types'
 import { FC } from 'react'
 import { AlertText } from 'components/atoms/AlertText'
 
-export const FirstColaboratorLogin: FC<{
+type FirstColaboratorLoginProps = {
   hash: string
   error: string
   content: any
-}> = ({ hash, error, content }) => {
+}
+
+export const FirstColaboratorLogin: FC<FirstColaboratorLoginProps> = ({
+  hash,
+  error,
+  content,
+}) => {
+  const [errorMessage, setErrorMessage] = useState(error)
   const suggestionsContent = content.passwordSuggestion.data.attributes
   const [data, setData] = useState({ hash, password: '', confirmPassword: '' })
-  const [errorMessage, setErrorMessage] = useState(error)
 
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
     data.password
@@ -46,13 +52,11 @@ export const FirstColaboratorLogin: FC<{
 
   const handleSubmit = (ev: SubmitType) => {
     ev.preventDefault()
-    // update password process with hash
-    if (!disableButton) {
+    if (!disableButton)
       signIn('createPassword', {
         ...data,
         callbackUrl: '/signup/coachee/steps',
       })
-    }
   }
 
   useEffect(() => {
@@ -69,16 +73,16 @@ export const FirstColaboratorLogin: FC<{
             <Password
               toggleMask
               name='password'
+              className='mb-4 px-0'
               value={data.password}
               onChange={handleChange}
-              className={`mb-4 px-0 `}
-              promptLabel='Sugerencias'
-              weakLabel='Contraseña muy corta'
-              strongLabel='Contraseña aceptada'
               mediumRegex={regex.minSize.source}
               inputClassName={`${classes.input}`}
+              weakLabel={suggestionsContent.weakLabel}
+              promptLabel={suggestionsContent.promptLabel}
+              strongLabel={suggestionsContent.strongLabel}
+              mediumLabel={suggestionsContent.mediumLabel}
               placeholder={content.passwordInput.placeholder}
-              mediumLabel='Por favor, tenga en cuenta las sugerencias'
               strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
               footer={(ev) =>
                 passwordSuggestionsTemplate({

@@ -72,8 +72,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session)
     return { redirect: { destination: '/', permanent: false }, props: {} }
 
+  // strapi fetch
   const apolloClient = initializeApolloClient()
-
   const { data } = await apolloClient.query({
     query: GET_STEPS_CONTENT,
     variables: { locale: ctx.locale },
@@ -81,8 +81,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   })
   const content = data.collaboratorStep.data.attributes
 
+  // backend fetch
   const apollo = createApolloClient(session?.token)
-
   const { data: coachee } = await apollo.query<{
     findCoacheeById: CoacheeDataType
   }>({
@@ -91,14 +91,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.backend },
   })
 
+  // validations
   const status = [
     coacheeRegistrationStatus.REGISTRATION_COMPLETED,
     coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
   ]
-
   if (status.includes(coachee.findCoacheeById.registrationStatus as string))
     return { redirect: { destination: '/user', permanent: false }, props: {} }
 
+  // format content
   const steps = [
     {
       label: content.steps[0].label,
