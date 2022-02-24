@@ -34,9 +34,10 @@ export const ScheduleAppointment: FC = () => {
         <Row>
           {[1, 2].map((item) => (
             <Button
+              key={item}
               className={`mb-3 ${classes.section_card}`}
               variant='secondary'>
-              <Row xs={1} key={item} className={classes.hour}>
+              <Row xs={1} className={classes.hour}>
                 <Col xs={5}>
                   <p>Desde</p>
                   <h2 className='fw-bold'>12:00 pm</h2>
