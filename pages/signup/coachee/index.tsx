@@ -28,7 +28,7 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => (
   <Container className={classes.container}>
-    <h1 className={classes.title}>{content?.title}</h1>
+    <h1 className={classes.title}>{content?.welcomeLabel}</h1>
     <div>
       <Image
         src='/assets/icon/MINDFIT.svg'
@@ -53,23 +53,24 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {},
     }
 
-  const apolloClient = initializeApolloClient()
+  let content = null
+  try {
+    const apolloClient = initializeApolloClient()
 
-  const { data } = await apolloClient.query({
-    query: CREATE_PASS_CONTENT,
-    variables: { locale: ctx.locale },
-    context: { ms: microServices.strapi },
-  })
+    const { data } = await apolloClient.query({
+      query: CREATE_PASS_CONTENT,
+      variables: { locale: ctx.locale },
+      context: { ms: microServices.strapi },
+    })
+    content = data.collaboratorCreatePass.data.attributes
+  } catch (error) {
+    const res = await import(`@public/jsons/signup/coachee/${ctx.locale}.json`)
+    content = res.default.collaboratorCreatePass.data.attributes
+  }
 
   const { token, error } = ctx.query
 
-  return {
-    props: {
-      hash: token,
-      error: error ?? '',
-      content: data.collaboratorCreatePass.data.attributes,
-    },
-  }
+  return { props: { hash: token, error: error ?? '', content } }
 }
 
 export default SignupOrgPage

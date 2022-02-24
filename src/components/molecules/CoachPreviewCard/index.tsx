@@ -40,11 +40,13 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
 
   const [SelectCoach] = useMutation(SELECT_COACH, {
     context: { ms: microServices.backend },
-    variables: { data: { suggestedCoachId, coachId: coach.id } },
     onCompleted: () => push('/user'),
   })
 
-  const handleSelectCoach = () => SelectCoach()
+  const handleSelectCoach = () =>
+    SelectCoach({
+      variables: { data: { suggestedCoachId, coachId: coach.id } },
+    })
 
   return (
     <Container className={classes.section}>
@@ -67,7 +69,6 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
               />
             </div>
             <h2 className={classes.name}>{coach.user?.name}</h2>
-            {/* <p className={classes.position}>{coach.title}</p> */}
             <p className={classes.description}>{coach.bio}</p>
           </Col>
           <Col xs={3} className='ml-auto'>

@@ -1,5 +1,7 @@
 // Next components
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 // main tools
 import { SessionProvider } from 'next-auth/react'
@@ -14,6 +16,10 @@ import 'styles/theme.scss'
 
 // prime components
 import { ScrollTop } from 'primereact/scrolltop'
+import { BlockUI } from 'primereact/blockui'
+
+// bootstrap components
+import { Spinner } from 'react-bootstrap'
 
 // types
 import type { NextPage } from 'next'
@@ -21,6 +27,20 @@ import type { AppProps } from 'next/app'
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
+  const [loadingPage, setLoadingPage] = useState(false)
+  const router = useRouter()
+
+  /**
+   * Navbar animation controller on scroll and Page transition loader
+   */
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => setLoadingPage(true))
+    router.events.on('routeChangeComplete', () => setLoadingPage(false))
+
+    return () => {
+      router.events.off('routeChangeComplete', () => setLoadingPage(false))
+    }
+  }, [router])
 
   return (
     <>
@@ -35,6 +55,11 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
       <ApolloProvider client={apolloClient}>
         <SessionProvider refetchInterval={60 * 60} session={pageProps.session}>
           <Component {...pageProps} />
+          <BlockUI
+            fullScreen
+            blocked={loadingPage}
+            template={<Spinner animation='grow' />}
+          />
           <ScrollTop />
         </SessionProvider>
       </ApolloProvider>

@@ -57,7 +57,7 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setCoaches(data.getRandomSuggestedCoaches.coaches)
       setSuggestedCoachesId(data.getRandomSuggestedCoaches.id)
     },
-    onError: (err) => setShowMaxSuggestions(true),
+    onError: () => setShowMaxSuggestions(true),
   })
 
   const [RejectSuggestedCoaches] = useMutation(REJECT_SUGGESTED_COACHES, {
@@ -83,8 +83,8 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   const coachsTemplate = (coach: CoachDataType) => (
     <CoachCard
       data={coach}
-      suggestedCoachId={suggestedCoachesId}
       content={content}
+      suggestedCoachId={suggestedCoachesId}
     />
   )
 

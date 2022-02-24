@@ -166,7 +166,7 @@ export default NextAuth({
                 token.backendToken = data.signUpWithGoogle.token as string
               })
           } catch (error: any) {
-            throw new Error(error.graphQLErrors[0].message)
+            throw new Error(error.graphQLErrors[0]?.message)
           }
         }
       } else {

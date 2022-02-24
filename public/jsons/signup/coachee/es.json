@@ -1,0 +1,47 @@
+{
+    "collaboratorCreatePass": {
+        "data": {
+            "attributes": {
+                "welcomeLabel": "Bienvenido a",
+                "passwordInput": {
+                    "placeholder": "Contraseña"
+                },
+                "confirmPasswordInput": {
+                    "placeholder": "Repetir contraseña"
+                },
+                "submitButton": {
+                    "label": "Guardar contraseña"
+                },
+                "passwordSuggestion": {
+                    "data": {
+                        "attributes": {
+                            "promptLabel": "Sugerencias",
+                            "weakLabel": "Contraseña muy corta",
+                            "strongLabel": "Contraseña aceptada",
+                            "mediumLabel": "Por favor, tenga en cuenta las sugerencias.",
+                            "fillFieldsLabel": "Por favor, complete todos los campos para continuar",
+                            "suggestionList": [
+                                {
+                                    "label": "Mínimo 8 caracteres",
+                                    "value": "minSize"
+                                },
+                                {
+                                    "label": "Al menos un carácter alfabético",
+                                    "value": "hasLetters"
+                                },
+                                {
+                                    "label": "Al menos un carácter numérico",
+                                    "value": "hasNumbers"
+                                },
+                                {
+                                    "label": "Al menos un carácter especial",
+                                    "value": "hasSpecials"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

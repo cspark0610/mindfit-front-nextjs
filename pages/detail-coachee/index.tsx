@@ -65,7 +65,9 @@ const DetailCoachee: NextPage = () => (
             </Row>
             <Row md={2}>
               <Col className={classes.data}>
-                <Link href='/'><a>Ver mas...</a></Link>
+                <Link href='/'>
+                  <a>Ver mas...</a>
+                </Link>
               </Col>
               <Col xs='auto'>
                 <Button className={classes.button}>Realizar evaluación</Button>

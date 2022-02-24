@@ -1,0 +1,47 @@
+{
+    "collaboratorCreatePass": {
+        "data": {
+            "attributes": {
+                "welcomeLabel": "Welcome to",
+                "passwordInput": {
+                    "placeholder": "Password"
+                },
+                "confirmPasswordInput": {
+                    "placeholder": "Confirm password"
+                },
+                "submitButton": {
+                    "label": "Save password"
+                },
+                "passwordSuggestion": {
+                    "data": {
+                        "attributes": {
+                            "promptLabel": "Suggestions",
+                            "weakLabel": "Very short password",
+                            "strongLabel": "Password accepted",
+                            "mediumLabel": "Please, take into account the suggestions",
+                            "fillFieldsLabel": "Please, complete all fields to continue",
+                            "suggestionList": [
+                                {
+                                    "label": "Minimum 8 characters",
+                                    "value": "minSize"
+                                },
+                                {
+                                    "label": "At least one alphabetic character",
+                                    "value": "hasLetters"
+                                },
+                                {
+                                    "label": "At least one numeric character",
+                                    "value": "hasNumbers"
+                                },
+                                {
+                                    "label": "At least one special character",
+                                    "value": "hasSpecials"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
