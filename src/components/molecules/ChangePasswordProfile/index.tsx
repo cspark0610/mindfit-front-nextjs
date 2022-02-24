@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
 // prime components
 import { Password } from 'primereact/password'
@@ -18,10 +18,10 @@ import { useMutation } from '@apollo/client'
 import PASSWORD_DATA from 'lib/mutations/User/changePassword.gql'
 
 // utils
-import { savePassword } from 'utils/userProfile'
+import { savePassword } from 'utils/Profile/coacheeProfile'
 
 // styles
-import classes from 'styles/UserProfile/userProfile.module.scss'
+import classes from 'styles/Profile/profile.module.scss'
 
 // types
 import { FC } from 'react'

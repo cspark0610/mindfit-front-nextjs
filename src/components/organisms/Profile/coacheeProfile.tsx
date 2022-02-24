@@ -19,17 +19,17 @@ import USER_DATA from 'lib/mutations/User/userProfile.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
-import { initialState, saveData, validateUserProfile } from 'utils/userProfile'
+import { initialState, saveData, validateUserProfile } from 'utils/Profile/coacheeProfile'
 
 // styles
-import classes from 'styles/UserProfile/userProfile.module.scss'
+import classes from 'styles/Profile/profile.module.scss'
 
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
 import { UserDataType } from 'types/models/User'
 
-export const ProfileForm: FC<{
+export const CoacheeProfile: FC<{
   data: UserDataType
   content: any
 }> = ({ data, content }) => {
@@ -37,7 +37,7 @@ export const ProfileForm: FC<{
   const [passwordShow, setPasswordShow] = useState(false)
   const [validate, setValidate] = useState(false)
   const [NewData] = useMutation(USER_DATA)
-
+  
   const handleChangeUser = (ev: ChangeType | DropdownChangeParams) =>
     setUserData({ ...userData, [ev.target.name]: ev.target.value })
 
@@ -102,11 +102,13 @@ export const ProfileForm: FC<{
                 {content.changePasswordButton.label}
               </p>
             </Col>
-            <Col xs='auto' className={classes.rigth}>
-              <Button onClick={() => save()} disabled={!validate}>
-                {content.saveButton.label}
-              </Button>
-            </Col>
+            <Row className='justify-content-end'>
+              <Col xs='auto'>
+                <Button className={classes.button} onClick={() => save()} disabled={!validate}>
+                  {content.saveButton.label}
+                </Button>
+              </Col>
+            </Row>
           </Row>
           <ExploreBadge />
         </Container>

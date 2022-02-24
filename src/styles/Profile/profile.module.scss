@@ -4,14 +4,8 @@
 @import '../UI/Modal/appModal.module.scss';
 @import '../Login/LoginCard/loginCard.module.scss';
 
-.row {
-  text-align: center;
-  .rigth {
-    margin-left: auto !important;
-  }
-  .check {
-    color: $success;
-  }
+.textarea {
+  border-color: $lightGray;
 }
 
 .close {
