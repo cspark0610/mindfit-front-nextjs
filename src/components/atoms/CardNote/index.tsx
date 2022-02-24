@@ -22,7 +22,7 @@ export const CardNote: FC = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor
         </p>
-        <Link href='/'>Ver mas...</Link>
+        <Link href='/'><a>Ver mas...</a></Link>
       </Row>
     </Container>
   )
