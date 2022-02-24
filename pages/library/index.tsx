@@ -79,9 +79,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.strapi },
   })
 
-  const categories = () => {
-    const postsCategories = data.posts.data.map((post: any) =>
-      post.attributes.postCategories.data.map(
+  const postsCategories = (() => {
+    const postsCategories = data.posts.data.map(({ attributes }: any) =>
+      attributes.postCategories.data.map(
         (category: any) => category.attributes.category
       )
     )
@@ -89,12 +89,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       (prev: string[], curr: string[]) => prev.concat(curr),
       []
     )
-  }
+  })()
 
   const defaultCategory = !ctx.query.category ? '' : ctx.query.category
 
   return {
-    props: { defaultCategory: defaultCategory, postsCategories: categories() },
+    props: {
+      defaultCategory: defaultCategory,
+      postsCategories: postsCategories.filter(
+        (item: any, idx: number) => postsCategories.indexOf(item) === idx
+      ),
+    },
   }
 }
 
