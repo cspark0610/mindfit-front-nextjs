@@ -1,0 +1,58 @@
+@import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+
+.section {
+  @media (max-width: 990px) {
+    padding: 80px 30px;
+  }
+  .row {
+    justify-content: space-between;
+  }
+  &_body {
+    @extend .section;
+    border: none;
+    background-color: $lightBlue;
+    .title {
+      color: $primary;
+    }
+  }
+  &_card {
+    @extend .section;
+    @extend .button;
+    color: $primary;
+    padding: 40px 45px;
+    background: rgba($color: #fe5000, $alpha: 0.1);
+    .day {
+      padding-bottom: 10px;
+      border-bottom: 1px solid $secondary;
+    }
+    .hour {
+      align-items: center;
+      justify-content: center;
+      p {
+        color: $gray;
+      }
+      .icon {
+        color: $white;
+        padding: 5px;
+        border-radius: 50%;
+        background: $secondary;
+      }
+    }
+    &:hover,
+    &:focus {
+      color: $white;
+      .day {
+        border-color: $white;
+      }
+      .hour .icon {
+        color: $secondary;
+        background: $white;
+      }
+      transition: all 0.3s;
+    }
+  }
+  &_button {
+    justify-content: end;
+  }
+}
