@@ -4,6 +4,7 @@ import { UserDataType } from 'types/models/User'
 import { OrganizationDataType } from 'types/models/Organization'
 import { ColaboratorDataType } from 'types/models/Colaborator'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { CoachDataType } from 'types/models/Coach'
 
 export type UploadPicturesProps = {
   setData:
@@ -11,6 +12,7 @@ export type UploadPicturesProps = {
     | SetStateType<OrganizationDataType>
     | SetStateType<ColaboratorDataType>
     | SetStateType<CoacheeDataType>
+    | SetStateType<CoachDataType>
 }
 
 export interface UploadPicturesRef extends FileUpload {

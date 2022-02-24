@@ -19,8 +19,7 @@ export const initialState = (userData: UserDataType): UserDataType => {
 
 export const validateUserProfile = (userData: UserDataType) => {
   if (
-    !userData.firstName ||
-    !userData.lastName ||
+    !userData.name ||
     !userData.email ||
     !userData.coachee?.position ||
     !userData.coachee?.profilePicture

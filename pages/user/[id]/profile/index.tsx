@@ -1,12 +1,13 @@
 // main tools
-import { getSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 // bootstrap components
 import { Container } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
-import { ProfileForm } from 'components/organisms/ProfileForm'
+import { CoachProfile } from 'components/organisms/Profile/coachProfile'
+import { CoacheeProfile } from 'components/organisms/Profile/coacheeProfile'
 
 // commons
 import { microServices } from 'commons'
@@ -27,15 +28,23 @@ import { GetSSPropsType } from 'types'
 const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   data,
   content,
-}) => (
-  <Layout>
-    <Container className={classes.container}>
-      <Container fluid className={classes.section}>
-        <ProfileForm data={data} content={content} />
+}) => {
+  const { data: user } = useSession()
+  const role = user?.user.role
+
+  return (
+    <Layout>
+      <Container className={classes.container}>
+        <Container fluid className={classes.section}>
+          {role == 'COACHEE' && (
+            <CoacheeProfile data={data} content={content} />
+          )}
+          {role == 'COACH' && <CoachProfile />}
+        </Container>
       </Container>
-    </Container>
-  </Layout>
-)
+    </Layout>
+  )
+}
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
