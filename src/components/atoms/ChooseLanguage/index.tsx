@@ -33,7 +33,7 @@ export const ChooseLanguage: FC = () => {
 
   return (
     <Dropdown onSelect={handleChangeLocale} className={classes.dropdown}>
-      <Dropdown.Toggle className={classes.toggle}>
+      <Dropdown.Toggle id='language-selector' className={classes.toggle}>
         <Globe />
       </Dropdown.Toggle>
       <Dropdown.Menu>

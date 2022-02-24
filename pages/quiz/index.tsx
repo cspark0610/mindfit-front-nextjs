@@ -64,7 +64,8 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setActualSection((prev) => prev + 1)
     } else {
       setLoading(true)
-      const { data } = await SubmitQuiz({ variables: { data: { ...answers } } })
+      await SubmitQuiz({ variables: { data: { ...answers } } })
+      setLoading(false)
       push('/signup/coachee/steps')
     }
   }
@@ -151,6 +152,23 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     })
   }
 
+  // DELETE FROM
+  const autoSelectAnswers = () => {
+    quiz?.sections.map((section: any) =>
+      section.questions.map((question: any) => {
+        question.answers.map((answer: any) => {
+          handleChangeAnswer(
+            { value: answer } as RadioButtonChangeParams,
+            section.id,
+            question.id,
+            question.type
+          )
+        })
+      })
+    )
+  }
+  // DELETE TO
+
   useEffect(() => {
     if (data) {
       setQuiz(data.findSatBasicById)
@@ -177,6 +195,11 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               <h1 ref={backToTop} className={classes.title}>
                 {quiz?.title}
               </h1>
+              {/* DELETE FROM */}
+              <span>
+                <Button onClick={autoSelectAnswers}>Auto select</Button>
+              </span>
+              {/* DELETE TO */}
               <Carousel
                 indicators={false}
                 controls={false}

@@ -90,7 +90,7 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
                   onClick={() => setShowChat(true)}
                   className={classes.button}>
                   <i className={PrimeIcons.SEND} />
-                  <p>TRAY</p>
+                  <p>MESSAGES</p>
                 </Button>
               </Col>
               <ExploreBadge />
