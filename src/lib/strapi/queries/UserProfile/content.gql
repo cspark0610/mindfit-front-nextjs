@@ -1,5 +1,5 @@
-query UserProfileContent {
-  userProfile {
+query UserProfileContent($locale: I18NLocaleCode) {
+  userProfile(locale: $locale) {
     data {
       attributes {
         title

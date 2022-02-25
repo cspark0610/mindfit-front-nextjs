@@ -12,6 +12,9 @@
   padding: 40px 40px 0;
   border-bottom: none;
 }
+.section {
+  padding: 1rem;
+}
 .section_modal {
   @extend .section;
   border: none;
@@ -19,4 +22,3 @@
     color: $white;
   }
 }
-

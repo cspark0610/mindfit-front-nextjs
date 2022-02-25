@@ -1,8 +1,8 @@
 // main tools
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // bootstrap components
-import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Button, Modal, Spinner } from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
@@ -15,11 +15,12 @@ import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfil
 
 //gql
 import { useMutation } from '@apollo/client'
-import USER_DATA from 'lib/mutations/User/userProfile.gql'
+import UPDATE_USER from 'lib/mutations/User/update.gql'
+import UPDATE_COACHEE from 'lib/mutations/Coachees/update.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
-import { initialState, saveData, validateUserProfile } from 'utils/Profile/coacheeProfile'
+import { validateCoacheeProfile } from 'utils/Profile/coacheeProfile'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -27,104 +28,122 @@ import classes from 'styles/Profile/profile.module.scss'
 // types
 import { FC } from 'react'
 import { ChangeType } from 'types'
+import { microServices } from 'commons'
 import { UserDataType } from 'types/models/User'
+import { CoacheeDataType } from 'types/models/Coachee'
 
-export const CoacheeProfile: FC<{
-  data: UserDataType
-  content: any
-}> = ({ data, content }) => {
-  const [userData, setUserData] = useState<UserDataType>(initialState(data))
-  const [passwordShow, setPasswordShow] = useState(false)
-  const [validate, setValidate] = useState(false)
-  const [NewData] = useMutation(USER_DATA)
-  
-  const handleChangeUser = (ev: ChangeType | DropdownChangeParams) =>
-    setUserData({ ...userData, [ev.target.name]: ev.target.value })
+export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
+  coachee,
+  content,
+}) => {
+  const [showPassword, setShowPassword] = useState(false)
+  const [coacheeData, setCoacheeData] = useState<CoacheeDataType>(coachee)
+  const [loading, setLoading] = useState(false)
+  const validate = validateCoacheeProfile(coacheeData)
 
-  const getValidate = () => setValidate(validateUserProfile(userData))
+  const [updateUser] = useMutation(UPDATE_USER, {
+    context: { ms: microServices.backend },
+  })
+  const [updateCoachee] = useMutation(UPDATE_COACHEE, {
+    context: { ms: microServices.backend },
+  })
 
-  const save = async () => {
-    const { succes } = await saveData(data, userData, NewData)
-    if (succes) {
-      setValidate(false)
-    }
+  const handleCoacheeChange = (ev: DropdownChangeParams) =>
+    setCoacheeData({ ...coacheeData, [ev.target.name]: ev.target.value })
+
+  const handleUserChange = (ev: ChangeType) =>
+    setCoacheeData({
+      ...coacheeData,
+      user: { ...coacheeData.user, [ev.target.name]: ev.target.value },
+    })
+
+  const handleSave = async () => {
+    setLoading(true)
+    const { user, ...updatecoacheeData } = coacheeData
+    await updateUser({
+      variables: {
+        id: user?.sub,
+        data: { name: user?.name, email: user?.email },
+      },
+    })
+    await updateCoachee({
+      variables: {
+        id: user?.coachee?.id,
+        data: { position: updatecoacheeData.position },
+      },
+    })
+    setLoading(false)
   }
-
-  useEffect(() => {
-    const userData_str = JSON.stringify(userData)
-    const initial_str = JSON.stringify(initialState(data))
-    if (userData_str == initial_str) {
-      setValidate(false)
-    } else {
-      getValidate()
-    }
-  }, [userData])
 
   return (
     <>
       <section className={classes.container}>
-        <h1 className={classes.title}>{content.title}</h1>
-        <UploadPicture setData={setUserData} />
+        <h1 className={classes.title}>{content.userProfile.title}</h1>
+        <UploadPicture setData={setCoacheeData} />
         <Container fluid>
           <Row className={classes.row}>
             <Col xs={12}>
               <InputText
                 name='name'
-                value={userData.name}
-                onChange={handleChangeUser}
-                placeholder={content.firstNameInput.placeholder}
+                value={coacheeData.user?.name}
                 className={classes.input}
+                onChange={handleUserChange}
+                placeholder={content.userProfile.firstNameInput.placeholder}
               />
             </Col>
             <Col xs={12}>
               <InputText
                 disabled
                 name='email'
-                value={userData.email}
-                placeholder={content.emailInput.placeholder}
+                value={coacheeData.user?.email}
                 className={classes.input}
+                placeholder={content.userProfile.emailInput.placeholder}
               />
             </Col>
             <Col xs={12}>
               <Dropdown
                 name='position'
                 options={workPositions}
-                onChange={handleChangeUser}
                 className={classes.input}
-                value={userData.coachee?.position}
-                placeholder={content.positionInput.placeholder}
+                value={coacheeData.position}
+                onChange={handleCoacheeChange}
+                placeholder={content.userProfile.positionInput.placeholder}
               />
             </Col>
             <Col xs={12}>
               <p
                 className={classes.recoveryLabel}
-                onClick={() => setPasswordShow(true)}>
-                {content.changePasswordButton.label}
+                onClick={() => setShowPassword(true)}>
+                {content.userProfile.changePasswordButton.label}
               </p>
             </Col>
             <Row className='justify-content-end'>
-              <Col xs='auto'>
-                <Button className={classes.button} onClick={() => save()} disabled={!validate}>
-                  {content.saveButton.label}
-                </Button>
-              </Col>
+              <Button
+                disabled={!validate}
+                onClick={handleSave}
+                className={classes.button}>
+                {loading ? (
+                  <Spinner animation='border' color='primary' />
+                ) : (
+                  content.userProfile.saveButton.label
+                )}
+              </Button>
             </Row>
           </Row>
           <ExploreBadge />
         </Container>
       </section>
       <Modal
-        size='lg'
         centered
+        show={showPassword}
         className={classes.modal}
-        show={passwordShow}
-        onHide={() => setPasswordShow(false)}>
+        onHide={() => setShowPassword(false)}>
         <Modal.Header closeButton className={classes.close} />
         <Modal.Body className={classes.section_modal}>
           <ChangePasswordProfile
-            data={data}
-            content={content}
-            onHide={setPasswordShow}
+            onHide={setShowPassword}
+            content={content.changePassword}
+            user={coacheeData.user as UserDataType}
           />
         </Modal.Body>
       </Modal>
