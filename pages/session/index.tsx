@@ -1,16 +1,25 @@
-import { CoachSessionCard } from 'components/molecules/CoachSessionCard'
-import { Layout } from 'components/organisms/Layout'
+// main tools
 import dynamic from 'next/dynamic'
+
+// components
+import { CoachProfileCard } from 'components/molecules/CoachProfileCard'
+import { Layout } from 'components/organisms/Layout'
+
+// bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
 
-function Session() {
+// tyles
+import { NextPage } from 'next'
+
+const Session: NextPage = () => {
   const AgoraVideoCall = dynamic<any>(
     () =>
-      import('../../src/components/molecules/AgoraVideoCall').then(
+      import('components/molecules/AgoraVideoCall').then(
         (comp) => comp.AgoraVideoCall
       ),
     { ssr: false }
   )
+
   return (
     <Layout>
       <Container>
@@ -19,20 +28,7 @@ function Session() {
             <AgoraVideoCall />
           </Col>
           <Col md={5} lg={4}>
-            <CoachSessionCard
-              data={{
-                id: '234d',
-                name: 'Katherine Smith',
-                title: 'Especialista en Motivación',
-                description: 'Te ayudo a sacar la mejor version de ti mismo',
-                picture: '/assets/images/avatar.png',
-                areas: [
-                  'Desarrollo de liderazgo',
-                  'Psicologia positiva',
-                  'Crecimiento personal',
-                ],
-              }}
-            />
+            <CoachProfileCard coachId={3} />
           </Col>
         </Row>
       </Container>

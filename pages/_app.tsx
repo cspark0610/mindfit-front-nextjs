@@ -19,7 +19,7 @@ import { ScrollTop } from 'primereact/scrolltop'
 import { BlockUI } from 'primereact/blockui'
 
 // bootstrap components
-import { Spinner } from 'react-bootstrap'
+import { Spinner, SSRProvider } from 'react-bootstrap'
 
 // types
 import type { NextPage } from 'next'
@@ -54,13 +54,15 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
 
       <ApolloProvider client={apolloClient}>
         <SessionProvider refetchInterval={60 * 60} session={pageProps.session}>
-          <Component {...pageProps} />
-          <BlockUI
-            fullScreen
-            blocked={loadingPage}
-            template={<Spinner animation='grow' />}
-          />
-          <ScrollTop />
+          <SSRProvider>
+            <Component {...pageProps} />
+            <BlockUI
+              fullScreen
+              blocked={loadingPage}
+              template={<Spinner animation='grow' />}
+            />
+            <ScrollTop />
+          </SSRProvider>
         </SessionProvider>
       </ApolloProvider>
     </>
