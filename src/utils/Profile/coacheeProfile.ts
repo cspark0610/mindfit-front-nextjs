@@ -1,74 +1,13 @@
-// Commons
-import { microServices } from 'commons'
-
 // Types
-import { UserDataType } from 'types/models/User'
+import { CoacheeDataType } from 'types/models/Coachee'
 
-export const initialState = (userData: UserDataType): UserDataType => {
-  const INITIAL_STATE = {
-    name: userData.name,
-    email: userData.email,
-    password: userData.password,
-    coachee: {
-      profilePicture: userData.coachee?.profilePicture as File,
-      position: userData.coachee?.position,
-    },
-  }
-  return INITIAL_STATE
-}
-
-export const validateUserProfile = (userData: UserDataType) => {
+export const validateCoacheeProfile = (coacheeData: CoacheeDataType) => {
   if (
-    !userData.name ||
-    !userData.email ||
-    !userData.coachee?.position ||
-    !userData.coachee?.profilePicture
+    !coacheeData.user?.name ||
+    !coacheeData.user?.email ||
+    !coacheeData.position ||
+    !coacheeData.profilePicture
   )
     return false
   return true
-}
-
-export const saveData = async (
-  data: UserDataType,
-  userData: UserDataType,
-  newData: Function
-) => {
-  try {
-    await newData({
-      variables: {
-        user_data: {
-          name: userData.name,
-          email: userData.email,
-        },
-        user_id: data.id,
-        coachee_data: userData.coachee,
-        coachee_id: data.coachee?.id,
-      },
-      context: { ms: microServices.backend },
-    })
-    return { succes: true }
-  } catch {
-    return { succes: false }
-  }
-}
-
-export const savePassword = async (
-  data: UserDataType,
-  passwordData: UserDataType,
-  newPassword: Function
-) => {
-  try {
-    await newPassword({
-      variables: {
-        user_data: {
-          password: passwordData.password,
-        },
-        user_id: data.id,
-      },
-      context: { ms: microServices.backend },
-    })
-    return { succes: true }
-  } catch {
-    return { succes: false }
-  }
 }

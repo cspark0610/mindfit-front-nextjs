@@ -17,4 +17,4 @@ export const validateUserSignup = (
   return true
 }
 
-export const workPositions = ['Developer']
+export const workPositions = ['Developer', 'Supervisor']

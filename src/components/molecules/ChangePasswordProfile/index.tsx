@@ -11,14 +11,11 @@ import { Password } from 'primereact/password'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
 // commons
-import { regex, regexValidation } from 'commons'
+import { microServices, regex, regexValidation } from 'commons'
 
 //gql
 import { useMutation } from '@apollo/client'
 import PASSWORD_DATA from 'lib/mutations/User/changePassword.gql'
-
-// utils
-import { savePassword } from 'utils/Profile/coacheeProfile'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -29,35 +26,38 @@ import { ChangeType, SetStateType, SubmitType } from 'types'
 import { UserDataType } from 'types/models/User'
 
 export const ChangePasswordProfile: FC<{
-  data: UserDataType
   content: any
+  user: UserDataType
   onHide: SetStateType<boolean>
-}> = ({ data, content, onHide }) => {
+}> = ({ user, content, onHide }) => {
   const suggestionsContent = content.passwordSuggestion.data.attributes
-  const [passwordData, setPasswordData] = useState({
+  const [password, setPassword] = useState({
     password: '',
     confirmPassword: '',
   })
-
-  const [NewPassword] = useMutation(PASSWORD_DATA)
-
-  const handleChangePassword = (ev: ChangeType | any) =>
-    setPasswordData({ ...passwordData, [ev.target.name]: ev.target.value })
-
   const { minSize, hasLetters, hasNumbers, hasSpecials } = regexValidation(
-    passwordData.password
+    password.password
   )
 
   const disableButton =
-    passwordData.password !== passwordData.confirmPassword ||
     !minSize ||
     !hasSpecials ||
-    (!hasLetters && !hasNumbers)
+    (!hasLetters && !hasNumbers) ||
+    password.password !== password.confirmPassword
+
+  const [UpdatePassword] = useMutation(PASSWORD_DATA, {
+    context: { ms: microServices.backend },
+    onCompleted: () => onHide(false),
+  })
+
+  const handleChangePassword = (ev: ChangeType | any) =>
+    setPassword({ ...password, [ev.target.name]: ev.target.value })
 
   const changePassword = async (ev: SubmitType) => {
     ev.preventDefault()
-    const { succes } = await savePassword(data, passwordData, NewPassword)
-    if (succes) onHide(false)
+    await UpdatePassword({
+      variables: { id: user.sub, data: { password: password.password } },
+    })
   }
 
   return (
@@ -68,16 +68,17 @@ export const ChangePasswordProfile: FC<{
           <Row className={classes.row}>
             <Col xs={12}>
               <Password
+                required
                 toggleMask
                 name='password'
-                value={passwordData.password}
-                onChange={handleChangePassword}
                 className='w-100'
-                promptLabel={suggestionsContent.promptLabel}
-                weakLabel={suggestionsContent.weakLabel}
-                strongLabel={suggestionsContent.strongLabel}
+                value={password.password}
+                onChange={handleChangePassword}
                 mediumRegex={regex.minSize.source}
                 inputClassName={`${classes.input}`}
+                weakLabel={suggestionsContent.weakLabel}
+                promptLabel={suggestionsContent.promptLabel}
+                strongLabel={suggestionsContent.strongLabel}
                 placeholder={content.passwordInput.placeholder}
                 mediumLabel={suggestionsContent.fillFieldsLabel}
                 strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
@@ -85,19 +86,20 @@ export const ChangePasswordProfile: FC<{
             </Col>
             <Col xs={12}>
               <Password
+                required
                 toggleMask
                 feedback={false}
                 className='w-100'
                 name='confirmPassword'
                 onChange={handleChangePassword}
-                value={passwordData.confirmPassword}
+                value={password.confirmPassword}
                 inputClassName={classes.input}
                 placeholder={content.confirmPasswordInput.placeholder}
               />
             </Col>
             <Col xs={12}>
               {passwordSuggestionsTemplate({
-                value: passwordData.password,
+                value: password.password,
                 suggestionsContent,
               })}
             </Col>
@@ -107,8 +109,7 @@ export const ChangePasswordProfile: FC<{
               <Button
                 type='submit'
                 disabled={disableButton}
-                className={classes.button}
-                variant='secondary'>
+                className={classes.button}>
                 {content.submitButton.label}
               </Button>
             </Col>
