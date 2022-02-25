@@ -620,6 +620,26 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
+agora-react-uikit@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/agora-react-uikit/-/agora-react-uikit-0.0.5.tgz#701b2029e3f508b1c6d8dd5f790ad3d122a6d166"
+  integrity sha512-nicjAINcxAGuED5VhaZ9uZLEiZgt7gxREaELuq0crcwVSgZTMX1rRK0/bvRHdupBtDNfcLg4H10nHe6Uu9yevA==
+  dependencies:
+    agora-rtc-react "^1.1.0"
+    typedoc-plugin-missing-exports "^0.22.6"
+
+agora-rtc-react@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/agora-rtc-react/-/agora-rtc-react-1.1.0.tgz#be8adbdd9f8716921cf434205fd0dcc8c321295f"
+  integrity sha512-+cvK3gXcUC2FzXkrN9L/nE5B6FqgP2w7fWid5wpsdtzmBMf/gehzN1cDhMSDz2oI3Jq/9zo9R4iVswPx+QtAGA==
+  dependencies:
+    agora-rtc-sdk-ng "^4.3.0"
+
+agora-rtc-sdk-ng@^4.3.0:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/agora-rtc-sdk-ng/-/agora-rtc-sdk-ng-4.9.1.tgz#0c651353222a41dc44e3a6f9ec3bcfb679c8fd1a"
+  integrity sha512-Jogn3TQC7VdA7uZjGYmaAs0XzgYBgGs6nGA67/dQVjqC7kiwAfkQsAuvbevE/qxrVJmLfqtDTNxP40IFvnTlgQ==
+
 ajv@^6.10.0, ajv@^6.12.4:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
@@ -4435,6 +4455,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typedoc-plugin-missing-exports@^0.22.6:
+  version "0.22.6"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-missing-exports/-/typedoc-plugin-missing-exports-0.22.6.tgz#7467c60f1cd26507124103f0b9bca271d5aa8d71"
+  integrity sha512-1uguGQqa+c5f33nWS3v1mm0uAx4Ii1lw4Kx2zQksmYFKNEWTmrmMXbMNBoBg4wu0p4dFCNC7JIWPoRzpNS6pFA==
 
 typescript@^4.5.5:
   version "4.5.5"
