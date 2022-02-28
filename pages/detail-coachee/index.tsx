@@ -3,11 +3,10 @@ import Link from 'next/link'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { Sticky } from 'react-bootstrap-icons'
 
 // components
 import { Layout } from 'components/organisms/Layout'
-import { CardNote } from 'components/atoms/CardNote'
+import { Notes } from 'components/molecules/Notes'
 import { CardHistory } from 'components/molecules/CardHistory'
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
 
@@ -76,14 +75,8 @@ const DetailCoachee: NextPage = () => (
           </Container>
         </Col>
         <Col md={12} lg={3}>
-          <Container className={classes.section_notes}>
-            <h5 className='mb-4'>
-              <Sticky className={`me-2 ${classes.icon}`} />
-              Notas
-            </h5>
-            {[0, 1, 2].map((item) => (
-              <CardNote key={item} />
-            ))}
+          <Container className={`justify-content-start  ${classes.section}`}>
+            <Notes/>
           </Container>
         </Col>
       </Row>
