@@ -1,0 +1,12 @@
+query GetCoacheeDashboardContent($locale: I18NLocaleCode) {
+  coacheeDashboard(locale: $locale) {
+    data {
+      attributes {
+        completeGoalsTitle
+        tasksProgressLabel
+        recommendedContentLabel
+        completeGoalDesc
+      }
+    }
+  }
+}

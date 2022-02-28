@@ -16,13 +16,15 @@ import { FC } from 'react'
 import { SubmitType } from 'types'
 
 type FilterProps = {
-  refetch: (ev: any) => void
+  placeholder: string
   postCategories: string[]
+  refetch: (ev: any) => void
   defaultCategory: string | string[]
 }
 
 export const Filter: FC<FilterProps> = ({
   refetch,
+  placeholder,
   postCategories,
   defaultCategory,
 }) => {
@@ -65,7 +67,7 @@ export const Filter: FC<FilterProps> = ({
           <InputText
             type='search'
             value={searcher}
-            placeholder='Search'
+            placeholder={placeholder}
             className={classes.input}
             onChange={(ev) => setSearcher(ev.target.value)}
           />

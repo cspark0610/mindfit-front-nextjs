@@ -1,0 +1,13 @@
+query GetCoacheeDashboardContent($locale: I18NLocaleCode) {
+  digitalLibrary(locale: $locale) {
+    data {
+      attributes {
+        title
+        emptyLabel
+        searchInput {
+          placeholder
+        }
+      }
+    }
+  }
+}
