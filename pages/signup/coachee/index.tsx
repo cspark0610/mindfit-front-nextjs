@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
-import CREATE_PASS_CONTENT from 'lib/strapi/queries/Colaborator/createPassContent.gql'
+import CREATE_PASS_CONTENT from 'lib/strapi/queries/Coachee/createPassContent.gql'
 
 // utils
 import { microServices } from 'commons'

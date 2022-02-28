@@ -1,0 +1,28 @@
+query GetCoachDashboardContent($locale: I18NLocaleCode) {
+  coachDashboard(locale: $locale) {
+    data {
+      attributes {
+        allCoacheesLabel
+        allTabLabel
+        summaryTabLabel
+        summaryCategories {
+          label
+          value
+        }
+        coacheeCard {
+          data {
+            attributes {
+              accordingToLabel
+              organizationLabel
+              signupFromLabel
+              coacheeFromLabel
+              messageButton {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

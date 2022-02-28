@@ -13,7 +13,7 @@ import classes from 'styles/CoachObjectives/coachObjectives.module.scss'
 // Type
 import { FC } from 'react'
 
-export const CoachObjectives: FC = () => {
+export const CoachObjectives: FC<{ content: any }> = ({ content }) => {
   const data = [
     {
       category: 'Communication',
@@ -65,20 +65,22 @@ export const CoachObjectives: FC = () => {
   return (
     <Container className='mt-5 mt-lg-0'>
       <p className={`mb-2 fs-5 fw-bold ${classes.subtitle}`}>
-        You met your goals!
+        {content.completeGoalsTitle}
       </p>
-      <p className={`fs-6 fw-bold mb-0 ${classes.paragraph}`}>Keep it up!</p>
-      <p className={`mb-4 fs-6 ${classes.paragraph}`}>
-        Accomplishing these tasks will help you develop the changes you need to
-        improve your productivity. to improve your productivity
-      </p>
+      <div
+        className={classes.paragraph}
+        dangerouslySetInnerHTML={{ __html: content.completeGoalDesc }}
+      />
       <p className={`mb-3 fs-5 fw-bold ${classes.subtitle}`}>
-        Tasks accomplished
+        {content.tasksProgressLabel}
       </p>
       <Container>
         <Row className='justify-content-between'>
-          {data.map((activity) => (
-            <CoachObjectivesItem key={activity.category} {...activity} />
+          {data.map((activity, idx) => (
+            <CoachObjectivesItem
+              key={`${activity.category}-${idx}`}
+              {...activity}
+            />
           ))}
         </Row>
       </Container>

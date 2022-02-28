@@ -49,8 +49,8 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
           <Container className={classes.section}>
             <div className='text-center'>
               <Image
-                width={182}
-                height={182}
+                width={120}
+                height={120}
                 alt='avatar'
                 layout='intrinsic'
                 className={classes.img}

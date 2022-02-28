@@ -15,6 +15,7 @@ import { Filter } from 'components/organisms/Library/filter'
 import { useQuery } from '@apollo/client'
 import { initializeApolloClient } from 'lib/apollo'
 import GET_LISTS_OF_POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
+import GET_CONTENT from 'lib/strapi/queries/Library/page.gql'
 
 // commons
 import { microServices } from 'commons'
@@ -27,6 +28,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
 const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  content,
   defaultCategory,
   postsCategories,
 }) => {
@@ -43,10 +45,11 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Layout>
       <Container className={classes.container}>
         <section className={classes.section}>
-          <h1 className={classes.title}>Digital Library</h1>
+          <h1 className={classes.title}>{content.title}</h1>
           <Filter
-            defaultCategory={defaultCategory}
             postCategories={postsCategories}
+            defaultCategory={defaultCategory}
+            placeholder={content.searchInput.placeholder}
             refetch={(data) => refetch({ filters: data })}
           />
           <Row>
@@ -58,7 +61,7 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   </Col>
                 ))
               ) : (
-                <h6>There are no related articles</h6>
+                <h6>{content.emptyLabel}</h6>
               )
             ) : (
               <Spinner animation='border' />
@@ -75,6 +78,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: GET_LISTS_OF_POSTS,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+  const { data: content } = await apolloClient.query({
+    query: GET_CONTENT,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
@@ -99,6 +107,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       postsCategories: postsCategories.filter(
         (item: any, idx: number) => postsCategories.indexOf(item) === idx
       ),
+      content: content.digitalLibrary.data.attributes,
     },
   }
 }

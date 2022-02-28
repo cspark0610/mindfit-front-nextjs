@@ -12,7 +12,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_STEPS_CONTENT from 'lib/strapi/queries/Colaborator/stepsContent.gql'
+import GET_STEPS_CONTENT from 'lib/strapi/queries/Coachee/stepsContent.gql'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 
 // utils

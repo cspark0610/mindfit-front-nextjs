@@ -23,7 +23,7 @@ import { Skeleton } from 'primereact/skeleton'
 // Types
 import { FC } from 'react'
 
-export const RecommendedContentList: FC = () => {
+export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
   const { locale } = useRouter()
 
   const { data, loading } = useQuery(POSTS, {
@@ -33,7 +33,7 @@ export const RecommendedContentList: FC = () => {
 
   return (
     <div>
-      <p className={classes.section_title}>Recommended contents</p>
+      <p className={classes.section_title}>{content.recommendedContentLabel}</p>
       <Container fluid>
         <Row>
           {loading

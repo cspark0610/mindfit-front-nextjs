@@ -16,7 +16,7 @@ import classes from 'styles/coachDashboard/page.module.scss'
 import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
 
-export const AllCoachees: FC = () => {
+export const AllCoachees: FC<{ content: any }> = ({ content }) => {
   const coachees: CoacheeDataType[] = [
     {
       id: 0,
@@ -80,7 +80,7 @@ export const AllCoachees: FC = () => {
               src='/assets/images/avatar.png'
             />
             <p className={classes.name}>{coachee.user?.name}</p>
-            <p className='fw-bold'>Perfil según SAT</p>
+            <p className='fw-bold'>{content.accordingToLabel} SAT</p>
             <Row className='justify-content-center'>
               <Col xs={9}>
                 {coachee.coachingAreas?.map((area) => (
@@ -98,16 +98,16 @@ export const AllCoachees: FC = () => {
             <Row className='my-3'>
               {coachee.organization && (
                 <Col xs={12} className={classes.info}>
-                  <Diagram2 /> <span>Organización</span>
+                  <Diagram2 /> <span>{content.organizationLabel}</span>
                   <p>{coachee.organization.name}</p>
                 </Col>
               )}
               <Col xs={12} className={classes.info}>
-                <CalendarEvent /> <span>Fecha de registro</span>
+                <CalendarEvent /> <span>{content.signupFromLabel}</span>
                 <p>5/12/2021</p>
               </Col>
               <Col xs={12} className={classes.info}>
-                <CalendarEvent /> <span>Coachee desde</span>
+                <CalendarEvent /> <span>{content.coacheeFromLabel}</span>
                 <p>5/01/2022</p>
               </Col>
             </Row>
@@ -121,7 +121,7 @@ export const AllCoachees: FC = () => {
               <Col xs={5}>
                 <Button className={classes.button}>
                   <Send />
-                  <p>Bandeja</p>
+                  <p>{content.messageButton.label}</p>
                 </Button>
               </Col>
             </Row>
