@@ -48,7 +48,6 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   const apollo = createApolloClient(session?.token)
-
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
 
   if (session?.user.role === userRoles.COACHEE)
@@ -79,7 +78,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-
   const { data: contentPass } = await apolloClient.query({
     query: CHANGE_PASSWORD_CONTENT,
     variables: { locale: ctx.locale },

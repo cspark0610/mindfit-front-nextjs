@@ -12,6 +12,12 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { microServices } from 'commons'
+
+// gql
+import { useMutation } from '@apollo/client'
+import UPDATE_COACH from 'lib/mutations/Coach/updateCoach.gql'
+import UPDATE_USER from 'lib/mutations/User/update.gql'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -28,8 +34,16 @@ type CoachProfileProps = {
 }
 
 export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
+  const [loading, setLoading] = useState(false)
   const [coachData, setCoachData] = useState(coach)
   const [passwordShow, setPasswordShow] = useState(false)
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    context: { ms: microServices.backend },
+  })
+  const [updateCoach] = useMutation(UPDATE_COACH, {
+    context: { ms: microServices.backend },
+  })
 
   const handleChangeUser = (ev: ChangeType) =>
     setCoachData({
@@ -40,6 +54,27 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const handleChangeCoach = (
     ev: ChangeType | ChangeEvent<HTMLTextAreaElement>
   ) => setCoachData({ ...coachData, [ev.target.name]: ev.target.value })
+
+  const handleSave = async () => {
+    setLoading(true)
+    const { user, ...updatecoachData } = coachData
+    await updateUser({
+      variables: {
+        id: user?.sub,
+        data: { name: user?.name, email: user?.email },
+      },
+    })
+    await updateCoach({
+      variables: {
+        id: user?.coach?.id,
+        data: {
+          videoPresentation: updatecoachData.videoPresentation,
+          bio: updatecoachData.bio,
+        },
+      },
+    })
+    setLoading(false)
+  }
 
   return (
     <>
@@ -93,12 +128,13 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
               </p>
             </Col>
             <Row className='justify-content-end'>
-              <Col xs='auto'>
-                <Button className={classes.button}>
-                  {/* <Spinner animation='border' color='primary' /> */}
-                  {content.userProfile.saveButton.label}
-                </Button>
-              </Col>
+              <Button onClick={handleSave} className={classes.button}>
+                {loading ? (
+                  <Spinner animation='border' color='primary' />
+                ) : (
+                  content.userProfile.saveButton.label
+                )}
+              </Button>
             </Row>
           </Row>
           <ExploreBadge />

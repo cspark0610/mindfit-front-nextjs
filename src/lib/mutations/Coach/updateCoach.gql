@@ -1,0 +1,5 @@
+mutation updateCoach($id: Float!, $data: EditCoachDto! ) {
+  updateCoach(id: $id ,data: $data) {
+    id
+  }
+}
