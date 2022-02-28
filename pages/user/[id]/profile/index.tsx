@@ -11,11 +11,13 @@ import { CoacheeProfile } from 'components/organisms/Profile/coacheeProfile'
 
 // commons
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
@@ -24,6 +26,7 @@ import classes from 'styles/signup/org.module.scss'
 
 // types
 import { GetSSPropsType } from 'types'
+import { CoachDataType } from 'types/models/Coach'
 import { CoacheeDataType } from 'types/models/Coachee'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
@@ -36,7 +39,7 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Container className={classes.container}>
       <Container fluid className={classes.section}>
         {coachee && <CoacheeProfile coachee={coachee} content={content} />}
-        {coach && <CoachProfile />}
+        {coach && <CoachProfile coach={coach} content={content} />}
       </Container>
     </Container>
   </Layout>
@@ -44,13 +47,31 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-
   const apollo = createApolloClient(session?.token)
-  const { data } = await apollo.query({
-    query: GET_COACHEE_BY_ID,
-    context: { ms: microServices.backend },
-    variables: { id: session?.user.coachee?.id },
-  })
+
+  const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
+
+  if (session?.user.role === userRoles.COACHEE)
+    apollo
+      .query({
+        query: GET_COACHEE_BY_ID,
+        context: { ms: microServices.backend },
+        variables: { id: session?.user.coachee?.id },
+      })
+      .then(
+        ({ data }) =>
+          (userData.coachee = data.findCoacheeById as CoacheeDataType)
+      )
+  if (session?.user.role === userRoles.COACH)
+    apollo
+      .query({
+        query: GET_COACH_BY_ID,
+        context: { ms: microServices.backend },
+        variables: { id: session?.user.coach?.id },
+      })
+      .then(
+        ({ data }) => (userData.coach = data.findCoachById as CoachDataType)
+      )
 
   const apolloClient = initializeApolloClient()
   const { data: content } = await apolloClient.query({
@@ -67,11 +88,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      coachee: {
-        ...(data.findCoacheeById as CoacheeDataType),
-        user: session?.user,
-      },
-      coach: null,
+      coachee: userData.coachee
+        ? { ...userData.coachee, user: session?.user }
+        : null,
+      coach: userData.coach ? { ...userData.coach, user: session?.user } : null,
       content: {
         userProfile: content.userProfile.data.attributes,
         changePassword: contentPass.changePassword.data.attributes,
