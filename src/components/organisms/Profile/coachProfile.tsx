@@ -1,5 +1,6 @@
 // main tools
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 // bootstrap components
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
@@ -12,8 +13,18 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
+// gql
+import { useMutation } from '@apollo/client'
+import UPDATE_COACH from 'lib/mutations/Coach/updateCoach.gql'
+import UPDATE_USER from 'lib/mutations/User/update.gql'
+
 // utils
-import { INITIAL_STATE } from 'utils/Profile/coachProfile'
+import {
+  initialStateCoach,
+  initialStateUser,
+  saveData,
+  validateCoachProfile,
+} from 'utils/Profile/coachProfile'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -22,26 +33,58 @@ import classes from 'styles/Profile/profile.module.scss'
 import { FC } from 'react'
 import { ChangeType } from 'types'
 import { CoachDataType } from 'types/models/Coach'
+import { UserDataType } from 'types/models/User'
 
-export const CoachProfile: FC = () => {
-  const [userData, setUserData] = useState<CoachDataType>(INITIAL_STATE)
+export const CoachProfile: FC<{
+  data: CoachDataType
+}> = ({ data }) => {
+  const [coachData, setCoachData] = useState<CoachDataType>(initialStateCoach(data))
+  const [userData, setUserData] = useState<UserDataType>(initialStateUser(data.user))
   const [passwordShow, setPasswordShow] = useState(false)
+  const [validate, setValidate] = useState(false)
+  const [NewCoachData] = useMutation(UPDATE_COACH)
+  const [NewUserData] = useMutation(UPDATE_USER)
+  const session = useSession()
+
+  const getValidate = () => setValidate(validateCoachProfile(coachData, userData))
+
+  const handleChangeCoach = (
+    ev: ChangeType | ChangeEvent<HTMLTextAreaElement>
+  ) => setCoachData({ ...coachData, [ev.target.name]: ev.target.value })
 
   const handleChangeUser = (
     ev: ChangeType | ChangeEvent<HTMLTextAreaElement>
   ) => setUserData({ ...userData, [ev.target.name]: ev.target.value })
 
+
+  const save = async () => {
+    const { succes } = await saveData(session.data, coachData, userData, NewUserData, NewCoachData)
+    if (succes) {
+      setValidate(false)
+    }
+  }
+
+  useEffect(() => {
+    const coachData_str = JSON.stringify(coachData)
+    const initial_str = JSON.stringify(initialStateCoach(data))
+    if (coachData_str == initial_str) {
+      setValidate(false)
+    } else {
+      getValidate()
+    }
+  }, [coachData])
+
   return (
     <>
       <section className={classes.container}>
         <h1 className={classes.title}>Perfil de usuario</h1>
-        <UploadPicture setData={setUserData} />
+        <UploadPicture setData={setCoachData} />
         <Container fluid>
           <Row className={classes.row}>
             <Col xs={12}>
               <InputText
                 name='name'
-                value={userData.user?.name}
+                value={userData.name}
                 onChange={handleChangeUser}
                 placeholder='User name'
                 className={classes.input}
@@ -51,7 +94,7 @@ export const CoachProfile: FC = () => {
               <InputText
                 disabled
                 name='email'
-                value={userData.user?.email}
+                value={userData.email}
                 placeholder='Email'
                 className={classes.input}
               />
@@ -59,8 +102,8 @@ export const CoachProfile: FC = () => {
             <Col xs={12}>
               <InputText
                 name='videoPresentation'
-                value={userData.videoPresentation}
-                onChange={handleChangeUser}
+                value={coachData.videoPresentation}
+                onChange={handleChangeCoach}
                 placeholder='video de Presentación'
                 className={classes.input}
               />
@@ -69,8 +112,8 @@ export const CoachProfile: FC = () => {
               <InputTextarea
                 rows={8}
                 name='bio'
-                value={userData.bio}
-                onChange={handleChangeUser}
+                value={coachData.bio}
+                onChange={handleChangeCoach}
                 placeholder='Biografía'
                 className={classes.textarea}
               />
@@ -84,7 +127,12 @@ export const CoachProfile: FC = () => {
             </Col>
             <Row className='justify-content-end'>
               <Col xs='auto'>
-                <Button className={classes.button}>Guardar</Button>
+                <Button
+                  className={classes.button}
+                  onClick={() => save()}
+                  disabled={!validate}>
+                  Guardar
+                </Button>
               </Col>
             </Row>
           </Row>

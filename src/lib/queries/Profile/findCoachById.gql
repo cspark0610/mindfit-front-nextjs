@@ -1,0 +1,11 @@
+query coachProfile($id: Int!) {
+  findCoachById(id:$id){
+    bio
+    profilePicture
+    videoPresentation
+    user {
+      name
+      email
+    }
+  }
+}
