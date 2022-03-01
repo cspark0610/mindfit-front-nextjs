@@ -19,13 +19,13 @@ import { NextPage } from 'next'
 const DetailCoachee: NextPage = () => (
   <Layout>
     <Container>
-      <Row className='mt-4'>
-        <Col md={6} lg={3}>
+      <Row>
+        <Col md={6} lg={3} className='pt-4'>
           <Container className={classes.section}>
             <CoacheeProfileCard />
           </Container>
         </Col>
-        <Col md={6}>
+        <Col md={6} className='pt-4'>
           <Container className={classes.section}>
             <Row>
               <h5 className={`mb-4 ${classes.title}`}>
@@ -74,16 +74,16 @@ const DetailCoachee: NextPage = () => (
             </Row>
           </Container>
         </Col>
-        <Col md={12} lg={3}>
+        <Col md={12} lg={3} className='pt-4'>
           <Container className={`justify-content-start  ${classes.section}`}>
             <Notes/>
           </Container>
         </Col>
       </Row>
-      <Row className='mt-4 pb-4'>
-        <h3 className={`mb-4 ${classes.title}`}>Historial</h3>
+      <Row className='pt-4 pb-4'>
+        <h3 className={classes.title}>Historial</h3>
         {[0, 1, 2, 3].map((item) => (
-          <Col xs={6} lg={3} key={item}>
+          <Col xs={6} lg={3} key={item} className='mt-4'>
             <CardHistory />
           </Col>
         ))}

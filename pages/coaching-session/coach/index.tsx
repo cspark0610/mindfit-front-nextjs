@@ -3,13 +3,13 @@ import Link from 'next/link'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { StarFill, Sticky } from 'react-bootstrap-icons'
+import { StarFill } from 'react-bootstrap-icons'
 
 // components
 import { Layout } from 'components/organisms/Layout'
-import { CardNote } from 'components/atoms/CardNote'
 import { SumaryResult } from 'components/atoms/SumaryResult'
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
+import { Notes } from 'components/molecules/Notes'
 
 // styles
 import classes from 'styles/CoachSession/coachSession.module.scss'
@@ -51,16 +51,8 @@ const CoachSession: NextPage = () => (
           </Container>
         </Col>
         <Col md={12} lg={3}>
-          <Container className={classes.section}>
-            <Row className={classes.row}>
-              <h5 className={classes.title}>
-                <Sticky className={classes.icon} />
-                Notas
-              </h5>
-              {[0, 1, 2].map((item, idx) => (
-                <CardNote key={idx} />
-              ))}
-            </Row>
+          <Container className={`justify-content-start  ${classes.section}`}>
+            <Notes/>
           </Container>
           <Container className={classes.section}>
             <Row className={classes.row}>
