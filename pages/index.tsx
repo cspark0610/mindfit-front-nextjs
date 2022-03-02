@@ -31,11 +31,11 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   return (
     <Container className={classes.container}>
       <Image
-        src='/assets/icon/MINDFIT.svg'
-        alt='Mindfit Logo'
         width={420}
         height={250}
+        alt='Mindfit Logo'
         layout='intrinsic'
+        src='/assets/icon/MINDFIT.svg'
       />
       {toggleView ? (
         <ForgottenPassword setToggleView={setToggleView} content={content} />

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 // Components
+import { AlertText } from 'components/atoms/AlertText'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
-import { AlertText } from 'components/atoms/AlertText'
 
 // prime components
 import { Password } from 'primereact/password'
@@ -18,7 +18,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { microServices, regex } from 'commons'
 
 // Styles
-import classes from 'styles/Login/ChangePassword/changePassword.module.scss'
+import classes from 'styles/Login/page.module.scss'
 
 // Types
 import { NextPage, GetServerSidePropsContext } from 'next'
@@ -34,9 +34,9 @@ import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 import { resetPasswordValidation } from 'utils/resetPasswordValidation'
 
 const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
+  hash,
   content,
   suggestionsContent,
-  hash,
 }) => {
   // state declarations
   const [password, setPassword] = useState({
@@ -67,53 +67,50 @@ const ChangePassword: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   }
 
   return (
-    <Container className={classes.pageContainer}>
+    <Container className={classes.container}>
       <Image
-        src='/assets/icon/MINDFIT.svg'
-        alt='Mindfit Logo'
         width={420}
         height={250}
+        alt='Mindfit Logo'
         layout='intrinsic'
+        src='/assets/icon/MINDFIT.svg'
       />
-      <Row className={classes.container}>
-        <Col xs={12} className='d-flex justify-content-center'>
-          <form
-            onSubmit={handleSubmit}
-            className={`${classes.card} ${classes.section}`}>
-            <p className={`mb-4 ${classes.textDescription}`}>{content.title}</p>
+      <Row className={classes.form}>
+        <Col sm={9}>
+          <form onSubmit={handleSubmit} className={classes.section}>
+            <p className={`mb-4 ${classes.label}`}>{content.title}</p>
             <Row>
-              {console.log(suggestionsContent)}
               <Password
                 toggleMask
                 name='password'
+                className='mb-4 px-0'
                 onChange={handleChange}
-                className={`mb-4 px-0 `}
-                promptLabel={suggestionsContent.promptLabel}
                 value={password.password}
-                weakLabel={suggestionsContent.weakLabel}
-                strongLabel={suggestionsContent.strongLabel}
-                mediumRegex={regex.minSize.source}
                 inputClassName={classes.input}
+                mediumRegex={regex.minSize.source}
+                weakLabel={suggestionsContent.weakLabel}
+                promptLabel={suggestionsContent.promptLabel}
+                strongLabel={suggestionsContent.strongLabel}
+                placeholder={content.passwordInput.placeholder}
+                mediumLabel={suggestionsContent.fillFieldsLabel}
+                strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
                 footer={(ev) =>
                   passwordSuggestionsTemplate({
                     value: ev.value as string,
                     suggestionsContent,
                   })
                 }
-                mediumLabel={suggestionsContent.fillFieldsLabel}
-                placeholder={content.passwordInput.placeholder}
-                strongRegex={`^((${regex.hasLetters.source}${regex.hasSpecials.source})|(${regex.hasNumbers.source}${regex.hasSpecials.source}))(${regex.minSize.source})`}
               />
             </Row>
             <Row>
               <Password
                 toggleMask
-                feedback={false}
                 className='px-0'
+                feedback={false}
                 name='confirmPassword'
                 onChange={handleChange}
-                value={password.confirmPassword}
                 inputClassName={classes.input}
+                value={password.confirmPassword}
                 placeholder={content.confirmPasswordInput.placeholder}
               />
             </Row>

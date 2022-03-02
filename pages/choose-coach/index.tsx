@@ -1,14 +1,22 @@
 // main tools
+import { getSession } from 'next-auth/react'
 import { useState } from 'react'
 import Image from 'next/image'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
 
+// prime components
+import { Carousel } from 'primereact/carousel'
+
+// animated components
+import { RowMotion } from 'components/atoms/AnimateComponents'
+import { viewportFadeIn } from 'commons/animations'
+
 // gql
-import { useQuery, useMutation } from '@apollo/client'
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
+import { useQuery, useMutation } from '@apollo/client'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
 import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachees/rejectSuggestedCoaches.gql'
@@ -19,51 +27,34 @@ import { microServices } from 'commons'
 import { coacheeRegistrationStatus } from 'utils/enums'
 
 //components
-import { CoachCard } from 'components/molecules/CoachCard'
 import { Layout } from 'components/organisms/Layout'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
-import { CoachSearchFeedback } from 'components/molecules/CoachSearchFeedback'
-import { ChooseCoachSkeleton } from 'components/molecules/Skeletons/ChooseCoachSkeleton'
+import { ChooseCoachCard } from 'components/organisms/ChooseCoach/ChooseCoachCard'
+import { ChooseCoachSkeleton } from 'components/organisms/ChooseCoach/ChooseCoachSkeleton'
+import { CoachSearchFeedback } from 'components/organisms/ChooseCoach/CoachSearchFeedback'
 
 //styles
-import classes from 'styles/ChooseCoach/chooseCoach.module.scss'
+import classes from 'styles/ChooseCoach/page.module.scss'
 
 //types
-import { NextPage, GetServerSidePropsContext } from 'next'
-import { CoachDataType } from 'types/models/Coach'
 import { GetSSPropsType } from 'types'
-
-import { Carousel } from 'primereact/carousel'
-import { getSession } from 'next-auth/react'
+import { CoachDataType } from 'types/models/Coach'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { NextPage, GetServerSidePropsContext } from 'next'
 
 const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
   //States
-  const [coaches, setCoaches] = useState<CoachDataType[]>([])
-  const [suggestedCoachesId, setSuggestedCoachesId] = useState<number>(NaN)
   const [showedCoachs, setShowedCoachs] = useState(2)
+  const [coaches, setCoaches] = useState<CoachDataType[]>([])
   const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [showMaxSuggestions, setShowMaxSuggestions] = useState(false)
+  const [suggestedCoachesId, setSuggestedCoachesId] = useState<number>(NaN)
   const responsiveOptions = [
     { breakpoint: '1200px', numVisible: 2, numScroll: 2 },
     { breakpoint: '850px', numVisible: 1, numScroll: 1 },
   ]
-
-  const { loading, refetch } = useQuery(GET_SUGGESTED_COACHES, {
-    context: { ms: microServices.backend },
-    onCompleted: (data) => {
-      setCoaches(data.getRandomSuggestedCoaches.coaches)
-      setSuggestedCoachesId(data.getRandomSuggestedCoaches.id)
-    },
-    onError: () => setShowMaxSuggestions(true),
-  })
-
-  const [RejectSuggestedCoaches] = useMutation(REJECT_SUGGESTED_COACHES, {
-    context: { ms: microServices.backend },
-    onCompleted: () => refetch(),
-  })
 
   //form state handlers
   const handleOpenFeedBackForm = () => setShowFeedbackForm(true)
@@ -80,8 +71,22 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     }
   }
 
+  const { loading, refetch } = useQuery(GET_SUGGESTED_COACHES, {
+    context: { ms: microServices.backend },
+    onCompleted: (data) => {
+      setCoaches(data.getRandomSuggestedCoaches.coaches)
+      setSuggestedCoachesId(data.getRandomSuggestedCoaches.id)
+    },
+    onError: () => setShowMaxSuggestions(true),
+  })
+
+  const [RejectSuggestedCoaches] = useMutation(REJECT_SUGGESTED_COACHES, {
+    onCompleted: () => refetch(),
+    context: { ms: microServices.backend },
+  })
+
   const coachsTemplate = (coach: CoachDataType) => (
-    <CoachCard
+    <ChooseCoachCard
       data={coach}
       content={content}
       suggestedCoachId={suggestedCoachesId}
@@ -90,22 +95,20 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   return (
     <Layout>
-      <Container className={classes.container}>
+      <Container className={classes.section}>
         {showMaxSuggestions ? (
-          <Row className='justify-content-center'>
-            <Col className='text-center' sm={6}>
-              <Image
-                width={420}
-                height={250}
-                layout='intrinsic'
-                alt='Mindfit Logo'
-                src='/assets/icon/MINDFIT.svg'
-              />
-              <h1>Contacte a soporte</h1>
-            </Col>
-          </Row>
+          <RowMotion {...viewportFadeIn} className='justify-content-center'>
+            <Image
+              width={420}
+              height={250}
+              alt='Mindfit Logo'
+              layout='intrinsic'
+              src='/assets/icon/MINDFIT.svg'
+            />
+            <h1 className={classes.title}>Contacte a soporte</h1>
+          </RowMotion>
         ) : showFeedbackForm ? (
-          <Row className='justify-content-center'>
+          <RowMotion {...viewportFadeIn} className='justify-content-center'>
             <Col md={9}>
               <CoachSearchFeedback
                 content={content}
@@ -113,13 +116,13 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 cancel={handleCloseFeedBackForm}
               />
             </Col>
-          </Row>
+          </RowMotion>
         ) : loading ? (
           <ChooseCoachSkeleton />
         ) : (
           <>
             <h1 className={classes.title}>{content.title}</h1>
-            <Row className='justify-content-center'>
+            <RowMotion {...viewportFadeIn} className='justify-content-center'>
               <Col xs={12}>
                 <Carousel
                   numScroll={1}
@@ -127,10 +130,10 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   value={coaches}
                   itemTemplate={coachsTemplate}
                   responsiveOptions={responsiveOptions}
-                  indicatorsContentClassName={classes.carousel_point}
+                  indicatorsContentClassName={classes.points}
                 />
               </Col>
-            </Row>
+            </RowMotion>
             <Row>
               {showedCoachs < 8 && (
                 <Button

@@ -1,8 +1,9 @@
 // Main tools
-import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
+import { useState, useEffect } from 'react'
 
 // Components
+import { AlertText } from 'components/atoms/AlertText'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { passwordSuggestionsTemplate } from 'components/atoms/PasswordSuggestionsTemplate'
 
@@ -16,12 +17,11 @@ import { Password } from 'primereact/password'
 import { regex, regexValidation } from 'commons'
 
 //Styles
-import classes from 'styles/Login/LoginCard/loginCard.module.scss'
+import classes from 'styles/signup/coachee.module.scss'
 
 // Types
-import { ChangeType, SubmitType } from 'types'
 import { FC } from 'react'
-import { AlertText } from 'components/atoms/AlertText'
+import { ChangeType, SubmitType } from 'types'
 
 type FirstColaboratorLoginProps = {
   hash: string
@@ -64,11 +64,9 @@ export const FirstColaboratorLogin: FC<FirstColaboratorLoginProps> = ({
   }, [hash])
 
   return (
-    <Row className={classes.container}>
-      <Col xs={12} className='d-flex justify-content-center'>
-        <form
-          onSubmit={handleSubmit}
-          className={`${classes.card} ${classes.section}`}>
+    <Row className={classes.form}>
+      <Col sm={9}>
+        <form onSubmit={handleSubmit} className={classes.section}>
           <Row>
             <Password
               toggleMask
