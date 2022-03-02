@@ -1,0 +1,16 @@
+@import '../UI/Card/AppCard.module.scss';
+
+.value {
+  color: $primary;
+}
+.section {
+  padding: 40px;
+  border-color: $primary ;
+  background-color: $lightBlue;
+  .icon {
+    color: $white;
+    font-size: 28px;
+    border-radius: 50%;
+    padding: 20px;
+  }
+}
