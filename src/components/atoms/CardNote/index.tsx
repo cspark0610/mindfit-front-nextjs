@@ -10,18 +10,19 @@ import classes from 'styles/CardNote/cardNote.module.scss'
 // types
 import { FC } from 'react'
 
-export const CardNote: FC = () => {
+export const CardNote: FC<{note:string}> = ({note}) => {
   return (
     <Container className={`mb-3 ${classes.section}`}>
       <Row xs='auto' className={classes.date}>
         <p>10/12/21</p>
         <p>09:30 AM</p>
       </Row>
-      <Row>
-        <p className={classes.paragraph}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor
-        </p>
+      <Row
+        className={classes.paragraph}
+        >
+        <div dangerouslySetInnerHTML={{
+          __html: note,
+        }}/>
         <Link href='/'>
           <a>Ver mas...</a>
         </Link>

@@ -1,0 +1,13 @@
+@import '../variables.scss';
+@import '../UI/Datatable/datatable.module.scss';
+@import '../UI/Button/button.module.scss';
+
+.pause {
+  color: $secondary;
+}
+.remove {
+  color: $danger;
+}
+.edit {
+  color: $lightPrimary;
+}
