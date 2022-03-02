@@ -1,0 +1,26 @@
+@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
+
+.chart {
+  position: relative;
+  &_info {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+.value {
+  color: $primary;
+}
+.icon {
+  color: $white;
+  border-radius: 50%;
+  padding: 10px;
+}
+.contentbar {
+  border-radius: 10px;
+  background-color: $lightGray;
+  .bar {
+    border-radius: 10px;
+  }
+}
