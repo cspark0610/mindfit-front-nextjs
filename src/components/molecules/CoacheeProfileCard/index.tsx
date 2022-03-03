@@ -14,11 +14,13 @@ import classes from 'styles/CoacheeProfileCard/coacheeProfileCard.module.scss'
 import { FC } from 'react'
 import { Diagram2, EmojiSmile } from 'react-bootstrap-icons'
 
-export const CoacheeProfileCard: FC = () => {
+export const CoacheeProfileCard: FC<{ showButton: boolean }> = ({
+  showButton,
+}) => {
   return (
     <>
-      <Row className={classes.card}>
-        <div className='text-center mb-4'>
+      <Col className={classes.card}>
+        <div className='text-center'>
           <Image
             width={100}
             height={100}
@@ -27,11 +29,11 @@ export const CoacheeProfileCard: FC = () => {
             src='/assets/images/userAvatar.svg'
           />
         </div>
-        <div className={`text-center mb-4 ${classes.description_container}`}>
-          <h3 className='fs-5 fw-bold'>Nestor García</h3>
+        <div className={`text-center mt-4 ${classes.description}`}>
+          <h3 className='fs-5 fw-bold mb-0'>Nestor García</h3>
         </div>
-        <h3 className='text-center fs-5 mb-4'>perfil segun SAT</h3>
-        <div className='text-center mb-5'>
+        <h3 className='text-center fs-5 mt-4'>perfil segun SAT</h3>
+        <div className='text-center mt-5'>
           <Row>
             {[0, 1, 2, 3].map((item) => (
               <p key={item} className={`fw-bold ${classes.results}`}>
@@ -41,7 +43,7 @@ export const CoacheeProfileCard: FC = () => {
             ))}
           </Row>
         </div>
-        <div className='text-center mb-5'>
+        <div className='text-center mt-4'>
           <Row>
             {[0, 1, 2].map((item) => (
               <div key={item}>
@@ -54,21 +56,23 @@ export const CoacheeProfileCard: FC = () => {
             ))}
           </Row>
         </div>
-      </Row>
-      <Row>
-        <Col xs={6}>
-          <Button className={classes.button}>
-            <i className={PrimeIcons.CALENDAR} />
-            <p>10/11/21</p>
-          </Button>
-        </Col>
-        <Col xs={6}>
-          <Button className={classes.button}>
-            <i className={PrimeIcons.SEND} />
-            <p>Chat</p>
-          </Button>
-        </Col>
-      </Row>
+      </Col>
+      {showButton && (
+        <Row className='mt-5'>
+          <Col xs={6}>
+            <Button className={classes.button_small}>
+              <i className={PrimeIcons.CALENDAR} />
+              <p>10/11/21</p>
+            </Button>
+          </Col>
+          <Col xs={6}>
+            <Button className={classes.button_small}>
+              <i className={PrimeIcons.SEND} />
+              <p>Chat</p>
+            </Button>
+          </Col>
+        </Row>
+      )}
     </>
   )
 }

@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 // bootstrap components
 import { Button, Col, Modal, Row } from 'react-bootstrap'
-import { Sticky } from 'react-bootstrap-icons'
+import { Pencil, Sticky } from 'react-bootstrap-icons'
 
 // prime components
 import { PrimeIcons } from 'primereact/api'
@@ -50,12 +50,12 @@ export const Notes: FC = () => {
   return (
     <>
       <Row xs='auto' className='mb-3 justify-content-between'>
-        <h5 className='mb-4'>
-          <Sticky className={`me-2 ${classes.icon}`} />
+        <h4 className={`fw-bold ${classes.title}`}>
+          <Sticky className={`fs-3 me-2 ${classes.icon}`} />
           Notas
-        </h5>
+        </h4>
         <Button variant='light' onClick={() => setShowModal(!showModal)}>
-          <i className={`${PrimeIcons.PENCIL}  ${classes.icon}`} />
+          <Pencil className={`fs-3 ${PrimeIcons.PENCIL} ${classes.icon}`} />
         </Button>
       </Row>
       {notes.length != 0 ? (

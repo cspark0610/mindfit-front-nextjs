@@ -1,5 +1,9 @@
-@import '../variables.scss';
+//@import '../variables.scss';
 @import '../UI/Modal/appModal.module.scss';
+
+.title {
+  color: $primary;
+}
 
 .icon {
   color: $secondary;

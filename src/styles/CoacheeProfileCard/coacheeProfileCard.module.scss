@@ -1,24 +1,21 @@
-@import '../variables.scss';
-@import '../UI/Card/AppCard.module.scss';
-@import '../UI/Modal/appModal.module.scss';
+@import '../UI/Button/button.module.scss';
 
 .card {
   color: $gray;
-  .description_container {
+  .description {
     background-color: $primary;
     color: $white;
     border-radius: 20px;
-    padding: 10px 15px;
+    padding: 20px;
   }
   .results {
     color: $secondary;
   }
-  
   .profile {
     color: $lightPrimary;
   }
 }
-.button {
+.button_small {
   padding: 20px 0 0;
   background: none;
   color: $primary;
