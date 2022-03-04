@@ -1,13 +1,21 @@
 @import '../variables.scss';
-@import '../UI/Modal/appModal.module.scss';
+@import '../UI/Button/button.module.scss';
 
 .icon {
   color: $secondary;
 }
-
-.section {
-  padding: 40px;
-  .close {
-    border-bottom: none;
+.block {
+  background-color: $primary;
+  height: 20px;
+}
+.edit {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 320px;
+  text-align: end;
+  * {
+    background-color: $lightBlue !important;
+    border-radius: 0 !important;
+    border: none !important;
   }
 }

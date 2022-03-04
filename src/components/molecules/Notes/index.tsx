@@ -2,15 +2,15 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Button, Col, Modal, Row } from 'react-bootstrap'
-import { Sticky } from 'react-bootstrap-icons'
+import { Button, Row } from 'react-bootstrap'
+import { Pencil, Sticky, XSquare } from 'react-bootstrap-icons'
 
 // prime components
-import { PrimeIcons } from 'primereact/api'
-import { Editor, EditorTextChangeParams } from 'primereact/editor'
+import { EditorTextChangeParams } from 'primereact/editor'
 
 // Components
 import { CardNote } from 'components/atoms/CardNote'
+import { StyledEditor } from 'components/atoms/Editor'
 
 // styles
 import classes from 'styles/Notes/notes.module.scss'
@@ -19,32 +19,36 @@ import classes from 'styles/Notes/notes.module.scss'
 import { FC } from 'react'
 
 export const Notes: FC = () => {
-  const [showModal, setShowModal] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
   const [note, setNote] = useState('')
   const [notes, setNotes] = useState<string[]>([])
-  const [validate, setValidate] = useState(false)
+  const [id, setId] = useState<number>()
 
   const handleChangeNote = (ev: EditorTextChangeParams) => {
-    if (ev.htmlValue) {
-      setNote(ev.htmlValue)
-      setValidate(true)
-    } else setValidate(false)
+    setNote(ev.htmlValue ?? '')
   }
 
-  const addNote = () => {
-    setNotes([...notes, note])
+  const saveNote = () => {
+    if (id != undefined) {
+      notes[id] = note
+    } else {
+      setNotes([...notes, note])
+    }
+    setId(undefined)
     setNote('')
-    setShowModal(false)
+    setShowEdit(false)
   }
 
-  const renderHeader = () => {
-    return (
-      <span className={`ql-formats ${classes.header}`}>
-        <button className='ql-bold' aria-label='Bold'></button>
-        <button className='ql-italic' aria-label='Italic'></button>
-        <button className='ql-underline' aria-label='Underline'></button>
-      </span>
-    )
+  const removed = (id: number) => {
+    const newData = notes.filter((_, idx) => idx != id)
+    setNotes(newData)
+    setId(undefined)
+  }
+
+  const edit = (id: number) => {
+    setId(id)
+    setNote(notes[id])
+    setShowEdit(true)
   }
 
   return (
@@ -54,43 +58,31 @@ export const Notes: FC = () => {
           <Sticky className={`me-2 ${classes.icon}`} />
           Notas
         </h5>
-        <Button variant='light' onClick={() => setShowModal(!showModal)}>
-          <i className={`${PrimeIcons.PENCIL}  ${classes.icon}`} />
+        <Button
+          variant='light'
+          onClick={() => {
+            setNote('')
+            setShowEdit(!showEdit)
+          }}>
+          {!showEdit ? (
+            <Pencil className={classes.icon} />
+          ) : (
+            <XSquare className={classes.icon} />
+          )}
         </Button>
       </Row>
-      {notes.length != 0 ? (
-        notes.map((note: string, idx: number) => (
-          <CardNote key={idx} note={note} />
-        ))
+      {!showEdit ? (
+        <CardNote notes={notes} edit={edit} removed={removed} />
       ) : (
-        <p>No tienes notas</p>
+        <StyledEditor
+          id={id}
+          note={note}
+          readOnly={false}
+          handleChangeNote={handleChangeNote}
+          saveNote={saveNote}
+          removed={removed}
+        />
       )}
-      <Modal
-        centered
-        className={classes.modal}
-        contentClassName={classes.section}
-        show={showModal}
-        onHide={() => setShowModal(!showModal)}
-        size='lg'>
-        <Modal.Header className={classes.close} closeButton />
-        <Modal.Body>
-          <Editor
-            className='mb-3'
-            headerTemplate={renderHeader()}
-            style={{ height: '320px' }}
-            value={note}
-            placeholder='escribe tu nota aqui'
-            onTextChange={(ev) => handleChangeNote(ev)}
-          />
-          <Row className='justify-content-end'>
-            <Col xs='auto'>
-              <Button disabled={!validate}  className={classes.button} onClick={addNote}>
-                Guardar
-              </Button>
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
     </>
   )
 }
