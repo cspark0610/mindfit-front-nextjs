@@ -54,8 +54,8 @@ export const Notes: FC = () => {
   return (
     <>
       <Row xs='auto' className='mb-3 justify-content-between'>
-        <h5 className='mb-4'>
-          <Sticky className={`me-2 ${classes.icon}`} />
+        <h5 className={`fw-bold ${classes.title}`}>
+          <Sticky className={`fs-3 me-2 ${classes.icon}`} />
           Notas
         </h5>
         <Button
