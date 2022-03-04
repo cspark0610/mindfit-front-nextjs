@@ -8,7 +8,7 @@ import { PrimeIcons } from 'primereact/api'
 import { ChartDoughnut } from 'components/atoms/ChartDoughnut'
 
 // styles
-import clasess from 'styles/FocusAreas/focusAreas.module.scss'
+import clasess from 'styles/DashBoardOrg/focusAreas.module.scss'
 
 // types
 import { FC } from 'react'
@@ -41,7 +41,7 @@ export const FocusAreas: FC<ChartProps> = ({ data }) => {
           </Col>
           <Col xs={8}>
             <h5 className={`mb-3 ${clasess.value}`}>Resilencia</h5>
-            <ProgressBar className={clasess.contentbar}>
+            <ProgressBar className={clasess.progressBar}>
               <ProgressBar
                 max={6}
                 now={5.5}

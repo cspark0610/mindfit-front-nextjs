@@ -5,7 +5,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { PrimeIcons } from 'primereact/api'
 
 // styles
-import classes from 'styles/OrgDashboard/strengths.module.scss'
+import classes from 'styles/DashboardOrg/strengths.module.scss'
 
 // types
 import { FC } from 'react'

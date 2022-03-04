@@ -5,7 +5,7 @@ import { Col, ProgressBar, Row } from 'react-bootstrap'
 import { Knob } from 'primereact/knob'
 
 // styles
-import clasess from 'styles/Satisfaction/satisfaction.module.scss'
+import clasess from 'styles/DashBoardOrg/satisfaction.module.scss'
 
 // types
 import { FC } from 'react'

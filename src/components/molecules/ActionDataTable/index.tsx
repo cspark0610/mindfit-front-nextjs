@@ -2,7 +2,7 @@
 import { PauseBtn, Pencil, Trash } from 'react-bootstrap-icons'
 
 // styles
-import classes from 'styles/OrgDashboard/styledDatatable.module.scss'
+import classes from 'styles/DashboardOrg/styledDatatable.module.scss'
 
 // types
 import { FC } from 'react'
