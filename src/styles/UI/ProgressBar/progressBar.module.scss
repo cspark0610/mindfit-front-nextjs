@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+
+.progressBar {
+  border-radius: 10px;
+  background-color: $lightGray;
+  .bar {
+    border-radius: 10px;
+  }
+}
