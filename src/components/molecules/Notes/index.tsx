@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Button, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Pencil, Sticky, XSquare } from 'react-bootstrap-icons'
 
 // prime components
@@ -43,6 +43,7 @@ export const Notes: FC = () => {
     const newData = notes.filter((_, idx) => idx != id)
     setNotes(newData)
     setId(undefined)
+    setShowEdit(false)
   }
 
   const edit = (id: number) => {
@@ -54,22 +55,27 @@ export const Notes: FC = () => {
   return (
     <>
       <Row xs='auto' className='mb-3 justify-content-between'>
-        <h5 className={`fw-bold ${classes.title}`}>
-          <Sticky className={`fs-3 me-2 ${classes.icon}`} />
-          Notas
-        </h5>
-        <Button
-          variant='light'
-          onClick={() => {
-            setNote('')
-            setShowEdit(!showEdit)
-          }}>
-          {!showEdit ? (
-            <Pencil className={classes.icon} />
-          ) : (
-            <XSquare className={classes.icon} />
-          )}
-        </Button>
+        <Col>
+          <h4 className={`fw-bold ${classes.title}`}>
+            <Sticky className={`me-2  ${classes.icon}`} />
+            Notas
+          </h4>
+        </Col>
+        <Col>
+          <Button
+            className='fs-3 p-0'
+            variant='light'
+            onClick={() => {
+              setNote('')
+              setShowEdit(!showEdit)
+            }}>
+            {!showEdit ? (
+              <Pencil className={classes.icon} />
+            ) : (
+              <XSquare className={classes.icon} />
+            )}
+          </Button>
+        </Col>
       </Row>
       {!showEdit ? (
         <CardNote notes={notes} edit={edit} removed={removed} />

@@ -1,15 +1,15 @@
 // bootstrap components
 import { Button, Col, Row } from 'react-bootstrap'
+import { Trash } from 'react-bootstrap-icons'
 
 // prime components
 import { Editor, EditorTextChangeParams } from 'primereact/editor'
 
 // styles
-import classes from 'styles/Notes/notes.module.scss'
+import classes from 'styles/UI/Editor/editor.module.scss'
 
 // types
 import { FC } from 'react'
-import { Trash } from 'react-bootstrap-icons'
 
 export const StyledEditor: FC<{
   id: number | undefined
@@ -22,14 +22,14 @@ export const StyledEditor: FC<{
   const renderHeader = () => {
     if (!readOnly) {
       return (
-        <span className={`ql-formats ${classes.toolbar}`}>
+        <span className='ql-formats'>
           <button className='ql-bold' aria-label='Bold'></button>
           <button className='ql-italic' aria-label='Italic'></button>
           <button className='ql-underline' aria-label='Underline'></button>
           <button className='ql-list' value='bullet'></button>
         </span>
       )
-    } else return <span className={classes.toolbar} />
+    } else return <span />
   }
 
   return (
@@ -48,7 +48,6 @@ export const StyledEditor: FC<{
           <Col>
             {id != undefined && (
               <Button
-                disabled={!note}
                 variant='light'
                 className=''
                 onClick={() => removed(id)}>

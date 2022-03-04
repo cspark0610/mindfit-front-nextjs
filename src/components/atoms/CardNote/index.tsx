@@ -36,12 +36,17 @@ export const CardNote: FC<{
 
   return (
     <>
-      <ContextMenu model={menuItems} ref={menuRef} onHide={()=> setSelectedNote(NaN)} />
+      <ContextMenu
+        ref={menuRef}
+        model={menuItems}
+        onHide={() => setSelectedNote(NaN)}
+      />
       {notes.length ? (
         notes.map((note, id) => (
           <Button
             key={id}
-            className={`mb-3 ${classes.section} ${classes.button}`}
+            variant='light'
+            className={`mb-3 ${classes.button}`}
             onClick={() => edit(id)}
             onContextMenu={(e) => {
               menuRef.current?.show(e), setSelectedNote(id)
