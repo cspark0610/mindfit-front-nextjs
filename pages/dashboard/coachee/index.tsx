@@ -4,8 +4,8 @@ import { getSession } from 'next-auth/react'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_COACHEE_AGENDA from 'lib/queries/Coachee/getById.gql'
-import GET_COACHEE_CONTENT from 'lib/strapi/queries/Coachee/dashboardContent.gql'
+import GET_COACHEE from 'lib/queries/Coachee/getById.gql'
+import GET_PAGE_CONTENT from 'lib/strapi/queries/Coachee/dashboardContent.gql'
 
 // Components
 import { Layout } from 'components/organisms/Layout'
@@ -53,29 +53,24 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApolloClient()
   const { data: content } = await apolloClient.query({
-    query: GET_COACHEE_CONTENT,
+    query: GET_PAGE_CONTENT,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
 
   const apollo = createApolloClient(session.token)
-  try {
-    const { data } = await apollo.query({
-      query: GET_COACHEE_AGENDA,
-      variables: { id: session.user.coachee?.id },
-      context: { ms: microServices.backend },
-    })
-    return {
-      props: {
-        content: content.coacheeDashboard.data.attributes,
-        coachee: data.findCoacheeById,
-      },
-    }
-  } catch (error) {
-    return {
-      redirect: { destination: '/coachees/add', permanent: false },
-      props: {},
-    }
+
+  const { data } = await apollo.query({
+    query: GET_COACHEE,
+    variables: { id: session.user.coachee?.id },
+    context: { ms: microServices.backend },
+  })
+
+  return {
+    props: {
+      content: content.coacheeDashboard.data.attributes,
+      coachee: data.findCoacheeById,
+    },
   }
 }
 

@@ -94,7 +94,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
   ]
   if (status.includes(coachee.findCoacheeById.registrationStatus as string))
-    return { redirect: { destination: '/user', permanent: false }, props: {} }
+    return {
+      redirect: { destination: '/dashboard/coachee', permanent: false },
+      props: {},
+    }
 
   // format content
   const steps = [

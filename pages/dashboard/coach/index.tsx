@@ -70,7 +70,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session)
     return { redirect: { destination: '/', permanent: false }, props: {} }
   if (session.user.role !== userRoles.COACH)
-    return { redirect: { destination: '/user', permanent: false }, props: {} }
+    return {
+      redirect: { destination: '/dashboard/coachee', permanent: false },
+      props: {},
+    }
 
   const apolloClient = initializeApolloClient()
 

@@ -22,7 +22,7 @@ import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
 // styles
-import classes from 'styles/signup/org.module.scss'
+import classes from 'styles/Profile/profile.module.scss'
 
 // types
 import { GetSSPropsType } from 'types'
@@ -31,22 +31,21 @@ import { CoacheeDataType } from 'types/models/Coachee'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
 const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  coachee,
   coach,
+  coachee,
   content,
 }) => (
   <Layout>
-    <Container className={classes.container}>
-      <Container fluid className={classes.section}>
-        {coachee && <CoacheeProfile coachee={coachee} content={content} />}
-        {coach && <CoachProfile coach={coach} content={content} />}
-      </Container>
-    </Container>
+    {coachee && <CoacheeProfile coachee={coachee} content={content} />}
+    {coach && <CoachProfile coach={coach} content={content} />}
   </Layout>
 )
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+
   const apollo = createApolloClient(session?.token)
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
 

@@ -84,7 +84,10 @@ export const Notes: FC = () => {
           />
           <Row className='justify-content-end'>
             <Col xs='auto'>
-              <Button disabled={!validate}  className={classes.button} onClick={addNote}>
+              <Button
+                disabled={!validate}
+                className={classes.button}
+                onClick={addNote}>
                 Guardar
               </Button>
             </Col>

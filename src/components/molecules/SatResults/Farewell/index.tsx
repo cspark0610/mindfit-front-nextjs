@@ -32,7 +32,7 @@ export const Farewell: FC<any> = (props) => (
               className={classes.paragraph}
               dangerouslySetInnerHTML={{ __html: props.details }}
             />
-            <Link href='/library' passHref>
+            <Link href='/choose-coach' passHref>
               <Button className={classes.button}>
                 {props.actionButton.label}
               </Button>

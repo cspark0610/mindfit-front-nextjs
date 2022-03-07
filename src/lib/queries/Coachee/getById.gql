@@ -19,6 +19,7 @@ query GetCoacheeById($id: Int!) {
     }
     coachingAreas {
       name
+      codename
     }
     assignedCoach {
       id

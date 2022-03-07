@@ -85,7 +85,7 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     context: { ms: microServices.backend },
   })
 
-  const coachsTemplate = (coach: CoachDataType) => (
+  const coachesTemplate = (coach: CoachDataType) => (
     <ChooseCoachCard
       data={coach}
       content={content}
@@ -128,7 +128,7 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   numScroll={1}
                   numVisible={3}
                   value={coaches}
-                  itemTemplate={coachsTemplate}
+                  itemTemplate={coachesTemplate}
                   responsiveOptions={responsiveOptions}
                   indicatorsContentClassName={classes.points}
                 />

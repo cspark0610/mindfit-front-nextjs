@@ -55,7 +55,8 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   const [SubmitQuiz] = useMutation(SUBMIT_QUIZ, {
     context: { ms: microServices.backend },
-    onCompleted: (res) => console.log(res),
+    onCompleted: (res) => console.log({ res }),
+    onError: (err) => console.log({ err }),
   })
 
   const handleChangeSection = (index: number) => setActualSection(index)
@@ -64,9 +65,12 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setActualSection((prev) => prev + 1)
     } else {
       setLoading(true)
-      await SubmitQuiz({ variables: { data: { ...answers } } })
+      const { data } = await SubmitQuiz({
+        variables: { data: { ...answers } },
+      })
       setLoading(false)
-      push('/signup/coachee/steps')
+      console.log({ data })
+      push(`/quiz/${data.createSatReport.id}`)
     }
   }
 
@@ -201,6 +205,7 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               </span>
               {/* DELETE TO */}
               <Carousel
+                fade
                 indicators={false}
                 controls={false}
                 interval={null}

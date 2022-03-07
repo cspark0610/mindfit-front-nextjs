@@ -1,5 +1,5 @@
-mutation updateCoach($id: Float!, $data: EditCoachDto! ) {
-  updateCoach(id: $id ,data: $data) {
+mutation updateCoach($data: EditCoachDto!) {
+  updateCoach(data: $data) {
     id
   }
 }

@@ -76,7 +76,7 @@ const DetailCoachee: NextPage = () => (
         </Col>
         <Col md={12} lg={3} className='pt-4'>
           <Container className={`justify-content-start  ${classes.section}`}>
-            <Notes/>
+            <Notes />
           </Container>
         </Col>
       </Row>

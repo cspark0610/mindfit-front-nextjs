@@ -77,7 +77,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           if (
             status.includes(data.findCoacheeById.registrationStatus as string)
           )
-            push('/user')
+            push('/dashboard/coachee')
           else push('/signup/coachee/steps')
         } else if (session.user.organization) push('/coachees/add')
       } else if (session?.user.role === userRoles.COACH)

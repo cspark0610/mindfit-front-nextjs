@@ -40,7 +40,7 @@ export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
 
   const [SelectCoach] = useMutation(SELECT_COACH, {
     context: { ms: microServices.backend },
-    onCompleted: () => push('/user'),
+    onCompleted: () => push('/dashboard/coachee'),
   })
 
   const handleSelectCoach = () =>

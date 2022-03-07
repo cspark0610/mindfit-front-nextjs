@@ -1,5 +1,5 @@
 // types
-import { DataTableProps } from 'primereact/datatable';
+import { DataTableProps } from 'primereact/datatable'
 
 export interface StyledDataTableProps extends DataTableProps {
   schema: object[]

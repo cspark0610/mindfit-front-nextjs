@@ -52,7 +52,7 @@ const CoachSession: NextPage = () => (
         </Col>
         <Col md={12} lg={3}>
           <Container className={`justify-content-start  ${classes.section}`}>
-            <Notes/>
+            <Notes />
           </Container>
           <Container className={classes.section}>
             <Row className={classes.row}>

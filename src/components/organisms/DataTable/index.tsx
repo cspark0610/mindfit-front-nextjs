@@ -15,19 +15,19 @@ import { StyledDataTableProps } from 'types/components/datatable'
 export const StyledDataTable: FC<StyledDataTableProps> = ({
   schema,
   items,
-  actions = undefined
+  actions = undefined,
 }) => {
   const [selected, setSelected] = useState(null)
 
   const dynamicColumns = schema.map((col: ColumnProps) => (
-    <Column 
+    <Column
       key={col.field}
       field={col.field}
       header={col.header}
       align='center'
     />
   ))
-    
+
   return (
     <DataTable
       value={items}
@@ -37,15 +37,15 @@ export const StyledDataTable: FC<StyledDataTableProps> = ({
       emptyMessage='No se han encontrado resultados'
       selection={selected}
       onSelectionChange={(e) => setSelected(e.value)}
-      breakpoint='768px'
-    >
+      breakpoint='768px'>
       <Column selectionMode='multiple' headerStyle={{ width: '3em' }} />
       {dynamicColumns}
       {actions !== undefined && (
         <Column
           header='Acciones'
           align='center'
-          body={(item) => <ActionDataTable {...actions} {...item}/>}/>
+          body={(item) => <ActionDataTable {...actions} {...item} />}
+        />
       )}
     </DataTable>
   )
