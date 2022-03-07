@@ -1,0 +1,32 @@
+@import '../UI/Button/button.module.scss';
+
+.title {
+  color: $primary
+}
+.subtitle {
+  color: $lightGray
+}
+.legend{
+  @extend .button;
+  height: 40px;
+  width: 40px;
+  background-color: $lightPrimary;
+  &_text {
+    color: $gray
+  }
+  &_light {
+    @extend .legend;
+    background-color: $lightBlue;
+  }
+}
+.selected {
+  @extend .button;
+  border-radius: 16px !important;
+  background-color: $secondary !important;
+}
+.link {
+  @extend .button;
+  border-radius: 16px !important;
+  border: 1px solid $primary !important;
+  cursor: pointer;
+}
