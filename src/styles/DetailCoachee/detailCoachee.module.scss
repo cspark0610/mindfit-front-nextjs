@@ -1,24 +1,5 @@
-@import '../variables.scss';
 @import '../UI/Card/AppCard.module.scss';
 
-.section {
-  padding: 40px 45px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  a {
-    color: $secondary;
-    font-weight: bold;
-    text-decoration: none;
-  }
-}
 .title {
   color: $primary;
-}
-.icon {
-  color: $secondary;
-  font-size: 28px;
-}
-.button {
-  color: $white;
 }

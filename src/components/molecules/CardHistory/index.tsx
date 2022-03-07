@@ -15,7 +15,7 @@ import { FC } from 'react'
 
 export const CardHistory: FC = () => {
   return (
-    <section className={classes.section}>
+    <section className={`p-4 text-center ${classes.section}`}>
       <div className='mb-4'>
         <Image
           width={100}
@@ -31,8 +31,8 @@ export const CardHistory: FC = () => {
         tempor
       </p>
       <Row md={2}>
-        <Col className={classes.data}>
-          <i className={`me-2 ${PrimeIcons.CALENDAR}`} />
+        <Col>
+          <i className={`me-2 ${classes.icon} ${PrimeIcons.CALENDAR}`} />
           23/02/2022
         </Col>
         <Col>

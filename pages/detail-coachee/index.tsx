@@ -1,14 +1,12 @@
-// main tools
-import Link from 'next/link'
-
 // bootstrap components
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 
 // components
 import { Layout } from 'components/organisms/Layout'
 import { Notes } from 'components/molecules/Notes'
 import { CardHistory } from 'components/molecules/CardHistory'
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
+import { Evaluation } from 'components/molecules/Evaluation'
 
 // styles
 import classes from 'styles/DetailCoachee/detailCoachee.module.scss'
@@ -21,61 +19,17 @@ const DetailCoachee: NextPage = () => (
     <Container>
       <Row>
         <Col md={6} lg={3} className='pt-4'>
-          <Container className={classes.section}>
-            <CoacheeProfileCard />
+          <Container className={`p-4 ${classes.section}`}>
+            <CoacheeProfileCard showButton={true} />
           </Container>
         </Col>
         <Col md={6} className='pt-4'>
-          <Container className={classes.section}>
-            <Row>
-              <h5 className={`mb-4 ${classes.title}`}>
-                Resumen de la evaluación
-              </h5>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea.
-              </p>
-            </Row>
-            <Row md={2}>
-              <Col className={classes.data}>
-                <Link href='/'>
-                  <a>Ver mas...</a>
-                </Link>
-              </Col>
-              <Col xs='auto'>
-                <Button className={classes.button}>Realizar evaluación</Button>
-              </Col>
-            </Row>
+          <Container className={`p-5 ${classes.section}`}>
+            <Evaluation/>
           </Container>
         </Col>
         <Col md={12} lg={3} className='pt-4'>
-          <Container className={`justify-content-start  ${classes.section}`}>
+          <Container className={`p-4 ${classes.section}`}>
             <Notes/>
           </Container>
         </Col>
