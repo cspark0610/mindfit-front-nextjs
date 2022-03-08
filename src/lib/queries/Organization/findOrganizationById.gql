@@ -1,0 +1,20 @@
+query organization($id: Int!) {
+  findOrganizationById(id: $id) {
+    coachees {
+      id
+      user {
+        name
+        email
+        createdAt
+        coach {
+          profilePicture
+          user {
+            name
+          }
+        }
+      }
+      position
+      registrationStatus
+    }
+  }
+}

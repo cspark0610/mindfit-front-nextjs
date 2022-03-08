@@ -1,52 +1,50 @@
-// main tools
-import { useState } from 'react'
+// components
+import { ActionDataTable } from 'components/molecules/ActionDataTable'
 
 // prime components
 import { Column, ColumnProps } from 'primereact/column'
-import { DataTable } from 'primereact/datatable'
-
-// components
-import { ActionDataTable } from 'components/molecules/ActionDataTable'
+import { DataTable as PrimeDatatable } from 'primereact/datatable'
 
 // types
 import { FC } from 'react'
 import { StyledDataTableProps } from 'types/components/datatable'
 
-export const StyledDataTable: FC<StyledDataTableProps> = ({
+export const DataTable: FC<StyledDataTableProps> = ({
   schema,
-  items,
-  actions = undefined
+  value,
+  selection,
+  onSelectionChange,
+  actions = undefined,
 }) => {
-  const [selected, setSelected] = useState(null)
-
   const dynamicColumns = schema.map((col: ColumnProps) => (
-    <Column 
+    <Column
       key={col.field}
       field={col.field}
       header={col.header}
       align='center'
+      body={col.body}
     />
   ))
-    
+
   return (
-    <DataTable
-      value={items}
+    <PrimeDatatable
+      value={value}
       paginator
       rows={10}
-      responsiveLayout='stack'
+      responsiveLayout='scroll'
       emptyMessage='No se han encontrado resultados'
-      selection={selected}
-      onSelectionChange={(e) => setSelected(e.value)}
-      breakpoint='768px'
-    >
+      selection={selection}
+      onSelectionChange={onSelectionChange}
+      breakpoint='988px'>
       <Column selectionMode='multiple' headerStyle={{ width: '3em' }} />
       {dynamicColumns}
       {actions !== undefined && (
         <Column
           header='Acciones'
           align='center'
-          body={(item) => <ActionDataTable {...actions} {...item}/>}/>
+          body={(item) => <ActionDataTable {...actions} {...item} />}
+        />
       )}
-    </DataTable>
+    </PrimeDatatable>
   )
 }

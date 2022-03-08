@@ -3,7 +3,6 @@ import { DataTableProps } from 'primereact/datatable';
 
 export interface StyledDataTableProps extends DataTableProps {
   schema: object[]
-  items: object[]
   actions: TableActionColumnProps | undefined
 }
 

@@ -73,7 +73,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
   } catch (error) {
     return {
-      redirect: { destination: '/coachees/add', permanent: false },
+      redirect: { destination: '/dashboard/organization', permanent: false },
       props: {},
     }
   }

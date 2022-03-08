@@ -74,7 +74,7 @@ export const LoginCard: FC<Props> = ({ setToggleView, content }) => {
           )
             push('/user')
           else push('/signup/coachee/steps')
-        } else if (session.user.organization) push('/coachees/add')
+        } else if (session.user.organization) push('/dashboard/organization')
       } else if (session?.user.role === userRoles.COACH)
         push('/dashboard/coach')
     }

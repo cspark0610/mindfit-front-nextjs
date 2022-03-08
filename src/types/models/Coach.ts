@@ -6,7 +6,7 @@ export type CoachDataType = {
   isActive?: boolean
   user?: UserDataType
   phoneNumber?: string
-  profilePicture?: File
+  profilePicture?: File | string
   videoPresentation?: string
   coachingAreas?: { id?: number; name?: string }[]
 }
