@@ -1,13 +1,11 @@
 @import '../variables.scss';
-@import '../UI/Modal/appModal.module.scss';
+//@import '../UI/Modal/appModal.module.scss';
 
+.title {
+  color: $primary;
+}
 .icon {
   color: $secondary;
 }
 
-.section {
-  padding: 40px;
-  .close {
-    border-bottom: none;
-  }
-}
+

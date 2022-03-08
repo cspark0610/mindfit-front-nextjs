@@ -1,0 +1,15 @@
+@import '../UI/ProgressBar/progressBar.module.scss';
+
+.gray {
+  color: $gray;
+}
+.blue{
+  color: $primary;
+}
+.knob {
+  > * {
+    color: red;
+    width: 100%;
+    height: 100%;
+  }
+}

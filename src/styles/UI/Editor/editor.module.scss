@@ -1,0 +1,20 @@
+@import '../../variables.scss';
+
+.block {
+  background-color: $primary;
+  height: 20px;
+}
+.edit {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 320px;
+  text-align: end;
+  * {
+    background-color: $lightBlue !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+}
+.icon {
+  color: $danger;
+}

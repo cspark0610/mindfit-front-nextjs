@@ -1,25 +1,16 @@
-@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
 
-.section {
+.button {
   color: $gray;
-  border: none;
-  padding: 20px;
-  border-radius: 15px;
   background-color: $lightBlue;
-  .date {
-    font-weight: bold;
-    justify-content: space-between;
+  &:hover {
+    filter: brightness(0.8);
+    transition: filter 0.3s;
   }
-  .paragraph {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  a {
-    text-align: right;
-    color: $secondary;
-    font-weight: bold;
-    text-decoration: none;
-  }
+}
+.paragraph {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

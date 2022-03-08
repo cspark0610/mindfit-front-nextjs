@@ -1,22 +1,17 @@
-@import '../variables.scss';
 @import '../UI/Card/AppCard.module.scss';
 
-.section {
-  padding: 50px 20px;
-  text-align: center;
-  .title {
-    color: $primary;
-  }
-  .description {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .data i {
-    color: $secondary;
-  }
-  .button {
-    color: $white;
-  }
+.title {
+  color: $primary;
+}
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.icon {
+  color: $secondary;
+}
+.button {
+  color: $white;
 }
