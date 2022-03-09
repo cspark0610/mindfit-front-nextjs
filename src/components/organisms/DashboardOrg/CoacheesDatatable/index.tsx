@@ -117,7 +117,7 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
               disabled={!selected.length}
               className={classes.button}
               onClick={() => remove()}
-              variant='outline-danger'>
+              variant='danger'>
               <Trash size={28} />
             </Button>
           </Col>

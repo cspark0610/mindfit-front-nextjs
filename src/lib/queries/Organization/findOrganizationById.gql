@@ -1,7 +1,18 @@
-query organization($id: Int!) {
+query findOrganizationById($id: Int!) {
   findOrganizationById(id: $id) {
+    id
+    name
+    owner {
+      id
+      name
+    }
     coachees {
       id
+      position
+      canViewDashboard
+      isActive
+      isAdmin
+      registrationStatus
       user {
         name
         email
@@ -13,8 +24,6 @@ query organization($id: Int!) {
           }
         }
       }
-      position
-      registrationStatus
     }
   }
 }
