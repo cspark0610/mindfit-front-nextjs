@@ -9,7 +9,7 @@ import { FC } from 'react'
 import { TableActionColumnProps } from 'types/components/datatable'
 
 interface Props extends TableActionColumnProps {
-  id: string | number
+  id: number
 }
 
 export const ActionDataTable: FC<Props> = ({ pause, remove, edit, id }) => {

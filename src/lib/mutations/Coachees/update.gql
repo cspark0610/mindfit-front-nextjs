@@ -1,6 +1,5 @@
-mutation UpdateCoachee($id: Float!, $data: EditCoacheeDto!) {
-  updateCoachee(data: $data, id: $id) {
-    position
-    profilePicture
+mutation updateCoachee($coacheeId: Int!, $data: EditCoacheeDto!) {
+  updateCoachee(coacheeId: $coacheeId, data: $data) {
+    id
   }
 }

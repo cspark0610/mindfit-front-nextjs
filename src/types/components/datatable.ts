@@ -7,7 +7,7 @@ export interface StyledDataTableProps extends DataTableProps {
 }
 
 export type TableActionColumnProps = {
-  remove?: (id: string | number) => void
-  pause?: (id: string | number) => void
-  edit?: (id: string | number) => void
+  remove?: (id: number) => void
+  pause?: (id: number) => void
+  edit?: (id: number) => void
 }

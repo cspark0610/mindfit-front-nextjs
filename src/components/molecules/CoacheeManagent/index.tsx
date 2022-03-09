@@ -2,16 +2,32 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  Modal,
+  ModalProps,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
 import { Dropdown, DropdownChangeParams } from 'primereact/dropdown'
-import { Checkbox } from 'primereact/checkbox'
+import { Checkbox, CheckboxChangeParams } from 'primereact/checkbox'
+
+// commons
+import { microServices } from 'commons'
+
+// gql
+import { useMutation } from '@apollo/client'
+import UPDATE_USER from 'lib/mutations/User/update.gql'
+import UPDATE_COACHEE from 'lib/mutations/Coachees/update.gql'
 
 // utils
-import { INITIAL_STATE } from 'utils/addColaborator'
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
+import { validateCoacheeProfile } from 'utils/Profile/coacheeProfile'
 
 //styles
 import classes from 'styles/CoacheeManagent/coacheeManagent.module.scss'
@@ -19,93 +35,147 @@ import classes from 'styles/CoacheeManagent/coacheeManagent.module.scss'
 //types
 import { FC } from 'react'
 import { ChangeType } from 'types'
+import { CoacheeDataType } from 'types/models/Coachee'
 
-export const CoacheeManagent: FC = () => {
-  const [showModal, setShowModal] = useState(true)
-  const [colaborator, setColaborator] = useState(INITIAL_STATE)
-  const [rol, setRol] = useState(null)
+export const CoacheeManagent: FC<ModalProps> = ({
+  data,
+  refetch,
+  ...props
+}) => {
+  const [coacheeData, setCoacheeData] = useState<CoacheeDataType>(data)
+  const [loading, setLoading] = useState(false)
+  const validate = validateCoacheeProfile(coacheeData)
 
-  const handleChange = (ev: ChangeType | DropdownChangeParams) => {
-    setColaborator({ ...colaborator, [ev.target.name]: ev.target.value })
+  const [updateUser] = useMutation(UPDATE_USER, {
+    context: { ms: microServices.backend },
+  })
+  const [updateCoachee] = useMutation(UPDATE_COACHEE, {
+    context: { ms: microServices.backend },
+  })
+
+  const roles: any = {
+    isAdmin: coacheeData.isAdmin,
+    canViewDashboard: coacheeData.canViewDashboard,
+    isActive: coacheeData.isActive,
   }
 
-  const onRolChange = (value: any) => {
-    if (rol === value) setRol(null)
-    else setRol(value)
+  const onRolChange = (ev: CheckboxChangeParams) => {
+    if (ev.value == 'isActive') {
+      roles['canViewDashboard'] = false
+      roles['isAdmin'] = false
+    } else if (ev.value == 'isAdmin') roles['canViewDashboard'] = false
+    else if (ev.value == 'canViewDashboard') roles['isAdmin'] = false
+
+    roles[ev.value] = ev.checked
+    setCoacheeData({ ...coacheeData, ...roles })
+  }
+
+  const handleCoacheeChange = (ev: DropdownChangeParams) => {
+    setCoacheeData({ ...coacheeData, [ev.target.name]: ev.target.value })
+  }
+  const handleUserChange = (ev: ChangeType) => {
+    setCoacheeData({
+      ...coacheeData,
+      user: { ...coacheeData.user, [ev.target.name]: ev.target.value },
+    })
+  }
+
+  const handleSave = async () => {
+    const { user, ...updatecoacheeData } = coacheeData
+    setLoading(true)
+    await updateUser({
+      variables: {
+        id: user?.id,
+        data: { name: user?.name },
+      },
+    })
+    await updateCoachee({
+      variables: {
+        coacheeId: updatecoacheeData.id,
+        data: {
+          position: updatecoacheeData.position,
+          isAdmin: updatecoacheeData.isAdmin,
+          canViewDashboard: updatecoacheeData.canViewDashboard,
+        },
+      },
+    })
+    setLoading(false)
+    refetch()
   }
 
   return (
-    <Modal
-      centered
-      className={classes.modal}
-      show={showModal}
-      onHide={() => setShowModal(false)}
-      size='lg'>
+    <Modal centered className={classes.modal} {...props} size='lg'>
       <Modal.Header className={classes.close} closeButton />
       <Modal.Body className={classes.section_modal}>
-        <form className={classes.container}>
-          <h1 className={classes.title}>Agregar colaborador</h1>
+        <section className={classes.container}>
+          <h1 className={`fs-4 ${classes.title}`}>Editar coachee</h1>
           <Container fluid>
             <Row className={classes.row}>
               <Col xs={12}>
+                <h5 className={classes.inputText}>Nombre y apellido</h5>
                 <InputText
+                  id='name'
                   name='name'
-                  value={colaborator.name}
-                  onChange={handleChange}
+                  value={coacheeData.user?.name}
+                  onChange={handleUserChange}
                   placeholder='name'
                   className={classes.input}
                 />
               </Col>
               <Col xs={12}>
-                <InputText
-                  name='email'
-                  value={colaborator.email}
-                  onChange={handleChange}
-                  placeholder='Email'
-                  className={classes.input}
-                />
-              </Col>
-              <Col xs={12}>
+                <h5 className={classes.inputText}>Cargo</h5>
                 <Dropdown
                   name='position'
                   options={workPositions}
                   className={classes.input}
-                  onChange={handleChange}
-                  value={colaborator.position}
+                  onChange={handleCoacheeChange}
+                  value={coacheeData.position}
                   placeholder='cargo o posición'
                 />
               </Col>
             </Row>
             <Row xs='auto' className={classes.row}>
               <Checkbox
-                inputId='admin'
+                inputId='isActive'
                 name='rol'
-                value='admin'
-                onChange={(e) => onRolChange(e.value)}
-                checked={rol === 'admin'}
+                value='isActive'
+                onChange={(e) => onRolChange(e)}
+                checked={!coacheeData.isAdmin && !coacheeData.canViewDashboard}
+              />
+              <label htmlFor='isActive'>Activo</label>
+              <Checkbox
+                inputId='isAdmin'
+                name='rol'
+                value='isAdmin'
+                onChange={(e) => onRolChange(e)}
+                checked={coacheeData.isAdmin}
               />
               <label htmlFor='admin'>Admin</label>
               <Checkbox
-                inputId='view'
+                inputId='canViewDashboard'
                 name='rol'
-                value='view'
-                onChange={(e) => onRolChange(e.value)}
-                checked={rol === 'view'}
+                value='canViewDashboard'
+                onChange={(e) => onRolChange(e)}
+                checked={coacheeData.canViewDashboard && !coacheeData.isAdmin}
               />
-              <label htmlFor='view'>Puede ver el dasboard</label>
+              <label htmlFor='canViewDashboard'>Puede ver el dasboard</label>
             </Row>
-            <Row className={classes.row}>
+            <Row className={`justify-content-end ${classes.row}`}>
               <Col xs='auto'>
                 <Button
-                  type='submit'
+                  disabled={!validate}
                   className={classes.button}
-                  variant='secondary'>
-                  Agregar colaborador
+                  onClick={handleSave}>
+                  {loading ? (
+                    <Spinner animation='border' color='primary' />
+                  ) : (
+                    'Guardar'
+                  )}
                 </Button>
               </Col>
             </Row>
           </Container>
-        </form>
+        </section>
       </Modal.Body>
     </Modal>
   )

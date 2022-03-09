@@ -4,12 +4,13 @@ import { Session } from 'next-auth'
 
 // components
 import { DataTable } from 'components/molecules/Datatable'
+import { CoacheeManagent } from 'components/molecules/CoacheeManagent'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { Trash } from 'react-bootstrap-icons'
 
-// prime component
+// prime components
 import { confirmDialog } from 'primereact/confirmdialog'
 
 // Commons
@@ -35,7 +36,10 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   content,
 }) => {
   const [coachees, setCoachees] = useState([])
+  const [coachee, setCoachee] = useState()
   const [selected, setSelected] = useState<CoacheeDataType[]>([])
+  const [show, setShow] = useState(false)
+  
   const id = session.user.organization?.id
 
   const { loading, refetch } = useQuery(ORG_COACHEE, {
@@ -97,46 +101,58 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       accept,
     })
   }
-
-  const edit = (id: number | string) => {
-    console.log(id, 'editar')
+  
+  const edit = (id: number) => {
+    const newCoachee = coachees.find(({ id: coacheeId }) => coacheeId == id)
+    setCoachee(newCoachee)
+    setShow(true)
   }
 
   return (
-    <Container>
-      <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
-      <Container className={classes.section}>
-        <Row xs='auto' className='mb-4 justify-content-end'>
-          <Col>
-            <Button disabled={!selected.length} className={classes.button}>
-              {content.disableButton.label}
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              disabled={!selected.length}
-              className={classes.button}
-              onClick={() => remove()}
-              variant='danger'>
-              <Trash size={28} />
-            </Button>
-          </Col>
-        </Row>
-        {!loading && (
-          <DataTable
-            selection={selected}
-            onSelectionChange={(e) => setSelected(e.value)}
-            value={coachees}
-            schema={schema(
-              content.datatable.data.attributes,
-              statusBody,
-              coachBody
-            )}
-            actions={{ edit: edit }}
-          />
-        )}
+    <>
+      <Container>
+        <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
+        <Container className={classes.section}>
+          <Row xs='auto' className='mb-4 justify-content-end'>
+            <Col>
+              <Button disabled={!selected.length} className={classes.button}>
+                {content.disableButton.label}
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                disabled={!selected.length}
+                className={classes.button}
+                onClick={() => remove()}
+                variant='danger'>
+                <Trash size={28} />
+              </Button>
+            </Col>
+          </Row>
+          {!loading && (
+            <DataTable
+              selection={selected}
+              onSelectionChange={(e) => setSelected(e.value)}
+              value={coachees}
+              schema={schema(
+                content.datatable.data.attributes,
+                statusBody,
+                coachBody
+              )}
+              actions={{ edit: edit }}
+            />
+          )}
+        </Container>
       </Container>
-    </Container>
+      {show &&
+        <CoacheeManagent
+          show={show}
+          onHide={() => setShow(false)}
+          data={coachee||{}}
+          refetch={refetch}
+        />
+      }
+    </>
   )
 }
 
