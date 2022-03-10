@@ -21,6 +21,7 @@ import { microServices } from 'commons'
 import { useMutation, useQuery } from '@apollo/client'
 import ORG_COACHEE from 'lib/queries/Organization/findOrganizationById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
+import UPDATE_MANY_COACHEES from 'lib/mutations/Coachees/updateCoachees.gql'
 
 // utils
 import { schema } from 'utils/actionDataTable'
@@ -50,6 +51,10 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   })
 
   const [deleteManyCoachee] = useMutation(DELETE_MANY_COACHEE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => refetch,
+  })
+  const [suspendCoachee] = useMutation(UPDATE_MANY_COACHEES, {
     context: { ms: microServices.backend },
     onCompleted: () => refetch,
   })
@@ -86,12 +91,16 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
     )
   }
 
-  const accept = () => {
+  const remove = () => {
     const ids = selected.map((coachee) => coachee.id)
     deleteManyCoachee({ variables: { ids } })
   }
+  const suspend = () => {
+    const ids = selected.map((coachee) => coachee.id)
+    suspendCoachee({ variables: { coacheeId: ids, data: { isSuspend: true } } })
+  }
 
-  const remove = () => {
+  const confirmRemove = () => {
     confirmDialog({
       message: 'esta seguro con la eliminación?',
       header: 'Confirmation eliminación',
@@ -99,7 +108,19 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       acceptClassName: 'p-button-danger',
       acceptLabel: 'Si',
       rejectLabel: 'No',
-      accept,
+      accept: remove,
+    })
+  }
+
+  const confirmSuspend = () => {
+    confirmDialog({
+      message: 'esta seguro con la suspencion?',
+      header: 'Confirmation suspencion',
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: suspend,
     })
   }
 
@@ -116,7 +137,10 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
         <Container className={classes.section}>
           <Row xs='auto' className='mb-4 justify-content-end'>
             <Col>
-              <Button disabled={!selected.length} className={classes.button}>
+              <Button
+                disabled={!selected.length}
+                className={classes.button}
+                onClick={() => confirmSuspend()}>
                 {content.disableButton.label}
               </Button>
             </Col>
@@ -124,7 +148,7 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
               <Button
                 disabled={!selected.length}
                 className={classes.button}
-                onClick={() => remove()}
+                onClick={() => confirmRemove()}
                 variant='danger'>
                 <Trash size={28} />
               </Button>
