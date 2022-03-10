@@ -22,6 +22,7 @@ import classes from 'styles/DashboardOrg/page.module.scss'
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { Satisfaction } from 'components/organisms/DashboardOrg/Satisfaction'
 
 const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   session,
@@ -31,16 +32,25 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Layout>
       <Container className='my-4' fluid>
         <Row className='mb-5 justify-content-center'>
-          <Col xs={12} className='mb-5' >
+          <Col xs={12} className='mb-5'>
             <Container>
-              <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
+              <h3 className={`mb-5 ${classes.title}`}>
+                {content.coacheesTitle}
+              </h3>
               <CoacheesDatatable session={session} content={content} />
             </Container>
           </Col>
-          <Col sm={12} lg={6}>
+          <Col sm={12} lg={6} className='mb-5'>
             <Container>
-              <h3 className={`mb-5 ${classes.title}`}>{content.coachingSessionsTitle}</h3>
-              <Strengths content={content.graphDevelopmentArea}/>
+              <h3 className={`mb-5 ${classes.title}`}>
+                {content.coachingSessionsTitle}
+              </h3>
+              <Strengths content={content.graphDevelopmentArea} />
+            </Container>
+          </Col>
+          <Col sm={12} lg={6} className='mb-5'>
+            <Container>
+              <Satisfaction />
             </Container>
           </Col>
         </Row>
@@ -74,7 +84,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ...content,
         datatable: content.datatable.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
-      }
+      },
     },
   }
 }
