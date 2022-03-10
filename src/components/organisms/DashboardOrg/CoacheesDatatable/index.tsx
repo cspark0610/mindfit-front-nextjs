@@ -5,6 +5,7 @@ import { Session } from 'next-auth'
 // components
 import { DataTable } from 'components/molecules/Datatable'
 import { CoacheeManagent } from 'components/molecules/CoacheeManagent'
+import { InviteCoachee } from 'components/molecules/InviteCoachee'
 
 // bootstrap components
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -38,8 +39,8 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   const [coachees, setCoachees] = useState([])
   const [coachee, setCoachee] = useState()
   const [selected, setSelected] = useState<CoacheeDataType[]>([])
-  const [show, setShow] = useState(false)
-  
+  const [showEdit, setShowEdit] = useState(false)
+  const [showInvite, setShowInvite] = useState(false)
   const id = session.user.organization?.id
 
   const { loading, refetch } = useQuery(ORG_COACHEE, {
@@ -101,11 +102,11 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       accept,
     })
   }
-  
+
   const edit = (id: number) => {
     const newCoachee = coachees.find(({ id: coacheeId }) => coacheeId == id)
     setCoachee(newCoachee)
-    setShow(true)
+    setShowEdit(true)
   }
 
   return (
@@ -143,15 +144,29 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             />
           )}
         </Container>
+        <Row xs='auto' className='mb-4 justify-content-end'>
+          <Col>
+            <Button
+              className={classes.button}
+              onClick={() => setShowInvite(true)}>
+              Añadir Coachee
+            </Button>
+          </Col>
+        </Row>
       </Container>
-      {show &&
+      {showEdit && (
         <CoacheeManagent
-          show={show}
-          onHide={() => setShow(false)}
-          data={coachee||{}}
+          show={showEdit}
+          onHide={() => setShowEdit(false)}
+          data={coachee || {}}
           refetch={refetch}
         />
-      }
+      )}
+      <InviteCoachee
+        show={showInvite}
+        onHide={() => setShowInvite(false)}
+        refetch={refetch}
+      />
     </>
   )
 }
