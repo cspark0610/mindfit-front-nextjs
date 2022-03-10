@@ -8,7 +8,7 @@ import { CoacheeManagent } from 'components/molecules/CoacheeManagent'
 import { InviteCoachee } from 'components/molecules/InviteCoachee'
 
 // bootstrap components
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Trash } from 'react-bootstrap-icons'
 
 // prime components
@@ -33,7 +33,7 @@ import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
 import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
 
-const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
+export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   session,
   content,
 }) => {
@@ -77,7 +77,7 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   }
 
   const statusBody = ({ registrationStatus }: CoacheeDataType) => {
-    const statusCodeNames = content.datatable.data.attributes.statusCodeNames
+    const statusCodeNames = content.datatable.statusCodeNames
     const status = statusCodeNames.find(
       (statu: any) => statu.registrationStatus == registrationStatus
     )
@@ -132,43 +132,36 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
 
   return (
     <>
-      <Container>
-        <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
-        <Container className={classes.section}>
-          <Row xs='auto' className='mb-4 justify-content-end'>
-            <Col>
-              <Button
-                disabled={!selected.length}
-                className={classes.button}
-                onClick={() => confirmSuspend()}>
-                {content.disableButton.label}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                disabled={!selected.length}
-                className={classes.button}
-                onClick={() => confirmRemove()}
-                variant='danger'>
-                <Trash size={28} />
-              </Button>
-            </Col>
-          </Row>
-          {!loading && (
-            <DataTable
-              selection={selected}
-              onSelectionChange={(e) => setSelected(e.value)}
-              value={coachees}
-              schema={schema(
-                content.datatable.data.attributes,
-                statusBody,
-                coachBody
-              )}
-              actions={{ edit: edit }}
-            />
-          )}
-        </Container>
+      <section className={classes.section}>
         <Row xs='auto' className='mb-4 justify-content-end'>
+          <Col>
+            <Button
+              disabled={!selected.length}
+              className={classes.button}
+              onClick={() => confirmSuspend()}>
+              {content.disableButton.label}
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              disabled={!selected.length}
+              className={classes.button}
+              onClick={() => confirmRemove()}
+              variant='danger'>
+              <Trash size={28} />
+            </Button>
+          </Col>
+        </Row>
+        {!loading && (
+          <DataTable
+            selection={selected}
+            onSelectionChange={(e) => setSelected(e.value)}
+            value={coachees}
+            schema={schema(content.datatable, statusBody, coachBody)}
+            actions={{ edit: edit }}
+          />
+        )}
+        <Row xs='auto' className='mt-4 justify-content-end'>
           <Col>
             <Button
               className={classes.button}
@@ -177,7 +170,7 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             </Button>
           </Col>
         </Row>
-      </Container>
+      </section>
       {showEdit && (
         <CoacheeManagent
           show={showEdit}
@@ -194,5 +187,3 @@ const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
     </>
   )
 }
-
-export default CoacheesDatatable

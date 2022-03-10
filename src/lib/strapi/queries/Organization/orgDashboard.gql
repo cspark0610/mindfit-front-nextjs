@@ -2,6 +2,11 @@ query orgDashboard($locale: I18NLocaleCode) {
   orgDashboard(locale: $locale) {
     data {
       attributes {
+        coacheesTitle
+        coachingSessionsTitle
+        disableButton {
+          label
+        }
         datatable {
           data {
             attributes {
@@ -19,10 +24,22 @@ query orgDashboard($locale: I18NLocaleCode) {
             }
           }
         }
-        coacheesTitle
-        coachingSessionsTitle
-        disableButton {
-          label
+        graphDevelopmentArea {
+          data {
+            attributes {
+              title
+              subtitle
+              description
+              titleStrengths
+              titleWeaknesses
+              developmentAreas {
+                label
+                color
+                developmentAreas
+                icon 
+              }
+            }
+          }
         }
       }
     }

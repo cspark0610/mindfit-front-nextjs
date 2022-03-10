@@ -1,0 +1,6 @@
+query getOrganizationDevelopmentAreas {
+  getOrganizationDevelopmentAreas{
+    strengths
+    weaknesses
+  }
+}
