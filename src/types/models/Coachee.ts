@@ -15,7 +15,7 @@ export type CoacheeDataType = {
   organization?: OrganizationDataType
   assignedCoach?: CoachDataType
   aboutPosition?: string
-  coachAppointments: {
+  coachAppointments?: {
     id: number
     accomplished: boolean
     coachConfirmation: boolean
