@@ -13,7 +13,7 @@ import { microServices } from 'commons'
 
 //gql
 import { initializeApolloClient } from 'lib/apollo'
-import ORG_DASHBOARD from 'lib/strapi/queries/Organization/OrgDashboard.gql'
+import ORG_DASHBOARD from 'lib/strapi/queries/Organization/orgDashboard.gql'
 
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
