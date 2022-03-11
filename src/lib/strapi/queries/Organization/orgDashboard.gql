@@ -1,0 +1,30 @@
+query orgDashboard($locale: I18NLocaleCode) {
+  orgDashboard(locale: $locale) {
+    data {
+      attributes {
+        datatable {
+          data {
+            attributes {
+              nameColumnLabel
+              emailColumnLabel
+              positionColumnLabel
+              statusColumnLabel
+              coachColumnLabel
+              signupColumnLabel
+              actionsColumnLabel
+              statusCodeNames {
+                registrationStatus
+                label
+              }
+            }
+          }
+        }
+        coacheesTitle
+        coachingSessionsTitle
+        disableButton {
+          label
+        }
+      }
+    }
+  }
+}
