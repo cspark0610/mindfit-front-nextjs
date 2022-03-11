@@ -10,7 +10,6 @@ export const validateUserSignup = (userData: UserDataType) => {
   )
 
   if (
-    !userData.profilePicture?.type ||
     !userData.firstName ||
     !userData.lastName ||
     !userData.email ||

@@ -19,5 +19,5 @@ export type UserDataType = {
   isVerified?: boolean
   isSuperUser?: boolean
   organization?: OrganizationDataType
-  profilePicture?: File
+  profilePicture?: File | string
 }

@@ -1,0 +1,3 @@
+mutation deleteManyCoachees($ids: [Float!]!) {
+  deleteManyCoachees(ids: $ids)
+}

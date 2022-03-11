@@ -1,0 +1,27 @@
+@import '../UI/Card/AppCard.module.scss';
+
+.title {
+  color: $primary;
+}
+.section {
+  padding: 1rem;
+  border: none;
+}
+.button{
+  color: $white;
+  &_COACH_APPOINTMENT_PENDING {
+    background-color: $secondary;
+  }
+  &_COACH_SELECTION_PENDING{
+    background-color: $danger;
+  }
+  &_REGISTRATION_COMPLETED {
+    background-color: $lightPrimary;
+  }
+  &_INVITATION_PENDING {
+    background-color: $primary;
+  }
+  &_SAT_PENDING {
+    background-color: $success;
+  }
+}
