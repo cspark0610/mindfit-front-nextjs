@@ -59,18 +59,20 @@ export const FocusAreas: FC<{ content: any }> = ({ content }) => {
           <h3 className={`mb-5 text-center ${classes.value}`}>
             {content.title}
           </h3>
-          <Container className={`mb-5 p-0 ${classes.chart}`}>
-            <Col>
-              <Row
-                className={`justify-content-center align-items-center ${classes.chart_info}`}>
-                <Col xs={5} className='text-center'>
-                  <h2>89/100</h2>
-                  <p>{content.description}</p>
-                </Col>
-              </Row>
-            </Col>
-            <ChartDoughnut data={chartData} />
-          </Container>
+          {/**
+            * descomentar despues de solucionar datos de la grafica circular
+            * <Container className={`mb-5 p-0 ${classes.chart}`}>
+            *   <Col>
+            *     <Row className={`justify-content-center align-items-center ${classes.chart_info}`}>
+            *       <Col xs={5} className='text-center'>
+            *         <h2>89/100</h2>
+            *         <p>{content.description}</p>
+            *       </Col>
+            *     </Row>
+            *   </Col>
+            *   <ChartDoughnut data={chartData} />
+            * </Container>
+            */}
           <Row xs={1} lg={2} className='justify-content-around'>
             {myFocusAreas.map((item) => (
               <Row
