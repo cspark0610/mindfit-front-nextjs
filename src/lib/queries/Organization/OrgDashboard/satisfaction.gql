@@ -1,0 +1,9 @@
+query getOrganizationCoacheesSatisfaction {
+  getOrganizationCoacheesSatisfaction {
+    averageSatisfaction
+    sessionsSatisfaction {
+      questionCodename
+      value
+    }
+  }
+}

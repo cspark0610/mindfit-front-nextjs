@@ -3,6 +3,9 @@
 @import '../UI/Card/signupCard.module.scss';
 @import '../UI/Modal/appModal.module.scss';
 
+.inputText {
+  color: $primary;
+}
 .close {
   padding: 40px 40px 0;
   border-bottom: none;

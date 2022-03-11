@@ -4,18 +4,32 @@ import { Col, ProgressBar, Row } from 'react-bootstrap'
 // prime components
 import { Knob } from 'primereact/knob'
 
+// gql
+import SATISFACTION from 'lib/queries/Organization/OrgDashboard/satisfaction.gql'
+
 // styles
-import clasess from 'styles/DashBoardOrg/satisfaction.module.scss'
+import classes from 'styles/DashboardOrg/satisfaction.module.scss'
 
 // types
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { useQuery } from '@apollo/client'
+import { microServices } from 'commons'
 
 export const Satisfaction: FC = () => {
+  const [data, setData] = useState()
+
+  const { loading } = useQuery(SATISFACTION, {
+    context: { ms: microServices.backend },
+    onCompleted: (data) => {
+      setData(data.getOrganizationCoacheesSatisfaction)
+    },
+  })
+
   return (
-    <>
-      <h1 className={`mb-5 text-center ${clasess.blue}`}>
+    <section className={`mb-5 ${classes.section}`}>
+      <h3 className={`mb-5 text-center ${classes.blue}`}>
         Satisfacción con el coaching
-      </h1>
+      </h3>
       <Knob
         max={10}
         value={5.9}
@@ -23,36 +37,64 @@ export const Satisfaction: FC = () => {
         textColor='#1a7bee'
         valueColor='#045095'
         valueTemplate={'{value}/10'}
-        className={clasess.knob}
+        className={classes.knob}
       />
       <Col xs={6} className='m-auto text-center'>
-        <h5 className={`mb-5 fw-bold ${clasess.gray}`}>
+        <p className={`fw-bold ${classes.gray}`}>
           Metricas arrojadas a partir de 110 sesiones
-        </h5>
+        </p>
       </Col>
-      {[1, 2, 3].map((item) => (
-        <Row
-          key={item}
-          xs='auto'
-          className='mb-5 justify-content-center align-items-end'>
-          <Col xs={8}>
-            <h5 className={`mb-3 ${clasess.gray}`}>
-              Mi entrenador y yo nos respetamos mutuamente
-            </h5>
-            <ProgressBar className={clasess.progressBar}>
-              <ProgressBar
-                max={6}
-                now={5.5}
-                className={clasess.bar}
-                style={{ backgroundColor: '#fe5000' }}
-              />
-            </ProgressBar>
-          </Col>
-          <Col>
-            <h3 className={`fw-bold ${clasess.blue}`}>5.5</h3>
-          </Col>
-        </Row>
-      ))}
-    </>
+      <Row xs='auto' className='justify-content-center align-items-end'>
+        <Col xs={8} className='mt-4'>
+          <p className={classes.gray}>
+            Mi entrenador y yo nos respetamos mutuamente
+          </p>
+          <ProgressBar className={classes.progressBar}>
+            <ProgressBar
+              max={6}
+              now={4.6}
+              className={classes.bar}
+              style={{ backgroundColor: '#1a7bee' }}
+            />
+          </ProgressBar>
+        </Col>
+        <Col>
+          <h3 className={`fw-bold ${classes.blue}`}>4.6</h3>
+        </Col>
+        <Col xs={8} className='mt-4'>
+          <p className={classes.gray}>
+            Estamos de acuerdo en lo que es importante que trabaje
+          </p>
+          <ProgressBar className={classes.progressBar}>
+            <ProgressBar
+              max={6}
+              now={5.2}
+              className={classes.bar}
+              style={{ backgroundColor: '#fe5000' }}
+            />
+          </ProgressBar>
+        </Col>
+        <Col>
+          <h3 className={`fw-bold ${classes.blue}`}>5.2</h3>
+        </Col>
+        <Col xs={8} className='mt-4'>
+          <p className={classes.gray}>
+            Siento que las cosas que hago en el coaching me ayudaran a lograr
+            los cambios que quiero
+          </p>
+          <ProgressBar className={classes.progressBar}>
+            <ProgressBar
+              max={6}
+              now={3.5}
+              className={classes.bar}
+              style={{ backgroundColor: '#2fb684' }}
+            />
+          </ProgressBar>
+        </Col>
+        <Col>
+          <h3 className={`fw-bold ${classes.blue}`}>3.5</h3>
+        </Col>
+      </Row>
+    </section>
   )
 }
