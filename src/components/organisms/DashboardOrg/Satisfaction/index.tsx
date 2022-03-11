@@ -8,7 +8,7 @@ import { Knob } from 'primereact/knob'
 import SATISFACTION from 'lib/queries/Organization/OrgDashboard/satisfaction.gql'
 
 // styles
-import classes from 'styles/DashBoardOrg/satisfaction.module.scss'
+import classes from 'styles/DashboardOrg/satisfaction.module.scss'
 
 // types
 import { FC, useState } from 'react'
