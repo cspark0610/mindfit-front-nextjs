@@ -12,7 +12,7 @@ import { useQuery } from '@apollo/client'
 import FOCUS_AREAS from 'lib/queries/Organization/OrgDashboard/focusAreas.gql'
 
 // styles
-import classes from 'styles/DashBoardOrg/focusAreas.module.scss'
+import classes from 'styles/DashboardOrg/focusAreas.module.scss'
 
 // types
 import { FC, useState } from 'react'
