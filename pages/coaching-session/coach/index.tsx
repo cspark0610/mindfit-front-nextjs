@@ -18,12 +18,14 @@ const CoachSession: NextPage = () => (
   <Layout>
     <Container>
       <Row className='mt-4'>
-        <Col md={6} lg={3} className='mt-4' >
+        <Col md={6} lg={3} className='mt-4'>
           <Container className={`p-4 ${classes.section}`}>
             <CoacheeProfileCard showButton={true} />
           </Container>
         </Col>
-        <Col md={6} className='mt-4'>{/*<AgoraVideoCall/>*/}</Col>
+        <Col md={6} className='mt-4'>
+          {/* <AgoraVideoCall /> */}
+        </Col>
         <Col md={12} lg={3} className='mt-4'>
           <Container className={`p-4 ${classes.section}`}>
             <Notes />

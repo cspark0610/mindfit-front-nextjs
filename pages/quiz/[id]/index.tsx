@@ -41,7 +41,11 @@ const QuizReport: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   return (
     <Layout>
       <Container className={classes.container}>
-        <Carousel interval={null} className={classes.carousel}>
+        <Carousel
+          wrap={false}
+          variant='dark'
+          interval={null}
+          className={classes.carousel}>
           {slides.map((slide: any, idx: number) => (
             <Carousel.Item className={classes.cardContainer} key={idx}>
               {SAT_TEMPLATES[slide.template as keyof typeof SAT_TEMPLATES]({

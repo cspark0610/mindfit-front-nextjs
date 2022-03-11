@@ -25,8 +25,10 @@ export const Satisfaction: FC = () => {
         valueTemplate={'{value}/10'}
         className={clasess.knob}
       />
-      <Col xs={6} className='m-auto text-center' >
-        <h5 className={`mb-5 fw-bold ${clasess.gray}`}>Metricas arrojadas a partir de 110 sesiones</h5>
+      <Col xs={6} className='m-auto text-center'>
+        <h5 className={`mb-5 fw-bold ${clasess.gray}`}>
+          Metricas arrojadas a partir de 110 sesiones
+        </h5>
       </Col>
       {[1, 2, 3].map((item) => (
         <Row

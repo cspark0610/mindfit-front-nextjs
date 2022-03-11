@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // Styles
-import classes from 'styles/Login/ForgottenPassword/forgottenPassword.module.scss'
+import classes from 'styles/Login/page.module.scss'
 
 // Components
 import { InputText } from 'primereact/inputtext'
@@ -59,11 +59,9 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
   }
 
   return (
-    <Row className={classes.container}>
-      <Col xs={12} className='d-flex justify-content-center'>
-        <form
-          onSubmit={handleSubmit}
-          className={`${classes.card} ${classes.section}`}>
+    <Row className={classes.form}>
+      <Col sm={9}>
+        <form onSubmit={handleSubmit} className={classes.section}>
           <Row>
             <InputText
               type='email'
@@ -87,7 +85,7 @@ export const ForgottenPassword: FC<Props> = ({ setToggleView, content }) => {
               {content.sendEmailButton.label}
             </Button>
           </Row>
-          <p className={classes.recoveryLabel} onClick={handleToggleChange}>
+          <p className={classes.label} onClick={handleToggleChange}>
             {content.haveAccountLabel}
           </p>
           <ExploreBadge />

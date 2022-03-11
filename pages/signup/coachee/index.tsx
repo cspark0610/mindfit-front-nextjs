@@ -16,11 +16,11 @@ import { Container } from 'react-bootstrap'
 import { FirstColaboratorLogin } from 'components/molecules/FirstColaboratorLogin'
 
 // styles
-import classes from 'styles/signup/colaborator.module.scss'
+import classes from 'styles/signup/coachee.module.scss'
 
 // types
-import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { GetServerSidePropsContext, NextPage } from 'next'
 
 const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   hash,
@@ -29,18 +29,17 @@ const SignupOrgPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }) => (
   <Container className={classes.container}>
     <h1 className={classes.title}>{content?.welcomeLabel}</h1>
-    <div>
-      <Image
-        src='/assets/icon/MINDFIT.svg'
-        alt='Mindfit Logo'
-        width={420}
-        height={150}
-      />
-    </div>
+    <Image
+      width={420}
+      height={250}
+      alt='Mindfit Logo'
+      layout='intrinsic'
+      src='/assets/icon/MINDFIT.svg'
+    />
     <FirstColaboratorLogin
-      error={error as string}
-      hash={hash as string}
       content={content}
+      hash={hash as string}
+      error={error as string}
     />
   </Container>
 )

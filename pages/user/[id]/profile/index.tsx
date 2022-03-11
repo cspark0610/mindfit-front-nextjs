@@ -1,9 +1,6 @@
 // main tools
 import { getSession } from 'next-auth/react'
 
-// bootstrap components
-import { Container } from 'react-bootstrap'
-
 // components
 import { Layout } from 'components/organisms/Layout'
 import { CoachProfile } from 'components/organisms/Profile/coachProfile'
@@ -21,9 +18,6 @@ import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
-// styles
-import classes from 'styles/signup/org.module.scss'
-
 // types
 import { GetSSPropsType } from 'types'
 import { CoachDataType } from 'types/models/Coach'
@@ -31,22 +25,21 @@ import { CoacheeDataType } from 'types/models/Coachee'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
 const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  coachee,
   coach,
+  coachee,
   content,
 }) => (
   <Layout>
-    <Container className={classes.container}>
-      <Container fluid className={classes.section}>
-        {coachee && <CoacheeProfile coachee={coachee} content={content} />}
-        {coach && <CoachProfile coach={coach} content={content} />}
-      </Container>
-    </Container>
+    {coachee && <CoacheeProfile coachee={coachee} content={content} />}
+    {coach && <CoachProfile coach={coach} content={content} />}
   </Layout>
 )
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+
   const apollo = createApolloClient(session?.token)
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
 

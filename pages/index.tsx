@@ -31,11 +31,11 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   return (
     <Container className={classes.container}>
       <Image
-        src='/assets/icon/MINDFIT.svg'
-        alt='Mindfit Logo'
         width={420}
         height={250}
+        alt='Mindfit Logo'
         layout='intrinsic'
+        src='/assets/icon/MINDFIT.svg'
       />
       {toggleView ? (
         <ForgottenPassword setToggleView={setToggleView} content={content} />
@@ -49,7 +49,10 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (session)
-    return { redirect: { destination: '/user', permanent: false }, props: {} }
+    return {
+      redirect: { destination: '/dashboard/coachee', permanent: false },
+      props: {},
+    }
 
   const apolloClient = initializeApolloClient()
 

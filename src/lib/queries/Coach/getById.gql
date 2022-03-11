@@ -12,6 +12,9 @@ query GetCoachById($id: Int!) {
     coachingAreas {
       id
       name
+      codename
+      description
+      coverPicture
     }
   }
 }

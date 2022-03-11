@@ -47,10 +47,7 @@ export const StyledEditor: FC<{
         <Row xs='auto' className='mt-3 justify-content-between'>
           <Col>
             {id != undefined && (
-              <Button
-                variant='light'
-                className=''
-                onClick={() => removed(id)}>
+              <Button variant='light' className='' onClick={() => removed(id)}>
                 <Trash className={classes.icon} />
               </Button>
             )}

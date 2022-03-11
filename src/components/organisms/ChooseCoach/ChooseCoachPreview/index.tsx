@@ -17,20 +17,20 @@ import { ChevronLeft } from 'react-bootstrap-icons'
 import { microServices } from 'commons'
 
 // styles
-import classes from 'styles/CoachPreviewCard/card.module.scss'
+import classes from 'styles/ChooseCoach/page.module.scss'
 
 // types
 import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
 
-interface modalCoachInterface {
+type ChooseCoachPreviewProps = {
   handleCloseModal?: () => void
   suggestedCoachId: number
   coach: CoachDataType
   content: any
 }
 
-export const CoachPreviewCard: FC<modalCoachInterface> = ({
+export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
   coach,
   content,
   suggestedCoachId,
@@ -40,7 +40,7 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
 
   const [SelectCoach] = useMutation(SELECT_COACH, {
     context: { ms: microServices.backend },
-    onCompleted: () => push('/user'),
+    onCompleted: () => push('/dashboard/coachee'),
   })
 
   const handleSelectCoach = () =>
@@ -49,7 +49,7 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
     })
 
   return (
-    <Container className={classes.section}>
+    <Container className={classes.preview}>
       <div className={classes.container}>
         {handleCloseModal && (
           <Button className={classes.close} onClick={handleCloseModal}>
@@ -87,8 +87,8 @@ export const CoachPreviewCard: FC<modalCoachInterface> = ({
             </Button>
           </Col>
         </Row>
+        <ExploreBadge />
       </div>
-      <ExploreBadge />
     </Container>
   )
 }

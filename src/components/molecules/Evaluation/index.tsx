@@ -12,8 +12,10 @@ import { FC } from 'react'
 
 export const Evaluation: FC = () => (
   <>
-    <Row className='mb-4' >
-      <h4 className={`mb-4 fw-bold ${classes.title}`}>Resumen de la evaluación</h4>
+    <Row className='mb-4'>
+      <h4 className={`mb-4 fw-bold ${classes.title}`}>
+        Resumen de la evaluación
+      </h4>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim

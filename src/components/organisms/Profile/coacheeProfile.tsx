@@ -37,7 +37,7 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
   content,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
-  const [coacheeData, setCoacheeData] = useState<CoacheeDataType>(coachee)
+  const [coacheeData, setCoacheeData] = useState(coachee)
   const [loading, setLoading] = useState(false)
   const validate = validateCoacheeProfile(coacheeData)
 
@@ -68,7 +68,7 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
     })
     await updateCoachee({
       variables: {
-        id: user?.coachee?.id,
+        coacheeId: user?.coachee?.id,
         data: { position: updatecoacheeData.position },
       },
     })
@@ -77,69 +77,72 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
 
   return (
     <>
-      <section className={classes.container}>
-        <h1 className={classes.title}>{content.userProfile.title}</h1>
-        <UploadPicture setData={setCoacheeData} />
-        <Container fluid>
-          <Row className={classes.row}>
-            <Col xs={12}>
-              <InputText
-                name='name'
-                value={coacheeData.user?.name}
-                className={classes.input}
-                onChange={handleUserChange}
-                placeholder={content.userProfile.firstNameInput.placeholder}
-              />
-            </Col>
-            <Col xs={12}>
-              <InputText
-                disabled
-                name='email'
-                value={coacheeData.user?.email}
-                className={classes.input}
-                placeholder={content.userProfile.emailInput.placeholder}
-              />
-            </Col>
-            <Col xs={12}>
-              <Dropdown
-                name='position'
-                options={workPositions}
-                className={classes.input}
-                value={coacheeData.position}
-                onChange={handleCoacheeChange}
-                placeholder={content.userProfile.positionInput.placeholder}
-              />
-            </Col>
-            <Col xs={12}>
-              <p
-                className={classes.recoveryLabel}
-                onClick={() => setShowPassword(true)}>
-                {content.userProfile.changePasswordButton.label}
-              </p>
-            </Col>
-            <Row className='justify-content-end'>
-              <Button
-                disabled={!validate}
-                onClick={handleSave}
-                className={classes.button}>
-                {loading ? (
-                  <Spinner animation='border' color='primary' />
-                ) : (
-                  content.userProfile.saveButton.label
-                )}
-              </Button>
+      <Container className={classes.container}>
+        <Container className={classes.section}>
+          <h1 className={classes.title}>{content.userProfile.title}</h1>
+          <UploadPicture setData={setCoacheeData} />
+          <Container fluid>
+            <Row className={classes.row}>
+              <Col xs={12}>
+                <InputText
+                  name='name'
+                  value={coacheeData.user?.name}
+                  className={classes.input}
+                  onChange={handleUserChange}
+                  placeholder={content.userProfile.firstNameInput.placeholder}
+                />
+              </Col>
+              <Col xs={12}>
+                <InputText
+                  disabled
+                  name='email'
+                  value={coacheeData.user?.email}
+                  className={classes.input}
+                  placeholder={content.userProfile.emailInput.placeholder}
+                />
+              </Col>
+              <Col xs={12}>
+                <Dropdown
+                  name='position'
+                  options={workPositions}
+                  className={classes.input}
+                  value={coacheeData.position}
+                  onChange={handleCoacheeChange}
+                  placeholder={content.userProfile.positionInput.placeholder}
+                />
+              </Col>
+              <Col xs={12}>
+                <p
+                  role='button'
+                  className={classes.recoveryLabel}
+                  onClick={() => setShowPassword(true)}>
+                  {content.userProfile.changePasswordButton.label}
+                </p>
+              </Col>
+              <Row className='justify-content-end'>
+                <Button
+                  disabled={!validate}
+                  onClick={handleSave}
+                  className={classes.button}>
+                  {loading ? (
+                    <Spinner animation='border' color='primary' />
+                  ) : (
+                    content.userProfile.saveButton.label
+                  )}
+                </Button>
+              </Row>
             </Row>
-          </Row>
-          <ExploreBadge />
+            <ExploreBadge />
+          </Container>
         </Container>
-      </section>
+      </Container>
       <Modal
         centered
         show={showPassword}
         className={classes.modal}
         onHide={() => setShowPassword(false)}>
         <Modal.Header closeButton className={classes.close} />
-        <Modal.Body className={classes.section_modal}>
+        <Modal.Body>
           <ChangePasswordProfile
             onHide={setShowPassword}
             content={content.changePassword}

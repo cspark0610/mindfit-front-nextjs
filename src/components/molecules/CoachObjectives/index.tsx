@@ -51,7 +51,7 @@ export const CoachObjectives: FC<{ content: any }> = ({ content }) => {
           progress: 0,
         },
         {
-          description: 'Practice meditation at least once a day.',
+          description: 'Practice meditation.',
           progress: 0,
         },
         {

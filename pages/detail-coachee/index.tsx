@@ -25,12 +25,12 @@ const DetailCoachee: NextPage = () => (
         </Col>
         <Col md={6} className='pt-4'>
           <Container className={`p-5 ${classes.section}`}>
-            <Evaluation/>
+            <Evaluation />
           </Container>
         </Col>
         <Col md={12} lg={3} className='pt-4'>
           <Container className={`p-4 ${classes.section}`}>
-            <Notes/>
+            <Notes />
           </Container>
         </Col>
       </Row>

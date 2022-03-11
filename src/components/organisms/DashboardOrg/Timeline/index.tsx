@@ -40,9 +40,9 @@ export const Timeline: FC<ChartProps> = () => {
     },
     plugins: {
       legend: {
-        display: false
-      }
-    }
+        display: false,
+      },
+    },
   }
 
   return (
@@ -66,12 +66,14 @@ export const Timeline: FC<ChartProps> = () => {
         </Nav>
         <Tab.Content>
           <Row xs='auto' className='mb-4'>
-            <div className={classes.legend}/>
+            <div className={classes.legend} />
             <h4 className={classes.legend_text}>Numero de sesiones</h4>
           </Row>
           <Row xs='auto' className='mb-4'>
-            <div className={classes.legend_light}/>
-            <h4 className={classes.legend_text}>Sesiones acumuladas previamente</h4>
+            <div className={classes.legend_light} />
+            <h4 className={classes.legend_text}>
+              Sesiones acumuladas previamente
+            </h4>
           </Row>
           <Tab.Pane eventKey='month'>
             <Chart type='line' data={data} options={options} />

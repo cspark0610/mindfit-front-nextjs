@@ -20,50 +20,47 @@ import { microServices } from 'commons'
 import { coacheeRegistrationStatus } from 'utils/enums'
 
 // styles
-import classes from 'styles/signup/colaborator.module.scss'
+import classes from 'styles/signup/coachee.module.scss'
 
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { Layout } from 'components/organisms/Layout'
 
 const ColaboratorStepsPage: NextPage<
   GetSSPropsType<typeof getServerSideProps>
-> = ({ steps, content }) => {
+> = ({ steps }) => {
   if (!steps) return null
 
   const stepIndex = steps?.findIndex((step) => step.completed === false)
 
   return (
-    <Container className={classes.container}>
-      <Container fluid className={classes.section}>
-        {steps?.map((step, idx) => {
-          if (idx < stepIndex)
-            return <CompletedStep key={idx} label={step.label} />
-          else if (idx === stepIndex)
-            return <ActualStep key={idx} index={idx + 1} label={step.label} />
-          else return <NextStep key={idx} label={step.label} />
-        })}
-        <Row>
-          <Col xs={12}>
-            <Link passHref href={steps[stepIndex]?.url || '#'}>
-              <Button className={classes.button}>
-                {steps[stepIndex]?.action}
-              </Button>
-            </Link>
-          </Col>
-        </Row>
-        {/* <Row className='mt-3 text-center'>
-          <span>{content.label}</span>
-          <Link href='/signup/organization'>
-            <a>{content.value}</a>
-          </Link>
-        </Row> */}
-        <Row>
-          <ExploreBadge />
-        </Row>
+    <Layout>
+      <Container className={classes.container}>
+        <Container fluid className={classes.section}>
+          {steps?.map((step, idx) => {
+            if (idx < stepIndex)
+              return <CompletedStep key={idx} label={step.label} />
+            else if (idx === stepIndex)
+              return <ActualStep key={idx} index={idx + 1} label={step.label} />
+            else return <NextStep key={idx} label={step.label} />
+          })}
+          <Row>
+            <Col xs={12}>
+              <Link passHref href={steps[stepIndex]?.url || '#'}>
+                <Button className={classes.button}>
+                  {steps[stepIndex]?.action}
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <ExploreBadge />
+          </Row>
+        </Container>
       </Container>
-    </Container>
+    </Layout>
   )
 }
 
@@ -97,7 +94,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
   ]
   if (status.includes(coachee.findCoacheeById.registrationStatus as string))
-    return { redirect: { destination: '/user', permanent: false }, props: {} }
+    return {
+      redirect: { destination: '/dashboard/coachee', permanent: false },
+      props: {},
+    }
 
   // format content
   const steps = [

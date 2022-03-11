@@ -9,9 +9,7 @@ import { getToken, microServices } from 'commons'
  * create a new apollo client
  */
 export const createApolloClient = (accessToken: string | null = null) => {
-  const httpLink = createUploadLink({
-    fetch: (uri, ctx) => fetch(uri, ctx),
-  })
+  const httpLink = createUploadLink({ fetch: (uri, ctx) => fetch(uri, ctx) })
 
   // list of microservices
   const microservicesUris = {
@@ -49,7 +47,7 @@ export const createApolloClient = (accessToken: string | null = null) => {
   const client = new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename: false }),
   })
 
   return client

@@ -9,25 +9,25 @@ import { Checkbox } from 'primereact/checkbox'
 import { InputTextarea } from 'primereact/inputtextarea'
 
 // bootstrap components
-import { Button, Container } from 'react-bootstrap'
+import { Button, Container, Row } from 'react-bootstrap'
 
 // Styles
-import classes from 'styles/CoachSearchFeedback/coachSearchFeedback.module.scss'
+import classes from 'styles/ChooseCoach/page.module.scss'
 
 // types
 import { SubmitType } from 'types'
 import { CheckboxChangeParams } from 'primereact/checkbox'
 
 interface CoachFeedbackInterface {
+  content: any
   cancel: () => void
   submit: (reason: string) => void
-  content: any
 }
 
 export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
-  content,
   cancel,
   submit,
+  content,
 }) => {
   const [option, setOption] = useState<any>(null)
   const [details, setDetails] = useState('')
@@ -42,11 +42,10 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
     e.preventDefault()
     if (option && option?.value !== 'other') submit(option.label)
     else if (option?.value === 'other' && details !== '') submit(details)
-    //else show a toast
   }
 
   return (
-    <div className={classes.section}>
+    <div className={classes.feedback}>
       <h2 className={classes.title}>{content.suggestedCoachesTitle}</h2>
       <Container>
         <form onSubmit={handleSubmit}>
@@ -71,6 +70,7 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
           <p>{content.suggestedCoachesTextarea.label}</p>
           <InputTextarea
             rows={8}
+            required
             autoResize
             value={details}
             className={classes.textarea}
@@ -81,12 +81,14 @@ export const CoachSearchFeedback: FC<CoachFeedbackInterface> = ({
           <Button type='submit' className={`${classes.button} mt-4`}>
             {content.suggestedCoachesSubmitButton.label}
           </Button>
-          <Button
-            variant='link'
-            onClick={cancel}
-            className={classes.buttonLink}>
-            {content.suggestedCoachesCancelButton.label}
-          </Button>
+          <Row>
+            <Button
+              variant='link'
+              onClick={cancel}
+              className={classes.sugestBtn}>
+              {content.suggestedCoachesCancelButton.label}
+            </Button>
+          </Row>
         </form>
       </Container>
       <ExploreBadge />

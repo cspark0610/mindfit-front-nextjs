@@ -1,6 +1,6 @@
 // main tools
-import { useRouter } from 'next/router'
 import Image from 'next/image'
+import dayjs from 'dayjs'
 
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
@@ -10,29 +10,32 @@ import { Lightbulb } from 'react-bootstrap-icons'
 import { formatDate } from 'commons'
 
 // styles
-import classes from 'styles/coachAgenda/page.module.scss'
+import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { FC } from 'react'
 
-export const CoacheeEvent: FC<{ startDate: string }> = ({ startDate }) => {
-  const { locale } = useRouter()
-  const formatedDate = formatDate(startDate)
+export const ScheduledAppointmentCard: FC<{ startDate: string }> = ({
+  startDate,
+}) => {
+  const formatedDate = dayjs(formatDate(startDate))
 
   return (
     <Container className={classes.agended}>
       <Row className={classes.row}>
         <Col className={classes.date} xs={3} md={2}>
           <Lightbulb className={classes.date_icon} />
-          <span className={classes.date_number}>{formatedDate.getDate()}</span>
+          <span className={classes.date_number}>
+            {formatedDate.format('DD')}
+          </span>
           <span className={classes.date_text}>
-            {formatedDate.toLocaleDateString(locale, { weekday: 'short' })}
+            {formatedDate.format('ddd')}
           </span>
         </Col>
         <Col className={classes.info} xs={7} md={8}>
           <strong className={classes.info_title}>Sesión de Coaching</strong>
           <span className={classes.info_desc}>
-            {`${formatedDate.getUTCHours()}:${formatedDate.getMinutes()}`}
+            {formatedDate.format('HH:MM')}
           </span>
         </Col>
         <Col xs={2}>

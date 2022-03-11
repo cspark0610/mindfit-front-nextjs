@@ -1,0 +1,153 @@
+@import '../variables.scss';
+@import '../animations.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Button/button.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+
+//Choose Coach page
+.section {
+  margin-bottom: 5rem;
+  padding: 4rem 1rem;
+
+  .title {
+    font-size: 24px;
+    color: $primary;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .sugestBtn {
+    color: $black;
+    font-size: 18px;
+    text-decoration: none;
+  }
+}
+
+.points {
+  margin-top: 2rem;
+  li button {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 50% !important;
+  }
+}
+
+// coach feedback component
+.feedback {
+  padding: 1rem 5rem;
+  @media (max-width: 988px) {
+    padding: 1rem;
+  }
+  @media (max-width: 425px) {
+    padding: 1rem;
+  }
+
+  .title {
+    color: $primary;
+    font-size: 24px;
+    margin-bottom: 2rem;
+  }
+  .description {
+    font-size: 18px;
+    color: $black;
+    margin-bottom: 3rem;
+  }
+  .options {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    .check {
+      color: $primary;
+    }
+    .uncheck {
+      color: $gray;
+    }
+  }
+}
+
+//Choose coach card component
+.coachCard {
+  animation: in 0.2s forwards;
+  border: 1px solid $primary;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 20px;
+  margin: 0 10px;
+
+  .leftSide {
+    display: flex;
+    justify-content: space-around;
+    @media (min-width: 570px) {
+      flex-direction: column;
+      align-items: center;
+    }
+    .video {
+      position: relative;
+      margin-top: 1rem;
+      &_icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 30%;
+        color: $white;
+      }
+    }
+  }
+  .rightSide {
+    @media (max-width: 570px) {
+      margin: 20px 0px 0px;
+    }
+
+    > div {
+      color: $primary;
+      margin-bottom: 0;
+    }
+    h4 {
+      font-weight: bold;
+    }
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  .button {
+    color: $white;
+  }
+}
+
+.coachModal {
+  background: transparent;
+  border: none;
+
+  .preview {
+    padding: 2rem;
+    .container {
+      padding: 3rem;
+      background: $white;
+      border-radius: 38px;
+
+      .close {
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        background-color: $secondary;
+      }
+      .name {
+        font-weight: bold;
+        font-size: 24px;
+        color: $primary;
+      }
+      .position {
+        font-size: 24px;
+        color: $primary;
+      }
+      .description {
+        text-align: left;
+      }
+      .button {
+        color: $white;
+      }
+    }
+  }
+}

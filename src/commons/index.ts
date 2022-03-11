@@ -36,6 +36,19 @@ export const microServices = {
 export const formatDate = (date: string | Date) =>
   typeof date === 'string' ? new Date(date) : date
 
+export const formatHour = (hour: string | Date) =>
+  typeof hour === 'string' ? new Date('1970-01-01 ' + hour) : hour
+
+export const verifyDateBetween = (start: Date, end: Date, now: Date) => {
+  const formatedStart = start.getTime()
+  const formatedEnd = end.getTime()
+  const formatedNow = now.getTime()
+
+  return formatedNow >= formatedStart && formatedNow <= formatedEnd
+    ? true
+    : false
+}
+
 export const getRandomColor = (colors: string[]) => {
   const num = (Math.floor(Math.random() * 4) * 4).toString(16)
   const characters = ['0', 'F', num]

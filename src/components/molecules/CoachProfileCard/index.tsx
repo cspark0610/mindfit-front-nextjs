@@ -64,18 +64,11 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
             <div className={classes.coachingAreas}>
               <h3>Coach specialization</h3>
               <ul>
-                <li>
-                  <ChevronDoubleRight /> Leadership development
-                </li>
-                <li>
-                  <ChevronDoubleRight /> Positive Psychology
-                </li>
-                <li>
-                  <ChevronDoubleRight /> Human Development
-                </li>
-                <li>
-                  <ChevronDoubleRight /> Mental Wellness
-                </li>
+                {coach?.coachingAreas?.map((area) => (
+                  <li key={area.id}>
+                    <ChevronDoubleRight /> {area.name}
+                  </li>
+                ))}
               </ul>
             </div>
             <Row>

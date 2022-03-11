@@ -1,4 +1,4 @@
-// bootsrap components 
+// bootsrap components
 import { Col, Container, ProgressBar, Row } from 'react-bootstrap'
 
 // prime components
@@ -28,7 +28,7 @@ export const FocusAreas: FC<ChartProps> = ({ data }) => {
         </Row>
         <ChartDoughnut data={data} />
       </Container>
-      {[1,2,3].map((item) => (
+      {[1, 2, 3].map((item) => (
         <Row
           key={item}
           xs='auto'

@@ -1,24 +1,66 @@
 @import '../variables.scss';
-@import '../UI/Card/signupCard.module.scss';
+@import '../UI/Card/AppCard.module.scss';
 @import '../UI/Input/AppInput.module.scss';
 @import '../UI/Modal/appModal.module.scss';
-@import '../Login/LoginCard/loginCard.module.scss';
 
-.textarea {
-  border-color: $lightGray;
+.container {
+  max-width: 620px;
+
+  .section {
+    padding: 3rem;
+    margin-bottom: 5rem;
+
+    .title {
+      font-size: 18px;
+      color: $primary;
+      font-weight: bold;
+      text-align: center;
+    }
+    .row {
+      justify-content: center;
+      > * {
+        margin: 0.5rem 0;
+      }
+
+      .recoveryLabel {
+        text-align: center;
+      }
+      .textarea {
+        border-color: $lightGray;
+      }
+    }
+  }
 }
 
 .close {
   padding: 40px 40px 0;
   border-bottom: none;
 }
-.section {
-  padding: 1rem;
+
+.changePassword {
+  @extend .container;
+  .section {
+    border: none;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
 }
-.section_modal {
-  @extend .section;
-  border: none;
-  .button {
-    color: $white;
+
+.coachContainer {
+  @extend .container;
+  max-width: 1200px;
+  .section {
+    .title {
+      margin-block: 1.5rem;
+    }
+    .subtitle {
+      @extend .title;
+      text-align: start;
+    }
+    .recoveryLabel {
+      margin-block: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
   }
 }

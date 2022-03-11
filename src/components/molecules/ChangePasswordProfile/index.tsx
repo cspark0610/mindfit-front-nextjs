@@ -62,9 +62,9 @@ export const ChangePasswordProfile: FC<{
 
   return (
     <form onSubmit={changePassword}>
-      <section className={classes.container}>
-        <h1 className={classes.title}>{content.title}</h1>
-        <Container fluid>
+      <section className={classes.changePassword}>
+        <Container className={classes.section} fluid>
+          <h1 className={classes.title}>{content.title}</h1>
           <Row className={classes.row}>
             <Col xs={12}>
               <Password

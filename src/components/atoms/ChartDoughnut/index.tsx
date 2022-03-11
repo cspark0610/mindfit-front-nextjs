@@ -4,11 +4,11 @@ import { Chart, ChartProps } from 'primereact/chart'
 // types
 import { FC } from 'react'
 
-export const ChartDoughnut: FC<ChartProps> = ({data}) => {
+export const ChartDoughnut: FC<ChartProps> = ({ data }) => {
   const options = {
     plugins: {
       legend: {
-        labels: false
+        labels: false,
       },
     },
   }

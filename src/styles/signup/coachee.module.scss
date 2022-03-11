@@ -1,11 +1,7 @@
 @import '../variables.scss';
-@import '../UI/Card/AppCard.module.scss';
+@import '../Login/page.module.scss';
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 620px;
   margin-block: 5rem;
   .title {
     text-align: center;

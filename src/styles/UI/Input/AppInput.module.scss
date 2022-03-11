@@ -3,19 +3,19 @@
 .input {
   width: 100%;
   border: none;
-  background: $lightBlue !important;
-  border: 0.5px solid $lightGray;
-  box-sizing: border-box;
-  border-radius: 10px;
-  height: 45px;
-  padding: 5px 20px;
-  outline: none;
-  font-family: $roboto-font;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 19px;
+  height: 50px;
   color: $gray;
+  outline: none;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 19px;
+  padding: 5px 20px;
+  font-style: normal;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-family: $roboto-font;
+  border: 0.5px solid $lightGray;
+  background: $lightBlue !important;
   :global(.p-dropdown-label) {
     padding: 10px 0;
   }
@@ -36,32 +36,32 @@
     display: none;
   }
   &_container {
-    margin: 1rem 0;
     display: flex;
-    justify-content: center;
+    margin: 1rem 0;
     align-items: center;
+    justify-content: center;
   }
   &_input {
-    cursor: pointer;
-    background: $lightBlue;
-    border: 1px solid $primary;
-    border-radius: 50%;
     padding: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: $lightBlue;
     transition: filter 0.3s;
+    border: 1px solid $primary;
     &:hover {
-      filter: brightness(0.95);
       transition: filter 0.3s;
+      filter: brightness(0.95);
     }
   }
   &_preview {
-    position: relative;
     padding: 9px;
+    position: relative;
     &_close {
-      position: absolute;
       top: 0;
       right: 0;
-      border: 2px solid $primary;
+      position: absolute;
       border-radius: 50%;
+      border: 2px solid $primary;
     }
     &_img {
       object-fit: cover;
@@ -72,7 +72,11 @@
 
 .textarea {
   @extend .input;
-  height: inherit !important;
-  overflow: auto !important;
   border-color: $primary;
+  overflow: auto !important;
+  height: inherit !important;
+}
+
+.zindex {
+  z-index: 9991 !important;
 }
