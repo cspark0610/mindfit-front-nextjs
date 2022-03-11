@@ -5,12 +5,14 @@ import { Session } from 'next-auth'
 
 // components
 import { DataTable } from 'components/molecules/Datatable'
+import { CoacheeManagent } from 'components/molecules/CoacheeManagent'
+import { InviteCoachee } from 'components/molecules/InviteCoachee'
 
 // bootstrap components
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Trash } from 'react-bootstrap-icons'
 
-// prime component
+// prime components
 import { confirmDialog } from 'primereact/confirmdialog'
 
 // Commons
@@ -20,6 +22,7 @@ import { microServices } from 'commons'
 import { useMutation, useQuery } from '@apollo/client'
 import ORG_COACHEE from 'lib/queries/Organization/findOrganizationById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
+import UPDATE_MANY_COACHEES from 'lib/mutations/Coachees/updateCoachees.gql'
 
 // utils
 import { schema } from 'utils/actionDataTable'
@@ -36,7 +39,10 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   content,
 }) => {
   const [coachees, setCoachees] = useState([])
+  const [coachee, setCoachee] = useState()
   const [selected, setSelected] = useState<CoacheeDataType[]>([])
+  const [showEdit, setShowEdit] = useState(false)
+  const [showInvite, setShowInvite] = useState(false)
   const id = session.user.organization?.id
 
   const { loading, refetch } = useQuery(ORG_COACHEE, {
@@ -46,6 +52,10 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   })
 
   const [deleteManyCoachee] = useMutation(DELETE_MANY_COACHEE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => refetch,
+  })
+  const [suspendCoachee] = useMutation(UPDATE_MANY_COACHEES, {
     context: { ms: microServices.backend },
     onCompleted: () => refetch,
   })
@@ -68,7 +78,7 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   }
 
   const statusBody = ({ registrationStatus }: CoacheeDataType) => {
-    const statusCodeNames = content.datatable.data.attributes.statusCodeNames
+    const statusCodeNames = content.datatable.statusCodeNames
     const status = statusCodeNames.find(
       (statu: any) => statu.registrationStatus == registrationStatus
     )
@@ -82,12 +92,16 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
     )
   }
 
-  const accept = () => {
+  const remove = () => {
     const ids = selected.map((coachee) => coachee.id)
     deleteManyCoachee({ variables: { ids } })
   }
+  const suspend = () => {
+    const ids = selected.map((coachee) => coachee.id)
+    suspendCoachee({ variables: { coacheeId: ids, data: { isSuspend: true } } })
+  }
 
-  const remove = () => {
+  const confirmRemove = () => {
     confirmDialog({
       message: 'esta seguro con la eliminación?',
       header: 'Confirmation eliminación',
@@ -95,21 +109,37 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       acceptClassName: 'p-button-danger',
       acceptLabel: 'Si',
       rejectLabel: 'No',
-      accept,
+      accept: remove,
     })
   }
 
-  const edit = (id: number | string) => {
-    console.log(id, 'editar')
+  const confirmSuspend = () => {
+    confirmDialog({
+      message: 'esta seguro con la suspencion?',
+      header: 'Confirmation suspencion',
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: suspend,
+    })
+  }
+
+  const edit = (id: number) => {
+    const newCoachee = coachees.find(({ id: coacheeId }) => coacheeId == id)
+    setCoachee(newCoachee)
+    setShowEdit(true)
   }
 
   return (
-    <Container>
-      <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
-      <Container className={classes.section}>
+    <>
+      <section className={classes.section}>
         <Row xs='auto' className='mb-4 justify-content-end'>
           <Col>
-            <Button disabled={!selected.length} className={classes.button}>
+            <Button
+              disabled={!selected.length}
+              className={classes.button}
+              onClick={() => confirmSuspend()}>
               {content.disableButton.label}
             </Button>
           </Col>
@@ -117,7 +147,7 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             <Button
               disabled={!selected.length}
               className={classes.button}
-              onClick={() => remove()}
+              onClick={() => confirmRemove()}
               variant='danger'>
               <Trash size={28} />
             </Button>
@@ -128,15 +158,33 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             selection={selected}
             onSelectionChange={(e) => setSelected(e.value)}
             value={coachees}
-            schema={schema(
-              content.datatable.data.attributes,
-              statusBody,
-              coachBody
-            )}
+            schema={schema(content.datatable, statusBody, coachBody)}
             actions={{ edit: edit }}
           />
         )}
-      </Container>
-    </Container>
+        <Row xs='auto' className='mt-4 justify-content-end'>
+          <Col>
+            <Button
+              className={classes.button}
+              onClick={() => setShowInvite(true)}>
+              Añadir Coachee
+            </Button>
+          </Col>
+        </Row>
+      </section>
+      {showEdit && (
+        <CoacheeManagent
+          show={showEdit}
+          onHide={() => setShowEdit(false)}
+          data={coachee || {}}
+          refetch={refetch}
+        />
+      )}
+      <InviteCoachee
+        show={showInvite}
+        onHide={() => setShowInvite(false)}
+        refetch={refetch}
+      />
+    </>
   )
 }
