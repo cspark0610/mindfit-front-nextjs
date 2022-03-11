@@ -1,0 +1,11 @@
+query getOrganizationFocusAreas {
+  getOrganizationFocusAreas {
+    coachingArea {
+      name
+      codename
+      coverPicture
+    }
+    value
+    base
+  }
+}

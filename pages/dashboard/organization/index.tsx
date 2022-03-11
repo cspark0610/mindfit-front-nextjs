@@ -5,6 +5,8 @@ import { getSession } from 'next-auth/react'
 import { Layout } from 'components/organisms/Layout'
 import { CoacheesDatatable } from 'components/organisms/DashboardOrg/CoacheesDatatable'
 import { Strengths } from 'components/organisms/DashboardOrg/Strengths'
+import { Satisfaction } from 'components/organisms/DashboardOrg/Satisfaction'
+import { FocusAreas } from 'components/organisms/DashboardOrg/FocusAreas'
 
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
@@ -22,7 +24,6 @@ import classes from 'styles/DashboardOrg/page.module.scss'
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
-import { Satisfaction } from 'components/organisms/DashboardOrg/Satisfaction'
 
 const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   session,
@@ -51,6 +52,7 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <Col sm={12} lg={6} className='mb-5'>
             <Container>
               <Satisfaction />
+              <FocusAreas content={content.graphFocusArea} />
             </Container>
           </Col>
         </Row>
@@ -84,6 +86,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ...content,
         datatable: content.datatable.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
+        graphFocusArea: content.graphFocusArea.data.attributes
       },
     },
   }

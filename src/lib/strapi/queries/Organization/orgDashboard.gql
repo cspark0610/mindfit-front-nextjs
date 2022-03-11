@@ -35,8 +35,22 @@ query orgDashboard($locale: I18NLocaleCode) {
               developmentAreas {
                 label
                 color
+                icon
                 developmentAreas
-                icon 
+              }
+            }
+          }
+        }
+        graphFocusArea {
+          data {
+            attributes {
+              title
+              description
+              focusAreasName {
+                label
+                color
+                icon
+                codeName
               }
             }
           }

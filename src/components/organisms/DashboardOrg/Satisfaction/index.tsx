@@ -26,7 +26,7 @@ export const Satisfaction: FC = () => {
   })
 
   return (
-    <section className={classes.section}>
+    <section className={`mb-5 ${classes.section}`}>
       <h3 className={`mb-5 text-center ${classes.blue}`}>
         Satisfacción con el coaching
       </h3>
