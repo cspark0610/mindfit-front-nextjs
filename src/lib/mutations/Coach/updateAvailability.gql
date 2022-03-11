@@ -1,0 +1,5 @@
+mutation UpdateCoachAgenda($data: EditCoachAgendaDto!) {
+  updateCoachAgenda(data: $data) {
+    id
+  }
+}

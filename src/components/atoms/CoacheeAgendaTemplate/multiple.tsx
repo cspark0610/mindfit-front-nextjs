@@ -1,5 +1,5 @@
 // styles
-import classes from 'styles/coachAgenda/page.module.scss'
+import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { CalendarDateTemplateParams } from 'primereact/calendar'
@@ -8,7 +8,7 @@ import { SetStateType } from 'types'
 export const coacheeAgendaTemplate = (
   props: CalendarDateTemplateParams,
   selectedDate: Date | null,
-  setSelectedDate: SetStateType<Date | null>
+  setSelectedDate: SetStateType<typeof selectedDate>
 ) => {
   const actualDate = new Date(`${props.month + 1}/${props.day}/${props.year}`)
   const isSelected =

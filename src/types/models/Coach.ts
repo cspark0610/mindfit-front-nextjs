@@ -1,3 +1,4 @@
+import { AgendaDataType } from './Agenda'
 import { UserDataType } from './User'
 
 export type CoachDataType = {
@@ -8,5 +9,12 @@ export type CoachDataType = {
   phoneNumber?: string
   profilePicture?: File
   videoPresentation?: string
-  coachingAreas?: { id?: number; name?: string }[]
+  coachAgenda?: AgendaDataType
+  coachingAreas?: {
+    id?: number
+    name?: string
+    codename?: string
+    description?: string
+    coverPicture?: string
+  }[]
 }

@@ -31,6 +31,7 @@ import { ChangeType } from 'types'
 import { UserDataType } from 'types/models/User'
 import { CoachDataType } from 'types/models/Coach'
 import { MultiSelectChangeParams } from 'primereact/multiselect'
+import { Skeleton } from 'primereact/skeleton'
 
 type CoachProfileProps = {
   coach: CoachDataType
@@ -40,7 +41,7 @@ type CoachProfileProps = {
 export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const [loading, setLoading] = useState(false)
   const [coachData, setCoachData] = useState(coach)
-  const [coachingAreas, setCoachingAreas] = useState([])
+  const [coachingAreas, setCoachingAreas] = useState(undefined)
   const [passwordShow, setPasswordShow] = useState(false)
 
   const [updateUser] = useMutation(UPDATE_USER, {
@@ -81,15 +82,16 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
       variables: {
         id: user?.coach?.id,
         data: {
-          videoPresentation: updatecoachData.videoPresentation,
-          coachingAreasId: updatecoachData.coachingAreas,
+          videoPresentation: `https://youtube.com/watch?v=${updatecoachData.videoPresentation}`,
+          coachingAreasId: updatecoachData.coachingAreas?.map(
+            (item) => item.id
+          ),
           phoneNumber: updatecoachData.phoneNumber,
           bio: updatecoachData.bio,
         },
       },
     })
 
-    console.log(res)
     setLoading(false)
   }
 
@@ -111,17 +113,20 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                 className={classes.textarea}
               />
               <h2 className={classes.subtitle}>Áreas de coaching</h2>
-              <MultiSelect
-                display='chip'
-                optionValue='id'
-                optionLabel='name'
-                name='coachingAreas'
-                options={coachingAreas}
-                className={classes.input}
-                onChange={handleChangeCoach}
-                value={coachData.coachingAreas}
-                placeholder='Escoge las areas de coaching'
-              />
+              {!coachingAreas ? (
+                <Skeleton height='50px' width='100%' />
+              ) : (
+                <MultiSelect
+                  display='chip'
+                  optionLabel='name'
+                  name='coachingAreas'
+                  options={coachingAreas}
+                  className={classes.input}
+                  onChange={handleChangeCoach}
+                  value={coachData.coachingAreas}
+                  placeholder='Escoge las areas de coaching'
+                />
+              )}
             </Col>
             <Col lg={6}>
               <h2 className={classes.subtitle}>Nombre</h2>
@@ -151,14 +156,20 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                 placeholder='Numero de celular'
               />
               <h2 className={classes.subtitle}>Video</h2>
-              <InputText
-                type='url'
-                name='videoPresentation'
-                className={classes.input}
-                onChange={handleChangeCoach}
-                value={coachData.videoPresentation}
-                placeholder='video de Presentación'
-              />
+              <div className='p-inputgroup'>
+                <span className='p-inputgroup-addon'>
+                  https://youtube.com/watch?v=
+                </span>
+                <InputMask
+                  type='url'
+                  name='videoPresentation'
+                  mask='?***********'
+                  className={classes.input}
+                  onChange={handleChangeCoach}
+                  value={coachData.videoPresentation}
+                  placeholder='video de Presentación'
+                />
+              </div>
               <p
                 role='button'
                 className={classes.recoveryLabel}

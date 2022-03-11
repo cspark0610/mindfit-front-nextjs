@@ -64,22 +64,21 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
       const session = await getSession()
 
       if (session?.user.role === userRoles.COACHEE) {
-        if (session.user.coachee) {
-          const { data } = await getCoacheeById({
-            variables: { id: session?.user.coachee?.id },
-          })
+        const { data } = await getCoacheeById({
+          variables: { id: session?.user.coachee?.id },
+        })
 
-          const status = [
-            coacheeRegistrationStatus.REGISTRATION_COMPLETED,
-            coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
-          ]
+        const status = [
+          coacheeRegistrationStatus.REGISTRATION_COMPLETED,
+          coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
+        ]
 
-          if (
-            status.includes(data.findCoacheeById.registrationStatus as string)
-          )
-            push('/dashboard/coachee')
-          else push('/signup/coachee/steps')
-        } else if (session.user.organization) push('/coachees/add')
+        if (data.findCoacheeById.isAdmin) push('/coachees/add')
+        else if (
+          status.includes(data.findCoacheeById.registrationStatus as string)
+        )
+          push('/dashboard/coachee')
+        else push('/signup/coachee/steps')
       } else if (session?.user.role === userRoles.COACH)
         push('/dashboard/coach')
     }

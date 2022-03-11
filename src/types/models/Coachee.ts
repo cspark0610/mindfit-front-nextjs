@@ -15,6 +15,15 @@ export type CoacheeDataType = {
   organization?: OrganizationDataType
   assignedCoach?: CoachDataType
   aboutPosition?: string
+  coachAppointments: {
+    id: number
+    accomplished: boolean
+    coachConfirmation: boolean
+    coacheeConfirmation: boolean
+    startDate: string
+    endDate: string
+    remarks: string
+  }[]
   coachingAreas?: {
     id?: number
     name?: string

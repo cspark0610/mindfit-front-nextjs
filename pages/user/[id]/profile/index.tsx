@@ -1,9 +1,6 @@
 // main tools
 import { getSession } from 'next-auth/react'
 
-// bootstrap components
-import { Container } from 'react-bootstrap'
-
 // components
 import { Layout } from 'components/organisms/Layout'
 import { CoachProfile } from 'components/organisms/Profile/coachProfile'
@@ -20,9 +17,6 @@ import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
-
-// styles
-import classes from 'styles/Profile/profile.module.scss'
 
 // types
 import { GetSSPropsType } from 'types'

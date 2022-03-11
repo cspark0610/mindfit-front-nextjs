@@ -1,0 +1,12 @@
+query GetCoachAppointments($id: Int!) {
+  findCoachAgendaById(id: $id) {
+    coachAppointments {
+      id
+      startDate
+      endDate
+      accomplished
+      coacheeConfirmation
+      remarks
+    }
+  }
+}

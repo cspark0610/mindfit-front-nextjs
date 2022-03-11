@@ -31,10 +31,25 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
     setData((prev: any) => ({ ...prev, profilePicture: {} }))
   }
 
-  const handleSelect = (ev: FileUploadSelectParams) => {
-    const picture = ev.files[0]
+  const handleSelect = async (ev: FileUploadSelectParams) => {
+    const picture = { ...ev.files[0] }
+
+    const arrayBuffer = await ev.files[0].arrayBuffer()
+    const buf = Buffer.alloc(arrayBuffer.byteLength)
+    const view = new Uint8Array(arrayBuffer)
+    for (let i = 0; i < buf.length; i++) {
+      buf[i] = view[i]
+    }
+    console.log(buf)
+
     setData((prev: any) => ({ ...prev, profilePicture: picture }))
-    setPicture(URL.createObjectURL(ev.files[0]))
+    setPicture(URL.createObjectURL(picture))
+  }
+
+  const x = {
+    buffer: {
+      type: 'Buffer',
+    },
   }
 
   return (

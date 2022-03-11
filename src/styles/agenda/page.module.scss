@@ -1,0 +1,222 @@
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Button/button.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Modal/appModal.module.scss';
+@import '../variables.scss';
+
+.title {
+  font-size: 24px;
+  color: $primary;
+  margin-bottom: 2rem;
+}
+.outOfService {
+  color: $secondary;
+  font-size: 20px;
+  font-weight: bold;
+}
+.subtitle {
+  @extend .title;
+  font-size: 28px;
+  margin-top: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.button {
+  font-size: 15px;
+  margin-top: 1rem;
+}
+.agenda {
+  .availability {
+    @extend .section;
+    display: flex;
+    padding: 1rem;
+    margin-bottom: 3rem;
+    align-items: center;
+    flex-direction: column;
+    @media (max-width: 1000px) {
+      padding: 1rem;
+    }
+    &_container {
+      width: 100%;
+      max-width: 470px;
+    }
+    &_calendar {
+      width: 100%;
+      border: none;
+      max-width: 300px;
+      &_disableArrows {
+        :global(.p-link) {
+          display: none;
+        }
+        :global(.p-datepicker-title) {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          > span {
+            margin-inline: 2rem;
+          }
+        }
+      }
+      & :global(.p-datepicker-calendar) tbody tr td {
+        padding: 0;
+        & > span {
+          width: 100%;
+          height: 55px;
+          max-width: 72px;
+          border-radius: 0;
+          border: 1px solid $gray;
+          & > span {
+            width: 100%;
+            height: 55px;
+            display: flex;
+            max-width: 72px;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        & > :global(.p-highlight) {
+          color: $white;
+          background-color: $primary;
+        }
+        .selectedDate {
+          width: 100%;
+          height: 62px;
+          display: flex;
+          color: $white;
+          align-items: center;
+          justify-content: center;
+          background: $secondary;
+        }
+      }
+    }
+    &_quantity {
+      color: $primary;
+      font-weight: bold;
+      font-size: 17px;
+      display: block;
+    }
+    .label {
+      color: $primary;
+      font-size: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+  .label {
+    font-size: 18px;
+    color: $primary;
+    font-weight: bold;
+  }
+}
+
+.agended {
+  @extend .section;
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: self-end;
+
+  .row {
+    align-items: center;
+    width: 100%;
+
+    .info {
+      text-align: center;
+      &_title {
+        display: block;
+        font-size: 18px;
+        color: $primary;
+        font-weight: bold;
+      }
+      &_desc {
+        color: $gray;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 20px;
+      }
+    }
+
+    .date {
+      text-align: center;
+      &_icon {
+        font-size: 30px;
+        color: $white;
+        background: $secondary;
+        border-radius: 50px;
+        padding: 5px;
+      }
+      &_number {
+        font-size: 20px;
+        font-weight: bold;
+        color: $secondary;
+        display: block;
+        margin-bottom: -10px;
+      }
+      &_text {
+        font-size: 20px;
+        color: $secondary;
+        display: block;
+      }
+    }
+  }
+}
+
+.close {
+  padding: 40px 40px 0;
+  border-bottom: none;
+}
+
+.availability {
+  padding-inline: 3rem;
+
+  :global(.p-inputswitch-checked > .p-inputswitch-slider) {
+    background-color: $secondary !important;
+    transition: filter 0.3s;
+    &:hover {
+      filter: brightness(0.9);
+      transition: filter 0.3s;
+    }
+  }
+  &_switch {
+    margin-left: 1rem;
+  }
+  .title {
+    @extend .title;
+    text-align: center;
+  }
+
+  .range {
+    &_item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .label {
+        @extend .title;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+      }
+      .timeSelector {
+        width: 60%;
+      }
+      &_delete {
+        border-radius: 50px;
+        padding: 0 0.3rem 0.1rem;
+        color: $secondary !important;
+
+        &:hover {
+          color: $white !important;
+        }
+      }
+    }
+  }
+}
+
+.timeSelectorPanel {
+  z-index: 9991 !important;
+  background: $white !important;
+}

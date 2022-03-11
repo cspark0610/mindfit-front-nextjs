@@ -29,41 +29,39 @@ import { GetSSPropsType } from 'types'
 
 const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
-}) => {
-  return (
-    <Layout>
-      <Container className={classes.container}>
-        <Tabs className={classes.tabs} defaultActiveKey='all'>
-          <Tab
-            eventKey='all'
-            title={content.allTabLabel}
-            tabClassName={classes.tabs_item}>
-            <ContainerMotion className={classes.container} {...viewportFadeIn}>
-              <Row>
-                <h2 className={classes.title}>{content.allCoacheesLabel}</h2>
+}) => (
+  <Layout>
+    <Container className={classes.container}>
+      <Tabs className={classes.tabs} defaultActiveKey='all'>
+        <Tab
+          eventKey='all'
+          title={content.allTabLabel}
+          tabClassName={classes.tabs_item}>
+          <ContainerMotion className={classes.container} {...viewportFadeIn}>
+            <Row>
+              <h2 className={classes.title}>{content.allCoacheesLabel}</h2>
+              <AllCoachees content={content.coacheeCard.data.attributes} />
+            </Row>
+          </ContainerMotion>
+        </Tab>
+        <Tab
+          eventKey='resume'
+          title={content.summaryTabLabel}
+          tabClassName={classes.tabs_item}>
+          <ContainerMotion className={classes.container} {...viewportFadeIn}>
+            {content.summaryCategories.map((category: any) => (
+              <Row className='my-5' key={category.label}>
+                <h2 className={classes.title}>{category.label}</h2>
+                <p>{category.value}</p>
                 <AllCoachees content={content.coacheeCard.data.attributes} />
               </Row>
-            </ContainerMotion>
-          </Tab>
-          <Tab
-            eventKey='resume'
-            title={content.summaryTabLabel}
-            tabClassName={classes.tabs_item}>
-            <ContainerMotion className={classes.container} {...viewportFadeIn}>
-              {content.summaryCategories.map((category: any) => (
-                <Row className='my-5' key={category.label}>
-                  <h2 className={classes.title}>{category.label}</h2>
-                  <p>{category.value}</p>
-                  <AllCoachees content={content.coacheeCard.data.attributes} />
-                </Row>
-              ))}
-            </ContainerMotion>
-          </Tab>
-        </Tabs>
-      </Container>
-    </Layout>
-  )
-}
+            ))}
+          </ContainerMotion>
+        </Tab>
+      </Tabs>
+    </Container>
+  </Layout>
+)
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
@@ -76,7 +74,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
 
   const apolloClient = initializeApolloClient()
-
   const { data } = await apolloClient.query({
     query: GET_CONTENT,
     variables: { locale: ctx.locale },

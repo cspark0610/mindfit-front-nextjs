@@ -1,7 +1,7 @@
 // Next components
-import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 // main tools
 import { SessionProvider } from 'next-auth/react'

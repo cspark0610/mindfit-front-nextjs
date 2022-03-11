@@ -10,7 +10,7 @@ import { Calendar } from 'react-bootstrap-icons'
 import { formatDate } from 'commons'
 
 // styles
-import classes from 'styles/coachAgenda/page.module.scss'
+import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { FC } from 'react'

@@ -1,0 +1,5 @@
+mutation ScheduleAppointment($data: RequestCoachAppointmentDto!) {
+  requestAppointment(data: $data) {
+    id
+  }
+}
