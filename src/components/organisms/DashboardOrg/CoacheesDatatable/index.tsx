@@ -5,7 +5,7 @@ import { Session } from 'next-auth'
 
 // components
 import { DataTable } from 'components/molecules/Datatable'
-import { CoacheeManagent } from 'components/molecules/CoacheeManagent'
+import { CoacheeManagement } from 'components/molecules/CoacheeManagement'
 import { InviteCoachee } from 'components/molecules/InviteCoachee'
 
 // bootstrap components
@@ -173,7 +173,7 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
         </Row>
       </section>
       {showEdit && (
-        <CoacheeManagent
+        <CoacheeManagement
           show={showEdit}
           onHide={() => setShowEdit(false)}
           data={coachee || {}}

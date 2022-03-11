@@ -30,14 +30,14 @@ import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
 import { validateCoacheeProfile } from 'utils/Profile/coacheeProfile'
 
 //styles
-import classes from 'styles/CoacheeManagent/coacheeManagent.module.scss'
+import classes from 'styles/CoacheeManagement/coacheeManagement.module.scss'
 
 //types
 import { FC } from 'react'
 import { ChangeType } from 'types'
 import { CoacheeDataType } from 'types/models/Coachee'
 
-export const CoacheeManagent: FC<ModalProps> = ({
+export const CoacheeManagement: FC<ModalProps> = ({
   data,
   refetch,
   ...props

@@ -9,6 +9,7 @@ import { LoginCard } from 'components/molecules/Login'
 
 // utils
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
@@ -48,11 +49,18 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (session)
+  if (session) {
+    if (session.user.role === userRoles.COACHEE) {
+      return {
+        redirect: { destination: '/dashboard/coachee', permanent: false },
+        props: {},
+      }
+    } else session.user.role === userRoles.COACH
     return {
-      redirect: { destination: '/dashboard/coachee', permanent: false },
+      redirect: { destination: '/dashboard/coach', permanent: false },
       props: {},
     }
+  }
 
   const apolloClient = initializeApolloClient()
 

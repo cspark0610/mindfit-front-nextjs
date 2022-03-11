@@ -29,7 +29,7 @@ import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
 import { INITIAL_STATE, validateInviteCoachee } from 'utils/inviteCoachee'
 
 //styles
-import classes from 'styles/CoacheeManagent/coacheeManagent.module.scss'
+import classes from 'styles/CoacheeManagement/coacheeManagement.module.scss'
 
 //types
 import { FC } from 'react'
