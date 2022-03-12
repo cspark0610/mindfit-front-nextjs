@@ -2,10 +2,17 @@
 import { useState } from 'react'
 
 // boostrap components
-import { Col, Container, Nav, Row, Tab } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 
 // prime components
-import { Chart, ChartProps } from 'primereact/chart'
+import { Chart } from 'primereact/chart'
+
+// commons
+import { microServices } from 'commons'
+
+// gql
+import { useQuery } from '@apollo/client'
+import TIME_LINE from 'lib/queries/Organization/OrgDashboard/timeline.gql'
 
 // styles
 import classes from 'styles/DashboardOrg/timeline.module.scss'
@@ -13,22 +20,34 @@ import classes from 'styles/DashboardOrg/timeline.module.scss'
 // types
 import { FC } from 'react'
 
-export const Timeline: FC<ChartProps> = () => {
-  const [selected, setSelected] = useState('month')
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+export const Timeline: FC<{ content: any }> = ({ content }) => {
+  const [selected, setSelected] = useState(content.buttonPeriod[0].href)
+  const [labels, setLabels] = useState([])
+  const [values, setValues] = useState([])
+
+  const { loading } = useQuery(TIME_LINE, {
+    variables: { period: selected },
+    context: { ms: microServices.backend },
+    onCompleted: (data) => {
+      setLabels(data.getOrganizationCoacheesCoachingSessionTimeline.labels)
+      setValues(
+        data.getOrganizationCoacheesCoachingSessionTimeline.datasets[0].data
+      )
+    },
+  })
+
+  const selectedPeriod = (item: any) => {
+    setSelected(item.target.value)
+  }
+
+  const chartData = {
+    labels: labels,
     datasets: [
       {
-        label: 'Numero de sesiones',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        label: content.numberSessionsText,
+        data: values.map((value: any) => value),
         borderColor: '#1a7bee',
-        backgroundColor: '#1a7bee',
-      },
-      {
-        label: 'Sesiones acumuladas',
-        data: [55, 49, 70, 71, 46, 45, 30],
-        borderColor: '#e7f2ff',
-        backgroundColor: '#e7f2ff',
+        pointBorderWidth: 10,
       },
     ],
   }
@@ -38,49 +57,37 @@ export const Timeline: FC<ChartProps> = () => {
       x: { ticks: { color: '#4d4d4f' }, grid: { color: '#ffffff' } },
       y: { ticks: { color: '#4d4d4f' }, grid: { color: '#ffffff' } },
     },
-    plugins: {
-      legend: {
-        display: false
-      }
-    }
+    plugins: { legend: { display: false } },
   }
 
   return (
-    <Container>
-      <h1 className={`text-center mb-5 ${classes.title}`}>
-        Sesiones de coaching
-      </h1>
-      <h4 className={`mb-4 ${classes.subtitle}`}>Sesiones de coaching</h4>
-      <Tab.Container id='tab' defaultActiveKey='month'>
-        <Nav variant='pills' className='mb-4 justify-content-around'>
-          {['day', 'month'].map((item: any) => (
-            <Nav.Item key={item}>
-              <Nav.Link
-                eventKey={item}
-                className={selected == item ? classes.selected : classes.link}
-                onClick={() => setSelected(item)}>
-                {item}
-              </Nav.Link>
-            </Nav.Item>
+    <section className={`mb-5 ${classes.section}`}>
+      <h3 className={`text-center mb-5 ${classes.title}`}>{content.title}</h3>
+      <Row xs='auto' className='mb-4 justify-content-between'>
+        {!loading &&
+          content.buttonPeriod.map((item: any) => (
+            <Col>
+              <Button
+                key={item.href}
+                disabled={selected == item.href}
+                className={
+                  selected == item.href ? classes.selected : classes.link
+                }
+                onClick={(ev) => selectedPeriod(ev)}
+                variant='light'
+                value={item.href}>
+                {item.label}
+              </Button>
+            </Col>
           ))}
-        </Nav>
-        <Tab.Content>
-          <Row xs='auto' className='mb-4'>
-            <div className={classes.legend}/>
-            <h4 className={classes.legend_text}>Numero de sesiones</h4>
-          </Row>
-          <Row xs='auto' className='mb-4'>
-            <div className={classes.legend_light}/>
-            <h4 className={classes.legend_text}>Sesiones acumuladas previamente</h4>
-          </Row>
-          <Tab.Pane eventKey='month'>
-            <Chart type='line' data={data} options={options} />
-          </Tab.Pane>
-          <Tab.Pane eventKey='day'>
-            <Chart type='line' data={data} options={options} />
-          </Tab.Pane>
-        </Tab.Content>
-      </Tab.Container>
-    </Container>
+      </Row>
+      <Row xs='auto' className='mb-4'>
+        <Col>
+          <Button disabled={true} className={classes.legend} />
+        </Col>
+        <p className={classes.legend_text}>{content.numberSessionsText}</p>
+      </Row>
+      <Chart type='line' data={chartData} options={options} />
+    </section>
   )
 }

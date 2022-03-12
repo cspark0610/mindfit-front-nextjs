@@ -7,6 +7,7 @@ import { CoacheesDatatable } from 'components/organisms/DashboardOrg/CoacheesDat
 import { Strengths } from 'components/organisms/DashboardOrg/Strengths'
 import { Satisfaction } from 'components/organisms/DashboardOrg/Satisfaction'
 import { FocusAreas } from 'components/organisms/DashboardOrg/FocusAreas'
+import { Timeline } from 'components/organisms/DashboardOrg/Timeline'
 
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
@@ -46,6 +47,7 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               <h3 className={`mb-5 ${classes.title}`}>
                 {content.coachingSessionsTitle}
               </h3>
+              <Timeline content={content.graphTimeLine} />
               <Strengths content={content.graphDevelopmentArea} />
             </Container>
           </Col>
@@ -86,7 +88,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ...content,
         datatable: content.datatable.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
-        graphFocusArea: content.graphFocusArea.data.attributes
+        graphFocusArea: content.graphFocusArea.data.attributes,
+        graphTimeLine: content.graphTimeLine.data.attributes,
       },
     },
   }
