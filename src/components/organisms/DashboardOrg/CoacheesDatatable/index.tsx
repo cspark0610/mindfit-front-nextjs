@@ -19,12 +19,13 @@ import { microServices } from 'commons'
 
 // gql
 import { useMutation, useQuery } from '@apollo/client'
-import ORG_COACHEE from 'lib/queries/Organization/findOrganizationById.gql'
+import ORG_COACHEE from 'lib/queries/Organization/getById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
 import UPDATE_MANY_COACHEES from 'lib/mutations/Coachees/updateCoachees.gql'
 
 // utils
 import { schema } from 'utils/actionDataTable'
+import { coachBodyTemplate, statusBodyTemplate } from './templates'
 
 // styles
 import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
@@ -42,11 +43,10 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
   const [selected, setSelected] = useState<CoacheeDataType[]>([])
   const [showEdit, setShowEdit] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
-  const id = session.user.organization?.id
 
   const { loading, refetch } = useQuery(ORG_COACHEE, {
     context: { ms: microServices.backend },
-    variables: { id },
+    variables: { id: session.user.organization?.id },
     onCompleted: (data) => setCoachees(data.findOrganizationById.coachees),
   })
 
@@ -59,47 +59,6 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
     onCompleted: () => refetch,
   })
 
-  const coachBody = ({ user }: CoacheeDataType) => {
-    const userCoach = user?.coach?.user
-    if (userCoach)
-      return (
-        <div>
-          <img
-            alt={userCoach?.name}
-            src={userCoach?.profilePicture as string}
-            width={32}
-            style={{ verticalAlign: 'middle' }}
-          />
-          <span className='image-text'>{userCoach?.name}</span>
-        </div>
-      )
-    else return <p>sin coach asignado</p>
-  }
-
-  const statusBody = ({ registrationStatus }: CoacheeDataType) => {
-    const statusCodeNames = content.datatable.statusCodeNames
-    const status = statusCodeNames.find(
-      (statu: any) => statu.registrationStatus == registrationStatus
-    )
-    return (
-      <div
-        className={`${classes[`button_${registrationStatus}`]} ${
-          classes.button
-        }`}>
-        {status.label}
-      </div>
-    )
-  }
-
-  const remove = () => {
-    const ids = selected.map((coachee) => coachee.id)
-    deleteManyCoachee({ variables: { ids } })
-  }
-  const suspend = () => {
-    const ids = selected.map((coachee) => coachee.id)
-    suspendCoachee({ variables: { coacheeId: ids, data: { isSuspend: true } } })
-  }
-
   const confirmRemove = () => {
     confirmDialog({
       message: 'esta seguro con la eliminación?',
@@ -108,7 +67,10 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       acceptClassName: 'p-button-danger',
       acceptLabel: 'Si',
       rejectLabel: 'No',
-      accept: remove,
+      accept: () =>
+        deleteManyCoachee({
+          variables: { ids: selected.map((coachee) => coachee.id) },
+        }),
     })
   }
 
@@ -120,7 +82,13 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
       acceptClassName: 'p-button-danger',
       acceptLabel: 'Si',
       rejectLabel: 'No',
-      accept: suspend,
+      accept: () =>
+        suspendCoachee({
+          variables: {
+            coacheeId: selected.map((coachee) => coachee.id),
+            data: { isSuspend: true },
+          },
+        }),
     })
   }
 
@@ -157,7 +125,11 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             selection={selected}
             onSelectionChange={(e) => setSelected(e.value)}
             value={coachees}
-            schema={schema(content.datatable, statusBody, coachBody)}
+            schema={schema(
+              content.datatable,
+              (ev)=>statusBodyTemplate(ev, content.datatable.statusCodeNames),
+              (ev)=>coachBodyTemplate(ev.user?.coach)
+            )}
             actions={{ edit: edit }}
           />
         )}

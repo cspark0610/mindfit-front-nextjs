@@ -44,6 +44,11 @@ export const CoacheeManagent: FC<ModalProps> = ({
 }) => {
   const [coacheeData, setCoacheeData] = useState<CoacheeDataType>(data)
   const [loading, setLoading] = useState(false)
+  const [rol, setRol] = useState<CoacheeDataType>({
+    isAdmin: coacheeData.isAdmin,
+    canViewDashboard: coacheeData.canViewDashboard,
+    isActive: coacheeData.isActive
+  })
   const validate = validateCoacheeProfile(coacheeData)
 
   const [updateUser] = useMutation(UPDATE_USER, {
@@ -53,21 +58,17 @@ export const CoacheeManagent: FC<ModalProps> = ({
     context: { ms: microServices.backend },
   })
 
-  const roles: any = {
-    isAdmin: coacheeData.isAdmin,
-    canViewDashboard: coacheeData.canViewDashboard,
-    isActive: coacheeData.isActive,
-  }
-
   const onRolChange = (ev: CheckboxChangeParams) => {
     if (ev.value == 'isActive') {
-      roles['canViewDashboard'] = false
-      roles['isAdmin'] = false
-    } else if (ev.value == 'isAdmin') roles['canViewDashboard'] = false
-    else if (ev.value == 'canViewDashboard') roles['isAdmin'] = false
-
-    roles[ev.value] = ev.checked
-    setCoacheeData({ ...coacheeData, ...roles })
+      rol['isAdmin'] = false
+      rol['canViewDashboard'] = false
+    } else if (ev.value == 'isAdmin'){
+      rol['canViewDashboard'] = false
+    } 
+    else if (ev.value == 'canViewDashboard'){
+      rol['isAdmin'] = false
+    } 
+    setRol( {...rol, [ev.value]: ev.checked} )
   }
 
   const handleCoacheeChange = (ev: DropdownChangeParams) => {
@@ -94,8 +95,8 @@ export const CoacheeManagent: FC<ModalProps> = ({
         coacheeId: updatecoacheeData.id,
         data: {
           position: updatecoacheeData.position,
-          isAdmin: updatecoacheeData.isAdmin,
-          canViewDashboard: updatecoacheeData.canViewDashboard,
+          isAdmin: rol.isAdmin,
+          canViewDashboard: rol.canViewDashboard,
         },
       },
     })
@@ -141,7 +142,7 @@ export const CoacheeManagent: FC<ModalProps> = ({
                 name='rol'
                 value='isActive'
                 onChange={(e) => onRolChange(e)}
-                checked={!coacheeData.isAdmin && !coacheeData.canViewDashboard}
+                checked={!rol.isAdmin && !rol.canViewDashboard}
               />
               <label htmlFor='isActive'>Activo</label>
               <Checkbox
@@ -149,15 +150,15 @@ export const CoacheeManagent: FC<ModalProps> = ({
                 name='rol'
                 value='isAdmin'
                 onChange={(e) => onRolChange(e)}
-                checked={coacheeData.isAdmin}
+                checked={rol.isAdmin}
               />
-              <label htmlFor='admin'>Admin</label>
+              <label htmlFor='isAdmin'>Admin</label>
               <Checkbox
                 inputId='canViewDashboard'
                 name='rol'
                 value='canViewDashboard'
                 onChange={(e) => onRolChange(e)}
-                checked={coacheeData.canViewDashboard && !coacheeData.isAdmin}
+                checked={rol.canViewDashboard && !rol.isAdmin}
               />
               <label htmlFor='canViewDashboard'>Puede ver el dasboard</label>
             </Row>

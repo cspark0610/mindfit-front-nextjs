@@ -66,9 +66,8 @@ export const Timeline: FC<{ content: any }> = ({ content }) => {
       <Row xs='auto' className='mb-4 justify-content-between'>
         {!loading &&
           content.buttonPeriod.map((item: any) => (
-            <Col>
+            <Col key={item.href}>
               <Button
-                key={item.href}
                 disabled={selected == item.href}
                 className={
                   selected == item.href ? classes.selected : classes.link
