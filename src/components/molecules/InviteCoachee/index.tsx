@@ -45,20 +45,16 @@ export const InviteCoachee: FC<ModalProps> = ({ refetch, ...props }) => {
     context: { ms: microServices.backend },
   })
 
-  const roles: any = {
-    isAdmin: coacheeData.isAdmin,
-    canViewDashboard: coacheeData.canViewDashboard,
-  }
-
   const onRolChange = (ev: CheckboxChangeParams) => {
     if (ev.value == 'isActive') {
-      roles['canViewDashboard'] = false
-      roles['isAdmin'] = false
-    } else if (ev.value == 'isAdmin') roles['canViewDashboard'] = false
-    else if (ev.value == 'canViewDashboard') roles['isAdmin'] = false
-
-    roles[ev.value] = ev.checked
-    setCoacheeData({ ...coacheeData, ...roles })
+      coacheeData['isAdmin'] = false
+      coacheeData['canViewDashboard'] = false
+    } else if (ev.value == 'isAdmin') {
+      coacheeData['canViewDashboard'] = false
+    } else if (ev.value == 'canViewDashboard') {
+      coacheeData['isAdmin'] = false
+    }
+    setCoacheeData({ ...coacheeData, [ev.value]: ev.checked })
   }
 
   const handleCoacheeChange = (ev: DropdownChangeParams) => {

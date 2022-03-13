@@ -1,0 +1,9 @@
+query getOrganizationCoacheesCoachingSessionTimeline($period: String!) {
+  getOrganizationCoacheesCoachingSessionTimeline(period: $period) {
+    labels
+    datasets {
+      label
+      data
+    }
+  }
+}
