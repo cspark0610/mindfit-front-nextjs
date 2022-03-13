@@ -9,10 +9,6 @@ Cypress.Commands.add('userSignupWithForm', (userData: UserDataType) => {
     .should('contain', 'Registra tu usuario')
     .should('have.attr', 'disabled')
 
-  cy.get('div.p-fileupload > span > input').attachFile(
-    userData.profilePicture as File
-  )
-
   cy.get('input[name=firstName]')
     .type(userData.firstName as string)
     .should('have.value', userData.firstName as string)
