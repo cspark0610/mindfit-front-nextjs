@@ -38,6 +38,7 @@ export const Satisfaction: FC = () => {
         valueColor='#045095'
         valueTemplate={'{value}/10'}
         className={classes.knob}
+        strokeWidth={8}
       />
       <Col xs={6} className='m-auto text-center'>
         <p className={`fw-bold ${classes.gray}`}>

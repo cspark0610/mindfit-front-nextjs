@@ -1,4 +1,4 @@
-query findOrganizationById($id: Int!) {
+query getOrganizationById($id: Int!) {
   findOrganizationById(id: $id) {
     id
     name

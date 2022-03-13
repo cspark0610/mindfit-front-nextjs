@@ -55,6 +55,18 @@ query orgDashboard($locale: I18NLocaleCode) {
             }
           }
         }
+        graphTimeLine {
+          data {
+            attributes {
+              title
+              numberSessionsText
+              buttonPeriod {
+                label
+                href
+              }
+            }
+          }
+        }
       }
     }
   }

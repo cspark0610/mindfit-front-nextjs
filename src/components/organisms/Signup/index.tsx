@@ -47,7 +47,6 @@ interface Props {
 export const UserSignup: FC<Props> = ({ content }) => {
   const suggestionsContent = content.passwordSuggestion.data.attributes
   const [userData, setUserData] = useState<UserDataType>({
-    profilePicture: {} as File,
     firstName: '',
     lastName: '',
     email: '',
