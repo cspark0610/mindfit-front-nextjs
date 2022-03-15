@@ -18,11 +18,11 @@ import classes from 'styles/Notes/notes.module.scss'
 // types
 import { FC } from 'react'
 
-export const Notes: FC = () => {
-  const [showEdit, setShowEdit] = useState(false)
+export const Notes: FC<{ content: any }> = ({ content }) => {
   const [note, setNote] = useState('')
-  const [notes, setNotes] = useState<string[]>([])
   const [id, setId] = useState<number>()
+  const [showEdit, setShowEdit] = useState(false)
+  const [notes, setNotes] = useState<string[]>([])
 
   const handleChangeNote = (ev: EditorTextChangeParams) => {
     setNote(ev.htmlValue ?? '')
@@ -58,7 +58,7 @@ export const Notes: FC = () => {
         <Col>
           <h4 className={`fw-bold ${classes.title}`}>
             <Sticky className={`me-2  ${classes.icon}`} />
-            Notas
+            {content.notesTitle}
           </h4>
         </Col>
         <Col>

@@ -28,10 +28,7 @@ export const getToken = async (): Promise<string> => {
   return session?.token as string
 }
 
-export const microServices = {
-  backend: 'backend',
-  strapi: 'strapi',
-}
+export const microServices = { backend: 'backend', strapi: 'strapi' }
 
 export const formatDate = (date: string | Date) =>
   typeof date === 'string' ? new Date(date) : date

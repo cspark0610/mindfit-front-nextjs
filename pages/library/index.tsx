@@ -1,6 +1,7 @@
 // main tools
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/react'
 
 // bootstrap components
 import { Container, Row, Col, Spinner } from 'react-bootstrap'
@@ -48,7 +49,7 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <h1 className={classes.title}>{content.title}</h1>
           <Filter
             postCategories={postsCategories}
-            defaultCategory={defaultCategory}
+            defaultCategory={defaultCategory as string}
             placeholder={content.searchInput.placeholder}
             refetch={(data) => refetch({ filters: data })}
           />
@@ -75,6 +76,10 @@ const LibraryPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: GET_LISTS_OF_POSTS,

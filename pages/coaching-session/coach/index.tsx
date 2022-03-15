@@ -20,7 +20,7 @@ const CoachSession: NextPage = () => (
       <Row className='mt-4'>
         <Col md={6} lg={3} className='mt-4'>
           <Container className={`p-4 ${classes.section}`}>
-            <CoacheeProfileCard showButton={true} />
+            {/* <CoacheeProfileCard showButton={true} /> */}
           </Container>
         </Col>
         <Col md={6} className='mt-4'>
@@ -28,14 +28,14 @@ const CoachSession: NextPage = () => (
         </Col>
         <Col md={12} lg={3} className='mt-4'>
           <Container className={`p-4 ${classes.section}`}>
-            <Notes />
+            {/* <Notes /> */}
           </Container>
         </Col>
       </Row>
       <Row className='mt-4 mb-4'>
         <Col>
           <Container className={`p-5 ${classes.section}`}>
-            <Evaluation />
+            {/* <Evaluation /> */}
           </Container>
         </Col>
       </Row>

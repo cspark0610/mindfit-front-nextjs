@@ -1,5 +1,6 @@
 query GetCoacheeById($id: Int!) {
   findCoacheeById(id: $id) {
+    id
     bio
     invited
     isAdmin
@@ -13,9 +14,11 @@ query GetCoacheeById($id: Int!) {
     registrationStatus
     user {
       id
+      name
     }
     organization {
       id
+      name
     }
     coachingAreas {
       name

@@ -11,6 +11,7 @@ export type UserDataType = {
   coach?: CoachDataType
   coachee?: CoacheeDataType
   isStaff?: boolean
+  createdAt?: string
   password?: string
   lastName?: string
   languages?: string

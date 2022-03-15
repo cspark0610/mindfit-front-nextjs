@@ -1,0 +1,105 @@
+query GetAssignedCoachees($id: Int!) {
+  findCoachById(id: $id) {
+    assignedCoachees {
+      id
+      profilePicture
+      user {
+        id
+        name
+        createdAt
+      }
+      dimensionAverages {
+        base
+        average
+        dimension
+      }
+      organization {
+        id
+        name
+      }
+      coachAppointments {
+        id
+        startDate
+        accomplished
+        coachConfirmation
+        coacheeConfirmation
+      }
+    }
+  }
+
+  getCoachDashboardData {
+    coacheesWithoutRecentActivity {
+      id
+      profilePicture
+      user {
+        id
+        name
+        createdAt
+      }
+      dimensionAverages {
+        base
+        average
+        dimension
+      }
+      organization {
+        id
+        name
+      }
+      coachAppointments {
+        id
+        startDate
+        accomplished
+        coachConfirmation
+        coacheeConfirmation
+      }
+    }
+    coacheesWithUpcomingAppointments {
+      id
+      user {
+        id
+        name
+        createdAt
+      }
+      dimensionAverages {
+        base
+        average
+        dimension
+      }
+      organization {
+        id
+        name
+      }
+      coachAppointments {
+        id
+        startDate
+        accomplished
+        coachConfirmation
+        coacheeConfirmation
+      }
+    }
+    coacheesRecentlyRegistered {
+      id
+      user {
+        id
+        name
+        createdAt
+      }
+      dimensionAverages {
+        base
+        average
+        dimension
+      }
+      organization {
+        id
+        name
+      }
+      coachAppointments {
+        id
+        startDate
+        accomplished
+        coachConfirmation
+        coacheeConfirmation
+      }
+    }
+  }
+}

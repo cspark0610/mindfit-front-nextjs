@@ -10,11 +10,11 @@ import classes from 'styles/Evaluation/evaluation.module.scss'
 // types
 import { FC } from 'react'
 
-export const Evaluation: FC = () => (
+export const Evaluation: FC<{ content: any }> = ({ content }) => (
   <>
     <Row className='mb-4'>
       <h4 className={`mb-4 fw-bold ${classes.title}`}>
-        Resumen de la evaluación
+        {content.evaluationTitle}
       </h4>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -45,11 +45,13 @@ export const Evaluation: FC = () => (
     <Row md={2}>
       <Col>
         <Link href='/'>
-          <a className={`fw-bold ${classes.more}`}>Ver mas...</a>
+          <a className={`fw-bold ${classes.more}`}>
+            {content.seeMoreButton.label}...
+          </a>
         </Link>
       </Col>
       <Col xs='auto'>
-        <Button className={classes.button}>Realizar evaluación</Button>
+        <Button className={classes.button}>{content.testButton.label}</Button>
       </Col>
     </Row>
   </>
