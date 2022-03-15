@@ -67,7 +67,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   const [getAvailabilityRanges] = useLazyQuery(GET_AVAILABILITY_RANGES, {
     context: { ms: microServices.backend },
     onCompleted: (data) =>
-      setAvailabilityRange(data.getCoachAvailability as RangeType[]),
+      setAvailabilityRange(data?.getCoachAvailability as RangeType[]),
   })
   const [scheduleAppointment] = useMutation(SCHEDULE_APPOINTMENT, {
     context: { ms: microServices.backend },
@@ -175,7 +175,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
           </div>
         </Col>
         <Col className='px-5' xs={6}>
-          <p className={classes.label}>Duración de la reunion</p>
+          <p className={classes.label}>Duración de la reunión</p>
           <Dropdown
             optionLabel='label'
             optionValue='value'
@@ -198,7 +198,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
                   }`}
                   className={classes.button}
                   onClick={() => setSelectedAvailability(range)}>
-                  {range.from}
+                  {range.from} - {range.to}
                 </Button>
               ))}
             <Col className='mt-4' xs={9}>

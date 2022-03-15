@@ -15,6 +15,7 @@ export type CoacheeDataType = {
   organization?: OrganizationDataType
   assignedCoach?: CoachDataType
   aboutPosition?: string
+  dimensionAverages?: { base: number; average: number; dimension: string }[]
   coachAppointments?: {
     id: number
     accomplished: boolean

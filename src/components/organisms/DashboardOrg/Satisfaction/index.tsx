@@ -42,7 +42,7 @@ export const Satisfaction: FC = () => {
       />
       <Col xs={6} className='m-auto text-center'>
         <p className={`fw-bold ${classes.gray}`}>
-          Metricas arrojadas a partir de 110 sesiones
+          Métricas arrojadas a partir de 110 sesiones
         </p>
       </Col>
       <Row xs='auto' className='justify-content-center align-items-end'>

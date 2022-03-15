@@ -18,7 +18,7 @@ module.exports = {
     /**
      * strapi domain
      */
-    domains: ['d1ogzn4icpoye1.cloudfront.net'],
+    domains: ['d1ogzn4icpoye1.cloudfront.net', 'mindfit-core.s3.amazonaws.com'],
   },
   i18n: {
     /**

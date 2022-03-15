@@ -1,7 +1,7 @@
 // main tools
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import Image from 'next/image'
 
 // bootstrap components
 import { JournalText } from 'react-bootstrap-icons'
@@ -27,6 +27,7 @@ import classes from 'styles/Library/entry.module.scss'
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { getSession } from 'next-auth/react'
 
 const LibraryArticlePage: NextPage<
   GetSSPropsType<typeof getServerSideProps>
@@ -140,6 +141,10 @@ const LibraryArticlePage: NextPage<
 // }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx)
+  if (!session)
+    return { redirect: { destination: '/', permanent: false }, props: {} }
+
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: POST,

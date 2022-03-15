@@ -1,14 +1,18 @@
-query GetCoachDashboardContent($locale: I18NLocaleCode) {
-  coachDashboard(locale: $locale) {
+query GetCoacheeDetailContent($locale: I18NLocaleCode) {
+  coacheeDetail(locale: $locale) {
     data {
       attributes {
-        allCoacheesLabel
-        allTabLabel
-        summaryTabLabel
-        summaryCategories {
+        notesTitle
+        historyLabel
+        evaluationTitle
+        seeMoreButton {
           label
-          value
-          key
+        }
+        testButton {
+          label
+        }
+        watchButton {
+          label
         }
         coacheeCard {
           data {
