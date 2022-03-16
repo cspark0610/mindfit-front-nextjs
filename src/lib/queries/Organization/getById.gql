@@ -19,7 +19,11 @@ query getOrganizationById($id: Int!) {
         email
         createdAt
         coach {
-          profilePicture
+          profilePicture {
+            key
+            filename
+            location
+          }
           user {
             name
           }

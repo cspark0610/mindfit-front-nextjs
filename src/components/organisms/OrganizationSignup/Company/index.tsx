@@ -48,7 +48,7 @@ export const CompanySignup: FC<Props> = ({ content }) => {
   const { push } = useRouter()
   const { data } = useSession()
   const [companyData, setCompanyData] = useState<OrganizationDataType>({
-    profilePicture: {} as File,
+    // profilePicture: {} as File,
     name: '',
     about: '',
   })

@@ -39,7 +39,7 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
     agenda.availabilityRange
   )
   const [dateToSchedule, setDateToSchedule] = useState<
-    { key: string; value: RangeDataType } | undefined
+    { key: string; value: RangeDataType[] } | undefined
   >(undefined)
 
   const [updateAvailability] = useMutation(UPDATE_AVAILABILITY, {
@@ -95,7 +95,7 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
         <Row className='my-5'>
           <DayAvailability
             dayKey={dateToSchedule?.key as string}
-            day={dateToSchedule?.value as RangeDataType[]}
+            day={dateToSchedule?.value}
             updateRanges={setAvailabilityRange}
           />
         </Row>

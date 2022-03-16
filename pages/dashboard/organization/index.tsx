@@ -16,8 +16,10 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { microServices } from 'commons'
 
 //gql
-import { initializeApolloClient } from 'lib/apollo'
 import ORG_DASHBOARD from 'lib/strapi/queries/Organization/orgDashboard.gql'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import { createApolloClient } from 'lib/apolloClient'
+import { initializeApolloClient } from 'lib/apollo'
 
 // styles
 import classes from 'styles/DashboardOrg/page.module.scss'
@@ -66,9 +68,21 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session) return { redirect: { destination: '/', permanent: false } }
-  else if (!session.user.organization)
+
+  const apollo = createApolloClient(session.token)
+  const { data: coachee } = await apollo.query({
+    query: GET_COACHEE_BY_ID,
+    context: { ms: microServices.backend },
+    variables: { id: session.user.coachee?.id },
+  })
+
+  if (
+    !session.user.organization &&
+    !coachee.findCoacheeById.isAdmin &&
+    !coachee.findCoacheeById.canViewDashboard
+  )
     return {
-      redirect: { destination: '/signup/organization', permanent: false },
+      redirect: { destination: '/signup/coachee/steps', permanent: false },
     }
 
   const apolloClient = initializeApolloClient()

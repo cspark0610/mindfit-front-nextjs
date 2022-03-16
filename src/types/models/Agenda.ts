@@ -1,8 +1,8 @@
 import { CoachDataType } from './Coach'
 
 export type RangeDataType = {
-  from?: string
-  to?: string
+  from: string
+  to: string
 }
 
 export type AppointmentDataType = {

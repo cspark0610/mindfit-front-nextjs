@@ -56,7 +56,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
     phoneNumber: '',
     aboutPosition: '',
     name: session.user.name,
-    profilePicture: {} as File,
+    // profilePicture: {} as File,
   })
 
   const handleChange = (

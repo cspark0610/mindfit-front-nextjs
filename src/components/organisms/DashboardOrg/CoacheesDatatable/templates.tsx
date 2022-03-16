@@ -15,7 +15,7 @@ export const coachBodyTemplate = (coach: CoachDataType | undefined) =>
         width={32}
         height={32}
         alt={coach.user?.name}
-        src={coach?.profilePicture as string}
+        src={coach?.profilePicture?.location as string}
       />
       <span className='image-text'>{coach.user?.name}</span>
     </div>
