@@ -11,10 +11,6 @@ Cypress.Commands.add(
       .should('contain', 'Registra tu empresa')
       .should('have.attr', 'disabled')
 
-    cy.get('div.p-fileupload > span > input').attachFile(
-      companyData.profilePicture as File
-    )
-
     cy.get('input[name=name]')
       .type(companyData.name as string)
       .should('have.value', companyData.name as string)

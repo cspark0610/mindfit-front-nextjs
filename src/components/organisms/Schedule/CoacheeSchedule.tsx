@@ -1,23 +1,24 @@
 // main tools
-import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import dayjs from 'dayjs'
 
 // prime components
-import { addLocale } from 'primereact/api'
 import { Calendar } from 'primereact/calendar'
 import { Skeleton } from 'primereact/skeleton'
+import { addLocale } from 'primereact/api'
 
 // bootstrap components
 import { Button, Col, Row, Modal } from 'react-bootstrap'
 
 // components
-import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
-import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/multiple'
 import { ScheduleAppointment } from 'components/organisms/Schedule/manageAvailability/scheduleAppointment'
+import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/multiple'
+import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
 
 // gql
-import { useQuery } from '@apollo/client'
 import GET_COACH_AGENDA from 'lib/queries/Coach/getAgenda.gql'
+import { useQuery } from '@apollo/client'
 
 // utils
 import { formatDate, microServices } from 'commons'
@@ -26,9 +27,9 @@ import { formatDate, microServices } from 'commons'
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
-import { CoacheeDataType } from 'types/models/Coachee'
 import { CalendarLocaleOptions } from 'commons/calendarLocaleOptions'
+import { CoacheeDataType } from 'types/models/Coachee'
+import { FC } from 'react'
 
 type CoacheeScheduleProps = {
   coachee: CoacheeDataType
@@ -90,13 +91,13 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
               <Row className='w-100 justify-content-center'>
                 {coachee.coachAppointments
                   ?.filter((item) => {
-                    const formatedDate = formatDate(item.startDate)
-                    const isFromDate =
-                      selectedDate?.getDate() === formatedDate.getDate() &&
-                      selectedDate?.getMonth() === formatedDate.getMonth() &&
-                      selectedDate?.getFullYear() === formatedDate.getFullYear()
+                    const formatedDate = dayjs(formatDate(item.startDate))
+                    const formatedSelectedDate = dayjs(selectedDate)
 
-                    return isFromDate
+                    return (
+                      formatedDate.format('MM/DD/YYYY') ===
+                      formatedSelectedDate.format('MM/DD/YYYY')
+                    )
                   })
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
@@ -106,9 +107,6 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
               </Row>
             )}
             <Row className='mb-5 flex-row-reverse'>
-              <Col className='mt-3' xs={12}>
-                <p className={classes.label}>{content.availabilityLabel} 1/2</p>
-              </Col>
               {!coachAgendaId ? (
                 <Skeleton width='100%' height='30px' />
               ) : (
@@ -132,6 +130,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <ScheduleAppointment
+            content={content}
             coachId={coachee.assignedCoach?.id as number}
             coachAgendaId={coachAgendaId as number}
           />

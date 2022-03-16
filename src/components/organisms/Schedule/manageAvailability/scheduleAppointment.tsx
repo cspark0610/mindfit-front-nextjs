@@ -1,37 +1,40 @@
 // main tools
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import dayjs from 'dayjs'
 
 // gql
-import GET_COACH from 'lib/queries/Coach/getById.gql'
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
-import GET_AVAILABILITY_RANGES from 'lib/queries/Coach/getAvailability.gql'
 import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachees/scheduleAppointment.gql'
+import GET_AVAILABILITY_RANGES from 'lib/queries/Coach/getAvailability.gql'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
+import GET_COACH from 'lib/queries/Coach/getById.gql'
 
 // utils
 import { microServices } from 'commons'
+import { errors } from 'utils/errors'
 
 // components
 import { MonthNavigator } from 'components/atoms/CoacheeAgendaTemplate/monthNavigator'
 
 // bootstrap components
-import { Container, Button, Col, Row, Modal } from 'react-bootstrap'
+import { Container, Button, Col, Row } from 'react-bootstrap'
 
 // prime components
-import { Calendar } from 'primereact/calendar'
 import { Dropdown } from 'primereact/dropdown'
+import { Calendar } from 'primereact/calendar'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
-import { CoachDataType } from 'types/models/Coach'
-import { RangeDataType } from 'types/models/Agenda'
 import { CalendarChangeParams } from 'primereact/calendar'
+import { RangeDataType } from 'types/models/Agenda'
+import { CoachDataType } from 'types/models/Coach'
+import { FC } from 'react'
 
 type ScheduleAppointmentProps = {
+  content: any
   coachId: number
   coachAgendaId: number
 }
@@ -42,10 +45,12 @@ type RangeType = {
 }
 
 export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
+  content,
   coachId,
   coachAgendaId,
 }) => {
   const { locale } = useRouter()
+  const [error, setError] = useState('')
   const calendar = useRef<Calendar>(null)
   const intervals = [{ label: '60 minutos', value: 60 }]
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -66,12 +71,27 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   })
   const [getAvailabilityRanges] = useLazyQuery(GET_AVAILABILITY_RANGES, {
     context: { ms: microServices.backend },
-    onCompleted: (data) =>
-      setAvailabilityRange(data?.getCoachAvailability as RangeType[]),
+    onCompleted: (data) => {
+      const getCoachAvailability: RangeType[] = [...data.getCoachAvailability]
+      const setRanges: RangeType[] = []
+
+      getCoachAvailability.forEach((range) => {
+        const rangeAvailability = [...range.availability]
+        rangeAvailability.sort((prev, next) => {
+          if (prev.from > next.from) return 1
+          else if (prev.from < next.from) return -1
+          return 0
+        })
+        setRanges.push({ date: range.date, availability: rangeAvailability })
+      })
+
+      setAvailabilityRange(setRanges)
+    },
   })
   const [scheduleAppointment] = useMutation(SCHEDULE_APPOINTMENT, {
     context: { ms: microServices.backend },
     onCompleted: (data) => console.log(data),
+    onError: () => setError(errors.maxAppointmentsPerMonth),
   })
 
   const handleChangeDate = (ev: CalendarChangeParams) =>
@@ -88,12 +108,6 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
     selectedDate?.setMinutes(parseInt(fromMinutes as string))
     to?.setHours(parseInt(toHours as string))
     to?.setMinutes(parseInt(toMinutes as string))
-
-    console.log('AVAILABILITY')
-    console.log('NORMAL', selectedDate)
-    console.log('NORMAL', to)
-    console.log('ISO STRING', selectedDate?.toISOString())
-    console.log('ISO STRING', to.toISOString())
 
     scheduleAppointment({
       variables: {
@@ -127,8 +141,9 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   useEffect(() => {
     if (availabilityRange) {
       const availableDate = availabilityRange.find((range) => {
-        const formatedDate = range.date.split('T')[0]
-        const formatedSelectedDate = selectedDate?.toISOString().split('T')[0]
+        const formatedDate = dayjs(range.date).format('DD-MM-YYYY')
+        const formatedSelectedDate = dayjs(selectedDate).format('DD-MM-YYYY')
+
         return formatedDate === formatedSelectedDate
       })
 
@@ -169,9 +184,13 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
               )}
               panelClassName={`${classes.availability_calendar_disableArrows} ${classes.availability_calendar}`}
             />
-            <Row className='mb-5 flex-row-reverse'>
-              <Col className='mt-3' xs={12}></Col>
-            </Row>
+            {error && (
+              <Row className='mb-5 flex-row-reverse'>
+                <Col className='mt-3' xs={12}>
+                  <p className={classes.label}>{error}</p>
+                </Col>
+              </Row>
+            )}
           </div>
         </Col>
         <Col className='px-5' xs={6}>

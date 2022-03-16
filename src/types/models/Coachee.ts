@@ -31,7 +31,11 @@ export type CoacheeDataType = {
     value?: number
     base?: number
   }[]
-  profilePicture?: string | File
+  profilePicture?: {
+    key: string
+    filename: string
+    location: string
+  }
   canViewDashboard?: boolean
   invitationAccepted?: boolean
   registrationStatus?: keyof typeof coacheeRegistrationStatus

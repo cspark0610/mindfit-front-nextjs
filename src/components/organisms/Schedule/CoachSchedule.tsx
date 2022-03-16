@@ -1,25 +1,25 @@
 // main tools
-import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import dayjs from 'dayjs'
 
 // prime components
-import { addLocale } from 'primereact/api'
 import { Calendar } from 'primereact/calendar'
 import { Skeleton } from 'primereact/skeleton'
+import { addLocale } from 'primereact/api'
 
 // bootstrap components
 import { Button, Col, Row, Modal } from 'react-bootstrap'
 
 // components
-import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
-import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/multiple'
-import { SingleAvailability } from 'components/organisms/Schedule/manageAvailability/singleAvailability'
 import { GeneralAvailability } from 'components/organisms/Schedule/manageAvailability/GeneralAvailability'
+import { SingleAvailability } from 'components/organisms/Schedule/manageAvailability/singleAvailability'
+import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/multiple'
+import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
 
 // gql
-import { useQuery } from '@apollo/client'
 import GET_APPOINTMENTS from 'lib/queries/Coach/getAppointments.gql'
+import { useQuery } from '@apollo/client'
 
 // utils
 import { formatDate, microServices } from 'commons'
@@ -28,10 +28,10 @@ import { formatDate, microServices } from 'commons'
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
-import { CoachDataType } from 'types/models/Coach'
-import { AgendaDataType } from 'types/models/Agenda'
 import { CalendarLocaleOptions } from 'commons/calendarLocaleOptions'
+import { AgendaDataType } from 'types/models/Agenda'
+import { CoachDataType } from 'types/models/Coach'
+import { FC } from 'react'
 
 type CoachScheduleProps = {
   coach: CoachDataType
@@ -116,7 +116,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
                   })
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
-                      <ScheduledAppointmentCard {...item} />
+                      <ScheduledAppointmentCard actions {...item} />
                     </Col>
                   ))}
               </Row>
@@ -146,7 +146,6 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
               </Button>
             </Col>
           </Row>
-          {console.log(appointments)}
           {appointments === undefined ? (
             [0, 1].map((idx) => (
               <Skeleton
@@ -160,7 +159,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
             <Row className='w-100 justify-content-center'>
               {appointments.map((item, idx) => (
                 <Col key={idx} xs={12}>
-                  <ScheduledAppointmentCard {...item} />
+                  <ScheduledAppointmentCard preview {...item} />
                 </Col>
               ))}
             </Row>

@@ -6,7 +6,7 @@ export const validateUserSignup = (
   colaboratorData: UserDataType & CoacheeDataType
 ) => {
   if (
-    !(colaboratorData.profilePicture as File)?.type ||
+    // !(colaboratorData.profilePicture as File)?.type ||
     !colaboratorData.name ||
     !colaboratorData.bio ||
     !colaboratorData.aboutPosition ||
