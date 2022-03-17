@@ -1,5 +1,0 @@
-mutation updateManyCoachees($ids: [Float!]!, $data: EditCoacheeDto!) {
-  updateManyCoachees(ids: $ids, data: $data) {
-    id
-  }
-}

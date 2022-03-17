@@ -19,7 +19,7 @@ import { createApolloClient } from 'lib/apolloClient'
 import { useQuery, useMutation } from '@apollo/client'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
-import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachees/rejectSuggestedCoaches.gql'
+import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachee/rejectSuggestedCoaches.gql'
 import GET_COACH_SELECTION_CONTENT from 'lib/queries/Strapi/CoachSelectionContent/getCoachSelectionContent.gql'
 
 // Commons

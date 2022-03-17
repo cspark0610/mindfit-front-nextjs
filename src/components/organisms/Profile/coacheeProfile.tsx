@@ -16,7 +16,7 @@ import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfil
 //gql
 import { useMutation } from '@apollo/client'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
-import UPDATE_COACHEE from 'lib/mutations/Coachees/update.gql'
+import UPDATE_COACHEE from 'lib/mutations/Coachee/update.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'

@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react'
 import GET_COACH from 'lib/queries/Coach/getById.gql'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import GET_AVAILABILITY_RANGES from 'lib/queries/Coach/getAvailability.gql'
-import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachees/scheduleAppointment.gql'
+import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachee/scheduleAppointment.gql'
 
 // utils
 import { microServices } from 'commons'

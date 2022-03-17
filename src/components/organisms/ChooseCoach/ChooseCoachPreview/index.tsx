@@ -7,7 +7,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // gql
 import { useMutation } from '@apollo/client'
-import SELECT_COACH from 'lib/mutations/Coachees/selectCoach.gql'
+import SELECT_COACH from 'lib/mutations/Coachee/selectCoach.gql'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'

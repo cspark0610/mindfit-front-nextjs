@@ -10,7 +10,7 @@ import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
 import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
-import ACCEPT_INVITATION from 'lib/mutations/Coachees/acceptInvitation.gql'
+import ACCEPT_INVITATION from 'lib/mutations/Coachee/acceptInvitation.gql'
 
 // utils
 import jwt_decoder from 'jwt-decode'

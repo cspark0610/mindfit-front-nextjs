@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 // gql
 import { useMutation } from '@apollo/client'
-import CREATE_COACHEE from 'lib/mutations/Coachees/create.gql'
+import CREATE_COACHEE from 'lib/mutations/Coachee/create.gql'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
 
 // bootstrap components

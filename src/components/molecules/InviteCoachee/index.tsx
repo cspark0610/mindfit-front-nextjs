@@ -22,7 +22,7 @@ import { microServices, regexValidation } from 'commons'
 
 // gql
 import { useMutation } from '@apollo/client'
-import INVITE_COACHEE from 'lib/mutations/Coachees/inviteCoachee.gql'
+import INVITE_COACHEE from 'lib/mutations/Coachee/invite.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
