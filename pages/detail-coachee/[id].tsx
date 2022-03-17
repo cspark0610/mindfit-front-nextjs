@@ -45,7 +45,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         </Col>
         <Col md={12} lg={3} className='pt-4'>
           <Container className={`p-4 ${classes.section}`}>
-            <Notes content={content} />
+            <Notes coachee={coachee} content={content} />
           </Container>
         </Col>
       </Row>

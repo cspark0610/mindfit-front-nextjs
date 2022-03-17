@@ -1,0 +1,5 @@
+mutation createCoachNote($coacheeId: Float!, $note: String!) {
+  createCoachNote(data: { coacheeId: $coacheeId, note: $note }) {
+    id
+  }
+}

@@ -32,7 +32,9 @@ query GetAssignedCoachees($id: Int!) {
   getCoachDashboardData {
     coacheesWithoutRecentActivity {
       id
-      profilePicture
+      profilePicture {
+        filename
+      }
       user {
         id
         name
