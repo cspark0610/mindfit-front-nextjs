@@ -2,7 +2,9 @@ query GetAssignedCoachees($id: Int!) {
   findCoachById(id: $id) {
     assignedCoachees {
       id
-      profilePicture
+      profilePicture {
+        filename
+      }
       user {
         id
         name

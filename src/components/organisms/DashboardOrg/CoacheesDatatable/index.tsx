@@ -1,12 +1,11 @@
 // main tools
-import Image from 'next/image'
 import { useState } from 'react'
-import { Session } from 'next-auth'
 
 // components
 import { DataTable } from 'components/molecules/Datatable'
 import { CoacheeManagement } from 'components/molecules/CoacheeManagement'
 import { InviteCoachee } from 'components/molecules/InviteCoachee'
+import { DatatableSkeleton } from 'components/molecules/Datatable/Skeleton'
 
 // bootstrap components
 import { Button, Col, Row } from 'react-bootstrap'
@@ -22,7 +21,6 @@ import { microServices } from 'commons'
 import { useMutation, useQuery } from '@apollo/client'
 import ORG_COACHEE from 'lib/queries/Organization/getById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
-import UPDATE_MANY_COACHEES from 'lib/mutations/Coachees/updateCoachees.gql'
 
 // utils
 import { schema } from 'utils/actionDataTable'
@@ -35,8 +33,8 @@ import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
 import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
 
-export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
-  session,
+export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
+  user,
   content,
 }) => {
   const [coachees, setCoachees] = useState([])
@@ -47,15 +45,17 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
 
   const { loading, refetch } = useQuery(ORG_COACHEE, {
     context: { ms: microServices.backend },
-    variables: { id: session.user.organization?.id },
-    onCompleted: (data) => setCoachees(data.findOrganizationById.coachees),
+    variables: { id: user.organization?.id },
+    onCompleted: (data) => {
+      setCoachees(
+        data.findOrganizationById.coachees.filter(
+          (coachee: CoacheeDataType) => coachee.id !== user.id
+        )
+      )
+    },
   })
 
   const [deleteManyCoachee] = useMutation(DELETE_MANY_COACHEE, {
-    context: { ms: microServices.backend },
-    onCompleted: () => refetch,
-  })
-  const [suspendCoachee] = useMutation(UPDATE_MANY_COACHEES, {
     context: { ms: microServices.backend },
     onCompleted: () => refetch,
   })
@@ -75,53 +75,28 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
     })
   }
 
-  const confirmSuspend = () => {
-    confirmDialog({
-      message: 'esta seguro con la suspencion?',
-      header: 'Confirmation suspencion',
-      icon: 'pi pi-info-circle',
-      acceptClassName: 'p-button-danger',
-      acceptLabel: 'Si',
-      rejectLabel: 'No',
-      accept: () =>
-        suspendCoachee({
-          variables: {
-            coacheeId: selected.map((coachee) => coachee.id),
-            data: { isSuspend: true },
-          },
-        }),
-    })
-  }
-
   const edit = (id: number) => {
-    const newCoachee = coachees.find(({ id: coacheeId }) => coacheeId == id)
-    setCoachee(newCoachee)
+    setCoachee(coachees.find(({ id: coacheeId }) => coacheeId == id))
     setShowEdit(true)
   }
 
   return (
     <>
       <section className={classes.section}>
-        <Row xs='auto' className='mb-4 justify-content-end'>
-          <Col>
-            <Button
-              disabled={!selected.length}
-              className={classes.button}
-              onClick={() => confirmSuspend()}>
-              {content.disableButton.label}
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              disabled={!selected.length}
-              className={classes.button}
-              onClick={() => confirmRemove()}
-              variant='danger'>
-              <Trash size={28} />
-            </Button>
-          </Col>
-        </Row>
-        {!loading && (
+        {user?.isAdmin && (
+          <Row xs='auto' className='mb-4 justify-content-end'>
+            <Col>
+              <Button
+                disabled={!selected.length}
+                className={classes.button}
+                onClick={() => confirmRemove()}
+                variant='danger'>
+                <Trash size={28} />
+              </Button>
+            </Col>
+          </Row>
+        )}
+        {!loading ? (
           <DataTable
             selection={selected}
             onSelectionChange={(e) => setSelected(e.value)}
@@ -129,20 +104,24 @@ export const CoacheesDatatable: FC<{ session: Session; content: any }> = ({
             schema={schema(
               content.datatable,
               (ev) => statusBodyTemplate(ev, content.datatable.statusCodeNames),
-              (ev) => coachBodyTemplate(ev.user?.coach)
+              (ev) => coachBodyTemplate(ev.assignedCoach)
             )}
-            actions={{ edit: edit }}
+            actions={user?.isAdmin ? { edit: edit } : undefined}
           />
+        ) : (
+          <DatatableSkeleton />
         )}
-        <Row xs='auto' className='mt-4 justify-content-end'>
-          <Col>
-            <Button
-              className={classes.button}
-              onClick={() => setShowInvite(true)}>
-              Añadir Coachee
-            </Button>
-          </Col>
-        </Row>
+        {user?.isAdmin && (
+          <Row xs='auto' className='mt-4 justify-content-end'>
+            <Col>
+              <Button
+                className={classes.button}
+                onClick={() => setShowInvite(true)}>
+                Añadir Coachee
+              </Button>
+            </Col>
+          </Row>
+        )}
       </section>
       {showEdit && (
         <CoacheeManagement

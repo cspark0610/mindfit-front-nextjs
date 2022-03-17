@@ -16,8 +16,10 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { microServices } from 'commons'
 
 //gql
+import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
-import ORG_DASHBOARD from 'lib/strapi/queries/Organization/orgDashboard.gql'
+import USER_COACHEE from 'lib/queries/Coachee/getById.gql'
+import ORG_DASHBOARD from 'lib/strapi/queries/Organization/OrgDashboard.gql'
 
 // styles
 import classes from 'styles/DashboardOrg/page.module.scss'
@@ -27,7 +29,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
 
 const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  session,
+  user,
   content,
 }) => {
   return (
@@ -39,7 +41,7 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               <h3 className={`mb-5 ${classes.title}`}>
                 {content.coacheesTitle}
               </h3>
-              <CoacheesDatatable session={session} content={content} />
+              <CoacheesDatatable user={user} content={content} />
             </Container>
           </Col>
           <Col sm={12} lg={6} className='mb-5'>
@@ -66,14 +68,17 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session) return { redirect: { destination: '/', permanent: false } }
-  else if (!session.user.organization)
-    return {
-      redirect: { destination: '/signup/organization', permanent: false },
-    }
 
-  const apolloClient = initializeApolloClient()
+  const apolloClient = createApolloClient(session.token)
+  const apolloClientForStrapi = initializeApolloClient()
 
-  const { data } = await apolloClient.query({
+  const { data: user } = await apolloClient.query({
+    query: USER_COACHEE,
+    variables: { id: session.user.coachee?.id },
+    context: { ms: microServices.backend },
+  })
+
+  const { data } = await apolloClientForStrapi.query({
     query: ORG_DASHBOARD,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
@@ -83,7 +88,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      session,
+      user: user.findCoacheeById,
       content: {
         ...content,
         datatable: content.datatable.data.attributes,

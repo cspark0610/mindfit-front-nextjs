@@ -26,7 +26,7 @@ import INVITE_COACHEE from 'lib/mutations/Coachees/inviteCoachee.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
-import { INITIAL_STATE, validateInviteCoachee } from 'utils/inviteCoachee'
+import { INITIAL_STATE, validateCoachee } from 'utils/inviteCoachee'
 
 //styles
 import classes from 'styles/CoacheeManagement/coacheeManagement.module.scss'
@@ -39,7 +39,7 @@ export const InviteCoachee: FC<ModalProps> = ({ refetch, ...props }) => {
   const [coacheeData, setCoacheeData] = useState(INITIAL_STATE)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const validate = validateInviteCoachee(coacheeData)
+  const validate = validateCoachee(coacheeData)
 
   const [inviteCoachee] = useMutation(INVITE_COACHEE, {
     context: { ms: microServices.backend },

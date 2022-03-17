@@ -6,7 +6,9 @@ query GetSuggestedCoaches {
     coaches {
       id
       bio
-      profilePicture
+      profilePicture {
+        filename
+      }
       videoPresentation
       user {
         name
