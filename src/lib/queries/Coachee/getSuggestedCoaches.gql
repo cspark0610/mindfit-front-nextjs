@@ -6,7 +6,11 @@ query GetSuggestedCoaches {
     coaches {
       id
       bio
-      videoPresentation
+      profileVideo {
+        key
+        filename
+        location
+      }
       profilePicture {
         key
         filename

@@ -3,7 +3,11 @@ query GetCoachById($id: Int!) {
     bio
     isActive
     phoneNumber
-    videoPresentation
+    profileVideo {
+      key
+      filename
+      location
+    }
     profilePicture {
       key
       filename

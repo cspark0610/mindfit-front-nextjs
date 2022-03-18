@@ -6,6 +6,9 @@ import Link from 'next/link'
 // bootstrap components
 import { Dropdown, Button } from 'react-bootstrap'
 
+// utils
+import { userRoles } from 'utils/enums'
+
 // styles
 import classes from 'styles/Navbar/navbar.module.scss'
 
@@ -15,18 +18,27 @@ import { FC } from 'react'
 export const DropdownMenu: FC = () => {
   const { data } = useSession()
 
+  const profilePicture =
+    data?.user.role === userRoles.COACH
+      ? data?.user.coach?.profilePicture?.location
+      : data?.user.coachee?.profilePicture?.location
+
+  console.log(profilePicture)
+
   return (
     <>
       {data ? (
         <Dropdown align='end'>
           <Dropdown.Toggle className={classes.dropdown} id='dropdownMenu'>
-            <Image
-              width={72}
-              height={72}
-              alt='user avatar'
-              className={classes.avatar}
-              src='/assets/images/userAvatar.svg'
-            />
+            {profilePicture && (
+              <Image
+                width={72}
+                height={72}
+                alt='profile'
+                className={classes.avatar}
+                src={profilePicture as string}
+              />
+            )}
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>
             <Link href={`/user/${data.user.sub}/profile`} passHref>

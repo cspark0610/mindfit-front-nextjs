@@ -80,9 +80,7 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
     })
     const res = await updateCoach({
       variables: {
-        id: user?.coach?.id,
         data: {
-          videoPresentation: `https://youtube.com/watch?v=${updatecoachData.videoPresentation}`,
           coachingAreasId: updatecoachData.coachingAreas?.map(
             (item) => item.id
           ),
@@ -101,18 +99,26 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
         <Container className={classes.section}>
           <Row>
             <Col lg={6}>
-              <h1 className={classes.title}>Perfil de coach</h1>
-              <UploadPicture setData={setCoachData} />
-              <h2 className={classes.subtitle}>Biografía</h2>
+              <h1 className={classes.title}>{content.userProfile.title}</h1>
+              {console.log(coachData)}
+              <UploadPicture
+                data={coachData.profilePicture?.location}
+                setData={setCoachData}
+              />
+              <h2 className={classes.subtitle}>
+                {content.userProfile.bioInput.label}
+              </h2>
               <InputTextarea
                 rows={8}
                 name='bio'
                 value={coachData.bio}
-                placeholder='Biografía'
+                placeholder={content.userProfile.bioInput.placeholder}
                 onChange={handleChangeCoach}
                 className={classes.textarea}
               />
-              <h2 className={classes.subtitle}>Áreas de coaching</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.coachingAreasInput.label}
+              </h2>
               {!coachingAreas ? (
                 <Skeleton height='50px' width='100%' />
               ) : (
@@ -124,20 +130,26 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                   className={classes.input}
                   onChange={handleChangeCoach}
                   value={coachData.coachingAreas}
-                  placeholder='Escoge las areas de coaching'
+                  placeholder={
+                    content.userProfile.coachingAreasInput.placeholder
+                  }
                 />
               )}
             </Col>
             <Col lg={6}>
-              <h2 className={classes.subtitle}>Nombre</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.nameInput.label}
+              </h2>
               <InputText
                 name='name'
                 className={classes.input}
                 onChange={handleChangeUser}
                 value={coachData.user?.name}
-                placeholder={content.userProfile.firstNameInput.placeholder}
+                placeholder={content.userProfile.nameInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Email</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.emailInput.label}
+              </h2>
               <InputText
                 disabled
                 type='email'
@@ -146,41 +158,45 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                 value={coachData.user?.email}
                 placeholder={content.userProfile.emailInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Teléfono</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.phoneInput.label}
+              </h2>
               <InputMask
                 name='phoneNumber'
                 mask='+99 (999) 999-9999'
                 className={classes.input}
                 onChange={handleChangeCoach}
                 value={coachData.phoneNumber}
-                placeholder='Numero de celular'
+                placeholder={content.userProfile.phoneInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Video</h2>
-              <div className='p-inputgroup'>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.videoInput.label}
+              </h2>
+              {/* <div className='p-inputgroup'>
                 <span className='p-inputgroup-addon'>
                   https://youtube.com/watch?v=
                 </span>
                 <InputMask
                   type='url'
-                  name='videoPresentation'
+                  name='profileVideo'
                   mask='?***********'
                   className={classes.input}
                   onChange={handleChangeCoach}
-                  value={coachData.videoPresentation}
+                  value={coachData.profileVideo}
                   placeholder='video de Presentación'
                 />
-              </div>
+              </div> */}
               <p
                 role='button'
                 className={classes.recoveryLabel}
                 onClick={() => setPasswordShow(true)}>
-                {content.userProfile.changePasswordButton.label}
+                {content.userProfile.changePasswordLabel}
               </p>
               <Button onClick={handleSave} className={classes.button}>
                 {loading ? (
                   <Spinner animation='border' color='primary' />
                 ) : (
-                  content.userProfile.saveButton.label
+                  content.userProfile.submitButton.label
                 )}
               </Button>
             </Col>

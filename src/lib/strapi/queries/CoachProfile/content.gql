@@ -1,0 +1,37 @@
+query GetCoachProfile($locale: I18NLocaleCode) {
+  coachProfile(locale: $locale) {
+    data {
+      attributes {
+        title
+        changePasswordLabel
+        nameInput {
+          label
+          placeholder
+        }
+        emailInput {
+          label
+          placeholder
+        }
+        phoneInput {
+          label
+          placeholder
+        }
+        bioInput {
+          label
+          placeholder
+        }
+        coachingAreasInput {
+          label
+          placeholder
+        }
+        videoInput {
+          label
+          placeholder
+        }
+        submitButton {
+          label
+        }
+      }
+    }
+  }
+}

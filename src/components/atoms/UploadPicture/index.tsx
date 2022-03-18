@@ -20,8 +20,11 @@ import {
   UploadPicturesRef,
 } from 'types/components/UploadPicture'
 
-export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
-  const [picture, setPicture] = useState('')
+export const UploadPicture: FC<UploadPicturesProps> = ({
+  data = '',
+  setData,
+}) => {
+  const [picture, setPicture] = useState(data)
   const uploader = useRef<UploadPicturesRef>(null)
 
   const handleClick = () => uploader.current?.choose()
@@ -32,24 +35,19 @@ export const UploadPicture: FC<UploadPicturesProps> = ({ setData }) => {
   }
 
   const handleSelect = async (ev: FileUploadSelectParams) => {
-    const picture = { ...ev.files[0] }
+    const picture = new File([ev.files[0]], ev.files[0].name, {
+      type: ev.files[0].type,
+    })
 
-    const arrayBuffer = await ev.files[0].arrayBuffer()
+    const arrayBuffer = await picture.arrayBuffer()
     const buf = Buffer.alloc(arrayBuffer.byteLength)
     const view = new Uint8Array(arrayBuffer)
     for (let i = 0; i < buf.length; i++) {
       buf[i] = view[i]
     }
-    console.log(buf)
 
-    setData((prev: any) => ({ ...prev, profilePicture: picture }))
+    setData((prev: any) => ({ ...prev, profilePicture: buf }))
     setPicture(URL.createObjectURL(picture))
-  }
-
-  const x = {
-    buffer: {
-      type: 'Buffer',
-    },
   }
 
   return (

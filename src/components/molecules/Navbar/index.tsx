@@ -37,6 +37,10 @@ export const Navbar: FC = () => {
     { label: string; url: string; icon: Icon }[] | undefined
   >(undefined)
   const { data, status } = useSession()
+  const profilePicture =
+    data?.user.role === userRoles.COACH
+      ? data?.user.coach?.profilePicture?.location
+      : data?.user.coachee?.profilePicture?.location
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -78,11 +82,11 @@ export const Navbar: FC = () => {
             <BsNavbar.Offcanvas className={classes.sidebar}>
               <Offcanvas.Header closeButton>
                 <Image
-                  src='/assets/icon/MINDFIT.svg'
-                  alt='mindfit'
                   width={150}
                   height={72}
+                  alt='mindfit'
                   className={classes.avatar}
+                  src={profilePicture as string}
                 />
               </Offcanvas.Header>
               <Offcanvas.Body className={classes.sidebar_body}>

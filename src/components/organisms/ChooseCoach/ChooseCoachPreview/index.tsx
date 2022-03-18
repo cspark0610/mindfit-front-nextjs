@@ -78,7 +78,7 @@ export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
           </Col>
         </Row>
         <Row className='mb-5'>
-          <video src={coach.videoPresentation} controls />
+          <video src={coach.profileVideo?.location} controls />
         </Row>
         <Row className='d-flex justify-content-end'>
           <Col xs={3}>

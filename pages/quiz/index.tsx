@@ -56,7 +56,6 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   const [SubmitQuiz] = useMutation(SUBMIT_QUIZ, {
     context: { ms: microServices.backend },
     onCompleted: (res) => console.log({ res }),
-    onError: (err) => console.log({ err }),
   })
 
   const handleChangeSection = (index: number) => setActualSection(index)
