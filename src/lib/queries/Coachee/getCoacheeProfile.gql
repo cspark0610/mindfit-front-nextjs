@@ -1,5 +1,5 @@
-query GetCoacheeById($coacheeId: Int!) {
-  findCoacheeById(coacheeId: $coacheeId) {
+query GetCoacheeProfile {
+  getCoacheeProfile {
     id
     bio
     invited

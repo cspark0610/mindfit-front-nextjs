@@ -40,6 +40,8 @@ import { CoacheeDataType } from 'types/models/Coachee'
 
 export const CoacheeManagement: FC<ModalProps> = ({
   data,
+  content,
+  coacheeForm,
   refetch,
   ...props
 }) => {
@@ -56,10 +58,10 @@ export const CoacheeManagement: FC<ModalProps> = ({
   const [loading, setLoading] = useState(false)
   const validate = validateCoachee(coacheeData)
   const rolOptions = [
-    { name: 'Activo', value: 'isActive' },
-    { name: 'Suspendido', value: 'isSuspend' },
-    { name: 'Admin', value: 'isAdmin' },
-    { name: 'Puede ver el dashboard', value: 'canViewDashboard' },
+    { name: coacheeForm.activeCheckLabel, value: 'isActive' },
+    { name: coacheeForm.suspendCheckLabel, value: 'isSuspend' },
+    { name: coacheeForm.adminCheckLabel, value: 'isAdmin' },
+    { name: coacheeForm.canViewCheckLabel, value: 'canViewDashboard' },
   ]
 
   const [updateUser] = useMutation(UPDATE_USER, {
@@ -96,15 +98,15 @@ export const CoacheeManagement: FC<ModalProps> = ({
         coacheeId: updatecoacheeData.id,
         data: {
           position: updatecoacheeData.position,
-          isAdmin: rol == 'isAdmin',
-          canViewDashboard: rol == 'canViewDashboard',
+          isAdmin: rol === 'isAdmin',
+          canViewDashboard: rol === 'canViewDashboard',
         },
       },
     })
     await suspendCoachee({
       variables: {
         coacheeId: updatecoacheeData.id,
-        type: rol == 'isActive' ? 'ACTIVATE' : 'SUSPEND',
+        type: rol === 'isActive' ? 'ACTIVATE' : 'SUSPEND',
       },
     })
     setLoading(false)
@@ -116,22 +118,25 @@ export const CoacheeManagement: FC<ModalProps> = ({
       <Modal.Header className={classes.close} closeButton />
       <Modal.Body className={classes.section_modal}>
         <section className={classes.container}>
-          <h1 className={`fs-4 ${classes.title}`}>Editar coachee</h1>
+          <h1 className={`fs-4 ${classes.title}`}>{content.editCoaheeTitle}</h1>
           <Container fluid>
             <Row className={classes.row}>
               <Col xs={12}>
-                <h5 className={classes.inputText}>Nombre y apellido</h5>
+                <h5 className={classes.inputText}>
+                  {coacheeForm.nameInput.label}
+                </h5>
                 <InputText
                   id='name'
                   name='name'
                   value={coacheeData.user?.name}
                   onChange={handleUserChange}
-                  placeholder='name'
                   className={classes.input}
                 />
               </Col>
               <Col xs={12}>
-                <h5 className={classes.inputText}>Cargo</h5>
+                <h5 className={classes.inputText}>
+                  {coacheeForm.positionInput.label}
+                </h5>
                 <Dropdown
                   appendTo='self'
                   name='position'
@@ -139,7 +144,6 @@ export const CoacheeManagement: FC<ModalProps> = ({
                   className={classes.input}
                   onChange={handleCoacheeChange}
                   value={coacheeData.position}
-                  placeholder='cargo o posición'
                 />
               </Col>
             </Row>
@@ -164,7 +168,7 @@ export const CoacheeManagement: FC<ModalProps> = ({
                   {loading ? (
                     <Spinner animation='border' color='primary' />
                   ) : (
-                    'Guardar'
+                    coacheeForm.saveButton.label
                   )}
                 </Button>
               </Col>

@@ -19,7 +19,7 @@ import { microServices } from 'commons'
 
 // gql
 import { useMutation, useQuery } from '@apollo/client'
-import ORG_COACHEE from 'lib/queries/Organization/getById.gql'
+import GET_ORG_BY_ID from 'lib/queries/Organization/getById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
 
 // utils
@@ -43,7 +43,7 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
   const [showEdit, setShowEdit] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
 
-  const { loading, refetch } = useQuery(ORG_COACHEE, {
+  const { loading, refetch } = useQuery(GET_ORG_BY_ID, {
     context: { ms: microServices.backend },
     variables: { id: user.organization?.id },
     onCompleted: (data) => {
@@ -62,12 +62,12 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
 
   const confirmRemove = () => {
     confirmDialog({
-      message: 'esta seguro con la eliminación?',
-      header: 'Confirmation eliminación',
+      message: content.confirmDeletion.message,
+      header: content.confirmDeletion.title,
       icon: 'pi pi-info-circle',
       acceptClassName: 'p-button-danger',
-      acceptLabel: 'Si',
-      rejectLabel: 'No',
+      acceptLabel: content.confirmDeletion.confirmButton.label,
+      rejectLabel: content.confirmDeletion.denyButton.label,
       accept: () =>
         deleteManyCoachee({
           variables: { ids: selected.map((coachee) => coachee.id) },
@@ -83,7 +83,7 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
   return (
     <>
       <section className={classes.section}>
-        {user?.isAdmin && (
+        {user.isAdmin && (
           <Row xs='auto' className='mb-4 justify-content-end'>
             <Col>
               <Button
@@ -111,13 +111,13 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
         ) : (
           <DatatableSkeleton />
         )}
-        {user?.isAdmin && (
+        {user.isAdmin && (
           <Row xs='auto' className='mt-4 justify-content-end'>
             <Col>
               <Button
                 className={classes.button}
                 onClick={() => setShowInvite(true)}>
-                Añadir Coachee
+                {content.inviteButton.label}
               </Button>
             </Col>
           </Row>
@@ -125,6 +125,8 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
       </section>
       {showEdit && (
         <CoacheeManagement
+          content={content}
+          coacheeForm={content.coacheeForm}
           show={showEdit}
           onHide={() => setShowEdit(false)}
           data={coachee || {}}
@@ -132,6 +134,8 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
         />
       )}
       <InviteCoachee
+        content={content}
+        coacheeForm={content.coacheeForm}
         show={showInvite}
         onHide={() => setShowInvite(false)}
         refetch={refetch}

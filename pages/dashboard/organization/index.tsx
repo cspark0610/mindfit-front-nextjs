@@ -18,7 +18,7 @@ import { microServices } from 'commons'
 //gql
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
-import USER_COACHEE from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import ORG_DASHBOARD from 'lib/strapi/queries/Organization/OrgDashboard.gql'
 
 // styles
@@ -73,10 +73,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClientForStrapi = initializeApolloClient()
 
   const { data: user } = await apolloClient.query({
-    query: USER_COACHEE,
-    variables: { id: session.user.coachee?.id },
+    query: GET_COACHEE_PROFILE,
     context: { ms: microServices.backend },
   })
+
+  if(!user.getCoacheeProfile.isAdmin && !user.getCoacheeProfile.canViewDashboard )
+    return { redirect: { destination: '/dashboard/coachee', permanent: false } }
 
   const { data } = await apolloClientForStrapi.query({
     query: ORG_DASHBOARD,
@@ -88,10 +90,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      user: user.findCoacheeById,
+      user: user.getCoacheeProfile,
       content: {
         ...content,
         datatable: content.datatable.data.attributes,
+        coacheeForm: content.coacheeForm.data.attributes,
+        confirmDeletion: content.confirmDeletion.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
         graphFocusArea: content.graphFocusArea.data.attributes,
         graphTimeLine: content.graphTimeLine.data.attributes,
