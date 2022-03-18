@@ -8,7 +8,11 @@ export type CoachDataType = {
   isActive?: boolean
   phoneNumber?: string
   coachAgenda?: AgendaDataType
-  videoPresentation?: string
+  profileVideo?: {
+    key: string
+    filename: string
+    location: string
+  }
   profilePicture?: {
     key: string
     filename: string

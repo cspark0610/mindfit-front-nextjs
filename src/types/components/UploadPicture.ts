@@ -1,13 +1,13 @@
-import { FileUpload } from 'primereact/fileupload'
-import { SetStateType } from 'types'
-import { UserDataType } from 'types/models/User'
+// types
 import { OrganizationDataType } from 'types/models/Organization'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { FileUpload } from 'primereact/fileupload'
 import { CoachDataType } from 'types/models/Coach'
+import { SetStateType } from 'types'
 
 export type UploadPicturesProps = {
+  data?: string
   setData:
-    | SetStateType<UserDataType>
     | SetStateType<OrganizationDataType>
     | SetStateType<CoacheeDataType>
     | SetStateType<CoachDataType>
@@ -18,8 +18,8 @@ export interface UploadPicturesRef extends FileUpload {
   clear: () => void
   state: {
     files: File[]
-    focused: boolean
     msgs: string[]
+    focused: boolean
     progress: number
   }
 }

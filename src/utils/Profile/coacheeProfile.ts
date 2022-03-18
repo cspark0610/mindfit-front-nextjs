@@ -5,8 +5,7 @@ export const validateCoacheeProfile = (coacheeData: CoacheeDataType) => {
   if (
     !coacheeData.user?.name ||
     !coacheeData.user?.email ||
-    !coacheeData.position ||
-    !coacheeData.profilePicture
+    !coacheeData.position
   )
     return false
   return true

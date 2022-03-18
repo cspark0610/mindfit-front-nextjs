@@ -13,9 +13,10 @@ import { userRoles } from 'utils/enums'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
+import COACH_PROFILE_CONTENT from 'lib/strapi/queries/CoachProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
 // types
@@ -40,10 +41,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!session)
     return { redirect: { destination: '/', permanent: false }, props: {} }
 
+  const apolloClient = initializeApolloClient()
   const apollo = createApolloClient(session?.token)
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
+  const content: any = {}
 
-  if (session?.user.role === userRoles.COACHEE)
+  if (session?.user.role === userRoles.COACHEE) {
     apollo
       .query({
         query: GET_COACHEE_BY_ID,
@@ -54,7 +57,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ({ data }) =>
           (userData.coachee = data.findCoacheeById as CoacheeDataType)
       )
-  if (session?.user.role === userRoles.COACH)
+
+    const { data: contentResponse } = await apolloClient.query({
+      query: PROFILE_CONTENT,
+      variables: { locale: ctx.locale },
+      context: { ms: microServices.strapi },
+    })
+    content.userProfile = contentResponse.userProfile.data.attributes
+  }
+  if (session?.user.role === userRoles.COACH) {
     apollo
       .query({
         query: GET_COACH_BY_ID,
@@ -65,17 +76,20 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ({ data }) => (userData.coach = data.findCoachById as CoachDataType)
       )
 
-  const apolloClient = initializeApolloClient()
-  const { data: content } = await apolloClient.query({
-    query: PROFILE_CONTENT,
-    variables: { locale: ctx.locale },
-    context: { ms: microServices.strapi },
-  })
+    const { data: contentResponse } = await apolloClient.query({
+      query: COACH_PROFILE_CONTENT,
+      variables: { locale: ctx.locale },
+      context: { ms: microServices.strapi },
+    })
+    content.userProfile = contentResponse.coachProfile.data.attributes
+  }
+
   const { data: contentPass } = await apolloClient.query({
     query: CHANGE_PASSWORD_CONTENT,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
+  content.changePassword = contentPass.changePassword.data.attributes
 
   return {
     props: {
@@ -83,10 +97,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ? { ...userData.coachee, user: session?.user }
         : null,
       coach: userData.coach ? { ...userData.coach, user: session?.user } : null,
-      content: {
-        userProfile: content.userProfile.data.attributes,
-        changePassword: contentPass.changePassword.data.attributes,
-      },
+      content,
     },
   }
 }
