@@ -16,10 +16,10 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { microServices } from 'commons'
 
 //gql
-import { createApolloClient } from 'lib/apolloClient'
-import { initializeApolloClient } from 'lib/apollo'
 import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import ORG_DASHBOARD from 'lib/strapi/queries/Organization/OrgDashboard.gql'
+import { createApolloClient } from 'lib/apolloClient'
+import { initializeApolloClient } from 'lib/apollo'
 
 // styles
 import classes from 'styles/DashboardOrg/page.module.scss'

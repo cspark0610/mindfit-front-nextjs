@@ -31,12 +31,10 @@ export type CoacheeDataType = {
     value?: number
     base?: number
   }[]
-  coachNotes?: {
-    id: number
-    note: string
-  }[]
   profilePicture?: {
-    fileName?: string
+    key: string
+    filename: string
+    location: string
   }
   canViewDashboard?: boolean
   invitationAccepted?: boolean

@@ -3,12 +3,12 @@ import { useState } from 'react'
 
 // bootstrap components
 import {
-  Container,
-  Accordion,
   Col,
   Row,
   Button,
   Spinner,
+  Container,
+  Accordion,
 } from 'react-bootstrap'
 
 // prime components
@@ -21,19 +21,17 @@ import { DayAvailability } from 'components/organisms/Schedule/manageAvailabilit
 import { microServices } from 'commons'
 
 // gql
-import { useMutation } from '@apollo/client'
 import UPDATE_AVAILABILITY from 'lib/mutations/Coach/updateAvailability.gql'
+import { useMutation } from '@apollo/client'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
 import { AgendaDataType } from 'types/models/Agenda'
+import { FC } from 'react'
 
-type ManageAvailabilityProps = {
-  agenda: AgendaDataType
-}
+type ManageAvailabilityProps = { agenda: AgendaDataType }
 
 export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
   agenda,
@@ -75,10 +73,10 @@ export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
         <Col className='d-flex align-items-center' md={4}>
           <label htmlFor='disabled'>Fuera de servicio</label>
           <InputSwitch
-            className={classes.availability_switch}
             inputId='disabled'
             checked={disabled}
             onChange={(e) => setDisabled(e.value)}
+            className={classes.availability_switch}
           />
         </Col>
       </Row>
@@ -92,8 +90,8 @@ export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
                   <Accordion.Header>{key}</Accordion.Header>
                   <Accordion.Body>
                     <DayAvailability
-                      dayKey={key}
                       day={value}
+                      dayKey={key}
                       updateRanges={setAvailabilityRanges}
                     />
                   </Accordion.Body>

@@ -11,13 +11,12 @@ import { CoacheeDataType } from 'types/models/Coachee'
 export const coachBodyTemplate = (assignedCoach: CoachDataType | undefined) =>
   assignedCoach ? (
     <div>
-      {/** descomentar despues de arreglar subida de imagen del backend
-       * <Image
-       * width={32}
-       * height={32}
-       * alt={assignedCoach.user?.name}
-       * src={assignedCoach?.profilePicture.filename as string}/>
-       */}
+      <Image
+        width={32}
+        height={32}
+        alt={assignedCoach.user?.name}
+        src={assignedCoach.profilePicture?.location as string}
+      />
       <span className='image-text'>{assignedCoach.user?.name}</span>
     </div>
   ) : (
@@ -28,8 +27,6 @@ export const statusBodyTemplate = (
   item: CoacheeDataType,
   statusCodeNames: any
 ) => {
-  //console.log(item.assignedCoach);
-
   const status = statusCodeNames.find(
     (statu: any) => statu.registrationStatus == item.registrationStatus
   )

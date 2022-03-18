@@ -8,12 +8,14 @@ query GetCoacheeById($coacheeId: Int!) {
     isActive
     phoneNumber
     aboutPosition
-    profilePicture {
-      filename
-    }
     canViewDashboard
     invitationAccepted
     registrationStatus
+    profilePicture {
+      key
+      filename
+      location
+    }
     user {
       id
       name

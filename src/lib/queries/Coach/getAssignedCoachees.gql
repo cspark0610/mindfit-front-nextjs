@@ -3,7 +3,9 @@ query GetAssignedCoachees($id: Int!) {
     assignedCoachees {
       id
       profilePicture {
+        key
         filename
+        location
       }
       user {
         id
@@ -33,7 +35,9 @@ query GetAssignedCoachees($id: Int!) {
     coacheesWithoutRecentActivity {
       id
       profilePicture {
+        key
         filename
+        location
       }
       user {
         id
@@ -59,6 +63,11 @@ query GetAssignedCoachees($id: Int!) {
     }
     coacheesWithUpcomingAppointments {
       id
+      profilePicture {
+        key
+        filename
+        location
+      }
       user {
         id
         name
@@ -83,6 +92,11 @@ query GetAssignedCoachees($id: Int!) {
     }
     coacheesRecentlyRegistered {
       id
+      profilePicture {
+        key
+        filename
+        location
+      }
       user {
         id
         name

@@ -1,12 +1,14 @@
 query GetCoachById($id: Int!) {
   findCoachById(id: $id) {
     bio
-    profilePicture {
-      filename
-    }
     isActive
     phoneNumber
     videoPresentation
+    profilePicture {
+      key
+      filename
+      location
+    }
     user {
       id
       name

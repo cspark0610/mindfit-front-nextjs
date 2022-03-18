@@ -71,7 +71,8 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
         ]
 
-        if (data.getCoacheeProfile.isAdmin) push('/dashboard/organization')
+        if (session.user.organization?.id || data.getCoacheeProfile.isAdmin)
+          push('/dashboard/organization')
         else if (
           status.includes(data.getCoacheeProfile.registrationStatus as string)
         )

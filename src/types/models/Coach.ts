@@ -4,14 +4,16 @@ import { UserDataType } from './User'
 export type CoachDataType = {
   id?: number
   bio?: string
-  isActive?: boolean
   user?: UserDataType
+  isActive?: boolean
   phoneNumber?: string
-  profilePicture?: {
-    filename: File | string
-  }
-  videoPresentation?: string
   coachAgenda?: AgendaDataType
+  videoPresentation?: string
+  profilePicture?: {
+    key: string
+    filename: string
+    location: string
+  }
   coachingAreas?: {
     id?: number
     name?: string

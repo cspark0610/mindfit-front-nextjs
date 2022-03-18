@@ -1,5 +1,6 @@
 // main tools
 import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -15,10 +16,10 @@ import { formatHour } from 'commons'
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
-import { SetStateType } from 'types'
 import { availabilityRangeDataType } from 'types/models/Agenda'
 import { CalendarChangeParams } from 'primereact/calendar'
+import { SetStateType } from 'types'
+import { FC } from 'react'
 
 type DayAvailabilityProps = {
   dayKey: string
@@ -36,10 +37,10 @@ export const DayAvailability: FC<DayAvailabilityProps> = ({
   const handleChangeAvailability = (ev: CalendarChangeParams, idx: number) => {
     const updateDateRanges = [...availableRanges]
     if (updateDateRanges[idx]) {
-      const updateDate = ev.target.value as Date
+      const updateDate = dayjs(ev.target.value as Date).format('HH:mm')
       updateDateRanges[idx][
         ev.target.name as keyof typeof updateDateRanges[typeof idx]
-      ] = `${updateDate.getHours()}:${updateDate.getUTCMinutes()}0`
+      ] = updateDate
 
       setAvailableRanges(updateDateRanges)
     }
@@ -48,7 +49,7 @@ export const DayAvailability: FC<DayAvailabilityProps> = ({
   const handleAddRange = () =>
     setAvailableRanges([
       ...(availableRanges && availableRanges),
-      { from: '0:0', to: '0:0' },
+      { from: '00:00', to: '00:00' },
     ])
 
   const removeRange = (idx: number) =>
