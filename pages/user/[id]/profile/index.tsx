@@ -59,7 +59,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     organization?: OrganizationDataType
   } = {}
   const content: any = {}
-
   if (session?.user.role === userRoles.COACHEE) {
     const { data } = await apollo.query({
       query: GET_COACHEE_BY_ID,

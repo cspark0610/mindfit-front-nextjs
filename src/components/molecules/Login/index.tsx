@@ -73,10 +73,10 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
         ]
 
-        if (session.user.organization?.id || data.findCoacheeById.isAdmin)
+        if (session.user.organization?.id || data.getCoacheeProfile.isAdmin)
           push('/dashboard/organization')
         else if (
-          status.includes(data.findCoacheeById.registrationStatus as string)
+          status.includes(data.getCoacheeProfile.registrationStatus as string)
         )
           push('/dashboard/coachee')
         else push('/signup/coachee/steps')

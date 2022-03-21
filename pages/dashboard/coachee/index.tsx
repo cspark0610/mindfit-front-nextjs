@@ -57,19 +57,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
-
   const apollo = createApolloClient(session.token)
 
   const { data } = await apollo.query({
     query: GET_COACHEE,
-    variables: { id: session.user.coachee?.id },
     context: { ms: microServices.backend },
   })
+  console.log(data)
 
   return {
     props: {
       content: content.coacheeDashboard.data.attributes,
-      coachee: data.findCoacheeById,
+      coachee: data.getCoacheeProfile,
     },
   }
 }

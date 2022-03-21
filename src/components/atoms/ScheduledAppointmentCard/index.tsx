@@ -14,20 +14,25 @@ import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { FC } from 'react'
+import Link from 'next/link'
 
 type ScheduledAppointmentCardProps = {
   startDate: string
   preview?: boolean
   actions?: boolean
+  role?: string
+  coachingSession?: { id: number }
 }
 
 export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
   startDate,
   preview,
   actions,
+  role,
+  coachingSession,
 }) => {
-  const formatedDate = dayjs(formatDate(startDate))
   const now = dayjs()
+  const formatedDate = dayjs(formatDate(startDate))
   const isBefore = formatedDate.isBefore(now)
   const nearby = formatedDate.diff(now, 'minutes')
 
@@ -81,11 +86,15 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
             </Col>
           </>
         )}
-        {actions && nearby > 0 && nearby < 30 && (
+        {actions && nearby < 0 && nearby < 30 && (
           <Col xs={5}>
-            <Button variant='primary' className={classes.button}>
-              Entra a tu cita ¡Ya es la hora!
-            </Button>
+            <Link
+              href={`/coaching-session/${role}/${coachingSession?.id}`}
+              passHref>
+              <Button variant='primary' className={classes.button}>
+                Entra a tu cita ¡Ya es la hora!
+              </Button>
+            </Link>
           </Col>
         )}
       </Row>

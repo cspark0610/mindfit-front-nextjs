@@ -97,14 +97,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       redirect: { destination: '/dashboard/coachee', permanent: false },
       props: {},
     }
-
+  console.log('creating apollo client with', session.token)
   const apollo = createApolloClient(session.token)
+  console.log('apollo success')
   const { data: assignedCoachees } = await apollo.query({
     query: GET_ASSIGNED_COACHEES,
     context: { ms: microServices.backend },
     variables: { id: session.user.coach?.id },
   })
-
+  console.log(assignedCoachees, 'data heeeere')
   const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: GET_CONTENT,

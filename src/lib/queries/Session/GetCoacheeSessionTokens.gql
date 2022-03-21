@@ -1,5 +1,5 @@
-query getCoacheeSessionTokens($id: float!) {
-  getCoachSessionTokens(sessionId: $id) {
+query getCoacheeSessionTokens($id: Float!) {
+  getCoacheeSessionTokens(sessionId: $id) {
     chatSessionChannel
     tokens {
       rtcToken

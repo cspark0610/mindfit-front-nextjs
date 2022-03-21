@@ -46,7 +46,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
   const [coachAgendaId, setCoachAgendaId] = useState<number | undefined>(
     undefined
   )
-
+  console.log(coachee)
   useQuery(GET_COACH_AGENDA, {
     variables: { id: coachee.assignedCoach?.id },
     context: { ms: microServices.backend },
@@ -101,7 +101,11 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
                   })
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
-                      <ScheduledAppointmentCard {...item} />
+                      <ScheduledAppointmentCard
+                        actions
+                        {...item}
+                        role='coachee'
+                      />
                     </Col>
                   ))}
               </Row>
