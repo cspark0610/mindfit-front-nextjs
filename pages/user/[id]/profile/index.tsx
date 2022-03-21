@@ -14,8 +14,8 @@ import { userRoles } from 'utils/enums'
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import COACH_PROFILE_CONTENT from 'lib/strapi/queries/CoachProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 
@@ -49,13 +49,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (session?.user.role === userRoles.COACHEE) {
     apollo
       .query({
-        query: GET_COACHEE_BY_ID,
+        query: GET_COACHEE_PROFILE,
         context: { ms: microServices.backend },
-        variables: { id: session?.user.coachee?.id },
       })
       .then(
         ({ data }) =>
-          (userData.coachee = data.findCoacheeById as CoacheeDataType)
+          (userData.coachee = data.getCoacheeProfile as CoacheeDataType)
       )
 
     const { data: contentResponse } = await apolloClient.query({

@@ -17,9 +17,9 @@ import { viewportFadeIn } from 'commons/animations'
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 import { useQuery, useMutation } from '@apollo/client'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
-import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachees/rejectSuggestedCoaches.gql'
+import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachee/rejectSuggestedCoaches.gql'
 import GET_COACH_SELECTION_CONTENT from 'lib/queries/Strapi/CoachSelectionContent/getCoachSelectionContent.gql'
 
 // Commons
@@ -164,15 +164,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apollo = createApolloClient(session.token)
   const { data: coachee } = await apollo.query<{
-    findCoacheeById: CoacheeDataType
+    getCoacheeProfile: CoacheeDataType
   }>({
-    query: GET_COACHEE_BY_ID,
-    variables: { id: session.user.coachee?.id },
+    query: GET_COACHEE_PROFILE,
     context: { ms: microServices.backend },
   })
 
   if (
-    coachee.findCoacheeById.registrationStatus !==
+    coachee.getCoacheeProfile.registrationStatus !==
     coacheeRegistrationStatus.COACH_SELECTION_PENDING
   )
     return {

@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_COACHEE from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import GET_PAGE_CONTENT from 'lib/strapi/queries/Coachee/dashboardContent.gql'
 
 // Components
@@ -61,15 +61,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apollo = createApolloClient(session.token)
 
   const { data } = await apollo.query({
-    query: GET_COACHEE,
-    variables: { id: session.user.coachee?.id },
+    query: GET_COACHEE_PROFILE,
     context: { ms: microServices.backend },
   })
 
   return {
     props: {
       content: content.coacheeDashboard.data.attributes,
-      coachee: data.findCoacheeById,
+      coachee: data.getCoacheeProfile,
     },
   }
 }

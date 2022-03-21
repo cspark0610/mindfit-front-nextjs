@@ -7,10 +7,12 @@
   .gray {
     color: $gray;
   }
-  .blue{
+  .blue {
     color: $primary;
   }
   .knob {
+    justify-content: center;
+    display: flex;
     > * {
       max-width: 300px;
       width: 80%;

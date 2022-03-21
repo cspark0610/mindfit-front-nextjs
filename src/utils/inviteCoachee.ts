@@ -10,7 +10,7 @@ export const INITIAL_STATE = {
   },
 }
 
-export const validateInviteCoachee = (coacheeData: CoacheeDataType) => {
+export const validateCoachee = (coacheeData: CoacheeDataType) => {
   if (
     !coacheeData.user?.name ||
     !coacheeData.user?.email ||

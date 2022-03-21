@@ -13,7 +13,7 @@ import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 import GET_STEPS_CONTENT from 'lib/strapi/queries/Coachee/stepsContent.gql'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 
 // utils
 import { microServices } from 'commons'
@@ -81,10 +81,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // backend fetch
   const apollo = createApolloClient(session?.token)
   const { data: coachee } = await apollo.query<{
-    findCoacheeById: CoacheeDataType
+    getCoacheeProfile: CoacheeDataType
   }>({
-    query: GET_COACHEE_BY_ID,
-    variables: { id: session?.user.coachee?.id },
+    query: GET_COACHEE_PROFILE,
     context: { ms: microServices.backend },
   })
 
@@ -93,7 +92,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     coacheeRegistrationStatus.REGISTRATION_COMPLETED,
     coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
   ]
-  if (status.includes(coachee.findCoacheeById.registrationStatus as string))
+  if (status.includes(coachee.getCoacheeProfile.registrationStatus as string))
     return {
       redirect: { destination: '/dashboard/coachee', permanent: false },
       props: {},
@@ -111,7 +110,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[1].label,
       action: content.steps[1].value,
       completed:
-        coachee.findCoacheeById.registrationStatus ===
+        coachee.getCoacheeProfile.registrationStatus ===
         coacheeRegistrationStatus.SAT_PENDING
           ? false
           : true,
@@ -121,7 +120,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       label: content.steps[2].label,
       action: content.steps[2].value,
       completed:
-        coachee.findCoacheeById.registrationStatus ===
+        coachee.getCoacheeProfile.registrationStatus ===
         coacheeRegistrationStatus.COACH_SELECTION_PENDING
           ? false
           : true,

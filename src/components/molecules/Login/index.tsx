@@ -22,7 +22,7 @@ import { InputText } from 'primereact/inputtext'
 
 // gql
 import { useLazyQuery } from '@apollo/client'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 
 //Styles
 import classes from 'styles/Login/page.module.scss'
@@ -64,19 +64,17 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
       const session = await getSession()
 
       if (session?.user.role === userRoles.COACHEE) {
-        const { data } = await getCoacheeById({
-          variables: { id: session?.user.coachee?.id },
-        })
+        const { data } = await getCoacheeById()
 
         const status = [
           coacheeRegistrationStatus.REGISTRATION_COMPLETED,
           coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
         ]
 
-        if (session.user.organization?.id || data.findCoacheeById.isAdmin)
+        if (session.user.organization?.id || data.getCoacheeProfile.isAdmin)
           push('/dashboard/organization')
         else if (
-          status.includes(data.findCoacheeById.registrationStatus as string)
+          status.includes(data.getCoacheeProfile.registrationStatus as string)
         )
           push('/dashboard/coachee')
         else push('/signup/coachee/steps')
@@ -85,7 +83,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
     }
   }
 
-  const [getCoacheeById] = useLazyQuery(GET_COACHEE_BY_ID, {
+  const [getCoacheeById] = useLazyQuery(GET_COACHEE_PROFILE, {
     context: { ms: microServices.backend },
   })
 
