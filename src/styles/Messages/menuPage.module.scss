@@ -1,0 +1,23 @@
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Button/button.module.scss';
+
+.title {
+  color: $primary;
+}
+.section {
+  padding: 20px;
+  .rightSide {
+    > div {
+      color: $primary;
+    }
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  .button {
+    color: $white;
+  }
+}

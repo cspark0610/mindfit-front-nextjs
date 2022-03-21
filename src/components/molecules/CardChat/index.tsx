@@ -14,7 +14,7 @@ export const CardChat: FC = () => {
   return (
     <Container className={classes.section}>
       <Row>
-        <Col xs={3}>
+        <Col xs='auto'>
           <Image
             width={70}
             height={70}
@@ -23,7 +23,7 @@ export const CardChat: FC = () => {
             src='/assets/images/avatar.png'
           />
         </Col>
-        <Col xs={9}>
+        <Col>
           <Row xs='auto' className={classes.data}>
             <p>Camila</p>
             <p>33 min</p>
