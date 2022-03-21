@@ -23,8 +23,6 @@ export const DropdownMenu: FC = () => {
       ? data?.user.coach?.profilePicture?.location
       : data?.user.coachee?.profilePicture?.location
 
-  console.log(profilePicture)
-
   return (
     <>
       {data ? (

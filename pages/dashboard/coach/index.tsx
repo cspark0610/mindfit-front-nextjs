@@ -44,13 +44,17 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <ContainerMotion className={classes.container} {...viewportFadeIn}>
             <Row>
               <h2 className={classes.title}>{content.allCoacheesLabel}</h2>
-              {assignedCoachees.findCoachById.assignedCoachees.map(
-                (coachee: CoacheeDataType) => (
-                  <CoacheeProfileCard
-                    key={coachee.id}
-                    coachee={coachee}
-                    content={content.coacheeCard.data.attributes}
-                  />
+              {assignedCoachees.findCoachById.assignedCoachees.length === 0 ? (
+                <p className='mt-4'>No han sido asignados coachees</p>
+              ) : (
+                assignedCoachees.findCoachById.assignedCoachees.map(
+                  (coachee: CoacheeDataType) => (
+                    <CoacheeProfileCard
+                      key={coachee.id}
+                      coachee={coachee}
+                      content={content.coacheeCard.data.attributes}
+                    />
+                  )
                 )
               )}
             </Row>

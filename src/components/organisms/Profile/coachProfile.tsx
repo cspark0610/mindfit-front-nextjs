@@ -5,33 +5,34 @@ import { ChangeEvent, useState } from 'react'
 import { Container, Row, Col, Button, Modal, Spinner } from 'react-bootstrap'
 
 // prime components
-import { InputText } from 'primereact/inputtext'
-import { InputMask } from 'primereact/inputmask'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { MultiSelect } from 'primereact/multiselect'
+import { InputText } from 'primereact/inputtext'
+import { InputMask } from 'primereact/inputmask'
 
 // components
 import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { UploadVideo } from 'components/atoms/UploadVideo'
 import { microServices } from 'commons'
 
 // gql
-import { useMutation, useQuery } from '@apollo/client'
+import GET_COACHING_AREAS from 'lib/queries/Coach/getCoachingAreas.gql'
 import UPDATE_COACH from 'lib/mutations/Coach/updateCoach.gql'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
-import GET_COACHING_AREAS from 'lib/queries/Coach/getCoachingAreas.gql'
+import { useMutation, useQuery } from '@apollo/client'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
 
 // types
-import { FC } from 'react'
-import { ChangeType } from 'types'
-import { UserDataType } from 'types/models/User'
-import { CoachDataType } from 'types/models/Coach'
 import { MultiSelectChangeParams } from 'primereact/multiselect'
+import { CoachDataType } from 'types/models/Coach'
+import { UserDataType } from 'types/models/User'
 import { Skeleton } from 'primereact/skeleton'
+import { ChangeType } from 'types'
+import { FC } from 'react'
 
 type CoachProfileProps = {
   coach: CoachDataType
@@ -78,12 +79,15 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
         data: { name: user?.name, email: user?.email },
       },
     })
-    const res = await updateCoach({
+    await updateCoach({
       variables: {
         data: {
           coachingAreasId: updatecoachData.coachingAreas?.map(
             (item) => item.id
           ),
+          picture: !updatecoachData.profilePicture?.location
+            ? updatecoachData.profilePicture
+            : undefined,
           phoneNumber: updatecoachData.phoneNumber,
           bio: updatecoachData.bio,
         },
@@ -100,7 +104,6 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
           <Row>
             <Col lg={6}>
               <h1 className={classes.title}>{content.userProfile.title}</h1>
-              {console.log(coachData)}
               <UploadPicture
                 data={coachData.profilePicture?.location}
                 setData={setCoachData}
@@ -172,20 +175,10 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
               <h2 className={classes.subtitle}>
                 {content.userProfile.videoInput.label}
               </h2>
-              {/* <div className='p-inputgroup'>
-                <span className='p-inputgroup-addon'>
-                  https://youtube.com/watch?v=
-                </span>
-                <InputMask
-                  type='url'
-                  name='profileVideo'
-                  mask='?***********'
-                  className={classes.input}
-                  onChange={handleChangeCoach}
-                  value={coachData.profileVideo}
-                  placeholder='video de Presentación'
-                />
-              </div> */}
+              <UploadVideo
+                data={coachData.profileVideo?.location}
+                setData={setCoachData}
+              />
               <p
                 role='button'
                 className={classes.recoveryLabel}

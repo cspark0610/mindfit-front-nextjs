@@ -65,7 +65,6 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
 
   useEffect(() => {
     Object.entries(availabilityRange as object).map(([key, value], idx) => {
-      console.log(selectedDate?.getDay(), idx)
       if ((selectedDate?.getDay() as number) === 0 && idx === 6)
         setDateToSchedule({ key, value })
       if ((selectedDate?.getDay() as number) - 1 === idx)
