@@ -4,7 +4,11 @@ query orgDashboard($locale: I18NLocaleCode) {
       attributes {
         coacheesTitle
         coachingSessionsTitle
-        disableButton {
+        editCoaheeTitle
+        inviteCoacheeTitle
+        invalidEmailMessage
+        errorMessage
+        inviteButton {
           label
         }
         datatable {
@@ -19,6 +23,42 @@ query orgDashboard($locale: I18NLocaleCode) {
               actionsColumnLabel
               statusCodeNames {
                 registrationStatus
+                label
+              }
+            }
+          }
+        }
+        confirmDeletion {
+          data {
+            attributes {
+              title
+              message
+              confirmButton {
+                label
+              }
+              denyButton {
+                label
+              }
+            }
+          }
+        }
+        coacheeForm {
+          data {
+            attributes {
+              nameInput {
+                label
+              }
+              emailInput {
+                label
+              }
+              positionInput {
+                label
+              }
+              activeCheckLabel
+              suspendCheckLabel
+              adminCheckLabel
+              canViewCheckLabel
+              saveButton {
                 label
               }
             }

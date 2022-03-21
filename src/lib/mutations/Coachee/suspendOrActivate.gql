@@ -1,0 +1,6 @@
+mutation SuspendOrActivateCoachee($coacheeId: Int!, $type: String!) {
+  SuspendOrActivateCoachee(coacheeId: $coacheeId, data: { type: $type }) {
+    isSuspended
+    isActive
+  }
+}

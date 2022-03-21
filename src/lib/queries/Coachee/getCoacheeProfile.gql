@@ -1,5 +1,5 @@
-query GetCoacheeById($coacheeId: Int!) {
-  findCoacheeById(coacheeId: $coacheeId) {
+query GetCoacheeProfile {
+  getCoacheeProfile {
     id
     bio
     invited
@@ -8,14 +8,12 @@ query GetCoacheeById($coacheeId: Int!) {
     isActive
     phoneNumber
     aboutPosition
+    profilePicture {
+      filename
+    }
     canViewDashboard
     invitationAccepted
     registrationStatus
-    profilePicture {
-      key
-      filename
-      location
-    }
     user {
       id
       name

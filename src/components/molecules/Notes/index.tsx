@@ -12,43 +12,81 @@ import { EditorTextChangeParams } from 'primereact/editor'
 import { CardNote } from 'components/atoms/CardNote'
 import { StyledEditor } from 'components/atoms/Editor'
 
+// commons
+import { microServices } from 'commons'
+
+// gql
+import { useMutation, useQuery } from '@apollo/client'
+import GET_COACH_NOTES from 'lib/queries/Coachee/getCoachNotes.gql'
+import CREATE_NOTE from 'lib/mutations/Coach/Notes/create.gql'
+import DELETE_NOTE from 'lib/mutations/Coach/Notes/delete.gql'
+import UPDATE_NOTE from 'lib/mutations/Coach/Notes/update.gql'
+
 // styles
 import classes from 'styles/Notes/notes.module.scss'
 
 // types
 import { FC } from 'react'
+import { CoacheeDataType } from 'types/models/Coachee'
 
-export const Notes: FC<{ content: any }> = ({ content }) => {
-  const [note, setNote] = useState('')
-  const [id, setId] = useState<number>()
+export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
+  coachee,
+  content,
+}) => {
   const [showEdit, setShowEdit] = useState(false)
-  const [notes, setNotes] = useState<string[]>([])
+  const [notes, setNotes] = useState<CoacheeDataType['coachNotes']>([])
+  const [noteId, setNoteId] = useState({id: NaN, note: ''})
+  const [loading, setLoading] = useState(false)
+
+  const { refetch } = useQuery(GET_COACH_NOTES, {
+    variables: { id: coachee.id },
+    context: { ms: microServices.backend },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => setNotes(data.findCoacheeById.coachNotes)
+  })
+  const [createNote] = useMutation(CREATE_NOTE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => refetch(),
+  })
+  const [updateNote] = useMutation(UPDATE_NOTE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => refetch(),
+  })
+  const [deleteNote] = useMutation(DELETE_NOTE, {
+    context: { ms: microServices.backend },
+    onCompleted: () => refetch(),
+  })
 
   const handleChangeNote = (ev: EditorTextChangeParams) => {
-    setNote(ev.htmlValue ?? '')
+    setNoteId({...noteId, note: ev.htmlValue ?? ''})
   }
 
-  const saveNote = () => {
-    if (id != undefined) {
-      notes[id] = note
+  const saveNote = async() => {
+    setLoading(true)
+    if (noteId.id) {
+      await updateNote({
+        variables: { coachNoteId: noteId.id, note: noteId.note },
+      })
     } else {
-      setNotes([...notes, note])
+      await createNote({
+        variables: { coacheeId: coachee.id, note: noteId.note },
+      })
     }
-    setId(undefined)
-    setNote('')
     setShowEdit(false)
+    setLoading(false)
   }
 
-  const removed = (id: number) => {
-    const newData = notes.filter((_, idx) => idx != id)
-    setNotes(newData)
-    setId(undefined)
+  const removed = async (id:number) => {
+    setLoading(true)
+    await deleteNote({
+      variables: { coachNoteId: id },
+    })
     setShowEdit(false)
+    setLoading(false)
   }
 
-  const edit = (id: number) => {
-    setId(id)
-    setNote(notes[id])
+  const edit = async (note:{id:number, note:string}) => {
+    setNoteId(note)
     setShowEdit(true)
   }
 
@@ -66,7 +104,7 @@ export const Notes: FC<{ content: any }> = ({ content }) => {
             className='fs-3 p-0'
             variant='light'
             onClick={() => {
-              setNote('')
+              setNoteId({id: NaN, note:''})
               setShowEdit(!showEdit)
             }}>
             {!showEdit ? (
@@ -81,11 +119,11 @@ export const Notes: FC<{ content: any }> = ({ content }) => {
         <CardNote notes={notes} edit={edit} removed={removed} />
       ) : (
         <StyledEditor
-          id={id}
-          note={note}
+          loading={loading}
+          coachNote={noteId}
           readOnly={false}
-          handleChangeNote={handleChangeNote}
-          saveNote={saveNote}
+          onTextChange={handleChangeNote}
+          save={saveNote}
           removed={removed}
         />
       )}

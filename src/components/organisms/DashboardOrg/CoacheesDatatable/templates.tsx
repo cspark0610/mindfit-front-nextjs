@@ -8,16 +8,16 @@ import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
 import { CoachDataType } from 'types/models/Coach'
 import { CoacheeDataType } from 'types/models/Coachee'
 
-export const coachBodyTemplate = (coach: CoachDataType | undefined) =>
-  coach ? (
+export const coachBodyTemplate = (assignedCoach: CoachDataType | undefined) =>
+  assignedCoach ? (
     <div>
       <Image
         width={32}
         height={32}
-        alt={coach.user?.name}
-        src={coach?.profilePicture?.location as string}
+        alt={assignedCoach.user?.name}
+        src={assignedCoach.profilePicture?.location as string}
       />
-      <span className='image-text'>{coach.user?.name}</span>
+      <span className='image-text'>{assignedCoach.user?.name}</span>
     </div>
   ) : (
     <p>sin coach asignado</p>

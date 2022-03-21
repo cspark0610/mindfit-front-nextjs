@@ -1,0 +1,5 @@
+mutation deleteCoachNote($coachNoteId: Int!) {
+  deleteCoachNote(coachNoteId: $coachNoteId) {
+    id
+  }
+}
