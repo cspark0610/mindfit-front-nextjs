@@ -24,7 +24,7 @@ import { microServices } from 'commons'
 import { useMutation } from '@apollo/client'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
 import UPDATE_COACHEE from 'lib/mutations/Coachee/update.gql'
-import SUSPEND_OR_ACTIVATE from 'lib/mutations/coachee/suspendOrActivate.gql'
+import SUSPEND_OR_ACTIVATE from 'lib/mutations/Coachee/suspendOrActivate.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'

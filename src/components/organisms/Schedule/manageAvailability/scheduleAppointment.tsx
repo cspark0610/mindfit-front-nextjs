@@ -5,7 +5,7 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 
 // gql
-import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachees/scheduleAppointment.gql'
+import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachee/scheduleAppointment.gql'
 import GET_AVAILABILITY_RANGES from 'lib/queries/Coach/getAvailability.gql'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import GET_COACH from 'lib/queries/Coach/getById.gql'

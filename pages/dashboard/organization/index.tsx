@@ -17,7 +17,7 @@ import { microServices } from 'commons'
 
 //gql
 import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
-import ORG_DASHBOARD from 'lib/strapi/queries/Organization/OrgDashboard.gql'
+import ORG_DASHBOARD from 'lib/strapi/queries/Organization/orgDashboard.gql'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
 

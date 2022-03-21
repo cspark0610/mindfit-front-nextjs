@@ -36,6 +36,10 @@ export type CoacheeDataType = {
     filename: string
     location: string
   }
+  coachNotes?: {
+    id: number
+    note: string
+  }[]
   canViewDashboard?: boolean
   invitationAccepted?: boolean
   registrationStatus?: keyof typeof coacheeRegistrationStatus
