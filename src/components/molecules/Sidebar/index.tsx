@@ -78,7 +78,7 @@ export const Sidebar = () => {
                 className={classes.itemContainer}>
                 <span role='button' className={classes.itemElement}>
                   <ChatRightText />
-                  <span className={classes.itemElement_label}>Chat</span>
+                  <span className={classes.itemElement_label}>Mensajeria</span>
                 </span>
               </Container>
             </>

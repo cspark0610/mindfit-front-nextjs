@@ -3,6 +3,12 @@ import { CoachDataType } from './Coach'
 import { OrganizationDataType } from './Organization'
 import { coacheeRegistrationStatus } from 'utils/enums'
 
+export type fileDataType = {
+  key: string
+  filename: string
+  location: string
+}
+
 export type CoacheeDataType = {
   id?: number
   bio?: string
@@ -31,11 +37,7 @@ export type CoacheeDataType = {
     value?: number
     base?: number
   }[]
-  profilePicture?: {
-    key: string
-    filename: string
-    location: string
-  }
+  profilePicture?: fileDataType
   canViewDashboard?: boolean
   invitationAccepted?: boolean
   registrationStatus?: keyof typeof coacheeRegistrationStatus

@@ -15,31 +15,25 @@ import classes from 'styles/UI/Input/AppInput.module.scss'
 // types
 import { FC } from 'react'
 import { FileUploadSelectParams } from 'primereact/fileupload'
-import {
-  UploadPicturesProps,
-  UploadPicturesRef,
-} from 'types/components/UploadPicture'
+import { UploadVideoProps, UploadVideoRef } from 'types/components/UploadVideo'
 
-export const UploadPicture: FC<UploadPicturesProps> = ({
-  data = '',
-  setData,
-}) => {
-  const [picture, setPicture] = useState(data)
-  const uploader = useRef<UploadPicturesRef>(null)
+export const UploadVideo: FC<UploadVideoProps> = ({ data = '', setData }) => {
+  const uploader = useRef<UploadVideoRef>(null)
+  const [video, setVideo] = useState(data)
 
   const handleClick = () => uploader.current?.choose()
   const handleDelete = () => {
     uploader.current?.clear()
-    setPicture('')
-    setData((prev: any) => ({ ...prev, profilePicture: null }))
+    setVideo('')
+    setData((prev: any) => ({ ...prev, profileVideo: null }))
   }
 
   const handleSelect = async (ev: FileUploadSelectParams) => {
-    const picture = new File([ev.files[0]], ev.files[0].name, {
+    const video = new File([ev.files[0]], ev.files[0].name, {
       type: ev.files[0].type,
     })
 
-    const arrayBuffer = await picture.arrayBuffer()
+    const arrayBuffer = await video.arrayBuffer()
     const buf = Buffer.alloc(arrayBuffer.byteLength)
     const view = new Uint8Array(arrayBuffer)
     for (let i = 0; i < buf.length; i++) {
@@ -48,40 +42,39 @@ export const UploadPicture: FC<UploadPicturesProps> = ({
 
     setData((prev: any) => ({
       ...prev,
-      profilePicture: {
+      profileVideo: {
         // @ts-ignore
         data: [...buf],
         type: 'Buffer',
-        filename: picture.name,
+        filename: video.name,
       },
     }))
-    setPicture(URL.createObjectURL(picture))
+    setVideo(URL.createObjectURL(video))
   }
 
   return (
     <div className={classes.upload}>
       <FileUpload
-        customUpload
         mode='basic'
-        accept='image/*'
+        customUpload
+        ref={uploader}
         maxFileSize={1000000}
         onSelect={handleSelect}
-        ref={uploader}
         className={classes.upload_hidden}
+        accept='video/mp4,video/x-m4v,video/*'
       />
       <div className={classes.upload_container}>
-        {!picture ? (
+        {!video ? (
           <div onClick={handleClick} className={classes.upload_input}>
             <Plus size={30} />
           </div>
         ) : (
           <div className={classes.upload_preview}>
-            <Image
-              src={picture}
-              alt='profile'
-              width={120}
-              height={120}
-              className={classes.upload_preview_img}
+            <video
+              controls
+              src={video}
+              controlsList='nodownload'
+              className={classes.upload_preview_video}
             />
             <CloseButton
               onClick={handleDelete}

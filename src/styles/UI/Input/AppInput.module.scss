@@ -67,6 +67,12 @@
       object-fit: cover;
       border-radius: 50%;
     }
+    &_video {
+      width: 100%;
+      padding: 10px;
+      height: 210px;
+      max-width: 310px;
+    }
   }
 }
 

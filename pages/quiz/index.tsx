@@ -64,11 +64,8 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setActualSection((prev) => prev + 1)
     } else {
       setLoading(true)
-      const { data } = await SubmitQuiz({
-        variables: { data: { ...answers } },
-      })
+      const { data } = await SubmitQuiz({ variables: { data: { ...answers } } })
       setLoading(false)
-      console.log({ data })
       push(`/quiz/${data.createSatReport.id}`)
     }
   }
