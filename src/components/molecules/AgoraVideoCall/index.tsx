@@ -1,5 +1,5 @@
 // main tools
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AgoraUIKit from 'agora-react-uikit'
 
 // styles
@@ -8,15 +8,21 @@ import Styles from 'styles/VideoCall/VideoCall.module.scss'
 
 // types
 import { FC } from 'react'
+import { VideoCallProps } from 'types/components/Agora'
 
-export const AgoraVideoCall: FC = () => {
-  const [videocall, setVideocall] = useState(true)
+export const AgoraVideoCall: FC<VideoCallProps> = ({ channel, token }) => {
+  const [videocall, setVideocall] = useState(false)
+  useEffect(() => {
+    if (!!channel && !!token && channel !== '' && token !== '') {
+      setVideocall(true)
+    }
+  }, [])
+
   const props = {
     rtcProps: {
       appId: '3d2452ae22b54bd7b037d89b006c2cb8',
-      channel: 'mindfit',
-      token:
-        '0063d2452ae22b54bd7b037d89b006c2cb8IAAnmnxI4/w/+GAtSPB4p2G0QV0iwsDS9gIBDt0PyykNMujXvWUAAAAAEAAn2yw6fEIZYgEAAQB2Qhli',
+      channel: channel,
+      token: token,
     },
     callbacks: { EndCall: () => setVideocall(false) },
   }

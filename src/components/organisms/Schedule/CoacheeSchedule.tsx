@@ -46,7 +46,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
   const [coachAgendaId, setCoachAgendaId] = useState<number | undefined>(
     undefined
   )
-  console.log(coachee)
+
   useQuery(GET_COACH_AGENDA, {
     variables: { id: coachee.assignedCoach?.id },
     context: { ms: microServices.backend },

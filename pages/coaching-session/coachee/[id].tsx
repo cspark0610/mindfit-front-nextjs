@@ -22,11 +22,15 @@ import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 import { microServices } from 'commons'
 import { useState } from 'react'
+import { VideoCallProps } from 'types/components/Agora'
 
 const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachingSessionId,
 }) => {
-  const [sessionData, setSessionData] = useState({})
+  const [videoSession, setVideoSession] = useState<VideoCallProps>({
+    channel: '',
+    token: '',
+  })
 
   //import Agora VideoCall
   const AgoraVideoCall = dynamic<any>(
@@ -38,9 +42,16 @@ const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   )
   //Get rtc token and channel name
   useQuery(GET_SESSION_TOKEN, {
-    variables: { id: 2.0 },
+    variables: { id: parseFloat(`${coachingSessionId}.0`) },
     context: { ms: microServices.backend },
-    onCompleted: (data) => setSessionData(data),
+    onCompleted: (data) => {
+      if (data.getCoacheeSessionTokens.videoSessionChannel) {
+        setVideoSession({
+          channel: data.getCoacheeSessionTokens.videoSessionChannel,
+          token: data.getCoacheeSessionTokens.tokens.rtcToken,
+        })
+      }
+    },
   })
 
   return (
@@ -95,7 +106,12 @@ const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             </Container>
           </Col>
           <Col lg={6}>
-            {sessionData?.token && sessionData?.channel && <AgoraVideoCall />}
+            {videoSession?.token !== '' && videoSession?.channel !== '' && (
+              <AgoraVideoCall
+                channel={videoSession.channel}
+                token={videoSession.token}
+              />
+            )}
 
             {/* <ChatSession /> */}
           </Col>
