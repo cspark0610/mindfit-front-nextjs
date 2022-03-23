@@ -16,7 +16,7 @@ import { microServices } from 'commons'
 
 // apollo
 import GET_CONTENT from 'lib/strapi/queries/Coachee/detailContent.gql'
-import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
+import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
 
@@ -68,7 +68,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apollo = createApolloClient(session.token)
   const { data } = await apollo.query({
-    query: GET_COACHEE_PROFILE,
+    query: GET_COACHEE_BY_ID,
+    variables: { id: ctx.params?.id },
     context: { ms: microServices.backend },
   })
 

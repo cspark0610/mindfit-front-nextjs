@@ -9,7 +9,8 @@ query GetCoacheeProfile {
     phoneNumber
     aboutPosition
     profilePicture {
-      filename
+      key
+      location
     }
     canViewDashboard
     invitationAccepted

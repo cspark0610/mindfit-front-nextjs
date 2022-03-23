@@ -1,4 +1,5 @@
 import { UserDataType } from './User'
+import { fileDataType } from './Files'
 
 export type OrganizationDataType = {
   id?: number
@@ -6,9 +7,5 @@ export type OrganizationDataType = {
   about?: string
   isActive?: boolean
   owner?: UserDataType
-  profilePicture?: {
-    key: string
-    filename: string
-    location: string
-  }
+  profilePicture?: fileDataType
 }

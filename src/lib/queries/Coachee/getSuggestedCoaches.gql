@@ -8,12 +8,10 @@ query GetSuggestedCoaches {
       bio
       profileVideo {
         key
-        filename
         location
       }
       profilePicture {
         key
-        filename
         location
       }
       user {

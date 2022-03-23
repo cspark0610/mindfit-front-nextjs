@@ -1,11 +1,6 @@
 import { AgendaDataType } from './Agenda'
 import { UserDataType } from './User'
-
-export type fileDataType = {
-  key: string
-  filename: string
-  location: string
-}
+import { fileDataType } from './Files'
 
 export type CoachDataType = {
   id?: number

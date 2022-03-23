@@ -58,7 +58,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       })
       .then(
         ({ data }) =>
-          (userData.coachee = data.findCoacheeById as CoacheeDataType)
+          (userData.coachee = data.getCoacheeProfile as CoacheeDataType)
       )
   if (session.user.role === userRoles.COACH)
     await apollo

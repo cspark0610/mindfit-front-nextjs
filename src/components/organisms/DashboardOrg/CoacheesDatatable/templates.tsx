@@ -27,12 +27,14 @@ export const statusBodyTemplate = (
   item: CoacheeDataType,
   statusCodeNames: any
 ) => {
-  const status = statusCodeNames.find(
-    (statu: any) => statu.registrationStatus == item.registrationStatus
-  )
+  const status = statusCodeNames.find((statu: any) => {
+    if (!item.isActive) return statu.registrationStatus === 'SUSPENDED'
+    else return statu.registrationStatus === item.registrationStatus
+  })
+
   return (
     <div
-      className={`${classes[`button_${item.registrationStatus}`]} ${
+      className={`${classes[`button_${status.registrationStatus}`]} ${
         classes.button
       }`}>
       {status.label}

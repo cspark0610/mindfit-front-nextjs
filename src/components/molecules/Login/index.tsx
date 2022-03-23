@@ -64,7 +64,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
       const session = await getSession()
 
       if (session?.user.role === userRoles.COACHEE) {
-        const { data } = await getCoacheeById()
+        const { data } = await getCoachee()
 
         const status = [
           coacheeRegistrationStatus.REGISTRATION_COMPLETED,
@@ -83,7 +83,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
     }
   }
 
-  const [getCoacheeById] = useLazyQuery(GET_COACHEE_PROFILE, {
+  const [getCoachee] = useLazyQuery(GET_COACHEE_PROFILE, {
     context: { ms: microServices.backend },
   })
 

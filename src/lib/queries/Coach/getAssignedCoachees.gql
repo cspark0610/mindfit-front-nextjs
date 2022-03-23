@@ -4,7 +4,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -36,7 +35,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -65,7 +63,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -94,7 +91,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {

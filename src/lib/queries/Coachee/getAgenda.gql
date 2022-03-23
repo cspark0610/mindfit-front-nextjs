@@ -1,5 +1,5 @@
-query GetAgendaByCoacheeId($id: Int!) {
-  findCoacheeById(id: $id) {
+query GetAgendaByCoacheeId {
+  getCoacheeProfile {
     assignedCoach {
       id
     }

@@ -1,5 +1,0 @@
-mutation inviteCoachee($data: InviteCoacheeDto!) {
-  inviteCoachee( data: $data ) {
-    id
-  }
-}

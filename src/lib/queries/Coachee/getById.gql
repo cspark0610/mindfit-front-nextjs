@@ -13,7 +13,6 @@ query GetCoacheeById($coacheeId: Int!) {
     registrationStatus
     profilePicture {
       key
-      filename
       location
     }
     user {

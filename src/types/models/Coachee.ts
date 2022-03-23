@@ -1,13 +1,8 @@
 import { UserDataType } from './User'
 import { CoachDataType } from './Coach'
+import { fileDataType } from './Files'
 import { OrganizationDataType } from './Organization'
 import { coacheeRegistrationStatus } from 'utils/enums'
-
-export type fileDataType = {
-  key: string
-  filename: string
-  location: string
-}
 
 export type CoacheeDataType = {
   id?: number

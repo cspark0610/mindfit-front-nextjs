@@ -60,7 +60,6 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
   const handleSave = async () => {
     setLoading(true)
     const { user, ...updatecoacheeData } = coacheeData
-    const profilePicture: any = updatecoacheeData.profilePicture
 
     await updateUser({
       variables: {
@@ -73,11 +72,7 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
         coacheeId: user?.coachee?.id,
         data: {
           position: updatecoacheeData.position,
-          picture: {
-            type: 'Buffer',
-            filename: user?.name,
-            data: [...profilePicture],
-          },
+          picture: updatecoacheeData.profilePicture,
         },
       },
     })
