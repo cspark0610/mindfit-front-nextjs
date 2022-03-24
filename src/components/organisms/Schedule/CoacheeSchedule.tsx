@@ -16,12 +16,8 @@ import { ScheduleAppointment } from 'components/organisms/Schedule/manageAvailab
 import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/multiple'
 import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
 
-// gql
-import GET_COACH_AGENDA from 'lib/queries/Coach/getAgenda.gql'
-import { useQuery } from '@apollo/client'
-
 // utils
-import { formatDate, microServices } from 'commons'
+import { formatDate } from 'commons'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
@@ -43,15 +39,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
   const { locale } = useRouter()
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [showAvailabilityRange, setShowAvailabilityRange] = useState(false)
-  const [coachAgendaId, setCoachAgendaId] = useState<number | undefined>(
-    undefined
-  )
-
-  useQuery(GET_COACH_AGENDA, {
-    variables: { id: coachee.assignedCoach?.id },
-    context: { ms: microServices.backend },
-    onCompleted: (data) => setCoachAgendaId(data.findCoachById.coachAgenda.id),
-  })
+  const coachAgendaId = coachee.assignedCoach?.coachAgenda?.id as number
 
   const handleShowAvailabilityRange = () =>
     setShowAvailabilityRange(!showAvailabilityRange)
@@ -118,6 +106,15 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
               )}
             </Row>
           </div>
+        </Col>
+        <Col xs={12} md={6} lg={5}>
+          <Row className='mt-2 w-100 justify-content-center'>
+            {coachee.coachAppointments?.map((item, idx) => (
+              <Col key={idx} xs={12}>
+                <ScheduledAppointmentCard preview {...item} />
+              </Col>
+            ))}
+          </Row>
         </Col>
       </Row>
 

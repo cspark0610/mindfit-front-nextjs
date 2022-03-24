@@ -9,8 +9,8 @@ export type CoachDataType = {
   isActive?: boolean
   phoneNumber?: string
   coachAgenda?: AgendaDataType
-  profileVideo?: fileDataType
-  profilePicture?: fileDataType
+  profileVideo?: fileDataType | File
+  profilePicture?: fileDataType | File
   coachingAreas?: {
     id?: number
     name?: string

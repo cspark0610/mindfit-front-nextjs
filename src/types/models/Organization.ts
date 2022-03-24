@@ -7,5 +7,5 @@ export type OrganizationDataType = {
   about?: string
   isActive?: boolean
   owner?: UserDataType
-  profilePicture?: fileDataType
+  profilePicture?: fileDataType | File
 }

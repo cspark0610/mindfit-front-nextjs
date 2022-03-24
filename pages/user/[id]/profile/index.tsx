@@ -13,7 +13,7 @@ import { userRoles } from 'utils/enums'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
+import GET_COACH from 'lib/queries/Coach/getProfile.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import COACH_PROFILE_CONTENT from 'lib/strapi/queries/CoachProfile/content.gql'
@@ -46,16 +46,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
   const content: any = {}
 
-  if (session?.user.role === userRoles.COACHEE) {
-    apollo
+  if (session?.user.role?.includes(userRoles.COACHEE)) {
+    await apollo
       .query({
         query: GET_COACHEE_PROFILE,
         context: { ms: microServices.backend },
       })
-      .then(
-        ({ data }) =>
-          (userData.coachee = data.getCoacheeProfile as CoacheeDataType)
-      )
+      .then(({ data }) => {
+        userData.coachee = data.getCoacheeProfile as CoacheeDataType
+      })
 
     const { data: contentResponse } = await apolloClient.query({
       query: PROFILE_CONTENT,
@@ -63,16 +62,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       context: { ms: microServices.strapi },
     })
     content.userProfile = contentResponse.userProfile.data.attributes
-  }
-  if (session?.user.role === userRoles.COACH) {
-    apollo
+  } else if (session?.user.role === userRoles.COACH) {
+    await apollo
       .query({
-        query: GET_COACH_BY_ID,
+        query: GET_COACH,
         context: { ms: microServices.backend },
-        variables: { id: session?.user.coach?.id },
       })
       .then(
-        ({ data }) => (userData.coach = data.findCoachById as CoachDataType)
+        ({ data }) => (userData.coach = data.getCoachProfile as CoachDataType)
       )
 
     const { data: contentResponse } = await apolloClient.query({

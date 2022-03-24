@@ -2,6 +2,9 @@ query GetAgendaByCoacheeId {
   getCoacheeProfile {
     assignedCoach {
       id
+      coachAgenda {
+        id
+      }
     }
     coachAppointments {
       id

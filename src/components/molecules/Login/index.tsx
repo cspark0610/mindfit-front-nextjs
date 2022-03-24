@@ -1,40 +1,40 @@
 // Main tools
-import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
 import { signIn, getSession, getProviders } from 'next-auth/react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 // Components
-import { AlertText } from 'components/atoms/AlertText'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { AlertText } from 'components/atoms/AlertText'
 
 // utils
-import { microServices } from 'commons'
 import { coacheeRegistrationStatus, userRoles } from 'utils/enums'
+import { microServices } from 'commons'
 
 // bootstrap components
-import { Row, Col, Button } from 'react-bootstrap'
 import { Facebook, Google, Linkedin } from 'react-bootstrap-icons'
+import { Row, Col, Button } from 'react-bootstrap'
 
 // prime components
+import { InputText } from 'primereact/inputtext'
 import { Password } from 'primereact/password'
 import { Skeleton } from 'primereact/skeleton'
-import { InputText } from 'primereact/inputtext'
 
 // gql
-import { useLazyQuery } from '@apollo/client'
 import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
+import { useLazyQuery } from '@apollo/client'
 
 //Styles
 import classes from 'styles/Login/page.module.scss'
 
 // Types
-import { FC } from 'react'
-import { ClientSafeProvider } from 'next-auth/react'
 import { ChangeType, SetStateType, SubmitType } from 'types'
+import { ClientSafeProvider } from 'next-auth/react'
+import { FC } from 'react'
 
 interface LoginCardProps {
-  content: any
   setToggleView: SetStateType<boolean>
+  content: any
 }
 
 export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
@@ -50,6 +50,10 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
     linkedin: <Linkedin />,
   }
 
+  const [getCoachee] = useLazyQuery(GET_COACHEE_PROFILE, {
+    context: { ms: microServices.backend },
+  })
+
   const handleChange = (ev: ChangeType) =>
     setUser({ ...user, [ev.target.name]: ev.target.value })
 
@@ -63,7 +67,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
     else {
       const session = await getSession()
 
-      if (session?.user.role === userRoles.COACHEE) {
+      if (session?.user.role?.includes(userRoles.COACHEE)) {
         const { data } = await getCoachee()
 
         const status = [
@@ -71,7 +75,11 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
         ]
 
-        if (session.user.organization?.id || data.getCoacheeProfile.isAdmin)
+        if (
+          [userRoles.COACHEE_ADMIN, userRoles.COACHEE_OWNER].includes(
+            session.user.role as string
+          )
+        )
           push('/dashboard/organization')
         else if (
           status.includes(data.getCoacheeProfile.registrationStatus as string)
@@ -82,10 +90,6 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
         push('/dashboard/coach')
     }
   }
-
-  const [getCoachee] = useLazyQuery(GET_COACHEE_PROFILE, {
-    context: { ms: microServices.backend },
-  })
 
   useEffect(() => {
     ;(async () => {

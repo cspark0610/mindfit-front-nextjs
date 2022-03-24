@@ -7,6 +7,7 @@ import { SetStateType } from 'types'
 
 export type UploadPicturesProps = {
   data?: string
+  setUploadUrl: SetStateType<string>
   setData:
     | SetStateType<OrganizationDataType>
     | SetStateType<CoacheeDataType>

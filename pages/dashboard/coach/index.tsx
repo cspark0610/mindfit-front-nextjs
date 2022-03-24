@@ -44,10 +44,11 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <ContainerMotion className={classes.container} {...viewportFadeIn}>
             <Row>
               <h2 className={classes.title}>{content.allCoacheesLabel}</h2>
-              {assignedCoachees.findCoachById.assignedCoachees.length === 0 ? (
+              {assignedCoachees.getCoachProfile.assignedCoachees.length ===
+              0 ? (
                 <p className='mt-4'>No han sido asignados coachees</p>
               ) : (
-                assignedCoachees.findCoachById.assignedCoachees.map(
+                assignedCoachees.getCoachProfile.assignedCoachees.map(
                   (coachee: CoacheeDataType) => (
                     <CoacheeProfileCard
                       key={coachee.id}
@@ -106,7 +107,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data: assignedCoachees } = await apollo.query({
     query: GET_ASSIGNED_COACHEES,
     context: { ms: microServices.backend },
-    variables: { id: session.user.coach?.id },
   })
 
   const apolloClient = initializeApolloClient()

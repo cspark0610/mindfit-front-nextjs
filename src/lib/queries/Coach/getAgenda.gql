@@ -1,5 +1,5 @@
-query FindAgendaByCoachId($id: Int!) {
-  findCoachById(id: $id) {
+query FindAgendaByCoachId {
+  getCoachProfile {
     coachAgenda {
       id
       outOfService

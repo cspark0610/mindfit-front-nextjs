@@ -1,0 +1,3 @@
+query GetUploadFilesUrl($data: S3UploadSignedUrlDto!) {
+  getUploadSignedUrl(data: $data)
+}

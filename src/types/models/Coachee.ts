@@ -32,7 +32,7 @@ export type CoacheeDataType = {
     value?: number
     base?: number
   }[]
-  profilePicture?: fileDataType
+  profilePicture?: fileDataType | File
   coachNotes?: {
     id: number
     note: string

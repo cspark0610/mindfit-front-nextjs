@@ -5,6 +5,7 @@ import { SetStateType } from 'types'
 
 export type UploadVideoProps = {
   data?: string
+  setUploadUrl: SetStateType<string>
   setData: SetStateType<CoachDataType>
 }
 
