@@ -1,0 +1,34 @@
+query GetCoacheeProfile {
+  getCoacheeProfile {
+    id
+    bio
+    invited
+    isAdmin
+    position
+    isActive
+    phoneNumber
+    aboutPosition
+    profilePicture {
+      key
+      location
+    }
+    canViewDashboard
+    invitationAccepted
+    registrationStatus
+    user {
+      id
+      name
+    }
+    organization {
+      id
+      name
+    }
+    coachingAreas {
+      name
+      codename
+    }
+    assignedCoach {
+      id
+    }
+  }
+}

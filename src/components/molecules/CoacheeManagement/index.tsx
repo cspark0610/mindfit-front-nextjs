@@ -15,7 +15,7 @@ import {
 // prime components
 import { InputText } from 'primereact/inputtext'
 import { Dropdown, DropdownChangeParams } from 'primereact/dropdown'
-import { Checkbox, CheckboxChangeParams } from 'primereact/checkbox'
+import { SelectButton } from 'primereact/selectbutton'
 
 // commons
 import { microServices } from 'commons'
@@ -23,11 +23,12 @@ import { microServices } from 'commons'
 // gql
 import { useMutation } from '@apollo/client'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
-import UPDATE_COACHEE from 'lib/mutations/Coachees/update.gql'
+import UPDATE_COACHEE from 'lib/mutations/Coachee/update.gql'
+import SUSPEND_OR_ACTIVATE from 'lib/mutations/Coachee/suspendOrActivate.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
-import { validateCoacheeProfile } from 'utils/Profile/coacheeProfile'
+import { validateCoachee } from 'utils/inviteCoachee'
 
 //styles
 import classes from 'styles/CoacheeManagement/coacheeManagement.module.scss'
@@ -39,17 +40,29 @@ import { CoacheeDataType } from 'types/models/Coachee'
 
 export const CoacheeManagement: FC<ModalProps> = ({
   data,
+  content,
+  coacheeForm,
   refetch,
   ...props
 }) => {
   const [coacheeData, setCoacheeData] = useState<CoacheeDataType>(data)
+  const [rol, setRol] = useState(
+    coacheeData.isAdmin
+      ? 'isAdmin'
+      : coacheeData.canViewDashboard
+      ? 'canViewDashboard'
+      : coacheeData.isActive
+      ? 'isActive'
+      : 'isSuspend'
+  )
   const [loading, setLoading] = useState(false)
-  const [rol, setRol] = useState<CoacheeDataType>({
-    isAdmin: coacheeData.isAdmin,
-    canViewDashboard: coacheeData.canViewDashboard,
-    isActive: coacheeData.isActive,
-  })
-  const validate = validateCoacheeProfile(coacheeData)
+  const validate = validateCoachee(coacheeData)
+  const rolOptions = [
+    { name: coacheeForm.activeCheckLabel, value: 'isActive' },
+    { name: coacheeForm.suspendCheckLabel, value: 'isSuspend' },
+    { name: coacheeForm.adminCheckLabel, value: 'isAdmin' },
+    { name: coacheeForm.canViewCheckLabel, value: 'canViewDashboard' },
+  ]
 
   const [updateUser] = useMutation(UPDATE_USER, {
     context: { ms: microServices.backend },
@@ -57,18 +70,9 @@ export const CoacheeManagement: FC<ModalProps> = ({
   const [updateCoachee] = useMutation(UPDATE_COACHEE, {
     context: { ms: microServices.backend },
   })
-
-  const onRolChange = (ev: CheckboxChangeParams) => {
-    if (ev.value == 'isActive') {
-      rol['isAdmin'] = false
-      rol['canViewDashboard'] = false
-    } else if (ev.value == 'isAdmin') {
-      rol['canViewDashboard'] = false
-    } else if (ev.value == 'canViewDashboard') {
-      rol['isAdmin'] = false
-    }
-    setRol({ ...rol, [ev.value]: ev.checked })
-  }
+  const [suspendCoachee] = useMutation(SUSPEND_OR_ACTIVATE, {
+    context: { ms: microServices.backend },
+  })
 
   const handleCoacheeChange = (ev: DropdownChangeParams) => {
     setCoacheeData({ ...coacheeData, [ev.target.name]: ev.target.value })
@@ -94,9 +98,15 @@ export const CoacheeManagement: FC<ModalProps> = ({
         coacheeId: updatecoacheeData.id,
         data: {
           position: updatecoacheeData.position,
-          isAdmin: rol.isAdmin,
-          canViewDashboard: rol.canViewDashboard,
+          isAdmin: rol === 'isAdmin',
+          canViewDashboard: rol === 'canViewDashboard',
         },
+      },
+    })
+    await suspendCoachee({
+      variables: {
+        coacheeId: updatecoacheeData.id,
+        type: rol === 'isActive' ? 'ACTIVATE' : 'SUSPEND',
       },
     })
     setLoading(false)
@@ -108,22 +118,25 @@ export const CoacheeManagement: FC<ModalProps> = ({
       <Modal.Header className={classes.close} closeButton />
       <Modal.Body className={classes.section_modal}>
         <section className={classes.container}>
-          <h1 className={`fs-4 ${classes.title}`}>Editar coachee</h1>
+          <h1 className={`fs-4 ${classes.title}`}>{content.editCoaheeTitle}</h1>
           <Container fluid>
             <Row className={classes.row}>
               <Col xs={12}>
-                <h5 className={classes.inputText}>Nombre y apellido</h5>
+                <h5 className={classes.inputText}>
+                  {coacheeForm.nameInput.label}
+                </h5>
                 <InputText
                   id='name'
                   name='name'
                   value={coacheeData.user?.name}
                   onChange={handleUserChange}
-                  placeholder='name'
                   className={classes.input}
                 />
               </Col>
               <Col xs={12}>
-                <h5 className={classes.inputText}>Cargo</h5>
+                <h5 className={classes.inputText}>
+                  {coacheeForm.positionInput.label}
+                </h5>
                 <Dropdown
                   appendTo='self'
                   name='position'
@@ -131,35 +144,20 @@ export const CoacheeManagement: FC<ModalProps> = ({
                   className={classes.input}
                   onChange={handleCoacheeChange}
                   value={coacheeData.position}
-                  placeholder='cargo o posición'
                 />
               </Col>
             </Row>
-            <Row xs='auto' className={classes.row}>
-              <Checkbox
-                inputId='isActive'
-                name='rol'
-                value='isActive'
-                onChange={(e) => onRolChange(e)}
-                checked={!rol.isAdmin && !rol.canViewDashboard}
-              />
-              <label htmlFor='isActive'>Activo</label>
-              <Checkbox
-                inputId='isAdmin'
-                name='rol'
-                value='isAdmin'
-                onChange={(e) => onRolChange(e)}
-                checked={rol.isAdmin}
-              />
-              <label htmlFor='isAdmin'>Admin</label>
-              <Checkbox
-                inputId='canViewDashboard'
-                name='rol'
-                value='canViewDashboard'
-                onChange={(e) => onRolChange(e)}
-                checked={rol.canViewDashboard && !rol.isAdmin}
-              />
-              <label htmlFor='canViewDashboard'>Puede ver el dasboard</label>
+            <Row>
+              <Col>
+                <SelectButton
+                  value={rol}
+                  options={rolOptions}
+                  optionLabel='name'
+                  onChange={(ev) => setRol(ev.value)}
+                  className={classes.button_select}
+                  unselectable={false}
+                />
+              </Col>
             </Row>
             <Row className={`justify-content-end ${classes.row}`}>
               <Col xs='auto'>
@@ -170,7 +168,7 @@ export const CoacheeManagement: FC<ModalProps> = ({
                   {loading ? (
                     <Spinner animation='border' color='primary' />
                   ) : (
-                    'Guardar'
+                    coacheeForm.saveButton.label
                   )}
                 </Button>
               </Col>

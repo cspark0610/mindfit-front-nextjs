@@ -132,7 +132,10 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
           <Row className='justify-content-center align-items-center mb-5'>
             <Col xs={5}>
               <Button
-                disabled={!!!selectedDate}
+                disabled={
+                  !!!selectedDate ||
+                  dayjs(selectedDate).diff(dayjs(), 'hours') < -23
+                }
                 className={classes.button}
                 onClick={handleManageSingleAvailability}>
                 Gestionar disponibilidad para un día

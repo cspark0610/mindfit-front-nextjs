@@ -1,5 +1,5 @@
-query GetCoacheeById {
-  getCoacheeProfile {
+query GetCoacheeById($coacheeId: Int!) {
+  findCoacheeById(coacheeId: $coacheeId) {
     id
     bio
     invited
@@ -13,7 +13,6 @@ query GetCoacheeById {
     registrationStatus
     profilePicture {
       key
-      filename
       location
     }
     user {

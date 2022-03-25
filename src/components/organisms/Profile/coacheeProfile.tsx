@@ -2,7 +2,15 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Container, Row, Col, Button, Modal, Spinner } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Spinner,
+  ProgressBar,
+} from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
@@ -16,11 +24,12 @@ import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfil
 //gql
 import { useMutation } from '@apollo/client'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
-import UPDATE_COACHEE from 'lib/mutations/Coachees/update.gql'
+import UPDATE_COACHEE from 'lib/mutations/Coachee/update.gql'
 
 // utils
 import { workPositions } from 'components/organisms/ColaboratorSignup/utils'
 import { validateCoacheeProfile } from 'utils/Profile/coacheeProfile'
+import { uploadFilesService } from 'utils/uploadFilesService'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -30,15 +39,18 @@ import { FC } from 'react'
 import { ChangeType } from 'types'
 import { microServices } from 'commons'
 import { UserDataType } from 'types/models/User'
+import { fileDataType } from 'types/models/Files'
 import { CoacheeDataType } from 'types/models/Coachee'
 
 export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
   coachee,
   content,
 }) => {
+  const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [coacheeData, setCoacheeData] = useState(coachee)
-  const [loading, setLoading] = useState(false)
+  const [uploadPictureUrl, setUploadPictureUrl] = useState('')
+  const [uploadPictureProgress, setUploadPictureProgress] = useState(0)
   const validate = validateCoacheeProfile(coacheeData)
 
   const [updateUser] = useMutation(UPDATE_USER, {
@@ -60,7 +72,16 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
   const handleSave = async () => {
     setLoading(true)
     const { user, ...updatecoacheeData } = coacheeData
-    const profilePicture: any = updatecoacheeData.profilePicture
+
+    if (uploadPictureUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', updatecoacheeData.profilePicture as File)
+      await uploadFilesService(
+        uploadPictureUrl,
+        formData,
+        setUploadPictureProgress
+      )
+    }
 
     await updateUser({
       variables: {
@@ -73,11 +94,12 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
         coacheeId: user?.coachee?.id,
         data: {
           position: updatecoacheeData.position,
-          picture: {
-            type: 'Buffer',
-            filename: user?.name,
-            data: [...profilePicture],
-          },
+          picture: (updatecoacheeData.profilePicture as File).type
+            ? {
+                key: (updatecoacheeData.profilePicture as File).name,
+                type: (updatecoacheeData.profilePicture as File).type,
+              }
+            : undefined,
         },
       },
     })
@@ -90,7 +112,18 @@ export const CoacheeProfile: FC<{ coachee: CoacheeDataType; content: any }> = ({
       <Container className={classes.container}>
         <Container className={classes.section}>
           <h1 className={classes.title}>{content.userProfile.title}</h1>
-          <UploadPicture setData={setCoacheeData} />
+          <UploadPicture
+            setData={setCoacheeData}
+            setUploadUrl={setUploadPictureUrl}
+            data={(coacheeData.profilePicture as fileDataType)?.location}
+          />
+          {uploadPictureProgress !== 0 && (
+            <ProgressBar
+              animated
+              now={uploadPictureProgress}
+              label={`${uploadPictureProgress}%`}
+            />
+          )}
           <Container fluid>
             <Row className={classes.row}>
               <Col xs={12}>

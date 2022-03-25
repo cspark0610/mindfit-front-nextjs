@@ -1,6 +1,13 @@
 // main tools
 import { useState, useRef } from 'react'
-import Image from 'next/image'
+import dayjs from 'dayjs'
+
+// gql
+import { useLazyQuery } from '@apollo/client'
+import GET_UPLOAD_FILES_URL from 'lib/queries/getUploadFilesUrl.gql'
+
+// utils
+import { microServices } from 'commons'
 
 // bootstrap components
 import { CloseButton } from 'react-bootstrap'
@@ -17,9 +24,18 @@ import { FC } from 'react'
 import { FileUploadSelectParams } from 'primereact/fileupload'
 import { UploadVideoProps, UploadVideoRef } from 'types/components/UploadVideo'
 
-export const UploadVideo: FC<UploadVideoProps> = ({ data = '', setData }) => {
+export const UploadVideo: FC<UploadVideoProps> = ({
+  data = '',
+  setData,
+  setUploadUrl,
+}) => {
   const uploader = useRef<UploadVideoRef>(null)
   const [video, setVideo] = useState(data)
+
+  const [getUploadFilesUrl] = useLazyQuery(GET_UPLOAD_FILES_URL, {
+    context: { ms: microServices.backend },
+    onCompleted: (url) => setUploadUrl(url.getUploadSignedUrl),
+  })
 
   const handleClick = () => uploader.current?.choose()
   const handleDelete = () => {
@@ -29,27 +45,18 @@ export const UploadVideo: FC<UploadVideoProps> = ({ data = '', setData }) => {
   }
 
   const handleSelect = async (ev: FileUploadSelectParams) => {
-    const video = new File([ev.files[0]], ev.files[0].name, {
-      type: ev.files[0].type,
-    })
+    const video = new File(
+      [ev.files[0]],
+      dayjs().toISOString().concat(` - ${ev.files[0].name}`),
+      { type: ev.files[0].type }
+    )
 
-    const arrayBuffer = await video.arrayBuffer()
-    const buf = Buffer.alloc(arrayBuffer.byteLength)
-    const view = new Uint8Array(arrayBuffer)
-    for (let i = 0; i < buf.length; i++) {
-      buf[i] = view[i]
-    }
-
-    setData((prev: any) => ({
-      ...prev,
-      profileVideo: {
-        // @ts-ignore
-        data: [...buf],
-        type: 'Buffer',
-        filename: video.name,
-      },
-    }))
+    setData((prev: any) => ({ ...prev, profileVideo: video }))
     setVideo(URL.createObjectURL(video))
+
+    await getUploadFilesUrl({
+      variables: { data: { key: video.name, type: video.type } },
+    })
   }
 
   return (

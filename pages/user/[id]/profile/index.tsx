@@ -13,9 +13,9 @@ import { userRoles } from 'utils/enums'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACH from 'lib/queries/Coach/getProfile.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import COACH_PROFILE_CONTENT from 'lib/strapi/queries/CoachProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
 import GET_ORGANIZATION_BY_ID from 'lib/queries/Organization/getById.gql'
@@ -59,12 +59,25 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     organization?: OrganizationDataType
   } = {}
   const content: any = {}
+<<<<<<< HEAD
   if (session?.user.role === userRoles.COACHEE) {
     const { data } = await apollo.query({
       query: GET_COACHEE_BY_ID,
       context: { ms: microServices.backend },
       variables: { id: session?.user.coachee?.id },
     })
+=======
+
+  if (session?.user.role?.includes(userRoles.COACHEE)) {
+    await apollo
+      .query({
+        query: GET_COACHEE_PROFILE,
+        context: { ms: microServices.backend },
+      })
+      .then(({ data }) => {
+        userData.coachee = data.getCoacheeProfile as CoacheeDataType
+      })
+>>>>>>> 23a7a9c333e7941743a179c24c9f2ab9cd06f213
 
     userData.coachee = data.findCoacheeById
     console.log(ctx.query, 'querieeeeeees')
@@ -90,17 +103,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       context: { ms: microServices.strapi },
     })
     content.userProfile = contentResponse.userProfile.data.attributes
+<<<<<<< HEAD
   }
 
   if (session?.user.role === userRoles.COACH) {
     apollo
+=======
+  } else if (session?.user.role === userRoles.COACH) {
+    await apollo
+>>>>>>> 23a7a9c333e7941743a179c24c9f2ab9cd06f213
       .query({
-        query: GET_COACH_BY_ID,
+        query: GET_COACH,
         context: { ms: microServices.backend },
-        variables: { id: session?.user.coach?.id },
       })
       .then(
-        ({ data }) => (userData.coach = data.findCoachById as CoachDataType)
+        ({ data }) => (userData.coach = data.getCoachProfile as CoachDataType)
       )
 
     const { data: contentResponse } = await apolloClient.query({

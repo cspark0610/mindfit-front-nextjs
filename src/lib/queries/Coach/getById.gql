@@ -5,12 +5,10 @@ query GetCoachById($id: Int!) {
     phoneNumber
     profileVideo {
       key
-      filename
       location
     }
     profilePicture {
       key
-      filename
       location
     }
     user {

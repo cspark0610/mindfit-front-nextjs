@@ -1,23 +1,23 @@
 // main tools
-import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
+import jwt_decoder from 'jwt-decode'
+import NextAuth from 'next-auth'
+import dayjs from 'dayjs'
 
 // gql
-import LOGIN from 'lib/mutations/Auth/login.gql'
+import ACCEPT_INVITATION from 'lib/mutations/Coachee/acceptInvitation.gql'
+import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
+import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
 import CREATE_PASSWORD from 'lib/mutations/Auth/createPassword.gql'
 import REFRESH_TOKEN from 'lib/mutations/Auth/refreshToken.gql'
-import LOGIN_WITH_GOOGLE from 'lib/mutations/Auth/loginWithGoogle.gql'
-import SIGNUP_WITH_GOOGLE from 'lib/mutations/Auth/signupWithGoogle.gql'
 import GET_USER_BY_ID from 'lib/queries/User/getById.gql'
-import ACCEPT_INVITATION from 'lib/mutations/Coachees/acceptInvitation.gql'
+import LOGIN from 'lib/mutations/Auth/login.gql'
 
 // utils
-import jwt_decoder from 'jwt-decode'
-import { microServices } from 'commons'
-import moment from 'moment'
-import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
+import { initializeApolloClient } from 'lib/apollo'
+import { microServices } from 'commons'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -170,14 +170,10 @@ export default NextAuth({
           }
         }
       } else {
-        const now = moment(new Date())
         const apolloClient = createApolloClient(token.backendRefresh)
         const decoded: { exp: number } = jwt_decoder(token.backendToken)
-        const expireTokenTime = new Date(decoded.exp * 1000)
-        const timeToExpireToken = moment(expireTokenTime).add(-5, 'minutes')
-        const expired = timeToExpireToken.diff(now, 'minutes')
 
-        if (expired < 5) {
+        if (dayjs(decoded.exp * 1000).diff(dayjs(), 'minutes') < 5) {
           const { data } = await apolloClient.mutate({
             mutation: REFRESH_TOKEN,
             context: { ms: microServices.backend },

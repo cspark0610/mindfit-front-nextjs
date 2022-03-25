@@ -1,6 +1,7 @@
 // main tools
 import { useState, useRef } from 'react'
 import Image from 'next/image'
+import dayjs from 'dayjs'
 
 // bootstrap components
 import { CloseButton } from 'react-bootstrap'
@@ -8,6 +9,13 @@ import { Plus } from 'react-bootstrap-icons'
 
 // prime components
 import { FileUpload } from 'primereact/fileupload'
+
+// gql
+import { useLazyQuery } from '@apollo/client'
+import GET_UPLOAD_FILES_URL from 'lib/queries/getUploadFilesUrl.gql'
+
+// utils
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/UI/Input/AppInput.module.scss'
@@ -23,9 +31,15 @@ import {
 export const UploadPicture: FC<UploadPicturesProps> = ({
   data = '',
   setData,
+  setUploadUrl,
 }) => {
   const [picture, setPicture] = useState(data)
   const uploader = useRef<UploadPicturesRef>(null)
+
+  const [getUploadFilesUrl] = useLazyQuery(GET_UPLOAD_FILES_URL, {
+    context: { ms: microServices.backend },
+    onCompleted: (url) => setUploadUrl(url.getUploadSignedUrl),
+  })
 
   const handleClick = () => uploader.current?.choose()
   const handleDelete = () => {
@@ -35,27 +49,18 @@ export const UploadPicture: FC<UploadPicturesProps> = ({
   }
 
   const handleSelect = async (ev: FileUploadSelectParams) => {
-    const picture = new File([ev.files[0]], ev.files[0].name, {
-      type: ev.files[0].type,
-    })
+    const picture = new File(
+      [ev.files[0]],
+      dayjs().toISOString().concat(` - ${ev.files[0].name}`),
+      { type: ev.files[0].type }
+    )
 
-    const arrayBuffer = await picture.arrayBuffer()
-    const buf = Buffer.alloc(arrayBuffer.byteLength)
-    const view = new Uint8Array(arrayBuffer)
-    for (let i = 0; i < buf.length; i++) {
-      buf[i] = view[i]
-    }
-
-    setData((prev: any) => ({
-      ...prev,
-      profilePicture: {
-        // @ts-ignore
-        data: [...buf],
-        type: 'Buffer',
-        filename: picture.name,
-      },
-    }))
+    setData((prev: any) => ({ ...prev, profilePicture: picture }))
     setPicture(URL.createObjectURL(picture))
+
+    await getUploadFilesUrl({
+      variables: { data: { key: picture.name, type: picture.type } },
+    })
   }
 
   return (

@@ -2,22 +2,23 @@
 import { getSession } from 'next-auth/react'
 
 // components
-import { Layout } from 'components/organisms/Layout'
 import { CoacheesDatatable } from 'components/organisms/DashboardOrg/CoacheesDatatable'
-import { Strengths } from 'components/organisms/DashboardOrg/Strengths'
 import { Satisfaction } from 'components/organisms/DashboardOrg/Satisfaction'
 import { FocusAreas } from 'components/organisms/DashboardOrg/FocusAreas'
+import { Strengths } from 'components/organisms/DashboardOrg/Strengths'
 import { Timeline } from 'components/organisms/DashboardOrg/Timeline'
+import { Layout } from 'components/organisms/Layout'
 
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
 
 // commons
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 //gql
 import ORG_DASHBOARD from 'lib/strapi/queries/Organization/orgDashboard.gql'
-import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import GET_COACHEE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
 
@@ -26,68 +27,62 @@ import classes from 'styles/DashboardOrg/page.module.scss'
 
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
+import { CoacheeDataType } from 'types/models/Coachee'
 import { GetSSPropsType } from 'types'
 
 const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
-  session,
+  coachee,
   content,
-}) => {
-  return (
-    <Layout>
-      <Container className='my-4' fluid>
-        <Row className='mb-5 justify-content-center'>
-          <Col xs={12} className='mb-5'>
-            <Container>
-              <h3 className={`mb-5 ${classes.title}`}>
-                {content.coacheesTitle}
-              </h3>
-              <CoacheesDatatable session={session} content={content} />
-            </Container>
-          </Col>
-          <Col sm={12} lg={6} className='mb-5'>
-            <Container>
-              <h3 className={`mb-5 ${classes.title}`}>
-                {content.coachingSessionsTitle}
-              </h3>
-              <Timeline content={content.graphTimeLine} />
-              <Strengths content={content.graphDevelopmentArea} />
-            </Container>
-          </Col>
-          <Col sm={12} lg={6} className='mb-5'>
-            <Container>
-              <Satisfaction />
-              <FocusAreas content={content.graphFocusArea} />
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-    </Layout>
-  )
-}
+}) => (
+  <Layout>
+    <Container className='my-4' fluid>
+      <Row className='mb-5 justify-content-center'>
+        <Col xs={12} className='mb-5'>
+          <Container>
+            <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
+            <CoacheesDatatable coachee={coachee} content={content} />
+          </Container>
+        </Col>
+        <Col sm={12} lg={6} className='mb-5'>
+          <Container>
+            <h3 className={`mb-5 ${classes.title}`}>
+              {content.coachingSessionsTitle}
+            </h3>
+            <Timeline content={content.graphTimeLine} />
+            <Strengths content={content.graphDevelopmentArea} />
+          </Container>
+        </Col>
+        <Col sm={12} lg={6} className='mb-5'>
+          <Container>
+            <Satisfaction />
+            <FocusAreas content={content.graphFocusArea} />
+          </Container>
+        </Col>
+      </Row>
+    </Container>
+  </Layout>
+)
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session) return { redirect: { destination: '/', permanent: false } }
+  if (!session.user.role?.includes(userRoles.COACHEE))
+    return { redirect: { destination: '/dashboard/coach', permanent: false } }
 
-  const apollo = createApolloClient(session.token)
-  const { data: coachee } = await apollo.query({
-    query: GET_COACHEE_BY_ID,
-    context: { ms: microServices.backend },
-    variables: { id: session.user.coachee?.id },
-  })
+  const apolloClient = createApolloClient(session.token)
+  const apolloClientForStrapi = initializeApolloClient()
+
+  const { data: user } = await apolloClient.query<{
+    getCoacheeProfile: CoacheeDataType
+  }>({ query: GET_COACHEE, context: { ms: microServices.backend } })
 
   if (
-    !session.user.organization &&
-    !coachee.findCoacheeById.isAdmin &&
-    !coachee.findCoacheeById.canViewDashboard
+    session.user.role === userRoles.COACHEE &&
+    !user.getCoacheeProfile.canViewDashboard
   )
-    return {
-      redirect: { destination: '/signup/coachee/steps', permanent: false },
-    }
+    return { redirect: { destination: '/dashboard/coachee', permanent: false } }
 
-  const apolloClient = initializeApolloClient()
-
-  const { data } = await apolloClient.query({
+  const { data } = await apolloClientForStrapi.query({
     query: ORG_DASHBOARD,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
@@ -97,10 +92,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      session,
+      coachee: user.getCoacheeProfile,
       content: {
         ...content,
         datatable: content.datatable.data.attributes,
+        coacheeForm: content.coacheeForm.data.attributes,
+        confirmDeletion: content.confirmDeletion.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
         graphFocusArea: content.graphFocusArea.data.attributes,
         graphTimeLine: content.graphTimeLine.data.attributes,

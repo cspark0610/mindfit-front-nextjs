@@ -44,8 +44,8 @@ export const DashboardChat: FC = () => {
       </form>
       <div className='mb-3 d-flex justify-content-between'>
         <h5>Mensajes</h5>
-        <Button className={classes.buttonIcon} size='sm' variant='light'>
-          <Sticky />
+        <Button className={classes.buttonIcon} variant='light'>
+          <Sticky size={28} />
         </Button>
       </div>
       <Row onScroll={handleChatScroll} className={classes.container}>

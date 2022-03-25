@@ -12,13 +12,14 @@ import classes from 'styles/CardNote/cardNote.module.scss'
 
 // types
 import { FC } from 'react'
+import { CoacheeDataType } from 'types/models/Coachee'
 
 export const CardNote: FC<{
-  notes: string[]
-  edit: (id: number) => void
+  notes: CoacheeDataType['coachNotes']
+  edit: (note: { id: number; note: string }) => void
   removed: (id: number) => void
 }> = ({ notes, edit, removed }) => {
-  const [selectedNote, setSelectedNote] = useState(NaN)
+  const [selectedNote, setSelectedNote] = useState({ id: NaN, note: '' })
   const menuRef = useRef<ContextMenu>(null)
 
   const menuItems = [
@@ -30,7 +31,7 @@ export const CardNote: FC<{
     {
       label: 'Eliminar',
       icon: 'pi-pi-trash',
-      command: () => removed(selectedNote),
+      command: () => removed(selectedNote.id),
     },
   ]
 
@@ -39,24 +40,20 @@ export const CardNote: FC<{
       <ContextMenu
         ref={menuRef}
         model={menuItems}
-        onHide={() => setSelectedNote(NaN)}
+        onHide={() => setSelectedNote({ id: NaN, note: '' })}
       />
-      {notes.length ? (
-        notes.map((note, id) => (
+      {notes?.length ? (
+        notes?.map((item: { id: number; note: string }) => (
           <Button
-            key={id}
+            key={item.id}
             variant='light'
             className={`mb-3 ${classes.button}`}
-            onClick={() => edit(id)}
+            onClick={() => edit(item)}
             onContextMenu={(e) => {
-              menuRef.current?.show(e), setSelectedNote(id)
+              menuRef.current?.show(e), setSelectedNote(item)
             }}>
-            <Row xs='auto' className='fw-bold justify-content-between'>
-              <p>10/12/21</p>
-              <p>09:30 AM</p>
-            </Row>
             <Row className={classes.paragraph}>
-              <div dangerouslySetInnerHTML={{ __html: note }} />
+              <div dangerouslySetInnerHTML={{ __html: item.note }} />
             </Row>
           </Button>
         ))

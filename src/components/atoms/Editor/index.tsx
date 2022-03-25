@@ -1,26 +1,26 @@
 // bootstrap components
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Row, Spinner } from 'react-bootstrap'
 import { Trash } from 'react-bootstrap-icons'
 
 // prime components
-import { Editor, EditorTextChangeParams } from 'primereact/editor'
+import { Editor } from 'primereact/editor'
 
 // styles
 import classes from 'styles/UI/Editor/editor.module.scss'
 
 // types
 import { FC } from 'react'
+import { StyledEditorProps } from 'types/components/Editor'
 
-export const StyledEditor: FC<{
-  id: number | undefined
-  note: string
-  readOnly: boolean
-  saveNote: () => void
-  removed: (id: number) => void
-  handleChangeNote: (ev: EditorTextChangeParams) => void
-}> = ({ id, note, readOnly, saveNote, removed, handleChangeNote }) => {
+export const StyledEditor: FC<StyledEditorProps> = ({
+  loading,
+  coachNote,
+  save,
+  removed,
+  ...props
+}) => {
   const renderHeader = () => {
-    if (!readOnly) {
+    if (!props.readOnly) {
       return (
         <span className='ql-formats'>
           <button className='ql-bold' aria-label='Bold'></button>
@@ -36,28 +36,34 @@ export const StyledEditor: FC<{
     <>
       <Col className={classes.block} />
       <Editor
-        readOnly={readOnly}
+        {...props}
         className={classes.edit}
         headerTemplate={renderHeader()}
-        value={note}
+        value={coachNote.note}
         placeholder='escribe tu nota...'
-        onTextChange={(ev) => handleChangeNote(ev)}
       />
-      {!readOnly && (
+      {!props.readOnly && (
         <Row xs='auto' className='mt-3 justify-content-between'>
           <Col>
-            {id != undefined && (
-              <Button variant='light' className='' onClick={() => removed(id)}>
+            {!coachNote.id || (
+              <Button
+                variant='light'
+                className=''
+                onClick={() => removed(coachNote.id)}>
                 <Trash className={classes.icon} />
               </Button>
             )}
           </Col>
           <Col xs='auto'>
             <Button
-              disabled={!note}
+              disabled={!coachNote.note}
               className={classes.button}
-              onClick={saveNote}>
-              Guardar
+              onClick={save}>
+              {loading ? (
+                <Spinner animation='border' color='primary' />
+              ) : (
+                'Guardar'
+              )}
             </Button>
           </Col>
         </Row>

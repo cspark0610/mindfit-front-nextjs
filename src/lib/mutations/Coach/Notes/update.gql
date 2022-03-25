@@ -1,0 +1,6 @@
+mutation updateCoachNote($coachNoteId: Int!, $note: String!) {
+  updateCoachNote(coachNoteId: $coachNoteId, data: { note: $note }) {
+    id
+    note
+  }
+}

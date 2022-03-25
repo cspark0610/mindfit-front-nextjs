@@ -1,0 +1,26 @@
+query GetCoachProfile {
+  getCoachProfile {
+    bio
+    isActive
+    phoneNumber
+    profileVideo {
+      key
+      location
+    }
+    profilePicture {
+      key
+      location
+    }
+    user {
+      id
+      name
+    }
+    coachingAreas {
+      id
+      name
+      codename
+      description
+      coverPicture
+    }
+  }
+}

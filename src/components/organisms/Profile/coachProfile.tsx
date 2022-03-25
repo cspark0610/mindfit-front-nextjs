@@ -9,12 +9,16 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import { MultiSelect } from 'primereact/multiselect'
 import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
+import { Knob } from 'primereact/knob'
 
 // components
 import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { UploadVideo } from 'components/atoms/UploadVideo'
+
+// utils
+import { uploadFilesService } from 'utils/uploadFilesService'
 import { microServices } from 'commons'
 
 // gql
@@ -29,6 +33,7 @@ import classes from 'styles/Profile/profile.module.scss'
 // types
 import { MultiSelectChangeParams } from 'primereact/multiselect'
 import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
 import { UserDataType } from 'types/models/User'
 import { Skeleton } from 'primereact/skeleton'
 import { ChangeType } from 'types'
@@ -42,8 +47,12 @@ type CoachProfileProps = {
 export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const [loading, setLoading] = useState(false)
   const [coachData, setCoachData] = useState(coach)
-  const [coachingAreas, setCoachingAreas] = useState(undefined)
   const [passwordShow, setPasswordShow] = useState(false)
+  const [uploadVideoUrl, setUploadVideoUrl] = useState('')
+  const [uploadPictureUrl, setUploadPictureUrl] = useState('')
+  const [coachingAreas, setCoachingAreas] = useState(undefined)
+  const [uploadVideoProgress, setUploadVideoProgress] = useState(0)
+  const [uploadPictureProgress, setUploadPictureProgress] = useState(0)
 
   const [updateUser] = useMutation(UPDATE_USER, {
     context: { ms: microServices.backend },
@@ -73,6 +82,22 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const handleSave = async () => {
     setLoading(true)
     const { user, ...updatecoachData } = coachData
+
+    if (uploadPictureUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', updatecoachData.profilePicture as File)
+      await uploadFilesService(
+        uploadPictureUrl,
+        formData,
+        setUploadPictureProgress
+      )
+    }
+    if (uploadVideoUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', updatecoachData.profileVideo as File)
+      await uploadFilesService(uploadVideoUrl, formData, setUploadVideoProgress)
+    }
+
     await updateUser({
       variables: {
         id: user?.sub,
@@ -85,8 +110,17 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
           coachingAreasId: updatecoachData.coachingAreas?.map(
             (item) => item.id
           ),
-          picture: !updatecoachData.profilePicture?.location
-            ? updatecoachData.profilePicture
+          picture: (updatecoachData.profilePicture as File).type
+            ? {
+                key: (updatecoachData.profilePicture as File).name,
+                type: (updatecoachData.profilePicture as File).type,
+              }
+            : undefined,
+          videoPresentation: (updatecoachData.profileVideo as File).type
+            ? {
+                key: (updatecoachData.profileVideo as File).name,
+                type: (updatecoachData.profileVideo as File).type,
+              }
             : undefined,
           phoneNumber: updatecoachData.phoneNumber,
           bio: updatecoachData.bio,
@@ -105,8 +139,9 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
             <Col lg={6}>
               <h1 className={classes.title}>{content.userProfile.title}</h1>
               <UploadPicture
-                data={coachData.profilePicture?.location}
                 setData={setCoachData}
+                setUploadUrl={setUploadPictureUrl}
+                data={(coachData.profilePicture as fileDataType)?.location}
               />
               <h2 className={classes.subtitle}>
                 {content.userProfile.bioInput.label}
@@ -137,6 +172,18 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                     content.userProfile.coachingAreasInput.placeholder
                   }
                 />
+              )}
+              {uploadPictureProgress !== 0 && (
+                <>
+                  <h2 className={classes.subtitle}>Picture progress</h2>
+                  <Knob value={parseInt(uploadPictureProgress.toFixed(1))} />
+                </>
+              )}
+              {uploadVideoProgress !== 0 && (
+                <>
+                  <h2 className={classes.subtitle}>Video progress</h2>
+                  <Knob value={parseInt(uploadVideoProgress.toFixed(1))} />
+                </>
               )}
             </Col>
             <Col lg={6}>
@@ -176,8 +223,9 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                 {content.userProfile.videoInput.label}
               </h2>
               <UploadVideo
-                data={coachData.profileVideo?.location}
                 setData={setCoachData}
+                setUploadUrl={setUploadVideoUrl}
+                data={(coachData.profileVideo as fileDataType)?.location}
               />
               <p
                 role='button'

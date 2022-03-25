@@ -47,6 +47,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return { redirect: { destination: '/', permanent: false }, props: {} }
 
   const apollo = createApolloClient(session.token)
+  const apolloClient = initializeApolloClient()
   const userData: { coachee?: CoacheeDataType; coach?: CoachDataType } = {}
 
   if (session.user.role === userRoles.COACHEE)
@@ -65,13 +66,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       .query({
         query: GET_COACH_AGENDA,
         context: { ms: microServices.backend },
-        variables: { id: session?.user.coach?.id },
       })
       .then(
-        ({ data }) => (userData.coach = data.findCoachById as CoachDataType)
+        ({ data }) => (userData.coach = data.getCoachProfile as CoachDataType)
       )
 
-  const apolloClient = initializeApolloClient()
   const { data } = await apolloClient.query({
     query: GET_PAGE_CONTENT,
     variables: { locale: ctx.locale },

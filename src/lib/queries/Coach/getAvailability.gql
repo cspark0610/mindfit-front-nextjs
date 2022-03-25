@@ -1,9 +1,5 @@
-query getCoachAvailability(
-  $coachAgendaId: Float!
-  $from: DateTime!
-  $to: DateTime!
-) {
-  getCoachAvailability(coachAgendaId: $coachAgendaId, from: $from, to: $to) {
+query getCoachAvailability($from: DateTime!, $to: DateTime!) {
+  getCoachAvailability(from: $from, to: $to) {
     date
     availability {
       from
