@@ -10,22 +10,20 @@ import Styles from 'styles/VideoCall/VideoCall.module.scss'
 import { FC } from 'react'
 import { VideoCallProps } from 'types/components/Agora'
 
-export const AgoraVideoCall: FC<VideoCallProps> = ({ channel, token }) => {
+export const AgoraVideoCall: FC<VideoCallProps> = ({ channel, token, uid }) => {
   const [videocall, setVideocall] = useState(false)
-  useEffect(() => {
-    if (!!channel && !!token && channel !== '' && token !== '') {
-      setVideocall(true)
-    }
-  }, [])
 
   const props = {
     rtcProps: {
-      appId: '3d2452ae22b54bd7b037d89b006c2cb8',
-      channel: channel,
-      token: token,
+      uid,
+      token,
+      channel,
+      appId: process.env.NEXT_PUBLIC_AGORA_ID as string,
     },
     callbacks: { EndCall: () => setVideocall(false) },
   }
+
+  useEffect(() => setVideocall(true), [])
 
   return (
     <div className={Styles.container}>

@@ -1,33 +1,40 @@
+// main tools
+import { useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
+
 // bootstrap components
 import { Col, Container, Row } from 'react-bootstrap'
 
 // components
-import { Layout } from 'components/organisms/Layout'
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
+import { Evaluation } from 'components/molecules/Evaluation'
+import { Layout } from 'components/organisms/Layout'
 import { Notes } from 'components/molecules/Notes'
 
-import { Evaluation } from 'components/molecules/Evaluation'
+// gql
+import GET_SESSION_TOKEN from 'lib/queries/Session/GetCoachSessionTokens.gql'
+import { useQuery } from '@apollo/client'
+
+// utils
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/UI/Card/AppCard.module.scss'
 
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
-import dynamic from 'next/dynamic'
-import { useState } from 'react'
-
-import GET_SESSION_TOKEN from 'lib/queries/Session/GetCoachSessionTokens.gql'
-import { useQuery } from '@apollo/client'
-import { microServices } from 'commons'
-import { GetSSPropsType } from 'types'
 import { VideoCallProps } from 'types/components/Agora'
+import { GetSSPropsType } from 'types'
 
 const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachingSessionId,
 }) => {
+  const { data: session } = useSession()
   const [videoSession, setVideoSession] = useState<VideoCallProps>({
     channel: '',
     token: '',
+    uid: 0,
   })
   const AgoraVideoCall = dynamic<any>(
     () =>
@@ -40,15 +47,12 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   useQuery(GET_SESSION_TOKEN, {
     variables: { id: parseFloat(`${coachingSessionId}.0`) },
     context: { ms: microServices.backend },
-    onCompleted: (data) => {
-      console.log(data)
-      if (data.getCoachSessionTokens.videoSessionChannel) {
-        setVideoSession({
-          channel: data.getCoachSessionTokens.videoSessionChannel,
-          token: data.getCoachSessionTokens.tokens.rtcToken,
-        })
-      }
-    },
+    onCompleted: (data) =>
+      setVideoSession({
+        channel: data.getCoachSessionTokens.videoSessionChannel,
+        token: data.getCoachSessionTokens.tokens.rtcToken,
+        uid: session?.user.id as number,
+      }),
   })
 
   return (
@@ -61,12 +65,9 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             </Container>
           </Col>
           <Col md={6} className='mt-4'>
-            {videoSession.channel !== '' && videoSession.token !== '' && (
-              <AgoraVideoCall
-                channel={videoSession.channel}
-                token={videoSession.token}
-              />
-            )}
+            {videoSession.channel !== '' &&
+              videoSession.token !== '' &&
+              videoSession.uid !== 0 && <AgoraVideoCall {...videoSession} />}
           </Col>
           <Col md={12} lg={3} className='mt-4'>
             <Container className={`p-4 ${classes.section}`}>
