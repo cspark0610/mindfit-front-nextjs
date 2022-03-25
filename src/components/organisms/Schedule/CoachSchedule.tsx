@@ -116,7 +116,11 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
                   })
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
-                      <ScheduledAppointmentCard actions {...item} />
+                      <ScheduledAppointmentCard
+                        actions
+                        {...item}
+                        role='coach'
+                      />
                     </Col>
                   ))}
               </Row>
@@ -162,7 +166,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
             <Row className='w-100 justify-content-center'>
               {appointments.map((item, idx) => (
                 <Col key={idx} xs={12}>
-                  <ScheduledAppointmentCard preview {...item} />
+                  <ScheduledAppointmentCard preview {...item} role='coach' />
                 </Col>
               ))}
             </Row>

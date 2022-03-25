@@ -75,15 +75,11 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           coacheeRegistrationStatus.COACH_APPOINTMENT_PENDING,
         ]
 
-<<<<<<< HEAD
-        if (session.user.organization?.id || data.getCoacheeProfile.isAdmin)
-=======
         if (
           [userRoles.COACHEE_ADMIN, userRoles.COACHEE_OWNER].includes(
             session.user.role as string
           )
         )
->>>>>>> 23a7a9c333e7941743a179c24c9f2ab9cd06f213
           push('/dashboard/organization')
         else if (
           status.includes(data.getCoacheeProfile.registrationStatus as string)

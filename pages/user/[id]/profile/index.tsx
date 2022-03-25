@@ -39,9 +39,9 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     {coachee && showOrganization === undefined && (
       <CoacheeProfile coachee={coachee} content={content} />
     )}
-    {organization && showOrganization !== undefined && (
+    {/* {organization && showOrganization !== undefined && (
       <OrganizationProfile coachee={coachee} content={content} />
-    )}
+    )} */}
     {coach && <CoachProfile coach={coach} content={content} />}
   </Layout>
 )
@@ -59,33 +59,22 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     organization?: OrganizationDataType
   } = {}
   const content: any = {}
-<<<<<<< HEAD
-  if (session?.user.role === userRoles.COACHEE) {
-    const { data } = await apollo.query({
-      query: GET_COACHEE_BY_ID,
-      context: { ms: microServices.backend },
-      variables: { id: session?.user.coachee?.id },
-    })
-=======
 
   if (session?.user.role?.includes(userRoles.COACHEE)) {
-    await apollo
-      .query({
-        query: GET_COACHEE_PROFILE,
-        context: { ms: microServices.backend },
-      })
-      .then(({ data }) => {
-        userData.coachee = data.getCoacheeProfile as CoacheeDataType
-      })
->>>>>>> 23a7a9c333e7941743a179c24c9f2ab9cd06f213
+    const { data } = await apollo.query({
+      query: GET_COACHEE_PROFILE,
+      context: { ms: microServices.backend },
+    })
+    userData.coachee = data.getCoacheeProfile
 
-    userData.coachee = data.findCoacheeById
-    console.log(ctx.query, 'querieeeeeees')
     if (ctx?.query?.showOrganization) {
       let id = NaN,
         showOrganization = false
-      if (data.findCoacheeById.isAdmin || data.findCoacheeById.canViewDashboard)
-        id = data.findCoacheeById.organization.id
+      if (
+        data.getCoacheeProfile.isAdmin ||
+        data.getCoacheeProfile.canViewDashboard
+      )
+        id = data.getCoacheeProfile.organization.id
       else if (session.user.organization)
         id = session.user.organization.id as number
       console.log(id, ' the id heeeeeeeeeeeeeeeeeeeeeeeere')
@@ -103,15 +92,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       context: { ms: microServices.strapi },
     })
     content.userProfile = contentResponse.userProfile.data.attributes
-<<<<<<< HEAD
-  }
-
-  if (session?.user.role === userRoles.COACH) {
-    apollo
-=======
   } else if (session?.user.role === userRoles.COACH) {
     await apollo
->>>>>>> 23a7a9c333e7941743a179c24c9f2ab9cd06f213
       .query({
         query: GET_COACH,
         context: { ms: microServices.backend },

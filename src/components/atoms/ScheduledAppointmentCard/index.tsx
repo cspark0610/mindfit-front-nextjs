@@ -86,6 +86,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
             </Col>
           </>
         )}
+        {/* change "< 0" to "> 0" */}
         {actions && nearby < 0 && nearby < 30 && (
           <Col xs={5}>
             <Link
