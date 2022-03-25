@@ -51,7 +51,7 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setVideoSession({
         channel: data.getCoachSessionTokens.videoSessionChannel,
         token: data.getCoachSessionTokens.tokens.rtcToken,
-        uid: session?.user.id as number,
+        uid: session?.user.sub as number,
       }),
   })
 
