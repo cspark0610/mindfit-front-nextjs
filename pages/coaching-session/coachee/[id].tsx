@@ -1,4 +1,7 @@
 // main tools
+import { useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 import Image from 'next/image'
 
 // bootstrap components
@@ -6,30 +9,32 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import { ChevronDoubleRight } from 'react-bootstrap-icons'
 
 // components
-import { Layout } from 'components/organisms/Layout'
 import { ChatSession } from 'components/organisms/chatSession'
+import { Layout } from 'components/organisms/Layout'
+
+// utils
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/CoacheeSession/coacheeSession.module.scss'
 
 //GQL
 import GET_SESSION_TOKEN from 'lib/queries/Session/GetCoacheeSessionTokens.gql'
+import { useQuery } from '@apollo/client'
 
 // types
-import { GetSSPropsType } from 'types'
 import { NextPage, GetServerSidePropsContext } from 'next'
-import dynamic from 'next/dynamic'
-import { useQuery } from '@apollo/client'
-import { microServices } from 'commons'
-import { useState } from 'react'
 import { VideoCallProps } from 'types/components/Agora'
+import { GetSSPropsType } from 'types'
 
 const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachingSessionId,
 }) => {
+  const { data: session } = useSession()
   const [videoSession, setVideoSession] = useState<VideoCallProps>({
     channel: '',
     token: '',
+    uid: 0,
   })
 
   //import Agora VideoCall
@@ -49,6 +54,7 @@ const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         setVideoSession({
           channel: data.getCoacheeSessionTokens.videoSessionChannel,
           token: data.getCoacheeSessionTokens.tokens.rtcToken,
+          uid: session?.user.sub as number,
         })
       }
     },
@@ -107,12 +113,8 @@ const CoacheeSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
           <Col lg={6}>
             {videoSession?.token !== '' && videoSession?.channel !== '' && (
-              <AgoraVideoCall
-                channel={videoSession.channel}
-                token={videoSession.token}
-              />
+              <AgoraVideoCall {...videoSession} />
             )}
-
             {/* <ChatSession /> */}
           </Col>
         </Row>
