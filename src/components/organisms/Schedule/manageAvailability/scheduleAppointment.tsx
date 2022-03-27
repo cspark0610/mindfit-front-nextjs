@@ -98,25 +98,11 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
     setSelectedDate(ev.value as Date)
 
   const handleScheduleAppointment = () => {
-    const fromHours = selectedAvailability?.from?.split(':')[0]
-    const fromMinutes = selectedAvailability?.from?.split(':')[1]
-    const toHours = selectedAvailability?.to?.split(':')[0]
-    const toMinutes = selectedAvailability?.to?.split(':')[1]
-    const to = new Date((selectedDate as Date)?.getTime())
-
-    selectedDate?.setHours(parseInt(fromHours as string))
-    selectedDate?.setMinutes(parseInt(fromMinutes as string))
-    to?.setHours(parseInt(toHours as string))
-    to?.setMinutes(parseInt(toMinutes as string))
+    const startDate = dayjs(selectedAvailability?.from).format()
+    const endDate = dayjs(selectedAvailability?.to).format()
 
     scheduleAppointment({
-      variables: {
-        data: {
-          remarks: 'test',
-          startDate: selectedDate?.toISOString(),
-          endDate: to?.toISOString(),
-        },
-      },
+      variables: { data: { remarks: 'test', startDate, endDate } },
     })
   }
 
@@ -207,19 +193,24 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
           <p className={`my-4 ${classes.label}`}>¿A qué hora puedes?</p>
           <Row className='justify-content-center'>
             {selectedInterval &&
-              selectedRanges?.map((range, idx) => (
-                <Button
-                  key={idx}
-                  variant={`${
-                    selectedAvailability === range
-                      ? 'primary'
-                      : 'outline-primary'
-                  }`}
-                  className={classes.button}
-                  onClick={() => setSelectedAvailability(range)}>
-                  {range.from} - {range.to}
-                </Button>
-              ))}
+              selectedRanges?.map((range, idx) => {
+                const from = dayjs(range.from).format('HH:mm')
+                const to = dayjs(range.to).format('HH:mm')
+
+                return (
+                  <Button
+                    key={idx}
+                    variant={`${
+                      selectedAvailability === range
+                        ? 'primary'
+                        : 'outline-primary'
+                    }`}
+                    className={classes.button}
+                    onClick={() => setSelectedAvailability(range)}>
+                    {from} - {to}
+                  </Button>
+                )
+              })}
             <Col className='mt-4' xs={9}>
               <Button
                 onClick={handleScheduleAppointment}

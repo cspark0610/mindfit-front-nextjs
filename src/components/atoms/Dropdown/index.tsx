@@ -13,6 +13,7 @@ import { userRoles } from 'utils/enums'
 import classes from 'styles/Navbar/navbar.module.scss'
 
 // types
+import { fileDataType } from 'types/models/Files'
 import { FC } from 'react'
 
 export const DropdownMenu: FC = () => {
@@ -20,8 +21,8 @@ export const DropdownMenu: FC = () => {
 
   const profilePicture =
     data?.user.role === userRoles.COACH
-      ? data?.user.coach?.profilePicture?.location
-      : data?.user.coachee?.profilePicture?.location
+      ? (data?.user.coach?.profilePicture as fileDataType)?.location
+      : (data?.user.coachee?.profilePicture as fileDataType)?.location
 
   return (
     <>
@@ -32,14 +33,14 @@ export const DropdownMenu: FC = () => {
               <Image
                 width={72}
                 height={72}
-                alt='profile'
+                alt='profile picture'
+                src={profilePicture}
                 className={classes.avatar}
-                src={profilePicture as string}
               />
             )}
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>
-            <Link href={`/user/${data.user.sub}/profile`} passHref>
+            <Link href={`/user/profile`} passHref>
               <Dropdown.Item>Perfil de usuario</Dropdown.Item>
             </Link>
             <Dropdown.Divider />

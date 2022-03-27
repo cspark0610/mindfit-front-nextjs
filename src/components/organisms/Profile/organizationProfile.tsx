@@ -15,6 +15,8 @@ export const OrganizationProfile: FC<{
   const [coacheeData, setCoacheeData] = useState(coachee)
   const [showPassword, setShowPassword] = useState(false)
   const [aboutTextArea, setAboutTextArea] = useState('')
+  const [uploadUrl, setUploadUrl] = useState('')
+
   return (
     <>
       <Container className={classes.coachContainer}>
@@ -24,7 +26,10 @@ export const OrganizationProfile: FC<{
               <h1>Perfil de Organización</h1>
               <Row className={classes.organizationData}>
                 <Col lg={4}>
-                  <UploadPicture setData={setCoacheeData} />
+                  <UploadPicture
+                    setUploadUrl={setUploadUrl}
+                    setData={setCoacheeData}
+                  />
                 </Col>
                 <Col lg={6}>
                   <InputText

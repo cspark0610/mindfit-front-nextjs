@@ -47,8 +47,8 @@ interface Props {
 export const CompanySignup: FC<Props> = ({ content }) => {
   const { push } = useRouter()
   const { data } = useSession()
+  const [uploadUrl, setUploadUrl] = useState('')
   const [companyData, setCompanyData] = useState<OrganizationDataType>({
-    // profilePicture: {} as File,
     name: '',
     about: '',
   })
@@ -81,7 +81,7 @@ export const CompanySignup: FC<Props> = ({ content }) => {
   return (
     <section className={classes.container}>
       <h1 className={classes.title}>{content.title}</h1>
-      <UploadPicture setData={setCompanyData} />
+      <UploadPicture setUploadUrl={setUploadUrl} setData={setCompanyData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>

@@ -2,32 +2,32 @@
 import { useState } from 'react'
 
 // bootstrap components
-import { Button, Col, Row } from 'react-bootstrap'
 import { Pencil, Sticky, XSquare } from 'react-bootstrap-icons'
+import { Button, Col, Row } from 'react-bootstrap'
 
 // prime components
 import { EditorTextChangeParams } from 'primereact/editor'
 
 // Components
-import { CardNote } from 'components/atoms/CardNote'
 import { StyledEditor } from 'components/atoms/Editor'
+import { CardNote } from 'components/atoms/CardNote'
 
 // commons
 import { microServices } from 'commons'
 
 // gql
-import { useMutation, useQuery } from '@apollo/client'
 import GET_COACH_NOTES from 'lib/queries/Coachee/getCoachNotes.gql'
 import CREATE_NOTE from 'lib/mutations/Coach/Notes/create.gql'
 import DELETE_NOTE from 'lib/mutations/Coach/Notes/delete.gql'
 import UPDATE_NOTE from 'lib/mutations/Coach/Notes/update.gql'
+import { useMutation, useQuery } from '@apollo/client'
 
 // styles
 import classes from 'styles/Notes/notes.module.scss'
 
 // types
-import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { FC } from 'react'
 
 export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
   coachee,
@@ -57,30 +57,27 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
     onCompleted: () => refetch(),
   })
 
-  const handleChangeNote = (ev: EditorTextChangeParams) => {
+  const handleChangeNote = (ev: EditorTextChangeParams) =>
     setNoteId({ ...noteId, note: ev.htmlValue ?? '' })
-  }
 
   const saveNote = async () => {
     setLoading(true)
-    if (noteId.id) {
+    if (noteId.id)
       await updateNote({
         variables: { coachNoteId: noteId.id, note: noteId.note },
       })
-    } else {
+    else
       await createNote({
         variables: { coacheeId: coachee.id, note: noteId.note },
       })
-    }
+
     setShowEdit(false)
     setLoading(false)
   }
 
   const removed = async (id: number) => {
     setLoading(true)
-    await deleteNote({
-      variables: { coachNoteId: id },
-    })
+    await deleteNote({ variables: { coachNoteId: id } })
     setShowEdit(false)
     setLoading(false)
   }
@@ -101,8 +98,8 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
         </Col>
         <Col>
           <Button
-            className='fs-3 p-0'
             variant='light'
+            className='fs-3 p-0'
             onClick={() => {
               setNoteId({ id: NaN, note: '' })
               setShowEdit(!showEdit)
@@ -119,12 +116,12 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
         <CardNote notes={notes} edit={edit} removed={removed} />
       ) : (
         <StyledEditor
-          loading={loading}
-          coachNote={noteId}
-          readOnly={false}
-          onTextChange={handleChangeNote}
           save={saveNote}
+          readOnly={false}
+          loading={loading}
           removed={removed}
+          coachNote={noteId}
+          onTextChange={handleChangeNote}
         />
       )}
     </>

@@ -1,10 +1,10 @@
 query getCoachSessionTokens($id: Float!) {
   getCoachSessionTokens(sessionId: $id) {
     chatSessionChannel
+    videoSessionChannel
     tokens {
       rtcToken
       rtmToken
     }
-    videoSessionChannel
   }
 }

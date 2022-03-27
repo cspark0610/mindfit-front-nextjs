@@ -26,6 +26,7 @@ import classes from 'styles/CoachProfileCard/coachProfileCard.module.scss'
 // types
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
 import { FC } from 'react'
 
 export const CoachProfileCard: FC = () => {
@@ -52,7 +53,9 @@ export const CoachProfileCard: FC = () => {
                   height={120}
                   layout='intrinsic'
                   className={classes.img}
-                  src={coach?.profilePicture?.location as string}
+                  src={
+                    (coach?.profilePicture as fileDataType)?.location as string
+                  }
                 />
               )}
             </div>

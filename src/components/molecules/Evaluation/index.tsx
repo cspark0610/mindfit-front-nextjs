@@ -23,32 +23,14 @@ export const Evaluation: FC<{ content: any }> = ({ content }) => (
       </p>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+        tempor incididunt ut labore et dolore magna aliqua.
       </p>
     </Row>
-    <Row md={2}>
+    <Row md={2} className='align-items-center'>
       <Col>
-        <Link href='/'>
-          <a className={`fw-bold ${classes.more}`}>
-            {content.seeMoreButton.label}...
-          </a>
-        </Link>
+        <span className={`fw-bold ${classes.more}`}>
+          {content.seeMoreButton.label}...
+        </span>
       </Col>
       <Col xs='auto'>
         <Button className={classes.button}>{content.testButton.label}</Button>

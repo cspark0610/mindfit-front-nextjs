@@ -22,10 +22,10 @@ import { Icon } from 'react-bootstrap-icons'
 import { FC } from 'react'
 
 export const Layout: FC = ({ children }) => {
+  const { data, status } = useSession()
   const [items, setItems] = useState<
     { label: string; url: string; icon: Icon }[] | undefined
   >(undefined)
-  const { data, status } = useSession()
 
   const [getCoachee] = useLazyQuery(GET_COACHEE, {
     context: { ms: microServices.backend },
@@ -37,31 +37,27 @@ export const Layout: FC = ({ children }) => {
         switch (data.user?.role) {
           case userRoles.COACHEE:
             {
-              const { data } = await getCoachee()
+              const { data: res } = await getCoachee()
 
-              if (data.getCoacheeProfile.canViewDashboard)
+              if (res.getCoacheeProfile.canViewDashboard)
                 await import('utils/navigationItems').then(
-                  ({ coacheeWithOrgItems }) =>
-                    setItems(coacheeWithOrgItems(data.user?.sub))
+                  ({ coacheeWithOrgItems }) => setItems(coacheeWithOrgItems())
                 )
               else
                 await import('utils/navigationItems').then(({ coacheeItems }) =>
-                  setItems(coacheeItems(data.user?.sub))
+                  setItems(coacheeItems())
                 )
             }
             break
           case userRoles.COACHEE_ADMIN:
           case userRoles.COACHEE_OWNER:
-            {
-              await import('utils/navigationItems').then(
-                ({ coacheeWithOrgItems }) =>
-                  setItems(coacheeWithOrgItems(data.user?.sub))
-              )
-            }
+            await import('utils/navigationItems').then(
+              ({ coacheeWithOrgItems }) => setItems(coacheeWithOrgItems())
+            )
             break
           case userRoles.COACH:
             await import('utils/navigationItems').then(({ coachItems }) =>
-              setItems(coachItems(data.user?.sub))
+              setItems(coachItems())
             )
             break
         }

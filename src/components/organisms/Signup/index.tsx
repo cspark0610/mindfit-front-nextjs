@@ -46,6 +46,7 @@ interface Props {
 
 export const UserSignup: FC<Props> = ({ content }) => {
   const suggestionsContent = content.passwordSuggestion.data.attributes
+  const [uploadUrl, setUploadUrl] = useState('')
   const [userData, setUserData] = useState<UserDataType>({
     firstName: '',
     lastName: '',
@@ -89,7 +90,7 @@ export const UserSignup: FC<Props> = ({ content }) => {
   return (
     <section className={classes.container}>
       <h1 className={classes.title}>{content.title}</h1>
-      <UploadPicture setData={setUserData} />
+      <UploadPicture setUploadUrl={setUploadUrl} setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12}>

@@ -29,6 +29,7 @@ import { GetSSPropsType } from 'types'
 
 const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachingSessionId,
+  content,
 }) => {
   const { data: session } = useSession()
   const [videoSession, setVideoSession] = useState<VideoCallProps>({
@@ -71,14 +72,14 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
           <Col md={12} lg={3} className='mt-4'>
             <Container className={`p-4 ${classes.section}`}>
-              {/* <Notes /> */}
+              <Notes coachee={{ id: 1 }} content={content.notes} />
             </Container>
           </Col>
         </Row>
         <Row className='mt-4 mb-4'>
           <Col>
             <Container className={`p-5 ${classes.section}`}>
-              {/* <Evaluation /> */}
+              <Evaluation content={content.evaluation} />
             </Container>
           </Col>
         </Row>
@@ -87,6 +88,18 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   )
 }
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  return { props: { coachingSessionId: ctx.params?.id } }
+  return {
+    props: {
+      coachingSessionId: ctx.params?.id,
+      content: {
+        notes: { notesTitle: 'Notas' },
+        evaluation: {
+          evaluationTitle: 'Resumen de la evalucion',
+          seeMoreButton: { label: 'Ver más' },
+          testButton: { label: 'Realizar Evalución' },
+        },
+      },
+    },
+  }
 }
 export default CoachSession

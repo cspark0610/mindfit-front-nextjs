@@ -1,13 +1,13 @@
 // main tools
-import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 // components
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
 
 // gql
-import { useMutation } from '@apollo/client'
 import SELECT_COACH from 'lib/mutations/Coachee/selectCoach.gql'
+import { useMutation } from '@apollo/client'
 
 // bootstrap components
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -20,8 +20,9 @@ import { microServices } from 'commons'
 import classes from 'styles/ChooseCoach/page.module.scss'
 
 // types
-import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
+import { FC } from 'react'
 
 type ChooseCoachPreviewProps = {
   handleCloseModal?: () => void
@@ -78,7 +79,10 @@ export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
           </Col>
         </Row>
         <Row className='mb-5'>
-          <video src={coach.profileVideo?.location} controls />
+          <video
+            src={(coach.profileVideo as fileDataType)?.location}
+            controls
+          />
         </Row>
         <Row className='d-flex justify-content-end'>
           <Col xs={3}>

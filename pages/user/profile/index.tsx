@@ -36,7 +36,7 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   showOrganization,
 }) => (
   <Layout>
-    {coachee && showOrganization === undefined && (
+    {coachee && !showOrganization && (
       <CoacheeProfile coachee={coachee} content={content} />
     )}
     {/* {organization && showOrganization !== undefined && (
@@ -53,12 +53,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApolloClient()
   const apollo = createApolloClient(session?.token)
+  const content: any = {}
   const userData: {
     coachee?: CoacheeDataType
     coach?: CoachDataType
     organization?: OrganizationDataType
   } = {}
-  const content: any = {}
 
   if (session?.user.role?.includes(userRoles.COACHEE)) {
     const { data } = await apollo.query({
