@@ -8,8 +8,5 @@ mutation CreateOrganization($company: CreateOrganizationDto!) {
       name
       email
     }
-    profilePicture {
-      filename
-    }
   }
 }

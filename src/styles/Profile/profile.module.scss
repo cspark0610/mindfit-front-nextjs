@@ -64,3 +64,79 @@
     }
   }
 }
+
+.organizationAbout,
+.recoveryPasswordLabel,
+.organizationData {
+  margin-top: 40px;
+}
+
+.organizationData {
+  display: flex;
+  align-items: center;
+}
+
+.recoveryPasswordLabel {
+  color: $primary;
+  font-weight: 800;
+}
+
+.organizationAbout textarea {
+  min-height: 200px;
+}
+.sideContent {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 280px;
+  .subscriptionCard {
+    border-radius: 16px;
+    box-shadow: 0px 0px 10px 3px rgba($primary, 0.2);
+    min-height: 300px;
+    background-color: rgba($primary, 0.051);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px;
+    margin-top: 32px;
+    & span {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 12px 0;
+    }
+
+    & ul li {
+      list-style: none;
+      line-height: 2rem;
+    }
+    & button {
+      background-color: $secondary;
+      border: none;
+    }
+  }
+  .paymentContainer {
+    margin-top: 40px;
+    .paymentMethod {
+      border: 1px solid rgba(80, 80, 80, 0.2);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 72px;
+      max-width: 280px;
+      background-color: rgba($primary, 0.051);
+      p {
+        margin: 0px;
+        margin-left: 16px;
+      }
+    }
+  }
+  .saveArea {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      margin-top: 40px;
+      max-width: 140px;
+    }
+  }
+}

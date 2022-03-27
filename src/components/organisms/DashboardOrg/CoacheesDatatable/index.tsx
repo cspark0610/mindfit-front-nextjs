@@ -2,10 +2,10 @@
 import { useState } from 'react'
 
 // components
-import { DataTable } from 'components/molecules/Datatable'
+import { DatatableSkeleton } from 'components/molecules/Datatable/Skeleton'
 import { CoacheeManagement } from 'components/molecules/CoacheeManagement'
 import { InviteCoachee } from 'components/molecules/InviteCoachee'
-import { DatatableSkeleton } from 'components/molecules/Datatable/Skeleton'
+import { DataTable } from 'components/molecules/Datatable'
 
 // bootstrap components
 import { Button, Col, Row } from 'react-bootstrap'
@@ -18,38 +18,41 @@ import { confirmDialog } from 'primereact/confirmdialog'
 import { microServices } from 'commons'
 
 // gql
-import { useMutation, useQuery } from '@apollo/client'
-import GET_ORG_BY_ID from 'lib/queries/Organization/getById.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
+import GET_ORG_BY_ID from 'lib/queries/Organization/getById.gql'
+import { useMutation, useQuery } from '@apollo/client'
 
 // utils
+import {
+  coachBodyTemplate,
+  statusBodyTemplate,
+} from 'components/organisms/DashboardOrg/CoacheesDatatable/templates'
 import { schema } from 'utils/actionDataTable'
-import { coachBodyTemplate, statusBodyTemplate } from './templates'
 
 // styles
 import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
 
 // types
-import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { FC } from 'react'
 
-export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
-  user,
-  content,
-}) => {
+export const CoacheesDatatable: FC<{
+  coachee: CoacheeDataType
+  content: any
+}> = ({ coachee, content }) => {
   const [coachees, setCoachees] = useState([])
-  const [coachee, setCoachee] = useState()
+  const [coacheeToEdit, setCoacheeToEdit] = useState()
   const [selected, setSelected] = useState<CoacheeDataType[]>([])
   const [showEdit, setShowEdit] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
 
   const { loading, refetch } = useQuery(GET_ORG_BY_ID, {
     context: { ms: microServices.backend },
-    variables: { id: user.organization?.id },
+    variables: { id: coachee.organization?.id },
     onCompleted: (data) => {
       setCoachees(
         data.findOrganizationById.coachees.filter(
-          (coachee: CoacheeDataType) => coachee.id !== user.id
+          (coachee: CoacheeDataType) => coachee.id !== coachee.id
         )
       )
     },
@@ -76,14 +79,14 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
   }
 
   const edit = (id: number) => {
-    setCoachee(coachees.find(({ id: coacheeId }) => coacheeId == id))
+    setCoacheeToEdit(coachees.find(({ id: coacheeId }) => coacheeId == id))
     setShowEdit(true)
   }
 
   return (
     <>
       <section className={classes.section}>
-        {user.isAdmin && (
+        {coachee.isAdmin && (
           <Row xs='auto' className='mb-4 justify-content-end'>
             <Col>
               <Button
@@ -106,12 +109,12 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
               (ev) => statusBodyTemplate(ev, content.datatable.statusCodeNames),
               (ev) => coachBodyTemplate(ev.assignedCoach)
             )}
-            actions={user?.isAdmin ? { edit: edit } : undefined}
+            actions={coachee?.isAdmin ? { edit } : undefined}
           />
         ) : (
           <DatatableSkeleton />
         )}
-        {user.isAdmin && (
+        {coachee.isAdmin && (
           <Row xs='auto' className='mt-4 justify-content-end'>
             <Col>
               <Button
@@ -129,7 +132,7 @@ export const CoacheesDatatable: FC<{ user: CoacheeDataType; content: any }> = ({
           coacheeForm={content.coacheeForm}
           show={showEdit}
           onHide={() => setShowEdit(false)}
-          data={coachee || {}}
+          data={coacheeToEdit || {}}
           refetch={refetch}
         />
       )}

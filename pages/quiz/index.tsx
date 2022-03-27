@@ -56,7 +56,6 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   const [SubmitQuiz] = useMutation(SUBMIT_QUIZ, {
     context: { ms: microServices.backend },
     onCompleted: (res) => console.log({ res }),
-    onError: (err) => console.log({ err }),
   })
 
   const handleChangeSection = (index: number) => setActualSection(index)
@@ -65,11 +64,8 @@ const QuizPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       setActualSection((prev) => prev + 1)
     } else {
       setLoading(true)
-      const { data } = await SubmitQuiz({
-        variables: { data: { ...answers } },
-      })
+      const { data } = await SubmitQuiz({ variables: { data: { ...answers } } })
       setLoading(false)
-      console.log({ data })
       push(`/quiz/${data.createSatReport.id}`)
     }
   }

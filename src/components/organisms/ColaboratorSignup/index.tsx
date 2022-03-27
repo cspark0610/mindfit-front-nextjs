@@ -1,11 +1,11 @@
 // main tools
-import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 // gql
-import { useMutation } from '@apollo/client'
 import CREATE_COACHEE from 'lib/mutations/Coachee/create.gql'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
+import { useMutation } from '@apollo/client'
 
 // bootstrap components
 import {
@@ -19,8 +19,8 @@ import {
 import { Check2, Question } from 'react-bootstrap-icons'
 
 // prime components
-import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
+import { InputText } from 'primereact/inputtext'
 import { InputMask } from 'primereact/inputmask'
 import { Dropdown } from 'primereact/dropdown'
 
@@ -39,15 +39,16 @@ import { microServices } from 'commons'
 import classes from 'styles/UI/Card/signupCard.module.scss'
 
 // types
-import { FC, ChangeEvent } from 'react'
-import { ChangeType } from 'types'
 import { DropdownChangeParams } from 'primereact/dropdown'
-import { UserDataType } from 'types/models/User'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { UserDataType } from 'types/models/User'
+import { FC, ChangeEvent } from 'react'
 import { Session } from 'next-auth'
+import { ChangeType } from 'types'
 
 export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
   const { push } = useRouter()
+  const [uploadUrl, setUploadUrl] = useState('')
   const [colaboratorData, setUserData] = useState<
     UserDataType & CoacheeDataType
   >({
@@ -94,7 +95,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
   return (
     <section className={classes.container}>
       <h1 className={classes.title}>Completa tu perfil</h1>
-      <UploadPicture setData={setUserData} />
+      <UploadPicture setUploadUrl={setUploadUrl} setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
           <Col xs={12} sm={6} md={4}>

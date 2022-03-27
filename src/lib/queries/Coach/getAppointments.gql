@@ -2,11 +2,14 @@ query GetCoachAppointments($id: Int!) {
   findCoachAgendaById(id: $id) {
     coachAppointments {
       id
-      startDate
+      remarks
       endDate
+      startDate
       accomplished
       coacheeConfirmation
-      remarks
+      coachingSession {
+        id
+      }
     }
   }
 }

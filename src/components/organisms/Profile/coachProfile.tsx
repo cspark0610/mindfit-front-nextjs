@@ -5,33 +5,39 @@ import { ChangeEvent, useState } from 'react'
 import { Container, Row, Col, Button, Modal, Spinner } from 'react-bootstrap'
 
 // prime components
-import { InputText } from 'primereact/inputtext'
-import { InputMask } from 'primereact/inputmask'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { MultiSelect } from 'primereact/multiselect'
+import { InputText } from 'primereact/inputtext'
+import { InputMask } from 'primereact/inputmask'
+import { Knob } from 'primereact/knob'
 
 // components
 import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { UploadVideo } from 'components/atoms/UploadVideo'
+
+// utils
+import { uploadFilesService } from 'utils/uploadFilesService'
 import { microServices } from 'commons'
 
 // gql
-import { useMutation, useQuery } from '@apollo/client'
+import GET_COACHING_AREAS from 'lib/queries/Coach/getCoachingAreas.gql'
 import UPDATE_COACH from 'lib/mutations/Coach/updateCoach.gql'
 import UPDATE_USER from 'lib/mutations/User/update.gql'
-import GET_COACHING_AREAS from 'lib/queries/Coach/getCoachingAreas.gql'
+import { useMutation, useQuery } from '@apollo/client'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
 
 // types
-import { FC } from 'react'
-import { ChangeType } from 'types'
-import { UserDataType } from 'types/models/User'
-import { CoachDataType } from 'types/models/Coach'
 import { MultiSelectChangeParams } from 'primereact/multiselect'
+import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
+import { UserDataType } from 'types/models/User'
 import { Skeleton } from 'primereact/skeleton'
+import { ChangeType } from 'types'
+import { FC } from 'react'
 
 type CoachProfileProps = {
   coach: CoachDataType
@@ -41,8 +47,12 @@ type CoachProfileProps = {
 export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const [loading, setLoading] = useState(false)
   const [coachData, setCoachData] = useState(coach)
-  const [coachingAreas, setCoachingAreas] = useState(undefined)
   const [passwordShow, setPasswordShow] = useState(false)
+  const [uploadVideoUrl, setUploadVideoUrl] = useState('')
+  const [uploadPictureUrl, setUploadPictureUrl] = useState('')
+  const [coachingAreas, setCoachingAreas] = useState(undefined)
+  const [uploadVideoProgress, setUploadVideoProgress] = useState(0)
+  const [uploadPictureProgress, setUploadPictureProgress] = useState(0)
 
   const [updateUser] = useMutation(UPDATE_USER, {
     context: { ms: microServices.backend },
@@ -72,20 +82,46 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
   const handleSave = async () => {
     setLoading(true)
     const { user, ...updatecoachData } = coachData
+
+    if (uploadPictureUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', updatecoachData.profilePicture as File)
+      await uploadFilesService(
+        uploadPictureUrl,
+        formData,
+        setUploadPictureProgress
+      )
+    }
+    if (uploadVideoUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', updatecoachData.profileVideo as File)
+      await uploadFilesService(uploadVideoUrl, formData, setUploadVideoProgress)
+    }
+
     await updateUser({
       variables: {
         id: user?.sub,
         data: { name: user?.name, email: user?.email },
       },
     })
-    const res = await updateCoach({
+    await updateCoach({
       variables: {
-        id: user?.coach?.id,
         data: {
-          videoPresentation: `https://youtube.com/watch?v=${updatecoachData.videoPresentation}`,
           coachingAreasId: updatecoachData.coachingAreas?.map(
             (item) => item.id
           ),
+          picture: (updatecoachData.profilePicture as File).type
+            ? {
+                key: (updatecoachData.profilePicture as File).name,
+                type: (updatecoachData.profilePicture as File).type,
+              }
+            : undefined,
+          videoPresentation: (updatecoachData.profileVideo as File).type
+            ? {
+                key: (updatecoachData.profileVideo as File).name,
+                type: (updatecoachData.profileVideo as File).type,
+              }
+            : undefined,
           phoneNumber: updatecoachData.phoneNumber,
           bio: updatecoachData.bio,
         },
@@ -101,18 +137,26 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
         <Container className={classes.section}>
           <Row>
             <Col lg={6}>
-              <h1 className={classes.title}>Perfil de coach</h1>
-              <UploadPicture setData={setCoachData} />
-              <h2 className={classes.subtitle}>Biografía</h2>
+              <h1 className={classes.title}>{content.userProfile.title}</h1>
+              <UploadPicture
+                setData={setCoachData}
+                setUploadUrl={setUploadPictureUrl}
+                data={(coachData.profilePicture as fileDataType)?.location}
+              />
+              <h2 className={classes.subtitle}>
+                {content.userProfile.bioInput.label}
+              </h2>
               <InputTextarea
                 rows={8}
                 name='bio'
                 value={coachData.bio}
-                placeholder='Biografía'
+                placeholder={content.userProfile.bioInput.placeholder}
                 onChange={handleChangeCoach}
                 className={classes.textarea}
               />
-              <h2 className={classes.subtitle}>Áreas de coaching</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.coachingAreasInput.label}
+              </h2>
               {!coachingAreas ? (
                 <Skeleton height='50px' width='100%' />
               ) : (
@@ -124,20 +168,38 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                   className={classes.input}
                   onChange={handleChangeCoach}
                   value={coachData.coachingAreas}
-                  placeholder='Escoge las areas de coaching'
+                  placeholder={
+                    content.userProfile.coachingAreasInput.placeholder
+                  }
                 />
+              )}
+              {uploadPictureProgress !== 0 && (
+                <>
+                  <h2 className={classes.subtitle}>Picture progress</h2>
+                  <Knob value={parseInt(uploadPictureProgress.toFixed(1))} />
+                </>
+              )}
+              {uploadVideoProgress !== 0 && (
+                <>
+                  <h2 className={classes.subtitle}>Video progress</h2>
+                  <Knob value={parseInt(uploadVideoProgress.toFixed(1))} />
+                </>
               )}
             </Col>
             <Col lg={6}>
-              <h2 className={classes.subtitle}>Nombre</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.nameInput.label}
+              </h2>
               <InputText
                 name='name'
                 className={classes.input}
                 onChange={handleChangeUser}
                 value={coachData.user?.name}
-                placeholder={content.userProfile.firstNameInput.placeholder}
+                placeholder={content.userProfile.nameInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Email</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.emailInput.label}
+              </h2>
               <InputText
                 disabled
                 type='email'
@@ -146,41 +208,36 @@ export const CoachProfile: FC<CoachProfileProps> = ({ coach, content }) => {
                 value={coachData.user?.email}
                 placeholder={content.userProfile.emailInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Teléfono</h2>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.phoneInput.label}
+              </h2>
               <InputMask
                 name='phoneNumber'
                 mask='+99 (999) 999-9999'
                 className={classes.input}
                 onChange={handleChangeCoach}
                 value={coachData.phoneNumber}
-                placeholder='Numero de celular'
+                placeholder={content.userProfile.phoneInput.placeholder}
               />
-              <h2 className={classes.subtitle}>Video</h2>
-              <div className='p-inputgroup'>
-                <span className='p-inputgroup-addon'>
-                  https://youtube.com/watch?v=
-                </span>
-                <InputMask
-                  type='url'
-                  name='videoPresentation'
-                  mask='?***********'
-                  className={classes.input}
-                  onChange={handleChangeCoach}
-                  value={coachData.videoPresentation}
-                  placeholder='video de Presentación'
-                />
-              </div>
+              <h2 className={classes.subtitle}>
+                {content.userProfile.videoInput.label}
+              </h2>
+              <UploadVideo
+                setData={setCoachData}
+                setUploadUrl={setUploadVideoUrl}
+                data={(coachData.profileVideo as fileDataType)?.location}
+              />
               <p
                 role='button'
                 className={classes.recoveryLabel}
                 onClick={() => setPasswordShow(true)}>
-                {content.userProfile.changePasswordButton.label}
+                {content.userProfile.changePasswordLabel}
               </p>
               <Button onClick={handleSave} className={classes.button}>
                 {loading ? (
                   <Spinner animation='border' color='primary' />
                 ) : (
-                  content.userProfile.saveButton.label
+                  content.userProfile.submitButton.label
                 )}
               </Button>
             </Col>

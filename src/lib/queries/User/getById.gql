@@ -9,15 +9,27 @@ query GetUserById($id: Int!) {
     isSuperUser
     coach {
       id
+      profilePicture {
+        key
+        location
+      }
     }
     coachee {
       id
+      profilePicture {
+        key
+        location
+      }
     }
     testResults {
       id
     }
     organization {
       id
+      profilePicture {
+        key
+        location
+      }
     }
     postsProgress {
       id

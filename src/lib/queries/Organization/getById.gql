@@ -22,7 +22,6 @@ query getOrganizationById($id: Int!) {
       assignedCoach {
         profilePicture {
           key
-          filename
           location
         }
         user {

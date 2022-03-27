@@ -1,10 +1,9 @@
-query GetAssignedCoachees($id: Int!) {
-  findCoachById(id: $id) {
+query GetAssignedCoachees {
+  getCoachProfile {
     assignedCoachees {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -36,7 +35,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -65,7 +63,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {
@@ -94,7 +91,6 @@ query GetAssignedCoachees($id: Int!) {
       id
       profilePicture {
         key
-        filename
         location
       }
       user {

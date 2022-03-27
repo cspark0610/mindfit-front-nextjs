@@ -3,8 +3,6 @@ import { getSession } from 'next-auth/react'
 
 // gql
 import { initializeApolloClient } from 'lib/apollo'
-import { createApolloClient } from 'lib/apolloClient'
-import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import GET_PAGE_CONTENT from 'lib/strapi/queries/Coachee/dashboardContent.gql'
 
 // Components
@@ -18,6 +16,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 // utils
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 // Types
 import { GetSSPropsType } from 'types'
@@ -25,13 +24,12 @@ import { NextPage, GetServerSidePropsContext } from 'next'
 
 const UserDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
-  coachee,
 }) => (
   <Layout>
     <Container className='my-4' fluid>
       <Row className='mb-5 justify-content-center'>
         <Col xs={12} lg={6} xl={3}>
-          <CoachProfileCard coachId={coachee.assignedCoach?.id} />
+          <CoachProfileCard />
         </Col>
         <Col xs={12} lg={6} xl={7}>
           <CoachObjectives content={content} />
@@ -50,6 +48,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (!session)
     return { redirect: { destination: '/', permanent: false }, props: {} }
+  if (!session.user.role?.includes(userRoles.COACHEE))
+    return {
+      redirect: { destination: '/dashboard/coach', permanent: false },
+      props: {},
+    }
 
   const apolloClient = initializeApolloClient()
   const { data: content } = await apolloClient.query({
@@ -58,19 +61,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     context: { ms: microServices.strapi },
   })
 
-  const apollo = createApolloClient(session.token)
-
-  const { data } = await apollo.query({
-    query: GET_COACHEE_PROFILE,
-    context: { ms: microServices.backend },
-  })
-
-  return {
-    props: {
-      content: content.coacheeDashboard.data.attributes,
-      coachee: data.getCoacheeProfile,
-    },
-  }
+  return { props: { content: content.coacheeDashboard.data.attributes } }
 }
 
 export default UserDashboard

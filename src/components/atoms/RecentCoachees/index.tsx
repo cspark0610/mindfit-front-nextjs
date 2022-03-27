@@ -26,7 +26,7 @@ export const RecentCoacheesCard: FC = () => {
         </Col>
         <Col className={classes.rightSide}>
           <Row>
-            <h4 className='fw-bold' >Camila Garcia</h4>
+            <h4 className='fw-bold'>Camila Garcia</h4>
             <p>Organización Mindfit</p>
           </Row>
           <p>

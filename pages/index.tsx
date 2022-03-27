@@ -50,16 +50,25 @@ const LoginPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
   if (session) {
-    if (session.user.role === userRoles.COACHEE) {
+    if (session.user.role === userRoles.COACHEE)
       return {
         redirect: { destination: '/dashboard/coachee', permanent: false },
         props: {},
       }
-    } else session.user.role === userRoles.COACH
-    return {
-      redirect: { destination: '/dashboard/coach', permanent: false },
-      props: {},
-    }
+    else if (
+      [userRoles.COACHEE_ADMIN, userRoles.COACHEE_OWNER].includes(
+        session.user.role as string
+      )
+    )
+      return {
+        redirect: { destination: '/dashboard/organization', permanent: false },
+        props: {},
+      }
+    else if (session.user.role === userRoles.COACH)
+      return {
+        redirect: { destination: '/dashboard/coach', permanent: false },
+        props: {},
+      }
   }
 
   const apolloClient = initializeApolloClient()

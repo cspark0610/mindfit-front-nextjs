@@ -1,15 +1,22 @@
-query GetAgendaByCoacheeId($id: Int!) {
-  findCoacheeById(id: $id) {
+query GetAgendaByCoacheeId {
+  getCoacheeProfile {
     assignedCoach {
       id
+      coachAgenda {
+        id
+      }
     }
     coachAppointments {
       id
-      accomplished
-      coacheeConfirmation
-      startDate
-      endDate
       remarks
+      endDate
+      startDate
+      accomplished
+      coachConfirmation
+      coacheeConfirmation
+      coachingSession {
+        id
+      }
     }
   }
 }

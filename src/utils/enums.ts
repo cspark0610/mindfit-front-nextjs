@@ -1,7 +1,10 @@
 export const userRoles = {
+  STAFF: 'STAFF',
   COACH: 'COACH',
   COACHEE: 'COACHEE',
   SUPER_USER: 'SUPER_USER',
+  COACHEE_ADMIN: 'COACHEE_ADMIN',
+  COACHEE_OWNER: 'COACHEE_OWNER',
 }
 
 export const coacheeRegistrationStatus = {

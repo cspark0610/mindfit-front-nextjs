@@ -3,8 +3,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 // gql
+import GET_ASSIGNED_COACH from 'lib/queries/Coachee/getAssignedCoach.gql'
 import { useQuery } from '@apollo/client'
-import GET_COACH_BY_ID from 'lib/queries/Coach/getById.gql'
 
 // utils
 import { microServices } from 'commons'
@@ -24,20 +24,18 @@ import { PrimeIcons } from 'primereact/api'
 import classes from 'styles/CoachProfileCard/coachProfileCard.module.scss'
 
 // types
-import { FC } from 'react'
-import { CoachDataType } from 'types/models/Coach'
 import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
+import { FC } from 'react'
 
-export const CoachProfileCard: FC<{ coachId: number | null }> = ({
-  coachId,
-}) => {
+export const CoachProfileCard: FC = () => {
   const [showChat, setShowChat] = useState(false)
   const [coach, setCoach] = useState<CoachDataType | undefined>(undefined)
 
-  const { loading } = useQuery(GET_COACH_BY_ID, {
-    variables: { id: coachId },
+  const { loading } = useQuery(GET_ASSIGNED_COACH, {
     context: { ms: microServices.backend },
-    onCompleted: (data) => setCoach(data.findCoachById),
+    onCompleted: (data) => setCoach(data.getCoacheeProfile.assignedCoach),
   })
 
   return (
@@ -48,14 +46,18 @@ export const CoachProfileCard: FC<{ coachId: number | null }> = ({
         <>
           <Container className={classes.section}>
             <div className='text-center'>
-              <Image
-                width={120}
-                height={120}
-                alt='avatar'
-                layout='intrinsic'
-                className={classes.img}
-                src='/assets/images/avatar.png'
-              />
+              {coach?.profilePicture && (
+                <Image
+                  width={120}
+                  alt='avatar'
+                  height={120}
+                  layout='intrinsic'
+                  className={classes.img}
+                  src={
+                    (coach?.profilePicture as fileDataType)?.location as string
+                  }
+                />
+              )}
             </div>
             <div className={classes.profile}>
               <h3>{coach?.user?.name}</h3>

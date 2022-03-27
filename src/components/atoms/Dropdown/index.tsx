@@ -6,30 +6,41 @@ import Link from 'next/link'
 // bootstrap components
 import { Dropdown, Button } from 'react-bootstrap'
 
+// utils
+import { userRoles } from 'utils/enums'
+
 // styles
 import classes from 'styles/Navbar/navbar.module.scss'
 
 // types
+import { fileDataType } from 'types/models/Files'
 import { FC } from 'react'
 
 export const DropdownMenu: FC = () => {
   const { data } = useSession()
+
+  const profilePicture =
+    data?.user.role === userRoles.COACH
+      ? (data?.user.coach?.profilePicture as fileDataType)?.location
+      : (data?.user.coachee?.profilePicture as fileDataType)?.location
 
   return (
     <>
       {data ? (
         <Dropdown align='end'>
           <Dropdown.Toggle className={classes.dropdown} id='dropdownMenu'>
-            <Image
-              width={72}
-              height={72}
-              alt='user avatar'
-              className={classes.avatar}
-              src='/assets/images/userAvatar.svg'
-            />
+            {profilePicture && (
+              <Image
+                width={72}
+                height={72}
+                alt='profile picture'
+                src={profilePicture}
+                className={classes.avatar}
+              />
+            )}
           </Dropdown.Toggle>
           <Dropdown.Menu className={classes.dropdown_menu}>
-            <Link href={`/user/${data.user.sub}/profile`} passHref>
+            <Link href={`/user/profile`} passHref>
               <Dropdown.Item>Perfil de usuario</Dropdown.Item>
             </Link>
             <Dropdown.Divider />

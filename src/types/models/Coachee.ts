@@ -1,5 +1,6 @@
 import { UserDataType } from './User'
 import { CoachDataType } from './Coach'
+import { fileDataType } from './Files'
 import { OrganizationDataType } from './Organization'
 import { coacheeRegistrationStatus } from 'utils/enums'
 
@@ -31,11 +32,7 @@ export type CoacheeDataType = {
     value?: number
     base?: number
   }[]
-  profilePicture?: {
-    key: string
-    filename: string
-    location: string
-  }
+  profilePicture?: fileDataType | File
   coachNotes?: {
     id: number
     note: string
