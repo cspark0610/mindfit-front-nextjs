@@ -1,6 +1,6 @@
 // main tools
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import dayjs from 'dayjs'
 
 // bootstrap components
@@ -15,8 +15,9 @@ import {
 import classes from 'styles/coachDashboard/page.module.scss'
 
 // types
-import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
+import { fileDataType } from 'types/models/Files'
+import { FC } from 'react'
 
 export const CoacheeProfileCard: FC<{
   content: any
@@ -30,7 +31,7 @@ export const CoacheeProfileCard: FC<{
             width={100}
             height={100}
             alt='user avatar'
-            src='/assets/images/avatar.png'
+            src={(coachee.profilePicture as fileDataType).location}
           />
           <p className={classes.name}>{coachee.user?.name}</p>
         </a>
