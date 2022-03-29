@@ -1,0 +1,5 @@
+mutation addCoacheeEvaluation($data: CreateCoacheeEvaluationDto!) {
+  createCoacheeEvaluation(data: $data) {
+    id
+  }
+}

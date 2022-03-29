@@ -1,10 +1,11 @@
 // main tools
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 // gql
-import { useQuery, useLazyQuery } from '@apollo/client'
 import GET_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
+import { useQuery, useLazyQuery } from '@apollo/client'
 
 // Components
 import { RecommendedContentItem } from 'components/atoms/RecommendedContentItem'
@@ -25,6 +26,7 @@ import { Skeleton } from 'primereact/skeleton'
 import { FC } from 'react'
 
 export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
+  const [posts, setPosts] = useState<any>(undefined)
   const { locale } = useRouter()
 
   const [getPosts, { data, loading }] = useLazyQuery(POSTS, {
@@ -58,7 +60,7 @@ export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
       <p className={classes.section_title}>{content.recommendedContentLabel}</p>
       <Container fluid>
         <Row>
-          {loading
+          {posts === undefined
             ? [0, 1].map((idx) => (
                 <Skeleton
                   key={idx}
@@ -67,7 +69,7 @@ export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
                   className='m-2'
                 />
               ))
-            : data?.posts.data.map((post: any) => (
+            : posts.data.map((post: any) => (
                 <RecommendedContentItem key={post.id} {...post} />
               ))}
         </Row>

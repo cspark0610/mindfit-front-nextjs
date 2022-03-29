@@ -40,7 +40,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         />
         <Col md={6} className='pt-4'>
           <Container className={`p-5 ${classes.section}`}>
-            <Evaluation content={content} />
+            <Evaluation preview content={content} />
           </Container>
         </Col>
         <Col md={12} lg={3} className='pt-4'>
@@ -69,7 +69,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apollo = createApolloClient(session.token)
   const { data } = await apollo.query({
     query: GET_COACHEE_BY_ID,
-    variables: { id: ctx.params?.id },
+    variables: { id: parseInt(ctx.params?.id as string) },
     context: { ms: microServices.backend },
   })
 
@@ -82,7 +82,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      coachee: { ...data.getCoacheeProfile },
+      coachee: data.findCoacheeById,
       content: content.coacheeDetail.data.attributes,
     },
   }
