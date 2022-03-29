@@ -26,7 +26,6 @@ import { Skeleton } from 'primereact/skeleton'
 import { FC } from 'react'
 
 export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
-  const [posts, setPosts] = useState<any>(undefined)
   const { locale } = useRouter()
 
   const [getPosts, { data, loading }] = useLazyQuery(POSTS, {
@@ -60,7 +59,7 @@ export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
       <p className={classes.section_title}>{content.recommendedContentLabel}</p>
       <Container fluid>
         <Row>
-          {posts === undefined
+          {loading
             ? [0, 1].map((idx) => (
                 <Skeleton
                   key={idx}
@@ -69,7 +68,7 @@ export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
                   className='m-2'
                 />
               ))
-            : posts.data.map((post: any) => (
+            : data?.posts.data.map((post: any) => (
                 <RecommendedContentItem key={post.id} {...post} />
               ))}
         </Row>
