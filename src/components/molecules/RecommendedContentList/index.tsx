@@ -2,7 +2,8 @@
 import { useRouter } from 'next/router'
 
 // gql
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
+import GET_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
 import POSTS from 'lib/strapi/queries/Library/getListsOfPosts.gql'
 
 // Components
@@ -26,9 +27,30 @@ import { FC } from 'react'
 export const RecommendedContentList: FC<{ content: any }> = ({ content }) => {
   const { locale } = useRouter()
 
-  const { data, loading } = useQuery(POSTS, {
+  const [getPosts, { data, loading }] = useLazyQuery(POSTS, {
     context: { ms: microServices.strapi },
-    variables: { locale },
+  })
+
+  useQuery(GET_PROFILE, {
+    context: { ms: microServices.backend },
+    onCompleted: ({ getCoacheeProfile }) => {
+      getPosts({
+        variables: {
+          locale,
+          filters: {
+            postCategories: {
+              postCoachingAreas: {
+                codename: {
+                  in: getCoacheeProfile.coachingAreas.map(
+                    (area: { codename: string }) => area.codename
+                  ),
+                },
+              },
+            },
+          },
+        },
+      })
+    },
   })
 
   return (
