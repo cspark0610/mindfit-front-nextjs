@@ -2,14 +2,14 @@
 import { getSession } from 'next-auth/react'
 
 // gql
-import { initializeApolloClient } from 'lib/apollo'
 import GET_PAGE_CONTENT from 'lib/strapi/queries/Coachee/dashboardContent.gql'
+import { initializeApolloClient } from 'lib/apollo'
 
 // Components
-import { Layout } from 'components/organisms/Layout'
-import { CoachObjectives } from 'components/molecules/CoachObjectives'
-import { CoachProfileCard } from 'components/molecules/CoachProfileCard'
 import { RecommendedContentList } from 'components/molecules/RecommendedContentList'
+import { CoacheeObjectives } from 'components/molecules/CoacheeObjectives'
+import { CoachProfileCard } from 'components/molecules/CoachProfileCard'
+import { Layout } from 'components/organisms/Layout'
 
 // bootstrap components
 import { Container, Row, Col } from 'react-bootstrap'
@@ -19,8 +19,8 @@ import { microServices } from 'commons'
 import { userRoles } from 'utils/enums'
 
 // Types
-import { GetSSPropsType } from 'types'
 import { NextPage, GetServerSidePropsContext } from 'next'
+import { GetSSPropsType } from 'types'
 
 const UserDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
@@ -32,7 +32,7 @@ const UserDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <CoachProfileCard />
         </Col>
         <Col xs={12} lg={6} xl={7}>
-          <CoachObjectives content={content} />
+          <CoacheeObjectives content={content} />
         </Col>
       </Row>
       <Row className='justify-content-center'>
