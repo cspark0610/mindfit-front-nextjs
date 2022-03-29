@@ -1,5 +1,5 @@
 // components
-import { CoachObjectivesItem } from 'components/atoms/CoachObjectivesItem'
+import { CoacheeObjectivesItem } from 'components/atoms/CoacheeObjectivesItem'
 
 // Primeicons
 import { PrimeIcons } from 'primereact/api'
@@ -13,7 +13,7 @@ import classes from 'styles/CoachObjectives/coachObjectives.module.scss'
 // Type
 import { FC } from 'react'
 
-export const CoachObjectives: FC<{ content: any }> = ({ content }) => {
+export const CoacheeObjectives: FC<{ content: any }> = ({ content }) => {
   const data = [
     {
       category: 'Communication',
@@ -77,7 +77,7 @@ export const CoachObjectives: FC<{ content: any }> = ({ content }) => {
       <Container>
         <Row className='justify-content-between'>
           {data.map((activity, idx) => (
-            <CoachObjectivesItem
+            <CoacheeObjectivesItem
               key={`${activity.category}-${idx}`}
               {...activity}
             />

@@ -10,7 +10,7 @@ import classes from 'styles/CoachObjectivesItem/coachObjectivesItem.module.scss'
 // Type
 import { FC } from 'react'
 
-export const CoachObjectivesItem: FC<any> = (props) => (
+export const CoacheeObjectivesItem: FC<any> = (props) => (
   <Col className={classes.goalsCard} md={6} xl={4}>
     <div className={classes.section}>
       <div className={`d-flex ${classes.section_header}`}>
