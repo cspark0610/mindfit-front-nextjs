@@ -2,8 +2,8 @@
 import { EditorProps } from 'primereact/editor'
 
 export interface StyledEditorProps extends EditorProps {
-  loading: boolean
-  coachNote: { id: number; note: string }
-  save: () => void
+  coachNote: { id: number; note?: string; evaluation?: string }
   removed?: (id: number) => void
+  loading: boolean
+  save: () => void
 }

@@ -3,3 +3,9 @@
 .title {
   color: $primary;
 }
+
+.evaluations {
+  overflow-y: auto;
+  max-height: 230px;
+  overflow-x: hidden;
+}

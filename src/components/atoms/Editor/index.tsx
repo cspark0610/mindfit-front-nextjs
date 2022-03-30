@@ -39,7 +39,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
         {...props}
         className={classes.edit}
         headerTemplate={renderHeader()}
-        value={coachNote.note}
+        value={coachNote.note || coachNote.evaluation}
         placeholder='escribe tu nota...'
       />
       {!props.readOnly && (
@@ -56,7 +56,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
           </Col>
           <Col xs='auto'>
             <Button
-              disabled={!coachNote.note}
+              disabled={!coachNote.note && !coachNote.evaluation}
               className={classes.button}
               onClick={save}>
               {loading ? (

@@ -7,6 +7,7 @@ import { Col, Container, Row, Spinner } from 'react-bootstrap'
 
 // components
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
+import { CardEvaluation } from 'components/atoms/CardEvaluation'
 import { CardHistory } from 'components/molecules/CardHistory'
 import { Evaluation } from 'components/molecules/Evaluation'
 import { StyledEditor } from 'components/atoms/Editor'
@@ -19,6 +20,8 @@ import { microServices } from 'commons'
 // apollo
 import GET_COACHEE_EVALUATIONS from 'lib/queries/Coach/Evaluations/getByCoacheeId.gql'
 import CREATE_EVALUATION from 'lib/mutations/Coach/Evaluations/create.gql'
+import UPDATE_EVALUATION from 'lib/mutations/Coach/Evaluations/update.gql'
+import DELETE_EVALUATION from 'lib/mutations/Coach/Evaluations/delete.gql'
 import GET_CONTENT from 'lib/strapi/queries/Coachee/detailContent.gql'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
 import { createApolloClient } from 'lib/apolloClient'
@@ -38,38 +41,70 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachee,
   content,
 }) => {
-  const [newEvaluation, setNewEvaluation] = useState({ id: NaN, note: '' })
+  const [evaluationToEdit, setEvaluationToEdit] = useState({
+    id: NaN,
+    evaluation: '',
+  })
 
-  const {
-    data: evaluations,
-    loading,
-    refetch,
-  } = useQuery(GET_COACHEE_EVALUATIONS, {
+  const { data, loading, refetch } = useQuery(GET_COACHEE_EVALUATIONS, {
     context: { ms: microServices.backend },
     variables: { id: coachee?.id },
   })
 
-  const [createEvaluation, { loading: saveLoading }] = useMutation(
-    CREATE_EVALUATION,
-    {
-      context: { ms: microServices.backend },
-      onCompleted: () => {
-        refetch()
-        setNewEvaluation({ id: NaN, note: '' })
-      },
-    }
-  )
+  const [createEvaluation] = useMutation(CREATE_EVALUATION, {
+    context: { ms: microServices.backend },
+    onCompleted: () => {
+      refetch()
+      setEvaluationToEdit({ id: NaN, evaluation: '' })
+    },
+  })
+  const [updateEvaluation] = useMutation(UPDATE_EVALUATION, {
+    context: { ms: microServices.backend },
+    onCompleted: () => {
+      refetch()
+      setEvaluationToEdit({ id: NaN, evaluation: '' })
+    },
+  })
+  const [deleteEvaluation] = useMutation(DELETE_EVALUATION, {
+    context: { ms: microServices.backend },
+    onCompleted: () => {
+      setEvaluationToEdit({ id: NaN, evaluation: '' })
+      refetch()
+    },
+  })
 
   const saveEvaluation = async () => {
-    await createEvaluation({
-      variables: {
-        data: { coacheeId: coachee?.id, evaluation: newEvaluation.note },
-      },
-    })
+    if (evaluationToEdit.id)
+      await updateEvaluation({
+        variables: {
+          coacheeEvaluationId: evaluationToEdit.id,
+          data: { evaluation: evaluationToEdit.evaluation },
+        },
+      })
+    else
+      await createEvaluation({
+        variables: {
+          data: {
+            coacheeId: coachee?.id,
+            evaluation: evaluationToEdit.evaluation,
+          },
+        },
+      })
+  }
+
+  const handleEditEvaluation = (evaluation: {
+    id: number
+    evaluation: string
+  }) => {
+    setEvaluationToEdit(evaluation)
+  }
+
+  const handleRemoveEvaluation = async (id: number) => {
+    await deleteEvaluation({ variables: { coacheeEvaluationId: id } })
   }
 
   const handleChangeNote = (ev: EditorTextChangeParams) =>
-    setNewEvaluation({ ...newEvaluation, note: ev.htmlValue ?? '' })
+    setEvaluationToEdit({ ...evaluationToEdit, evaluation: ev.htmlValue ?? '' })
 
   return (
     <Layout>
@@ -85,16 +120,10 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 readOnly={false}
                 loading={loading}
                 save={saveEvaluation}
-                coachNote={newEvaluation}
+                coachNote={evaluationToEdit}
                 onTextChange={handleChangeNote}
+                removed={handleRemoveEvaluation}
               />
-            </Container>
-            <Container className={`mt-5 ${classes.section}`}>
-              {loading ? (
-                <Spinner animation='border' />
-              ) : (
-                <>{console.log('EVALUATIONS', evaluations)}</>
-              )}
             </Container>
           </Col>
           <Col md={12} lg={3} className='pt-4'>
@@ -104,6 +133,26 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
         </Row>
         <Row className='pt-4 pb-4'>
+          <h3 className={classes.title}>Historial de evaluaciones</h3>
+          <Container className={`my-5 ${classes.section}`}>
+            {loading ? (
+              <Spinner animation='border' />
+            ) : (
+              <Row className={classes.evaluations}>
+                {data.findCoacheeById.coacheeEvaluations.map(
+                  (evaluation: { id: number; evaluation: string }) => (
+                    <Col key={evaluation.id} xs={12} sm={6} lg={3}>
+                      <CardEvaluation
+                        evaluation={evaluation}
+                        edit={handleEditEvaluation}
+                        removed={handleRemoveEvaluation}
+                      />
+                    </Col>
+                  )
+                )}
+              </Row>
+            )}
+          </Container>
           <h3 className={classes.title}>{content.historyLabel}</h3>
           {[0, 1, 2, 3].map((item) => (
             <Col xs={6} lg={3} key={item} className='mt-4'>
