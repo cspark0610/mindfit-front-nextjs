@@ -5,9 +5,6 @@ import { useState } from 'react'
 import { Pencil, Sticky, XSquare } from 'react-bootstrap-icons'
 import { Button, Col, Row } from 'react-bootstrap'
 
-// prime components
-import { EditorTextChangeParams } from 'primereact/editor'
-
 // Components
 import { StyledEditor } from 'components/atoms/Editor'
 import { CardNote } from 'components/atoms/CardNote'
@@ -26,6 +23,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import classes from 'styles/Notes/notes.module.scss'
 
 // types
+import { EditorTextChangeParams } from 'primereact/editor'
 import { CoacheeDataType } from 'types/models/Coachee'
 import { FC } from 'react'
 
@@ -33,9 +31,9 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
   coachee,
   content,
 }) => {
-  const [showEdit, setShowEdit] = useState(false)
   const [notes, setNotes] = useState<CoacheeDataType['coachNotes']>([])
-  const [noteId, setNoteId] = useState({ id: NaN, note: '' })
+  const [singleNote, setSingleNote] = useState({ id: NaN, note: '' })
+  const [showEdit, setShowEdit] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const { refetch } = useQuery(GET_COACH_NOTES, {
@@ -58,17 +56,17 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
   })
 
   const handleChangeNote = (ev: EditorTextChangeParams) =>
-    setNoteId({ ...noteId, note: ev.htmlValue ?? '' })
+    setSingleNote({ ...singleNote, note: ev.htmlValue ?? '' })
 
   const saveNote = async () => {
     setLoading(true)
-    if (noteId.id)
+    if (singleNote.id)
       await updateNote({
-        variables: { coachNoteId: noteId.id, note: noteId.note },
+        variables: { coachNoteId: singleNote.id, note: singleNote.note },
       })
     else
       await createNote({
-        variables: { coacheeId: coachee.id, note: noteId.note },
+        variables: { coacheeId: coachee.id, note: singleNote.note },
       })
 
     setShowEdit(false)
@@ -82,13 +80,13 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
     setLoading(false)
   }
 
-  const edit = async (note: { id: number; note: string }) => {
-    setNoteId(note)
+  const edit = (note: { id: number; note: string }) => {
+    setSingleNote(note)
     setShowEdit(true)
   }
 
   return (
-    <>
+    <div className={classes.container}>
       <Row xs='auto' className='mb-3 justify-content-between'>
         <Col>
           <h4 className={`fw-bold ${classes.title}`}>
@@ -101,7 +99,7 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
             variant='light'
             className='fs-3 p-0'
             onClick={() => {
-              setNoteId({ id: NaN, note: '' })
+              setSingleNote({ id: NaN, note: '' })
               setShowEdit(!showEdit)
             }}>
             {!showEdit ? (
@@ -120,10 +118,10 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
           readOnly={false}
           loading={loading}
           removed={removed}
-          coachNote={noteId}
+          coachNote={singleNote}
           onTextChange={handleChangeNote}
         />
       )}
-    </>
+    </div>
   )
 }

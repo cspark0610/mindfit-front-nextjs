@@ -45,7 +45,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
       {!props.readOnly && (
         <Row xs='auto' className='mt-3 justify-content-between'>
           <Col>
-            {!coachNote.id || (
+            {!coachNote.id || !removed || (
               <Button
                 variant='light'
                 className=''
