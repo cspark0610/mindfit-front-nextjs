@@ -6,10 +6,6 @@ query GetCoacheeById($id: Int!) {
     isActive
     aboutPosition
     registrationStatus
-    coacheeEvaluations {
-      id
-      evaluation
-    }
     profilePicture {
       key
       location

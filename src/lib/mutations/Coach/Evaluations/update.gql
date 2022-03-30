@@ -1,0 +1,11 @@
+mutation UpdateEvaluation(
+  $coacheeEvaluationId: Int!
+  $data: UpdateCoacheeEvaluationDto!
+) {
+  updateCoacheeEvaluation(
+    coacheeEvaluationId: $coacheeEvaluationId
+    data: $data
+  ) {
+    id
+  }
+}

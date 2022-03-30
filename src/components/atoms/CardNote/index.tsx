@@ -50,7 +50,8 @@ export const CardNote: FC<{
             className={`mb-3 ${classes.button}`}
             onClick={() => edit(item)}
             onContextMenu={(e) => {
-              menuRef.current?.show(e), setSelectedNote(item)
+              menuRef.current?.show(e)
+              setSelectedNote(item)
             }}>
             <Row className={classes.paragraph}>
               <div dangerouslySetInnerHTML={{ __html: item.note }} />

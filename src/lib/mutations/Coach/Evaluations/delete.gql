@@ -1,0 +1,3 @@
+mutation UpdateEvaluation($coacheeEvaluationId: Int!) {
+  deleteCoacheeEvaluation(coacheeEvaluationId: $coacheeEvaluationId)
+}
