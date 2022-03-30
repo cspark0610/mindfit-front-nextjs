@@ -9,13 +9,13 @@ import { Col, Container, Row, Spinner } from 'react-bootstrap'
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
 import { CardEvaluation } from 'components/atoms/CardEvaluation'
 import { CardHistory } from 'components/molecules/CardHistory'
-import { Evaluation } from 'components/molecules/Evaluation'
 import { StyledEditor } from 'components/atoms/Editor'
 import { Layout } from 'components/organisms/Layout'
 import { Notes } from 'components/molecules/Notes'
 
 // utils
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 // apollo
 import GET_COACHEE_EVALUATIONS from 'lib/queries/Coach/Evaluations/getByCoacheeId.gql'
@@ -24,9 +24,9 @@ import UPDATE_EVALUATION from 'lib/mutations/Coach/Evaluations/update.gql'
 import DELETE_EVALUATION from 'lib/mutations/Coach/Evaluations/delete.gql'
 import GET_CONTENT from 'lib/strapi/queries/Coachee/detailContent.gql'
 import GET_COACHEE_BY_ID from 'lib/queries/Coachee/getById.gql'
+import { useQuery, useMutation } from '@apollo/client'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
-import { useQuery, useMutation } from '@apollo/client'
 
 // styles
 import classes from 'styles/DetailCoachee/detailCoachee.module.scss'
@@ -167,7 +167,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx)
-  if (!session)
+  if (!session || session.user.role !== userRoles.COACH)
     return { redirect: { destination: '/', permanent: false }, props: {} }
 
   const apollo = createApolloClient(session.token)
