@@ -94,9 +94,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       content: {
         notes: { notesTitle: 'Notas' },
         evaluation: {
-          evaluationTitle: 'Resumen de la evalucion',
           seeMoreButton: { label: 'Ver más' },
-          testButton: { label: 'Realizar Evalución' },
+          evaluationTitle: 'Resumen de la evaluación',
+          testButton: { label: 'Realizar Evaluación' },
         },
       },
     },

@@ -13,13 +13,14 @@ import { Trash } from 'react-bootstrap-icons'
 
 // prime components
 import { confirmDialog } from 'primereact/confirmdialog'
+import { PrimeIcons } from 'primereact/api'
 
 // Commons
 import { microServices } from 'commons'
 
 // gql
+import GET_COACHEES from 'lib/queries/Organization/OrgDashboard/getCoachees.gql'
 import DELETE_MANY_COACHEE from 'lib/mutations/Coachee/deleteManyCoachees.gql'
-import GET_ORG_BY_ID from 'lib/queries/Organization/getById.gql'
 import { useMutation, useQuery } from '@apollo/client'
 
 // utils
@@ -41,21 +42,19 @@ export const CoacheesDatatable: FC<{
   content: any
 }> = ({ coachee, content }) => {
   const [coachees, setCoachees] = useState([])
-  const [coacheeToEdit, setCoacheeToEdit] = useState()
-  const [selected, setSelected] = useState<CoacheeDataType[]>([])
   const [showEdit, setShowEdit] = useState(false)
   const [showInvite, setShowInvite] = useState(false)
+  const [coacheeToEdit, setCoacheeToEdit] = useState()
+  const [selected, setSelected] = useState<CoacheeDataType[]>([])
 
-  const { loading, refetch } = useQuery(GET_ORG_BY_ID, {
+  const { loading, refetch } = useQuery(GET_COACHEES, {
     context: { ms: microServices.backend },
-    variables: { id: coachee.organization?.id },
-    onCompleted: (data) => {
+    onCompleted: (data) =>
       setCoachees(
-        data.findOrganizationById.coachees.filter(
-          (coachee: CoacheeDataType) => coachee.id !== coachee.id
+        data.getOrganizationProfile.coachees.filter(
+          (orgCoachee: CoacheeDataType) => orgCoachee.id !== coachee.id
         )
-      )
-    },
+      ),
   })
 
   const [deleteManyCoachee] = useMutation(DELETE_MANY_COACHEE, {
@@ -65,12 +64,12 @@ export const CoacheesDatatable: FC<{
 
   const confirmRemove = () => {
     confirmDialog({
-      message: content.confirmDeletion.message,
-      header: content.confirmDeletion.title,
-      icon: 'pi pi-info-circle',
+      icon: PrimeIcons.CIRCLE,
       acceptClassName: 'p-button-danger',
-      acceptLabel: content.confirmDeletion.confirmButton.label,
+      header: content.confirmDeletion.title,
+      message: content.confirmDeletion.message,
       rejectLabel: content.confirmDeletion.denyButton.label,
+      acceptLabel: content.confirmDeletion.confirmButton.label,
       accept: () =>
         deleteManyCoachee({
           variables: { ids: selected.map((coachee) => coachee.id) },
@@ -79,7 +78,7 @@ export const CoacheesDatatable: FC<{
   }
 
   const edit = (id: number) => {
-    setCoacheeToEdit(coachees.find(({ id: coacheeId }) => coacheeId == id))
+    setCoacheeToEdit(coachees.find(({ id: coacheeId }) => coacheeId === id))
     setShowEdit(true)
   }
 
@@ -90,10 +89,10 @@ export const CoacheesDatatable: FC<{
           <Row xs='auto' className='mb-4 justify-content-end'>
             <Col>
               <Button
-                disabled={!selected.length}
+                variant='danger'
                 className={classes.button}
-                onClick={() => confirmRemove()}
-                variant='danger'>
+                disabled={!selected.length}
+                onClick={() => confirmRemove()}>
                 <Trash size={28} />
               </Button>
             </Col>
@@ -101,15 +100,15 @@ export const CoacheesDatatable: FC<{
         )}
         {!loading ? (
           <DataTable
+            value={coachees}
             selection={selected}
             onSelectionChange={(e) => setSelected(e.value)}
-            value={coachees}
+            actions={coachee?.isAdmin ? { edit } : undefined}
             schema={schema(
               content.datatable,
               (ev) => statusBodyTemplate(ev, content.datatable.statusCodeNames),
               (ev) => coachBodyTemplate(ev.assignedCoach)
             )}
-            actions={coachee?.isAdmin ? { edit } : undefined}
           />
         ) : (
           <DatatableSkeleton />
@@ -128,20 +127,20 @@ export const CoacheesDatatable: FC<{
       </section>
       {showEdit && (
         <CoacheeManagement
-          content={content}
-          coacheeForm={content.coacheeForm}
           show={showEdit}
-          onHide={() => setShowEdit(false)}
-          data={coacheeToEdit || {}}
           refetch={refetch}
+          content={content}
+          data={coacheeToEdit || {}}
+          coacheeForm={content.coacheeForm}
+          onHide={() => setShowEdit(false)}
         />
       )}
       <InviteCoachee
         content={content}
-        coacheeForm={content.coacheeForm}
         show={showInvite}
-        onHide={() => setShowInvite(false)}
         refetch={refetch}
+        coacheeForm={content.coacheeForm}
+        onHide={() => setShowInvite(false)}
       />
     </>
   )

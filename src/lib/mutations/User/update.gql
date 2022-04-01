@@ -1,5 +1,5 @@
-mutation UpdateUser($id: Float!, $data: EditUserDto!) {
-  updateUser(id: $id, data: $data) {
+mutation UpdateUser($id: Int!, $data: EditUserDto!) {
+  updateUser(userId: $id, data: $data) {
     id
   }
 }

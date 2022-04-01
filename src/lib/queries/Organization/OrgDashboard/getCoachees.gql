@@ -1,0 +1,27 @@
+query GetOrganizationCoachees {
+  getOrganizationProfile {
+    coachees {
+      id
+      position
+      canViewDashboard
+      isActive
+      isAdmin
+      registrationStatus
+      user {
+        id
+        name
+        email
+        createdAt
+      }
+      assignedCoach {
+        profilePicture {
+          key
+          location
+        }
+        user {
+          name
+        }
+      }
+    }
+  }
+}

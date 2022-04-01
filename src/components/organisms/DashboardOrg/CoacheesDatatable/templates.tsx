@@ -18,7 +18,7 @@ export const coachBodyTemplate = (assignedCoach: CoachDataType | undefined) =>
         alt={assignedCoach.user?.name}
         src={(assignedCoach.profilePicture as fileDataType)?.location as string}
       />
-      <span className='image-text'>{assignedCoach.user?.name}</span>
+      <p className='image-text'>{assignedCoach.user?.name}</p>
     </div>
   ) : (
     <p>sin coach asignado</p>
