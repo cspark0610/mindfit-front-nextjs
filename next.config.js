@@ -6,12 +6,13 @@ module.exports = {
    * environments variables
    */
   env: {
-    SECRET: process.env.SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     BASE_API_URL: process.env.BASE_API_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     BASE_STRAPI_URL: process.env.BASE_STRAPI_URL,
     GOOGLE_PUBLIC_ID: process.env.GOOGLE_PUBLIC_ID,
     GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
+    NEXT_PUBLIC_AGORA_ID: process.env.NEXT_PUBLIC_AGORA_ID,
     NEXT_PUBLIC_STRAPI_TOKEN: process.env.NEXT_PUBLIC_STRAPI_TOKEN,
   },
   images: {

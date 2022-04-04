@@ -1,11 +1,15 @@
 @import '../variables.scss';
 //@import '../UI/Modal/appModal.module.scss';
 
-.title {
-  color: $primary;
+.container {
+  max-height: 780px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  .title {
+    color: $primary;
+  }
+  .icon {
+    color: $secondary;
+  }
 }
-.icon {
-  color: $secondary;
-}
-
-

@@ -8,13 +8,18 @@ query GetCoacheeProfile {
     isActive
     phoneNumber
     aboutPosition
+    canViewDashboard
+    invitationAccepted
+    registrationStatus
     profilePicture {
       key
       location
     }
-    canViewDashboard
-    invitationAccepted
-    registrationStatus
+    dimensionAverages {
+      base
+      average
+      dimension
+    }
     user {
       id
       name

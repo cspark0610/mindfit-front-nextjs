@@ -9,6 +9,9 @@ import { DataTable as PrimeDatatable } from 'primereact/datatable'
 import { FC } from 'react'
 import { StyledDataTableProps } from 'types/components/datatable'
 
+// styles
+import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
+
 export const DataTable: FC<StyledDataTableProps> = ({
   schema,
   value,
@@ -28,20 +31,22 @@ export const DataTable: FC<StyledDataTableProps> = ({
 
   return (
     <PrimeDatatable
-      value={value}
-      paginator
       rows={10}
-      responsiveLayout='scroll'
-      emptyMessage='No se han encontrado resultados'
+      paginator
+      value={value}
+      breakpoint='1200px'
       selection={selection}
+      responsiveLayout='stack'
       onSelectionChange={onSelectionChange}
-      breakpoint='988px'>
+      className={classes.datatable}
+      tableClassName={classes.datatable_table}
+      emptyMessage='No se han encontrado resultados'>
       <Column selectionMode='multiple' headerStyle={{ width: '3em' }} />
       {dynamicColumns}
       {actions !== undefined && (
         <Column
-          header='Acciones'
           align='center'
+          header='Acciones'
           body={(item) => <ActionDataTable {...actions} {...item} />}
         />
       )}

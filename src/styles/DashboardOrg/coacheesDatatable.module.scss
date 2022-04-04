@@ -7,8 +7,22 @@
   padding: 1rem;
   border: none;
 }
+.datatable {
+  @media (max-width: 1200px) {
+    max-height: 800px !important;
+    overflow: auto;
+  }
+  &_table {
+    :global(.p-datatable-tbody .p-selectable-row) > td {
+      padding-block: 0.5rem;
+    }
+  }
+}
 .button {
   color: $white;
+  @media (max-width: 1200px) {
+    width: 70%;
+  }
   &_COACH_APPOINTMENT_PENDING {
     background-color: $secondary;
   }

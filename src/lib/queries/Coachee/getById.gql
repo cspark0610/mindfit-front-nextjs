@@ -1,15 +1,10 @@
-query GetCoacheeById($coacheeId: Int!) {
-  findCoacheeById(coacheeId: $coacheeId) {
+query GetCoacheeById($id: Int!) {
+  findCoacheeById(id: $id) {
     id
     bio
-    invited
-    isAdmin
     position
     isActive
-    phoneNumber
     aboutPosition
-    canViewDashboard
-    invitationAccepted
     registrationStatus
     profilePicture {
       key
@@ -23,12 +18,10 @@ query GetCoacheeById($coacheeId: Int!) {
       id
       name
     }
-    coachingAreas {
-      name
-      codename
-    }
-    assignedCoach {
-      id
+    dimensionAverages {
+      base
+      average
+      dimension
     }
   }
 }

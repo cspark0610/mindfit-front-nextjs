@@ -1,6 +1,3 @@
-// main tools
-import Link from 'next/link'
-
 // bootstrap components
 import { Button, Col, Row } from 'react-bootstrap'
 
@@ -10,7 +7,12 @@ import classes from 'styles/Evaluation/evaluation.module.scss'
 // types
 import { FC } from 'react'
 
-export const Evaluation: FC<{ content: any }> = ({ content }) => (
+type EvaluationProps = {
+  content: any
+  preview?: boolean
+}
+
+export const Evaluation: FC<EvaluationProps> = ({ content, preview }) => (
   <>
     <Row className='mb-4'>
       <h4 className={`mb-4 fw-bold ${classes.title}`}>
@@ -26,15 +28,12 @@ export const Evaluation: FC<{ content: any }> = ({ content }) => (
         tempor incididunt ut labore et dolore magna aliqua.
       </p>
     </Row>
-    <Row md={2} className='align-items-center'>
-      <Col>
-        <span className={`fw-bold ${classes.more}`}>
-          {content.seeMoreButton.label}...
-        </span>
-      </Col>
-      <Col xs='auto'>
-        <Button className={classes.button}>{content.testButton.label}</Button>
-      </Col>
-    </Row>
+    {!preview && (
+      <Row md={2} className='align-items-center'>
+        <Col xs='auto'>
+          <Button className={classes.button}>{content.testButton.label}</Button>
+        </Col>
+      </Row>
+    )}
   </>
 )

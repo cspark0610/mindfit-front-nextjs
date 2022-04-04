@@ -1,0 +1,8 @@
+query GetCoacheeById($id: Int!) {
+  findCoacheeById(id: $id) {
+    coacheeEvaluations {
+      id
+      evaluation
+    }
+  }
+}
