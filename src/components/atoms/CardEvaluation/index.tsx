@@ -13,16 +13,19 @@ import classes from 'styles/CardEvaluation/styles.module.scss'
 
 // types
 import { FC } from 'react'
+import { Calendar, FileEarmarkPerson } from 'react-bootstrap-icons'
 
 type CardEvaluationProps = {
   edit: (evaluation: { id: number; evaluation: string }) => void
   evaluation: { id: number; evaluation: string }
   removed: (id: number) => void
+  readOnly: () => void
 }
 
 export const CardEvaluation: FC<CardEvaluationProps> = ({
   edit,
   removed,
+  readOnly,
   evaluation,
 }) => {
   const menuRef = useRef<ContextMenu>(null)
@@ -43,16 +46,28 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
   return (
     <>
       <ContextMenu ref={menuRef} model={menuItems} />
-      <Button
-        key={evaluation.id}
-        variant='light'
-        className={`mb-3 ${classes.button}`}
-        onClick={() => edit(evaluation)}
+      <section
+        className={`text-center ${classes.section}`}
         onContextMenu={(e) => menuRef.current?.show(e)}>
+        <FileEarmarkPerson className={classes.icon} />
         <Row className={classes.paragraph}>
           <div dangerouslySetInnerHTML={{ __html: evaluation.evaluation }} />
         </Row>
-      </Button>
+        <Row xs='auto' className='justify-content-between'>
+          <p>
+            <Calendar className={classes.icon_secondary} />
+            10/01/22
+          </p>
+          <Button
+            variant='secondary'
+            className={classes.button}
+            onClick={() => {
+              edit(evaluation), readOnly()
+            }}>
+            Ver
+          </Button>
+        </Row>
+      </section>
     </>
   )
 }

@@ -1,18 +1,19 @@
 @import '../../variables.scss';
 
-.block {
-  background-color: $primary;
-  height: 20px;
-}
 .edit {
-  display: flex;
-  flex-direction: column-reverse;
-  height: 320px;
-  text-align: end;
-  * {
+  :global(.p-editor-toolbar) {
+    height: 40px;
+    border: 1px solid $gray;
     background-color: $lightBlue !important;
-    border-radius: 0 !important;
+    * {
+      stroke: $primary !important;
+      background-color: transparent !important;
+    }
+  }
+  :global(.p-editor-content) {
+    height: 320px;
     border: none !important;
+    background-color: $white !important;
   }
 }
 .icon {

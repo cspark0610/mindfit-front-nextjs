@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react'
 import { useState } from 'react'
 
 // bootstrap components
-import { Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 
 // components
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
@@ -41,6 +41,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachee,
   content,
 }) => {
+  const [readOnly, setReadOnly] = useState(false)
   const [evaluationToEdit, setEvaluationToEdit] = useState({
     id: NaN,
     evaluation: '',
@@ -96,11 +97,18 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     id: number
     evaluation: string
   }) => {
+    setReadOnly(false)
     setEvaluationToEdit(evaluation)
   }
 
   const handleRemoveEvaluation = async (id: number) => {
+    setReadOnly(false)
     await deleteEvaluation({ variables: { coacheeEvaluationId: id } })
+  }
+
+  const handleCloseEvaluation = () => {
+    setReadOnly(false)
+    setEvaluationToEdit({ id: NaN, evaluation: '' })
   }
 
   const handleChangeNote = (ev: EditorTextChangeParams) =>
@@ -115,15 +123,30 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             content={content.coacheeCard.data.attributes}
           />
           <Col md={6} className='pt-4'>
-            <Container className={`p-5 ${classes.section}`}>
+            <Container className={`p-0 ${classes.section_small}`}>
               <StyledEditor
-                readOnly={false}
+                readOnly={readOnly}
                 loading={loading}
                 save={saveEvaluation}
                 coachNote={evaluationToEdit}
                 onTextChange={handleChangeNote}
                 removed={handleRemoveEvaluation}
               />
+              {readOnly && (
+                <Row xs='auto' className='m-3 justify-content-end'>
+                  <Col>
+                    <Button onClick={() => setReadOnly(false)}>editar</Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      variant='secondary'
+                      className={classes.button_secondary}
+                      onClick={handleCloseEvaluation}>
+                      cerrar
+                    </Button>
+                  </Col>
+                </Row>
+              )}
             </Container>
           </Col>
           <Col md={12} lg={3} className='pt-4'>
@@ -133,8 +156,8 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
         </Row>
         <Row className='pt-4 pb-4'>
-          <h3 className={classes.title}>Historial de evaluaciones</h3>
-          <Container className={`my-5 ${classes.section}`}>
+          <h3 className={classes.title}>Evaluaciones Realizadas</h3>
+          <Container className='my-4'>
             {loading ? (
               <Spinner animation='border' />
             ) : (
@@ -143,6 +166,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   (evaluation: { id: number; evaluation: string }) => (
                     <Col key={evaluation.id} xs={12} sm={6} lg={3}>
                       <CardEvaluation
+                        readOnly={() => setReadOnly(true)}
                         evaluation={evaluation}
                         edit={handleEditEvaluation}
                         removed={handleRemoveEvaluation}
