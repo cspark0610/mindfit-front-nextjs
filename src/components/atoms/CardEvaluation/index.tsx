@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 
 // bootstrap components
-import { Button, Row } from 'react-bootstrap'
+import { Button, Row, Col } from 'react-bootstrap'
 
 // prime component
 import { ContextMenu } from 'primereact/contextmenu'
@@ -53,19 +53,21 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
         <Row className={classes.paragraph}>
           <div dangerouslySetInnerHTML={{ __html: evaluation.evaluation }} />
         </Row>
-        <Row xs='auto' className='justify-content-between'>
-          <p>
-            <Calendar className={classes.icon_secondary} />
-            10/01/22
-          </p>
-          <Button
-            variant='secondary'
-            className={classes.button}
-            onClick={() => {
-              edit(evaluation), readOnly()
-            }}>
-            Ver
-          </Button>
+        <Row className='w-100 mt-2'>
+          <Col xs={12} className={classes.footer}>
+            <span>
+              <Calendar className={classes.icon_secondary} />
+              10/01/22
+            </span>
+            <Button
+              variant='secondary'
+              className={classes.button}
+              onClick={() => {
+                edit(evaluation), readOnly()
+              }}>
+              Ver
+            </Button>
+          </Col>
         </Row>
       </section>
     </>
