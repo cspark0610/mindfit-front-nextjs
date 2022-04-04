@@ -1,5 +1,6 @@
 // main tools
 import Image from 'next/image'
+import dayjs from 'dayjs'
 
 // styles
 import classes from 'styles/DashboardOrg/coacheesDatatable.module.scss'
@@ -15,6 +16,7 @@ export const coachBodyTemplate = (assignedCoach: CoachDataType | undefined) =>
       <Image
         width={32}
         height={32}
+        className={classes.profile}
         alt={assignedCoach.user?.name}
         src={(assignedCoach.profilePicture as fileDataType)?.location as string}
       />
@@ -42,3 +44,6 @@ export const statusBodyTemplate = (
     </div>
   )
 }
+
+export const createdAtTemplate = (item: CoacheeDataType) =>
+  dayjs(item.user?.createdAt).format('MM/DD/YYYY')

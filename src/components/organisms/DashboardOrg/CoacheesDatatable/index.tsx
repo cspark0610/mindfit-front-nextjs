@@ -26,6 +26,7 @@ import { useMutation, useQuery } from '@apollo/client'
 // utils
 import {
   coachBodyTemplate,
+  createdAtTemplate,
   statusBodyTemplate,
 } from 'components/organisms/DashboardOrg/CoacheesDatatable/templates'
 import { schema } from 'utils/actionDataTable'
@@ -107,7 +108,8 @@ export const CoacheesDatatable: FC<{
             schema={schema(
               content.datatable,
               (ev) => statusBodyTemplate(ev, content.datatable.statusCodeNames),
-              (ev) => coachBodyTemplate(ev.assignedCoach)
+              (ev) => coachBodyTemplate(ev.assignedCoach),
+              (ev) => createdAtTemplate(ev as CoacheeDataType)
             )}
           />
         ) : (
