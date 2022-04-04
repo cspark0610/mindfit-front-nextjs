@@ -36,7 +36,7 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 }) => (
   <Layout>
     <Container className='my-4' fluid>
-      <Row className='mb-5 justify-content-center'>
+      <Row className='mb-5'>
         <Col xs={12} className='mb-5'>
           <Container>
             <h3 className={`mb-5 ${classes.title}`}>{content.coacheesTitle}</h3>
@@ -72,13 +72,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = createApolloClient(session.token)
   const apolloClientForStrapi = initializeApolloClient()
 
-  const { data: user } = await apolloClient.query<{
+  const { data: coachee } = await apolloClient.query<{
     getCoacheeProfile: CoacheeDataType
   }>({ query: GET_COACHEE, context: { ms: microServices.backend } })
 
   if (
     session.user.role === userRoles.COACHEE &&
-    !user.getCoacheeProfile.canViewDashboard
+    !coachee.getCoacheeProfile.canViewDashboard
   )
     return { redirect: { destination: '/dashboard/coachee', permanent: false } }
 
@@ -92,7 +92,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      coachee: user.getCoacheeProfile,
+      coachee: coachee.getCoacheeProfile,
       content: {
         ...content,
         datatable: content.datatable.data.attributes,

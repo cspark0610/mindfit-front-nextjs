@@ -110,10 +110,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Layout>
       <Container>
         <Row>
-          <CoacheeProfileCard
-            coachee={coachee as CoacheeDataType}
-            content={content.coacheeCard.data.attributes}
-          />
+          <CoacheeProfileCard coachee={coachee as CoacheeDataType} />
           <Col md={6} className='pt-4'>
             <Container className={`p-5 ${classes.section}`}>
               <StyledEditor

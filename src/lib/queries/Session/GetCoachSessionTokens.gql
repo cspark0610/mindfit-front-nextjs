@@ -2,6 +2,27 @@ query getCoachSessionTokens($id: Float!) {
   getCoachSessionTokens(sessionId: $id) {
     chatSessionChannel
     videoSessionChannel
+    coachingSession {
+      coachee {
+        id
+        organization {
+          name
+        }
+        profilePicture {
+          key
+          location
+        }
+        dimensionAverages {
+          average
+          base
+          dimension
+        }
+        user {
+          name
+          createdAt
+        }
+      }
+    }
     tokens {
       rtcToken
       rtmToken
