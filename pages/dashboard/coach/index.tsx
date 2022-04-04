@@ -38,6 +38,7 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     <Container className={classes.container}>
       <Tabs className={classes.tabs} defaultActiveKey='all'>
         <Tab
+          id='all-tab'
           eventKey='all'
           title={content.allTabLabel}
           tabClassName={classes.tabs_item}>
@@ -50,11 +51,7 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               ) : (
                 assignedCoachees.getCoachProfile.assignedCoachees.map(
                   (coachee: CoacheeDataType) => (
-                    <CoacheeProfileCard
-                      key={coachee.id}
-                      coachee={coachee}
-                      content={content.coacheeCard.data.attributes}
-                    />
+                    <CoacheeProfileCard key={coachee.id} coachee={coachee} />
                   )
                 )
               )}
@@ -62,6 +59,7 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </ContainerMotion>
         </Tab>
         <Tab
+          id='resume-tab'
           eventKey='resume'
           title={content.summaryTabLabel}
           tabClassName={classes.tabs_item}>
@@ -74,11 +72,7 @@ const CoachDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 0 ? (
                   assignedCoachees.getCoachDashboardData[category.key].map(
                     (coachee: CoacheeDataType) => (
-                      <CoacheeProfileCard
-                        key={coachee.id}
-                        coachee={coachee}
-                        content={content.coacheeCard.data.attributes}
-                      />
+                      <CoacheeProfileCard key={coachee.id} coachee={coachee} />
                     )
                   )
                 ) : (

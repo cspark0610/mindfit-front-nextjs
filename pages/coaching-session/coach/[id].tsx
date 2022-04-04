@@ -32,6 +32,7 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
   const { data: session } = useSession()
+  const [coachee, setCoachee] = useState()
   const [videoSession, setVideoSession] = useState<VideoCallProps>({
     channel: '',
     token: '',
@@ -48,23 +49,21 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   useQuery(GET_SESSION_TOKEN, {
     variables: { id: parseFloat(`${coachingSessionId}.0`) },
     context: { ms: microServices.backend },
-    onCompleted: (data) =>
+    onCompleted: (data) => {
+      setCoachee(data.getCoachSessionTokens.coachingSession.coachee)
       setVideoSession({
         channel: data.getCoachSessionTokens.videoSessionChannel,
         token: data.getCoachSessionTokens.tokens.rtcToken,
         uid: session?.user.sub as number,
-      }),
+      })
+    },
   })
 
   return (
     <Layout>
       <Container>
         <Row className='mt-4'>
-          <Col md={6} lg={3} className='mt-4'>
-            <Container className={`p-4 ${classes.section}`}>
-              {/* <CoacheeProfileCard showButton={true} /> */}
-            </Container>
-          </Col>
+          {coachee && <CoacheeProfileCard coachee={coachee} />}
           <Col md={6} className='mt-4'>
             {videoSession.channel !== '' &&
               videoSession.token !== '' &&
