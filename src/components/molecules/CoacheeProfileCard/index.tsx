@@ -58,6 +58,7 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
                 width={100}
                 height={100}
                 alt='user avatar'
+                className={classes.profile}
                 src={(coachee.profilePicture as fileDataType).location}
               />
               <p className={classes.name}>{coachee.user?.name}</p>

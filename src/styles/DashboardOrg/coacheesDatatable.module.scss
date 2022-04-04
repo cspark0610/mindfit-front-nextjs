@@ -7,6 +7,9 @@
   padding: 1rem;
   border: none;
 }
+.profile {
+  border-radius: 50px;
+}
 .datatable {
   @media (max-width: 1200px) {
     max-height: 800px !important;
