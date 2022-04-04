@@ -1,5 +1,11 @@
 @import '../UI/Card/AppCard.module.scss';
 
+.section_small {
+  @extend .section;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
 .title {
   color: $primary;
 }
@@ -8,4 +14,8 @@
   overflow-y: auto;
   max-height: 230px;
   overflow-x: hidden;
+}
+
+.button_secondary {
+  color: $white;
 }
