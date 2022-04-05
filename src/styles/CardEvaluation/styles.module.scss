@@ -3,6 +3,7 @@
 
 .section {
   padding: 2rem;
+  height: 300px;
   .icon {
     font-size: 32px;
     margin-bottom: 1rem;
@@ -13,10 +14,13 @@
     }
   }
   .paragraph {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    min-height: 72px;
+    * {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
   .button {
     width: auto;

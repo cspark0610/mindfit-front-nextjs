@@ -2,7 +2,8 @@
 import { useRef } from 'react'
 
 // bootstrap components
-import { Button, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
+import { confirmDialog } from 'primereact/confirmdialog'
 
 // prime component
 import { ContextMenu } from 'primereact/contextmenu'
@@ -39,9 +40,20 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
     {
       label: 'Eliminar',
       icon: PrimeIcons.TRASH,
-      command: () => removed(evaluation.id),
+      command: () => confirmRemove(evaluation.id),
     },
   ]
+
+  const confirmRemove = (id: number) => {
+    confirmDialog({
+      acceptClassName: 'p-button-danger',
+      header: 'Confirmación de eliminación',
+      message: '¿Desea proceder con la eliminación?',
+      rejectLabel: 'No',
+      acceptLabel: 'Sí',
+      accept: () => removed && removed(id),
+    })
+  }
 
   return (
     <>
@@ -49,23 +61,28 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
       <section
         className={`text-center ${classes.section}`}
         onContextMenu={(e) => menuRef.current?.show(e)}>
-        <FileEarmarkPerson className={classes.icon} />
-        <Row className={classes.paragraph}>
-          <div dangerouslySetInnerHTML={{ __html: evaluation.evaluation }} />
-        </Row>
-        <Row xs='auto' className='justify-content-between'>
-          <p>
-            <Calendar className={classes.icon_secondary} />
-            10/01/22
-          </p>
-          <Button
-            variant='secondary'
-            className={classes.button}
-            onClick={() => {
-              edit(evaluation), readOnly()
-            }}>
-            Ver
-          </Button>
+        <Row className='h-100 justify-content-between'>
+          <FileEarmarkPerson className={classes.icon} />
+          <div
+            className={classes.paragraph}
+            dangerouslySetInnerHTML={{ __html: evaluation.evaluation }}
+          />
+          <Row xs='auto' className='justify-content-between'>
+            <p>
+              <Calendar className={classes.icon_secondary} />
+              10/01/22
+            </p>
+            <Col>
+              <Button
+                variant='secondary'
+                className={classes.button}
+                onClick={() => {
+                  edit(evaluation), readOnly()
+                }}>
+                Ver
+              </Button>
+            </Col>
+          </Row>
         </Row>
       </section>
     </>

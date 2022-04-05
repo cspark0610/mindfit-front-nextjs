@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 // bootstrap components
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
+import { PlusSquare } from 'react-bootstrap-icons'
 
 // components
 import { CoacheeProfileCard } from 'components/molecules/CoacheeProfileCard'
@@ -41,35 +42,38 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachee,
   content,
 }) => {
+  const INITIAL_STATE = { id: NaN, evaluation: '' }
   const [readOnly, setReadOnly] = useState(false)
-  const [evaluationToEdit, setEvaluationToEdit] = useState({
-    id: NaN,
-    evaluation: '',
-  })
+  const [evaluationToEdit, setEvaluationToEdit] = useState(INITIAL_STATE)
 
   const { data, loading, refetch } = useQuery(GET_COACHEE_EVALUATIONS, {
     context: { ms: microServices.backend },
     variables: { id: coachee?.id },
+    onCompleted: (data) => {
+      const ev = data.findCoacheeById.coacheeEvaluations
+      setEvaluationToEdit(ev.length ? ev[ev.length - 1] : INITIAL_STATE)
+      setReadOnly(ev.length ? true : false)
+    },
   })
 
   const [createEvaluation] = useMutation(CREATE_EVALUATION, {
     context: { ms: microServices.backend },
     onCompleted: () => {
       refetch()
-      setEvaluationToEdit({ id: NaN, evaluation: '' })
+      setEvaluationToEdit(INITIAL_STATE)
     },
   })
   const [updateEvaluation] = useMutation(UPDATE_EVALUATION, {
     context: { ms: microServices.backend },
     onCompleted: () => {
       refetch()
-      setEvaluationToEdit({ id: NaN, evaluation: '' })
+      setEvaluationToEdit(INITIAL_STATE)
     },
   })
   const [deleteEvaluation] = useMutation(DELETE_EVALUATION, {
     context: { ms: microServices.backend },
     onCompleted: () => {
-      setEvaluationToEdit({ id: NaN, evaluation: '' })
+      setEvaluationToEdit(INITIAL_STATE)
       refetch()
     },
   })
@@ -106,7 +110,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     await deleteEvaluation({ variables: { coacheeEvaluationId: id } })
   }
 
-  const handleCloseEvaluation = () => {
+  const handleCreateEvaluation = () => {
     setReadOnly(false)
     setEvaluationToEdit({ id: NaN, evaluation: '' })
   }
@@ -119,7 +123,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       <Container>
         <Row>
           <CoacheeProfileCard coachee={coachee as CoacheeDataType} />
-          <Col md={6} className='pt-4'>
+          <Col md={6} lg={8} xl={6} className='pt-4'>
             <Container className={`p-0 ${classes.section_small}`}>
               <StyledEditor
                 readOnly={readOnly}
@@ -134,19 +138,11 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                   <Col>
                     <Button onClick={() => setReadOnly(false)}>editar</Button>
                   </Col>
-                  <Col>
-                    <Button
-                      variant='secondary'
-                      className={classes.button_secondary}
-                      onClick={handleCloseEvaluation}>
-                      cerrar
-                    </Button>
-                  </Col>
                 </Row>
               )}
             </Container>
           </Col>
-          <Col md={12} lg={3} className='pt-4'>
+          <Col md={12} xl={3} className='pt-4'>
             <Container className={`p-4 ${classes.section}`}>
               <Notes coachee={coachee as CoacheeDataType} content={content} />
             </Container>
@@ -154,14 +150,14 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         </Row>
         <Row className='pt-4 pb-4'>
           <h3 className={classes.title}>Evaluaciones Realizadas</h3>
-          <Container className='my-4'>
+          <Container className={`my-4 ${classes.evaluations}`}>
             {loading ? (
               <Spinner animation='border' />
             ) : (
-              <Row className={classes.evaluations}>
+              <Row>
                 {data.findCoacheeById.coacheeEvaluations.map(
                   (evaluation: { id: number; evaluation: string }) => (
-                    <Col key={evaluation.id} xs={12} sm={6} lg={3}>
+                    <Col key={evaluation.id} xs={6} lg={3} className='mb-3'>
                       <CardEvaluation
                         readOnly={() => setReadOnly(true)}
                         evaluation={evaluation}
@@ -171,6 +167,14 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                     </Col>
                   )
                 )}
+                <Col xs={3} lg={2} className='mb-3'>
+                  <Button
+                    variant='outline-secondary'
+                    className={classes.button_plus}
+                    onClick={handleCreateEvaluation}>
+                    <PlusSquare className='fs-1' />
+                  </Button>
+                </Col>
               </Row>
             )}
           </Container>
