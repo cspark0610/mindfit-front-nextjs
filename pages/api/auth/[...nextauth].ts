@@ -18,6 +18,7 @@ import LOGIN from 'lib/mutations/Auth/login.gql'
 import { createApolloClient } from 'lib/apolloClient'
 import { initializeApolloClient } from 'lib/apollo'
 import { microServices } from 'commons'
+import { coacheeRegistrationStatus, userRoles } from 'utils/enums'
 
 const SIGNUP_RRSS = {
   google: SIGNUP_WITH_GOOGLE,
@@ -206,9 +207,16 @@ export default NextAuth({
           context: { ms: microServices.backend },
         })
 
-        session.token = token.backendToken
-        session.refreshToken = token.backendRefresh
-        session.user = { ...decoded, ...res.data.findUserById }
+        if (
+          !res.data.findUserById.role.includes(userRoles.COACHEE) ||
+          (res.data.findUserById.role.includes(userRoles.COACHEE) &&
+            res.data.findUserById.coachee.registrationStatus !==
+              coacheeRegistrationStatus.INVITATION_PENDING)
+        ) {
+          session.token = token.backendToken
+          session.refreshToken = token.backendRefresh
+          session.user = { ...decoded, ...res.data.findUserById }
+        }
       }
 
       return Promise.resolve({ ...session })
