@@ -16,6 +16,7 @@ query GetUserById($id: Int!) {
     }
     coachee {
       id
+      registrationStatus
       profilePicture {
         key
         location

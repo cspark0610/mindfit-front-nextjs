@@ -80,7 +80,7 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
                     }
                   </p>
                   <small>
-                    {area.average}/{area.base}
+                    {area.average.toFixed()}/{area.base}
                   </small>
                 </div>
               ))}
