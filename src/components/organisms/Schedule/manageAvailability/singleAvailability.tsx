@@ -22,15 +22,18 @@ import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { FC } from 'react'
+import { SetStateType } from 'types'
 import { AgendaDataType, RangeDataType } from 'types/models/Agenda'
 
 type SingleAvailabilityProps = {
   agenda: AgendaDataType
   selectedDate: Date | null
+  showModal: SetStateType<boolean>
 }
 
 export const SingleAvailability: FC<SingleAvailabilityProps> = ({
   agenda,
+  showModal,
   selectedDate,
 }) => {
   const [loading, setLoading] = useState(false)
@@ -44,6 +47,7 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
 
   const [updateAvailability] = useMutation(UPDATE_AVAILABILITY, {
     context: { ms: microServices.backend },
+    onCompleted: () => showModal(false),
     onError: (err) => console.log(err),
   })
 

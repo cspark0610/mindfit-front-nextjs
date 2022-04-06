@@ -192,6 +192,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
         <Modal.Body>
           <SingleAvailability
             selectedDate={selectedDate}
+            showModal={setShowManageSingleAvailability}
             agenda={coach.coachAgenda as AgendaDataType}
           />
         </Modal.Body>
@@ -205,7 +206,10 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
         onHide={handleManageAvailability}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
-          <GeneralAvailability agenda={coach.coachAgenda as AgendaDataType} />
+          <GeneralAvailability
+            showModal={setShowManageGeneralAvailability}
+            agenda={coach.coachAgenda as AgendaDataType}
+          />
         </Modal.Body>
       </Modal>
     </>
