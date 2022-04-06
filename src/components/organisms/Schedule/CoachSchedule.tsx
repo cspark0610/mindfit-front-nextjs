@@ -172,7 +172,8 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
               />
             ))
           ) : (
-            <Row className='w-100 justify-content-center'>
+            <Row
+              className={`w-100 justify-content-center ${classes.appointments}`}>
               {appointments.map((item, idx) => (
                 <Col key={idx} xs={12}>
                   <ScheduledAppointmentCard preview {...item} role='coach' />

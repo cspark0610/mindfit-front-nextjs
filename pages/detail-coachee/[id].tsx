@@ -112,7 +112,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
 
   const handleCreateEvaluation = () => {
     setReadOnly(false)
-    setEvaluationToEdit({ id: NaN, evaluation: '' })
+    setEvaluationToEdit(INITIAL_STATE)
   }
 
   const handleChangeNote = (ev: EditorTextChangeParams) =>
@@ -156,7 +156,11 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
             ) : (
               <Row>
                 {data.findCoacheeById.coacheeEvaluations.map(
-                  (evaluation: { id: number; evaluation: string }) => (
+                  (evaluation: {
+                    id: number
+                    evaluation: string
+                    createdAt: string
+                  }) => (
                     <Col key={evaluation.id} xs={6} lg={3} className='mb-3'>
                       <CardEvaluation
                         readOnly={() => setReadOnly(true)}

@@ -1,24 +1,32 @@
 // main tools
 import { useRef } from 'react'
+import dayjs from 'dayjs'
 
 // bootstrap components
 import { Button, Col, Row } from 'react-bootstrap'
 import { confirmDialog } from 'primereact/confirmdialog'
+import { Calendar, FileEarmarkPerson } from 'react-bootstrap-icons'
 
 // prime component
 import { ContextMenu } from 'primereact/contextmenu'
 import { PrimeIcons } from 'primereact/api'
+
+// commons
+import { formatDate } from 'commons'
 
 // styles
 import classes from 'styles/CardEvaluation/styles.module.scss'
 
 // types
 import { FC } from 'react'
-import { Calendar, FileEarmarkPerson } from 'react-bootstrap-icons'
 
 type CardEvaluationProps = {
-  edit: (evaluation: { id: number; evaluation: string }) => void
-  evaluation: { id: number; evaluation: string }
+  edit: (evaluation: {
+    id: number
+    evaluation: string
+    createdAt: string
+  }) => void
+  evaluation: { id: number; evaluation: string; createdAt: string }
   removed: (id: number) => void
   readOnly: () => void
 }
@@ -69,7 +77,7 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
           <Col xs={12} className={classes.footer}>
             <span>
               <Calendar className={classes.icon_secondary} />
-              10/01/22
+              {dayjs(formatDate(evaluation.createdAt)).format('DD/MM/YYYY')}
             </span>
             <Button
               variant='secondary'
