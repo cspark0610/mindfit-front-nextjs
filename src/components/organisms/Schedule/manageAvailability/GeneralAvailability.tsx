@@ -29,12 +29,17 @@ import classes from 'styles/agenda/page.module.scss'
 
 // types
 import { AgendaDataType } from 'types/models/Agenda'
+import { SetStateType } from 'types'
 import { FC } from 'react'
 
-type ManageAvailabilityProps = { agenda: AgendaDataType }
+type ManageAvailabilityProps = {
+  agenda: AgendaDataType
+  showModal: SetStateType<boolean>
+}
 
 export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
   agenda,
+  showModal,
 }) => {
   const [loading, setLoading] = useState(false)
   const [disabled, setDisabled] = useState(agenda.outOfService)
@@ -44,6 +49,7 @@ export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
 
   const [updateAvailability] = useMutation(UPDATE_AVAILABILITY, {
     context: { ms: microServices.backend },
+    onCompleted: () => showModal(false),
     onError: (err) => console.log(err),
   })
 
