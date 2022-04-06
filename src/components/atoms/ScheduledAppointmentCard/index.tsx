@@ -72,7 +72,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
         )}
       </Row>
       <Row className='w-100'>
-        {actions && nearby > 30 && (
+        {actions && role !== 'coach' && nearby > 30 && (
           <>
             <Col xs={6}>
               <Button variant='primary' className={classes.button}>

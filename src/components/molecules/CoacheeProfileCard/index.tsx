@@ -65,7 +65,7 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
             </a>
           </Link>
           <p className='fw-bold m-0'>{content?.accordingToLabel}</p>
-          <p>prueba de autoevaluación</p>
+          <p className='fw-bold'>prueba de autoevaluación</p>
           <Row className='justify-content-center'>
             <Col xs={9}>
               {coachee.dimensionAverages?.map((area) => (
@@ -80,7 +80,7 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
                     }
                   </p>
                   <small>
-                    {Math.round(area.average * 100) / 100}/{area.base}
+                    {area.average.toFixed()}/{area.base}
                   </small>
                 </div>
               ))}
