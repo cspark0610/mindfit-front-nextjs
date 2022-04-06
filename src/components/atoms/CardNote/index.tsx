@@ -44,19 +44,28 @@ export const CardNote: FC<{
       />
       {notes?.length ? (
         notes?.map((item: { id: number; note: string }) => (
-          <Button
+          <section
             key={item.id}
-            variant='light'
-            className={`mb-3 ${classes.button}`}
-            onClick={() => edit(item)}
+            className={classes.section}
             onContextMenu={(e) => {
               menuRef.current?.show(e)
               setSelectedNote(item)
             }}>
+            <Row>
+              <p>10/12/22</p>
+            </Row>
             <Row className={classes.paragraph}>
               <div dangerouslySetInnerHTML={{ __html: item.note }} />
             </Row>
-          </Button>
+            <Row className='justify-content-end'>
+              <Button
+                variant='light'
+                className={classes.button}
+                onClick={() => edit(item)}>
+                Ver mas...
+              </Button>
+            </Row>
+          </section>
         ))
       ) : (
         <p>no hay notas para este coachee</p>

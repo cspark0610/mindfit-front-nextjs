@@ -2,12 +2,12 @@
 @import '../UI/Card/AppCard.module.scss';
 
 .section {
-  padding: 2rem;
-  min-height: 15rem;
   display: flex;
+  padding: 2rem;
+  height: 250px;
+  align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   .icon {
     font-size: 32px;
     margin-bottom: 1rem;
@@ -18,10 +18,13 @@
     }
   }
   .paragraph {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    min-height: 72px;
+    * {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
   .button {
     width: auto;
