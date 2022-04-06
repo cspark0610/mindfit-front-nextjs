@@ -1,16 +1,20 @@
 @import '../UI/Button/button.module.scss';
+@import '../UI/Card/AppCard.module.scss';
 
-.button {
+.section {
   color: $gray;
+  border: none;
+  padding: 1rem;
+  margin-bottom: 1rem;
   background-color: $lightBlue;
-  &:hover {
-    filter: brightness(0.8);
-    transition: filter 0.3s;
+  .paragraph {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-}
-.paragraph {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  .button {
+    width: auto;
+    color: $secondary;
+  }
 }

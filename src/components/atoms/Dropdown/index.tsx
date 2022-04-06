@@ -44,6 +44,14 @@ export const DropdownMenu: FC = () => {
               <Dropdown.Item>Perfil de usuario</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
+            {data.user.role === userRoles.COACHEE_OWNER && (
+              <>
+                <Link href={`/user/profile?showOrganization=true`} passHref>
+                  <Dropdown.Item>Perfil de organización</Dropdown.Item>
+                </Link>
+                <Dropdown.Divider />
+              </>
+            )}
             <Dropdown.Item onClick={() => signOut({ callbackUrl: '/' })}>
               Cerrar sesión
             </Dropdown.Item>

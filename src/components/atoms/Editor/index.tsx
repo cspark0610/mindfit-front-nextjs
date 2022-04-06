@@ -1,5 +1,6 @@
 // bootstrap components
 import { Button, Col, Row, Spinner } from 'react-bootstrap'
+import { confirmDialog } from 'primereact/confirmdialog'
 import { Trash } from 'react-bootstrap-icons'
 
 // prime components
@@ -28,6 +29,17 @@ export const StyledEditor: FC<StyledEditorProps> = ({
     </span>
   )
 
+  const confirmRemove = (id: number) => {
+    confirmDialog({
+      acceptClassName: 'p-button-danger',
+      header: 'Confirmación de eliminación',
+      message: '¿Desea proceder con la eliminación',
+      rejectLabel: 'No',
+      acceptLabel: 'Sí',
+      accept: () => removed && removed(id),
+    })
+  }
+
   return (
     <>
       {!props.readOnly ? (
@@ -38,15 +50,15 @@ export const StyledEditor: FC<StyledEditorProps> = ({
             className={classes.edit}
             headerTemplate={renderHeader()}
             value={coachNote.note || coachNote.evaluation}
-            placeholder='escribe tu nota...'
+            placeholder='Escribe tu nota...'
           />
           <Row xs='auto' className='m-3 justify-content-between'>
             <Col>
-              {!coachNote.id || !removed || (
+              {!coachNote.id || (
                 <Button
                   variant='light'
                   className=''
-                  onClick={() => removed(coachNote.id)}>
+                  onClick={() => confirmRemove(coachNote.id)}>
                   <Trash className={classes.icon} />
                 </Button>
               )}
@@ -72,7 +84,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
           className={classes.edit}
           headerTemplate={renderHeader()}
           value={coachNote.note || coachNote.evaluation}
-          placeholder='escribe tu nota...'
+          placeholder='Escribe tu nota...'
         />
       )}
     </>

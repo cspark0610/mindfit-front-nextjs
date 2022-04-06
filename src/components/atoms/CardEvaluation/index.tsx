@@ -2,7 +2,8 @@
 import { useRef } from 'react'
 
 // bootstrap components
-import { Button, Row, Col } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
+import { confirmDialog } from 'primereact/confirmdialog'
 
 // prime component
 import { ContextMenu } from 'primereact/contextmenu'
@@ -39,9 +40,20 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
     {
       label: 'Eliminar',
       icon: PrimeIcons.TRASH,
-      command: () => removed(evaluation.id),
+      command: () => confirmRemove(evaluation.id),
     },
   ]
+
+  const confirmRemove = (id: number) => {
+    confirmDialog({
+      acceptClassName: 'p-button-danger',
+      header: 'Confirmación de eliminación',
+      message: '¿Desea proceder con la eliminación?',
+      rejectLabel: 'No',
+      acceptLabel: 'Sí',
+      accept: () => removed && removed(id),
+    })
+  }
 
   return (
     <>

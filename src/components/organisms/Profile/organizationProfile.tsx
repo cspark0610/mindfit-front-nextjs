@@ -1,20 +1,31 @@
-import { UploadPicture } from 'components/atoms/UploadPicture'
-import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
-import { InputText } from 'primereact/inputtext'
+// main tools
 import { FC, useState } from 'react'
+
+// components
+import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
+import { UploadPicture } from 'components/atoms/UploadPicture'
+
+// prime components
+import { InputText } from 'primereact/inputtext'
+
+// bootstrap components
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import { CreditCard } from 'react-bootstrap-icons'
+
 // styles
 import classes from 'styles/Profile/profile.module.scss'
-import { CoacheeDataType } from 'types/models/Coachee'
+
+// types
+import { OrganizationDataType } from 'types/models/Organization'
+import { fileDataType } from 'types/models/Files'
 import { UserDataType } from 'types/models/User'
+
 export const OrganizationProfile: FC<{
-  coachee: CoacheeDataType
+  organization: OrganizationDataType
   content: any
-}> = ({ coachee, content }) => {
-  const [coacheeData, setCoacheeData] = useState(coachee)
+}> = ({ organization, content }) => {
+  const [organizationData, setOrganizationData] = useState(organization)
   const [showPassword, setShowPassword] = useState(false)
-  const [aboutTextArea, setAboutTextArea] = useState('')
   const [uploadUrl, setUploadUrl] = useState('')
 
   return (
@@ -23,72 +34,80 @@ export const OrganizationProfile: FC<{
         <Container className={classes.section}>
           <Row>
             <Col lg={8}>
-              <h1>Perfil de Organización</h1>
+              <h1 className={`${classes.title} text-start`}>
+                {content.orgProfile.title}
+              </h1>
               <Row className={classes.organizationData}>
                 <Col lg={4}>
                   <UploadPicture
                     setUploadUrl={setUploadUrl}
-                    setData={setCoacheeData}
+                    setData={setOrganizationData}
+                    data={
+                      (organizationData.profilePicture as fileDataType).location
+                    }
                   />
                 </Col>
                 <Col lg={6}>
                   <InputText
                     disabled
                     name='email'
-                    value={coacheeData.user?.email}
                     className={classes.input}
-                    placeholder={content.userProfile.emailInput.placeholder}
+                    value={organization.owner?.email}
                   />
                   <p
                     role='button'
-                    className={classes.recoveryPasswordLabel}
-                    onClick={() => setShowPassword(true)}>
-                    {content.userProfile.changePasswordButton.label}
+                    onClick={() => setShowPassword(true)}
+                    className={classes.recoveryPasswordLabel}>
+                    {content.orgProfile.changePasswordLabel}
                   </p>
                 </Col>
               </Row>
               <Row className={classes.organizationAbout}>
                 <Col lg={11}>
-                  <h3>Acerca de</h3>
+                  <h3 className={`${classes.title} text-start`}>
+                    {content.orgProfile.aboutLabel}
+                  </h3>
                   <textarea
                     className={classes.input}
-                    value={aboutTextArea}
-                    onChange={(e) => {
-                      setAboutTextArea(e.target.value)
-                    }}></textarea>
+                    value={organizationData.about}
+                  />
                 </Col>
               </Row>
             </Col>
             <Col lg={4} className={classes.sideContent}>
-              <h3>Subscripción</h3>
+              <h3 className={`${classes.title} text-start`}>
+                {content.orgProfile.subscriptionLabel}
+              </h3>
               <Row>
                 <div className={classes.subscriptionCard}>
                   <h3>Básico</h3>
                   <span>$50</span>
                   <ul>
                     <li>Sesiones a cualquier hora</li>
-                    <li>Coachs nuevos</li>
+                    <li>Coaches nuevos</li>
                     <li>Clases en vivo</li>
                   </ul>
                   <Button>Actualizar</Button>
                 </div>
               </Row>
               <Row className={classes.paymentContainer}>
-                <h3>Método de pago</h3>
+                <h3 className={`${classes.title} text-start`}>
+                  {content.orgProfile.paymentMethodLabel}
+                </h3>
                 <div className={classes.paymentMethod}>
                   <CreditCard width={48} height={48} color='#045095' />
                   <p>Tarjeta de crédito</p>
                 </div>
                 <p
                   role='button'
-                  className={classes.recoveryPasswordLabel}
-                  onClick={() => setShowPassword(true)}>
-                  {content.userProfile.changePasswordButton.label}
+                  onClick={() => setShowPassword(true)}
+                  className={classes.recoveryPasswordLabel}>
+                  {content.orgProfile.changePasswordLabel}
                 </p>
               </Row>
-              <Row className={classes.saveArea}>
-                <Button>Guardar</Button>
-              </Row>
+              <Button className={classes.button}>
+                {content.orgProfile.submitButton.label}
+              </Button>
             </Col>
           </Row>
         </Container>
@@ -103,7 +122,7 @@ export const OrganizationProfile: FC<{
           <ChangePasswordProfile
             onHide={setShowPassword}
             content={content.changePassword}
-            user={coacheeData.user as UserDataType}
+            user={organization.owner as UserDataType}
           />
         </Modal.Body>
       </Modal>

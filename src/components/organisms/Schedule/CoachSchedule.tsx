@@ -1,6 +1,6 @@
 // main tools
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import dayjs from 'dayjs'
 
 // prime components
@@ -22,7 +22,7 @@ import GET_APPOINTMENTS from 'lib/queries/Coach/getAppointments.gql'
 import { useQuery } from '@apollo/client'
 
 // utils
-import { formatDate, microServices } from 'commons'
+import { formatDate, microServices, sortingAscending } from 'commons'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
@@ -40,6 +40,7 @@ type CoachScheduleProps = {
 
 export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
   const { locale } = useRouter()
+  const calendar = useRef<Calendar>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [appointments, setAppointments] = useState<any[] | undefined>([])
   const [showManageGeneralAvailability, setShowManageGeneralAvailability] =
@@ -54,11 +55,9 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
       const orderedAppointments = [
         ...data.findCoachAgendaById.coachAppointments,
       ]
-      orderedAppointments.sort((prev: any, next: any) => {
-        if (prev.startDate > next.startDate) return 1
-        if (prev.startDate < next.startDate) return -1
-        return 0
-      })
+      orderedAppointments.sort((prev: any, next: any) =>
+        sortingAscending(prev, next, 'startDate')
+      )
       setAppointments(orderedAppointments)
     },
   })
@@ -69,6 +68,15 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
     setShowManageSingleAvailability(!showManageSingleAvailability)
 
   addLocale('es', CalendarLocaleOptions)
+
+  useEffect(() => {
+    if (calendar.current) {
+      calendar.current.setState({
+        ...calendar.current.state,
+        viewDate: new Date(),
+      })
+    }
+  }, [appointments])
 
   return (
     <>
@@ -81,6 +89,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
           <div className={classes.availability}>
             <Calendar
               inline
+              ref={calendar}
               locale={locale}
               dateFormat='dd/mm/yy'
               selectionMode='multiple'

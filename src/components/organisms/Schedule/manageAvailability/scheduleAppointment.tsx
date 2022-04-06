@@ -8,21 +8,21 @@ import dayjs from 'dayjs'
 import SCHEDULE_APPOINTMENT from 'lib/mutations/Coachee/scheduleAppointment.gql'
 import GET_AVAILABILITY_RANGES from 'lib/queries/Coach/getAvailability.gql'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
-import GET_COACH from 'lib/queries/Coach/getById.gql'
+import GET_COACH from 'lib/queries/Coachee/getAssignedCoach.gql'
 
 // utils
-import { microServices } from 'commons'
+import { microServices, sortingAscending } from 'commons'
 import { errors } from 'utils/errors'
 
 // components
 import { MonthNavigator } from 'components/atoms/CoacheeAgendaTemplate/monthNavigator'
 
 // bootstrap components
-import { Container, Button, Col, Row } from 'react-bootstrap'
+import { Container, Button, Col, Row, Spinner } from 'react-bootstrap'
 
 // prime components
-import { Dropdown } from 'primereact/dropdown'
 import { Calendar } from 'primereact/calendar'
+import { Skeleton } from 'primereact/skeleton'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
@@ -31,12 +31,15 @@ import classes from 'styles/agenda/page.module.scss'
 import { CalendarChangeParams } from 'primereact/calendar'
 import { RangeDataType } from 'types/models/Agenda'
 import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
+import { SetStateType } from 'types'
 import { FC } from 'react'
 
 type ScheduleAppointmentProps = {
   content: any
   coachId: number
   coachAgendaId: number
+  showModal: SetStateType<boolean>
 }
 
 type RangeType = {
@@ -47,17 +50,16 @@ type RangeType = {
 export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   content,
   coachId,
+  showModal,
   coachAgendaId,
 }) => {
   const { locale } = useRouter()
   const [error, setError] = useState('')
   const calendar = useRef<Calendar>(null)
-  const intervals = [{ label: '60 minutos', value: 60 }]
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedMonth, setSelectedMonth] = useState<Date | null>(null)
   const [coach, setCoach] = useState<CoachDataType | undefined>(undefined)
   const [selectedRanges, setSelectedRanges] = useState<RangeDataType[]>([])
-  const [selectedInterval, setSelectedInterval] = useState<Date | null>(null)
   const [selectedAvailability, setSelectedAvailability] =
     useState<RangeDataType | null>(null)
   const [availabilityRange, setAvailabilityRange] = useState<
@@ -67,21 +69,19 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   useQuery(GET_COACH, {
     variables: { id: coachId },
     context: { ms: microServices.backend },
-    onCompleted: (data) => setCoach(data.findCoachById),
+    onCompleted: (data) => setCoach(data.getCoacheeProfile.assignedCoach),
   })
   const [getAvailabilityRanges] = useLazyQuery(GET_AVAILABILITY_RANGES, {
     context: { ms: microServices.backend },
     onCompleted: (data) => {
-      const getCoachAvailability: RangeType[] = [...data.getCoachAvailability]
+      const getCoachAvailability: RangeType[] = [...data?.getCoachAvailability]
       const setRanges: RangeType[] = []
 
       getCoachAvailability.forEach((range) => {
         const rangeAvailability = [...range.availability]
-        rangeAvailability.sort((prev, next) => {
-          if (prev.from > next.from) return 1
-          else if (prev.from < next.from) return -1
-          return 0
-        })
+        rangeAvailability.sort((prev, next) =>
+          sortingAscending(prev, next, 'from')
+        )
         setRanges.push({ date: range.date, availability: rangeAvailability })
       })
 
@@ -90,7 +90,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   })
   const [scheduleAppointment] = useMutation(SCHEDULE_APPOINTMENT, {
     context: { ms: microServices.backend },
-    onCompleted: (data) => console.log(data),
+    onCompleted: () => showModal(false),
     onError: () => setError(errors.maxAppointmentsPerMonth),
   })
 
@@ -140,13 +140,21 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
   return (
     <Container>
       <Row className='justify-content-center'>
-        <Image
-          src='/assets/images/avatar.png'
-          width={100}
-          height={100}
-          alt='user avatar'
-        />
-        <h3 className={classes.subtitle}>Reunión con {coach?.user?.name}</h3>
+        {!coach ? (
+          <Skeleton width='80px' height='80px' />
+        ) : (
+          <Image
+            width={100}
+            height={100}
+            alt='user avatar'
+            className='rounded-circle'
+            src={(coach.profilePicture as fileDataType).location}
+          />
+        )}
+        <h3 className={classes.subtitle}>
+          Sesión con{' '}
+          {!coach ? <Spinner animation='border' /> : coach?.user?.name}
+        </h3>
       </Row>
       <Row className={classes.agenda}>
         <Col xs={6}>
@@ -180,19 +188,11 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
           </div>
         </Col>
         <Col className='px-5' xs={6}>
-          <p className={classes.label}>Duración de la reunión</p>
-          <Dropdown
-            optionLabel='label'
-            optionValue='value'
-            options={intervals}
-            value={selectedInterval}
-            className={classes.input}
-            panelClassName={classes.zindex}
-            onChange={(ev) => setSelectedInterval(ev.value)}
-          />
           <p className={`my-4 ${classes.label}`}>¿A qué hora puedes?</p>
           <Row className='justify-content-center'>
-            {selectedInterval &&
+            {!selectedRanges ? (
+              <p>Escoge una fecha</p>
+            ) : (
               selectedRanges?.map((range, idx) => {
                 const from = dayjs(range.from).format('HH:mm')
                 const to = dayjs(range.to).format('HH:mm')
@@ -210,7 +210,8 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
                     {from} - {to}
                   </Button>
                 )
-              })}
+              })
+            )}
             <Col className='mt-4' xs={9}>
               <Button
                 onClick={handleScheduleAppointment}

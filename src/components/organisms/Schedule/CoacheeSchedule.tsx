@@ -1,6 +1,6 @@
 // main tools
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import dayjs from 'dayjs'
 
 // prime components
@@ -17,7 +17,7 @@ import { coacheeAgendaTemplate } from 'components/atoms/CoacheeAgendaTemplate/mu
 import { ScheduledAppointmentCard } from 'components/atoms/ScheduledAppointmentCard'
 
 // utils
-import { formatDate } from 'commons'
+import { formatDate, sortingAscending } from 'commons'
 
 // styles
 import classes from 'styles/agenda/page.module.scss'
@@ -37,14 +37,27 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
   content,
 }) => {
   const { locale } = useRouter()
+  const calendar = useRef<Calendar>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [showAvailabilityRange, setShowAvailabilityRange] = useState(false)
   const coachAgendaId = coachee.assignedCoach?.coachAgenda?.id as number
+  const [showAvailabilityRange, setShowAvailabilityRange] = useState(false)
+  const coacheeAppointments = coachee.coachAppointments
+    ? [...coachee.coachAppointments]
+    : []
 
   const handleShowAvailabilityRange = () =>
     setShowAvailabilityRange(!showAvailabilityRange)
 
   addLocale('es', CalendarLocaleOptions)
+
+  useEffect(() => {
+    if (calendar.current) {
+      calendar.current.setState({
+        ...calendar.current.state,
+        viewDate: new Date(),
+      })
+    }
+  }, [])
 
   return (
     <>
@@ -54,6 +67,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
           <div className={classes.availability}>
             <Calendar
               inline
+              ref={calendar}
               locale={locale}
               dateFormat='dd/mm/yy'
               selectionMode='multiple'
@@ -113,11 +127,13 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
         </Col>
         <Col xs={12} md={6} lg={5}>
           <Row className='mt-2 w-100 justify-content-center'>
-            {coachee.coachAppointments?.map((item, idx) => (
-              <Col key={idx} xs={12}>
-                <ScheduledAppointmentCard preview {...item} />
-              </Col>
-            ))}
+            {coacheeAppointments
+              ?.sort((prev, next) => sortingAscending(prev, next, 'startDate'))
+              .map((item, idx) => (
+                <Col key={idx} xs={12}>
+                  <ScheduledAppointmentCard preview {...item} />
+                </Col>
+              ))}
           </Row>
         </Col>
       </Row>
@@ -132,8 +148,9 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
         <Modal.Body>
           <ScheduleAppointment
             content={content}
-            coachId={coachee.assignedCoach?.id as number}
+            showModal={setShowAvailabilityRange}
             coachAgendaId={coachAgendaId as number}
+            coachId={coachee.assignedCoach?.id as number}
           />
         </Modal.Body>
       </Modal>

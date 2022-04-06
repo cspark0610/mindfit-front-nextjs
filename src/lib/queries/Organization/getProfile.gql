@@ -2,9 +2,11 @@ query getOrganizationProfile {
   getOrganizationProfile {
     id
     name
-    owner {
-      id
-      name
+    about
+    isActive
+    profilePicture {
+      key
+      location
     }
     coachees {
       id

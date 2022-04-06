@@ -30,6 +30,12 @@ export const getToken = async (): Promise<string> => {
 
 export const microServices = { backend: 'backend', strapi: 'strapi' }
 
+export const sortingAscending = (prev: any, next: any, attribute: string) => {
+  if (prev[attribute] > next[attribute]) return 1
+  if (prev[attribute] < next[attribute]) return -1
+  return 0
+}
+
 export const formatDate = (date: string | Date) =>
   typeof date === 'string' ? new Date(date) : date
 

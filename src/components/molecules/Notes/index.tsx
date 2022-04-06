@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 // bootstrap components
 import { Pencil, Sticky, XSquare } from 'react-bootstrap-icons'
+import { confirmDialog } from 'primereact/confirmdialog'
 import { Button, Col, Row } from 'react-bootstrap'
 
 // Components
@@ -85,6 +86,17 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
     setShowEdit(true)
   }
 
+  const confirmRemove = (id: number) => {
+    confirmDialog({
+      acceptClassName: 'p-button-danger',
+      header: 'Confirmación de eliminación',
+      message: '¿Desea proceder con la eliminación?',
+      rejectLabel: 'No',
+      acceptLabel: 'Sí',
+      accept: () => removed(id),
+    })
+  }
+
   return (
     <div className={classes.container}>
       <Row xs='auto' className='mb-3 justify-content-between'>
@@ -111,13 +123,13 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
         </Col>
       </Row>
       {!showEdit ? (
-        <CardNote notes={notes} edit={edit} removed={removed} />
+        <CardNote notes={notes} edit={edit} removed={confirmRemove} />
       ) : (
         <StyledEditor
           save={saveNote}
           readOnly={false}
           loading={loading}
-          removed={removed}
+          removed={confirmRemove}
           coachNote={singleNote}
           onTextChange={handleChangeNote}
         />
