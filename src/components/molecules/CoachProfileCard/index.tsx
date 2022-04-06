@@ -1,9 +1,11 @@
 // Main tools
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Image from 'next/image'
 
 // gql
 import GET_ASSIGNED_COACH from 'lib/queries/Coachee/getAssignedCoach.gql'
+import GET_CONTENT from 'lib/strapi/queries/Coach/getCardContent.gql'
 import { useQuery } from '@apollo/client'
 
 // utils
@@ -30,17 +32,27 @@ import { fileDataType } from 'types/models/Files'
 import { FC } from 'react'
 
 export const CoachProfileCard: FC = () => {
-  const [showChat, setShowChat] = useState(false)
   const [coach, setCoach] = useState<CoachDataType | undefined>(undefined)
+  const [content, setContent] = useState<any>(undefined)
+  const [showChat, setShowChat] = useState(false)
+  const { locale } = useRouter()
 
   const { loading } = useQuery(GET_ASSIGNED_COACH, {
     context: { ms: microServices.backend },
     onCompleted: (data) => setCoach(data.getCoacheeProfile.assignedCoach),
   })
+  const { loading: contentLoading } = useQuery(GET_CONTENT, {
+    variables: { locale },
+    context: { ms: microServices.strapi },
+    onCompleted: (res) => {
+      const [coachCard] = res.coachCards.data
+      setContent(coachCard.attributes)
+    },
+  })
 
   return (
     <>
-      {loading ? (
+      {loading || contentLoading ? (
         <CoachProfileCardSkeleton />
       ) : (
         <>
@@ -64,11 +76,17 @@ export const CoachProfileCard: FC = () => {
               <span>{coach?.bio}</span>
             </div>
             <div className={classes.coachingAreas}>
-              <h3>Coach specialization</h3>
+              <h3>{content?.specializationLabel}</h3>
               <ul>
                 {coach?.coachingAreas?.map((area) => (
                   <li key={area.id}>
-                    <ChevronDoubleRight /> {area.name}
+                    <ChevronDoubleRight />{' '}
+                    {
+                      content?.coachingArea.find(
+                        (coachingArea: any) =>
+                          coachingArea.codeName === area.codename
+                      )?.label
+                    }
                   </li>
                 ))}
               </ul>
@@ -85,7 +103,7 @@ export const CoachProfileCard: FC = () => {
                   onClick={() => setShowChat(true)}
                   className={classes.button}>
                   <i className={PrimeIcons.SEND} />
-                  <p>MESSAGES</p>
+                  <p>{content?.messageButton.label}</p>
                 </Button>
               </Col>
               <ExploreBadge />

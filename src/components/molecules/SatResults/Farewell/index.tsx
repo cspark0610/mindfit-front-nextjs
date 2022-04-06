@@ -32,9 +32,19 @@ export const Farewell: FC<any> = (props) => (
               className={classes.paragraph}
               dangerouslySetInnerHTML={{ __html: props.details }}
             />
-            <Link href='/choose-coach' passHref>
+            <Link href='/library' passHref>
               <Button className={classes.button}>
                 {props.actionButton.label}
+              </Button>
+            </Link>
+          </ColMotion>
+          <ColMotion
+            xs={6}
+            {...viewportFadeIn}
+            className='d-flex align-items-end justify-content-end'>
+            <Link href='/choose-coach' passHref>
+              <Button className={classes.button_farewell}>
+                Escoge a tu coach
               </Button>
             </Link>
           </ColMotion>

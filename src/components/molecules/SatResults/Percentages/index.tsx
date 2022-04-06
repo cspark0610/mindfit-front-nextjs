@@ -56,7 +56,7 @@ export const Percentages: FC<any> = (props) => {
               <OverlayTrigger
                 key={idx}
                 placement='left'
-                overlay={overlayTooltip('Lorem ipsum')}>
+                overlay={overlayTooltip(puntuation.name)}>
                 <div className={classes.cardPoint}>
                   <h4>
                     <span className={classes.point}>

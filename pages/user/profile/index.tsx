@@ -14,11 +14,12 @@ import { userRoles } from 'utils/enums'
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
 import GET_COACH from 'lib/queries/Coach/getProfile.gql'
+import GET_ORGANIZATION from 'lib/queries/Organization/getProfile.gql'
 import PROFILE_CONTENT from 'lib/strapi/queries/UserProfile/content.gql'
 import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
+import ORG_PROFILE_CONTENT from 'lib/strapi/queries/OrgProfile/content.gql'
 import COACH_PROFILE_CONTENT from 'lib/strapi/queries/CoachProfile/content.gql'
 import CHANGE_PASSWORD_CONTENT from 'lib/strapi/queries/ChangePassword/page.gql'
-import GET_ORGANIZATION_BY_ID from 'lib/queries/Organization/getById.gql'
 
 // types
 import { GetSSPropsType } from 'types'
@@ -39,9 +40,9 @@ const UserProfile: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     {coachee && !showOrganization && (
       <CoacheeProfile coachee={coachee} content={content} />
     )}
-    {/* {organization && showOrganization !== undefined && (
-      <OrganizationProfile coachee={coachee} content={content} />
-    )} */}
+    {organization && showOrganization && (
+      <OrganizationProfile organization={organization} content={content} />
+    )}
     {coach && <CoachProfile coach={coach} content={content} />}
   </Layout>
 )
@@ -68,8 +69,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     userData.coachee = data.getCoacheeProfile
 
     if (ctx?.query?.showOrganization) {
-      let id = NaN,
-        showOrganization = false
+      let id = NaN
       if (
         data.getCoacheeProfile.isAdmin ||
         data.getCoacheeProfile.canViewDashboard
@@ -77,21 +77,35 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         id = data.getCoacheeProfile.organization.id
       else if (session.user.organization)
         id = session.user.organization.id as number
-      console.log(id, ' the id heeeeeeeeeeeeeeeeeeeeeeeere')
-      apollo
+
+      await apollo
         .query({
-          query: GET_ORGANIZATION_BY_ID,
+          query: GET_ORGANIZATION,
           context: { ms: microServices.backend },
-          variables: { id },
         })
-        .then(({ data }) => (userData.organization = data.findOrganizationById))
-    }
-    const { data: contentResponse } = await apolloClient.query({
-      query: PROFILE_CONTENT,
-      variables: { locale: ctx.locale },
-      context: { ms: microServices.strapi },
-    })
-    content.userProfile = contentResponse.userProfile.data.attributes
+        .then(
+          ({ data }) => (userData.organization = data.getOrganizationProfile)
+        )
+
+      await apolloClient
+        .query({
+          query: ORG_PROFILE_CONTENT,
+          variables: { locale: ctx.locale },
+          context: { ms: microServices.strapi },
+        })
+        .then(
+          ({ data }) => (content.orgProfile = data.orgProfile.data.attributes)
+        )
+    } else
+      await apolloClient
+        .query({
+          query: PROFILE_CONTENT,
+          variables: { locale: ctx.locale },
+          context: { ms: microServices.strapi },
+        })
+        .then(
+          ({ data }) => (content.userProfile = data.userProfile.data.attributes)
+        )
   } else if (session?.user.role === userRoles.COACH) {
     await apollo
       .query({
@@ -123,7 +137,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ? { ...userData.coachee, user: session?.user }
         : null,
       organization: userData.organization
-        ? { ...userData.organization, user: session?.user }
+        ? { ...userData.organization, owner: session?.user }
         : null,
       coach: userData.coach ? { ...userData.coach, user: session?.user } : null,
       showOrganization: ctx.query?.showOrganization || null,

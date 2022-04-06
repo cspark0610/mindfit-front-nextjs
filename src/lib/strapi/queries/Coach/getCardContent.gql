@@ -1,0 +1,16 @@
+query getOrganizationProfileContent($locale: I18NLocaleCode) {
+  coachCards(locale: $locale) {
+    data {
+      attributes {
+        specializationLabel
+        messageButton {
+          label
+        }
+        coachingArea {
+          codeName
+          label
+        }
+      }
+    }
+  }
+}

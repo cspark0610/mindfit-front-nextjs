@@ -64,9 +64,8 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
               <p className={classes.name}>{coachee.user?.name}</p>
             </a>
           </Link>
-          <p className='fw-bold'>
-            {content?.accordingToLabel} prueba de autoevaluación
-          </p>
+          <p className='fw-bold m-0'>{content?.accordingToLabel}</p>
+          <p>prueba de autoevaluación</p>
           <Row className='justify-content-center'>
             <Col xs={9}>
               {coachee.dimensionAverages?.map((area) => (

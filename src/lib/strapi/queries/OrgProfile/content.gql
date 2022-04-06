@@ -1,0 +1,33 @@
+query getOrganizationProfileContent($locale: I18NLocaleCode) {
+  orgProfile(locale: $locale) {
+    data {
+      attributes {
+        title
+        aboutLabel
+        subscriptionLabel
+        paymentMethodLabel
+        changePasswordLabel
+        submitButton {
+          label
+        }
+        cardPlans {
+          data {
+            attributes {
+              header {
+                label
+                value
+              }
+              items {
+                label
+                check
+              }
+              button {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

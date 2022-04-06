@@ -132,14 +132,14 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               {readOnly && (
                 <Row xs='auto' className='m-3 justify-content-end'>
                   <Col>
-                    <Button onClick={() => setReadOnly(false)}>editar</Button>
+                    <Button onClick={() => setReadOnly(false)}>Editar</Button>
                   </Col>
                   <Col>
                     <Button
                       variant='secondary'
                       className={classes.button_secondary}
                       onClick={handleCloseEvaluation}>
-                      cerrar
+                      Cerrar
                     </Button>
                   </Col>
                 </Row>

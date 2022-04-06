@@ -39,16 +39,16 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
   return (
     <Container className={classes.agended}>
       <Row className={classes.row}>
-        <Col className={classes.date} xs={3} md={2}>
+        <Col className={classes.date} xs={3}>
           <Lightbulb className={classes.date_icon} />
           <span className={classes.date_number}>
-            {formatedDate.format('DD')}
+            {formatedDate.format('DD/MM')}
           </span>
           <span className={classes.date_text}>
             {formatedDate.format('ddd')}
           </span>
         </Col>
-        <Col className={classes.info} xs={7} md={8}>
+        <Col className={classes.info} xs={7}>
           <strong className={classes.info_title}>Sesión de Coaching</strong>
           <span className={classes.info_desc}>
             {formatedDate.format('HH:MM')}
@@ -56,11 +56,11 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
         </Col>
         <Col xs={2}>
           <Image
-            className={classes.avatar}
-            src='/assets/images/avatar.png'
             width={50}
             height={50}
             alt='user avatar'
+            className={classes.avatar}
+            src='/assets/images/avatar.png'
           />
         </Col>
       </Row>

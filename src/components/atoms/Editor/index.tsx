@@ -38,7 +38,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
             className={classes.edit}
             headerTemplate={renderHeader()}
             value={coachNote.note || coachNote.evaluation}
-            placeholder='escribe tu nota...'
+            placeholder='Escribe tu nota...'
           />
           <Row xs='auto' className='m-3 justify-content-between'>
             <Col>
@@ -72,7 +72,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
           className={classes.edit}
           headerTemplate={renderHeader()}
           value={coachNote.note || coachNote.evaluation}
-          placeholder='escribe tu nota...'
+          placeholder='Escribe tu nota...'
         />
       )}
     </>

@@ -1,15 +1,17 @@
 @import '../variables.scss';
 @import './coacheeCard.module.scss';
 
+.profile {
+  border-radius: 50px;
+}
+
 .container {
   margin-block: 1rem 5rem;
   .title {
     font-size: 24px;
     color: $primary;
   }
-  .profile {
-    border-radius: 50px;
-  }
+
   .tabs {
     margin-bottom: 1rem;
     border-bottom: none;
