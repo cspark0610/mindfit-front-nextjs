@@ -111,6 +111,10 @@
     font-weight: bold;
   }
 }
+.appointments {
+  max-height: 50vh;
+  overflow-y: auto;
+}
 
 .agended {
   @extend .section;

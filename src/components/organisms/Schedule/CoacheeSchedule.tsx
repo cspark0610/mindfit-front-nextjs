@@ -126,7 +126,8 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
           </div>
         </Col>
         <Col xs={12} md={6} lg={5}>
-          <Row className='mt-2 w-100 justify-content-center'>
+          <Row
+            className={`w-100 justify-content-center ${classes.appointments}`}>
             {coacheeAppointments
               ?.sort((prev, next) => sortingAscending(prev, next, 'startDate'))
               .map((item, idx) => (
