@@ -77,7 +77,7 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
           <Col xs={12} className={classes.footer}>
             <span>
               <Calendar className={classes.icon_secondary} />
-              {dayjs(formatDate(evaluation.createdAt)).format('DD/MM/YYYY')}
+              {dayjs(evaluation.createdAt).format('DD/MM/YYYY')}
             </span>
             <Button
               variant='secondary'
