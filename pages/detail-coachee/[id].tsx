@@ -15,7 +15,7 @@ import { Layout } from 'components/organisms/Layout'
 import { Notes } from 'components/molecules/Notes'
 
 // utils
-import { microServices } from 'commons'
+import { microServices, sortingAscending } from 'commons'
 import { userRoles } from 'utils/enums'
 
 // apollo
@@ -42,16 +42,21 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   coachee,
   content,
 }) => {
-  const INITIAL_STATE = { id: NaN, evaluation: '' }
+  const INITIAL_STATE = { id: NaN, evaluation: '', createdAt: '' }
   const [readOnly, setReadOnly] = useState(false)
+  const [evaluations, setEvaluations] = useState([INITIAL_STATE])
   const [evaluationToEdit, setEvaluationToEdit] = useState(INITIAL_STATE)
 
-  const { data, loading, refetch } = useQuery(GET_COACHEE_EVALUATIONS, {
+  const { loading, refetch } = useQuery(GET_COACHEE_EVALUATIONS, {
     context: { ms: microServices.backend },
     variables: { id: coachee?.id },
     onCompleted: (data) => {
-      const ev = data.findCoacheeById.coacheeEvaluations
-      setEvaluationToEdit(ev.length ? ev[ev.length - 1] : INITIAL_STATE)
+      const ev = [...data.findCoacheeById.coacheeEvaluations]
+      ev.sort((prev: any, next: any) =>
+        sortingAscending(next, prev, 'createdAt')
+      )
+      setEvaluations(ev)
+      setEvaluationToEdit(ev.length ? ev[0] : INITIAL_STATE)
       setReadOnly(ev.length ? true : false)
     },
   })
@@ -97,10 +102,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       })
   }
 
-  const handleEditEvaluation = (evaluation: {
-    id: number
-    evaluation: string
-  }) => {
+  const handleEditEvaluation = (evaluation: typeof INITIAL_STATE) => {
     setReadOnly(false)
     setEvaluationToEdit(evaluation)
   }
@@ -155,23 +157,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               <Spinner animation='border' />
             ) : (
               <Row>
-                {data.findCoacheeById.coacheeEvaluations.map(
-                  (evaluation: {
-                    id: number
-                    evaluation: string
-                    createdAt: string
-                  }) => (
-                    <Col key={evaluation.id} xs={6} lg={3} className='mb-3'>
-                      <CardEvaluation
-                        readOnly={() => setReadOnly(true)}
-                        evaluation={evaluation}
-                        edit={handleEditEvaluation}
-                        removed={handleRemoveEvaluation}
-                      />
-                    </Col>
-                  )
-                )}
-                <Col xs={3} lg={2} className='d-flex align-items-center'>
+                <Col xs='auto' className='d-flex align-items-center'>
                   <Button
                     variant='outline-secondary'
                     className={classes.button_plus}
@@ -179,6 +165,16 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                     <PlusSquare className='fs-1' />
                   </Button>
                 </Col>
+                {evaluations.map((evaluation) => (
+                  <Col key={evaluation.id} xs={6} lg={3} className='mb-3'>
+                    <CardEvaluation
+                      readOnly={() => setReadOnly(true)}
+                      evaluation={evaluation}
+                      edit={handleEditEvaluation}
+                      removed={handleRemoveEvaluation}
+                    />
+                  </Col>
+                ))}
               </Row>
             )}
           </Container>
