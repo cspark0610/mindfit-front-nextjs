@@ -1,6 +1,9 @@
 //main tools
 import { useState } from 'react'
 
+// components
+import { INITIAL_TOAST_STATE, Toasts } from 'components/atoms/Toasts'
+
 // bootstrap components
 import {
   Button,
@@ -46,6 +49,7 @@ export const InviteCoachee: FC<ModalProps> = ({
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const validate = validateCoachee(coacheeData)
+  const [toast, setToast] = useState(INITIAL_TOAST_STATE)
 
   const [inviteCoachee] = useMutation(INVITE_COACHEE, {
     context: { ms: microServices.backend },
@@ -81,6 +85,10 @@ export const InviteCoachee: FC<ModalProps> = ({
           },
         },
         onError: () => setError(content.errorMessage),
+        onCompleted: () => {
+          setCoacheeData(INITIAL_STATE)
+          setToast({ show: true, message: 'Solicitud Exitosa' })
+        },
       })
       setLoading(false)
       refetch()
@@ -88,77 +96,88 @@ export const InviteCoachee: FC<ModalProps> = ({
   }
 
   return (
-    <Modal centered className={classes.modal} {...props} size='lg'>
-      <Modal.Header className={classes.close} closeButton />
-      <Modal.Body className={classes.section_modal}>
-        <section className={classes.container}>
-          <h1 className={`fs-4 ${classes.title}`}>
-            {content.inviteCoacheeTitle}
-          </h1>
-          <Container fluid>
-            <Row className={classes.row}>
-              <Col xs={12}>
-                <h5 className={classes.inputText}>
-                  {coacheeForm.nameInput.label}
-                </h5>
-                <InputText
-                  name='name'
-                  value={coacheeData.user?.name}
-                  onChange={handleUserChange}
-                  className={classes.input}
-                />
-              </Col>
-              <Col xs={12}>
-                <h5 className={classes.inputText}>
-                  {coacheeForm.emailInput.label}
-                </h5>
-                <InputText
-                  name='email'
-                  value={coacheeData.user?.email}
-                  onChange={handleUserChange}
-                  className={classes.input}
-                />
-              </Col>
-              <Col xs={12}>
-                <h5 className={classes.inputText}>
-                  {coacheeForm.positionInput.label}
-                </h5>
-                <Dropdown
-                  appendTo='self'
-                  name='position'
-                  options={workPositions}
-                  onChange={handleCoacheeChange}
-                  className={classes.input}
-                  value={coacheeData.position}
-                />
-              </Col>
-            </Row>
-            <SelectButton
-              value={rol}
-              options={rolOptions}
-              optionLabel='name'
-              onChange={(ev) => setRol(ev.value)}
-              className={classes.button_select}
-              unselectable={false}
-            />
-            <Row className={`justify-content-end ${classes.row}`}>
-              {error && <p className='p-error text-center'>{error}</p>}
-              <Col xs='auto'>
-                <Button
-                  disabled={!validate}
-                  className={classes.button}
-                  onClick={handleSave}>
-                  {loading ? (
-                    <Spinner animation='border' color='primary' />
-                  ) : (
-                    coacheeForm.saveButton.label
-                  )}
-                </Button>
-              </Col>
-            </Row>
-          </Container>
-        </section>
-      </Modal.Body>
-    </Modal>
+    <>
+      <Modal centered className={classes.modal} {...props} size='lg'>
+        <Modal.Header className={classes.close} closeButton />
+        <Modal.Body className={classes.section_modal}>
+          <section className={classes.container}>
+            <h1 className={`fs-4 ${classes.title}`}>
+              {content.inviteCoacheeTitle}
+            </h1>
+            <Container fluid>
+              <Row className={classes.row}>
+                <Col xs={12}>
+                  <h5 className={classes.inputText}>
+                    {coacheeForm.nameInput.label}
+                  </h5>
+                  <InputText
+                    name='name'
+                    value={coacheeData.user?.name}
+                    onChange={handleUserChange}
+                    className={classes.input}
+                  />
+                </Col>
+                <Col xs={12}>
+                  <h5 className={classes.inputText}>
+                    {coacheeForm.emailInput.label}
+                  </h5>
+                  <InputText
+                    name='email'
+                    value={coacheeData.user?.email}
+                    onChange={handleUserChange}
+                    className={classes.input}
+                  />
+                </Col>
+                <Col xs={12}>
+                  <h5 className={classes.inputText}>
+                    {coacheeForm.positionInput.label}
+                  </h5>
+                  <Dropdown
+                    appendTo='self'
+                    name='position'
+                    options={workPositions}
+                    onChange={handleCoacheeChange}
+                    className={classes.input}
+                    value={coacheeData.position}
+                  />
+                </Col>
+              </Row>
+              <SelectButton
+                value={rol}
+                options={rolOptions}
+                optionLabel='name'
+                onChange={(ev) => setRol(ev.value)}
+                className={classes.button_select}
+                unselectable={false}
+              />
+              <Row className={`justify-content-end ${classes.row}`}>
+                {error && <p className='p-error text-center'>{error}</p>}
+                <Col xs='auto'>
+                  <Button
+                    disabled={!validate}
+                    className={classes.button}
+                    onClick={handleSave}>
+                    {loading ? (
+                      <Spinner animation='border' color='primary' />
+                    ) : (
+                      coacheeForm.saveButton.label
+                    )}
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </section>
+        </Modal.Body>
+      </Modal>
+      <Toasts
+        show={toast.show}
+        message={toast.message}
+        position='bottom-center'
+        style={{ zIndex: 1060 }}
+        className={'position-fixed'}
+        title={content.inviteCoacheeTitle}
+        onClose={() => setToast(INITIAL_TOAST_STATE)}
+      />
+    </>
   )
 }
