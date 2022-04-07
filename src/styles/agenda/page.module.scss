@@ -25,6 +25,10 @@
 .button {
   font-size: 15px;
   margin-top: 1rem;
+  .icon {
+    color: $primary;
+    margin-right: 1rem;
+  }
 }
 .agenda {
   .availability {
@@ -114,6 +118,7 @@
 .appointments {
   max-height: 50vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .agended {
