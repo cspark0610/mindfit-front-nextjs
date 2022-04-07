@@ -3,8 +3,22 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 
 // bootstrap components
-import { Button, Col, Container, Row } from 'react-bootstrap'
-import { Lightbulb, Calendar2 } from 'react-bootstrap-icons'
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Dropdown,
+  DropdownButton,
+  Row,
+} from 'react-bootstrap'
+import {
+  Lightbulb,
+  Calendar2,
+  Google,
+  EnvelopeFill,
+  FileEarmarkFill,
+} from 'react-bootstrap-icons'
 
 // utils
 import { formatDate } from 'commons'
@@ -66,8 +80,24 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
       </Row>
       <Row className='w-100 flex-row-reverse'>
         {preview && !isBefore && (
-          <Col xs={7}>
-            <Button className={classes.button}>Agregar al calendario</Button>
+          <Col xs='auto'>
+            <DropdownButton
+              className={classes.button}
+              title='Agregar al calendario'
+              as={ButtonGroup}>
+              <Dropdown.Item onClick={() => console.log('Google')}>
+                <Google className={classes.icon} />
+                Google
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => console.log('Outlook')}>
+                <EnvelopeFill className={classes.icon} />
+                Outlook
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => console.log('File')}>
+                <FileEarmarkFill className={classes.icon} />
+                Descargar
+              </Dropdown.Item>
+            </DropdownButton>
           </Col>
         )}
       </Row>
