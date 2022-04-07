@@ -32,7 +32,7 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
 }) => {
   const { data: session } = useSession()
-  const [coachee, setCoachee] = useState()
+  const [coachee, setCoachee] = useState({})
   const [videoSession, setVideoSession] = useState<VideoCallProps>({
     channel: '',
     token: '',
@@ -64,21 +64,21 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       <Container>
         <Row className='mt-4'>
           {coachee && <CoacheeProfileCard coachee={coachee} />}
-          <Col md={6} className='mt-4'>
+          <Col md={6} lg={8} xl={6} className='mt-4'>
             {videoSession.channel !== '' &&
               videoSession.token !== '' &&
               videoSession.uid !== 0 && <AgoraVideoCall {...videoSession} />}
           </Col>
-          <Col md={12} lg={3} className='mt-4'>
+          <Col md={12} xl={3} className='mt-4'>
             <Container className={`p-4 ${classes.section}`}>
-              <Notes coachee={{ id: 1 }} content={content.notes} />
+              <Notes coachee={coachee} content={content.notes} />
             </Container>
           </Col>
         </Row>
         <Row className='mt-4 mb-4'>
           <Col>
             <Container className={`p-5 ${classes.section}`}>
-              <Evaluation content={content.evaluation} />
+              <Evaluation coachee={coachee} content={content.evaluation} />
             </Container>
           </Col>
         </Row>

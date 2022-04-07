@@ -12,13 +12,11 @@
 }
 
 .evaluations {
-  overflow-y: auto;
+  overflow-y: hidden;
   max-height: 300px;
-  overflow-x: hidden;
+  overflow-x: auto;
   > div {
     flex-wrap: nowrap;
-    justify-content: flex-end;
-    flex-direction: row-reverse;
   }
 }
 

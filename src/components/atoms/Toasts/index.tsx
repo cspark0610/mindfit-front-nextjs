@@ -23,12 +23,13 @@ export const INITIAL_TOAST_STATE = {
 export const Toasts: FC<Props> = ({
   title,
   subtitle,
+  className,
   message,
   show,
   ...props
 }) => {
   return (
-    <ToastContainer {...props}>
+    <ToastContainer {...props} className={className}>
       <Toast show={show} {...props}>
         <Toast.Header>
           <Image

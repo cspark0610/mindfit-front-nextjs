@@ -1,0 +1,9 @@
+query coacheeEvaluations($id: Int!) {
+  findCoacheeById(id: $id) {
+    coacheeEvaluations {
+      id
+      evaluation
+      createdAt
+    }
+  }
+}
