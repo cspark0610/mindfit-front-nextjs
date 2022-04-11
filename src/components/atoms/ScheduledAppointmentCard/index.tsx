@@ -2,23 +2,12 @@
 import Image from 'next/image'
 import dayjs from 'dayjs'
 
+// components
+import { CalendarSchedule } from './calendarSchedule'
+
 // bootstrap components
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Container,
-  Dropdown,
-  DropdownButton,
-  Row,
-} from 'react-bootstrap'
-import {
-  Lightbulb,
-  Calendar2,
-  Google,
-  EnvelopeFill,
-  FileEarmarkFill,
-} from 'react-bootstrap-icons'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Lightbulb } from 'react-bootstrap-icons'
 
 // utils
 import { formatDate } from 'commons'
@@ -27,8 +16,8 @@ import { formatDate } from 'commons'
 import classes from 'styles/agenda/page.module.scss'
 
 // types
-import { FC } from 'react'
 import Link from 'next/link'
+import { FC } from 'react'
 
 type ScheduledAppointmentCardProps = {
   startDate: string
@@ -81,38 +70,22 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
       <Row className='w-100 flex-row-reverse'>
         {preview && !isBefore && (
           <Col xs='auto'>
-            <DropdownButton
-              className={classes.button}
-              title='Agregar al calendario'
-              as={ButtonGroup}>
-              <Dropdown.Item onClick={() => console.log('Google')}>
-                <Google className={classes.icon} />
-                Google
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => console.log('Outlook')}>
-                <EnvelopeFill className={classes.icon} />
-                Outlook
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => console.log('File')}>
-                <FileEarmarkFill className={classes.icon} />
-                Descargar
-              </Dropdown.Item>
-            </DropdownButton>
+            <CalendarSchedule />
           </Col>
         )}
       </Row>
       <Row className='w-100'>
-        {actions && role !== 'coach' && nearby > 30 && (
+        {actions && nearby > 30 && (
           <>
+            {role !== 'coach' && (
+              <Col xs={6}>
+                <Button variant='primary' className={classes.button}>
+                  Posponer / eliminar
+                </Button>
+              </Col>
+            )}
             <Col xs={6}>
-              <Button variant='primary' className={classes.button}>
-                Posponer o eliminar cita
-              </Button>
-            </Col>
-            <Col xs={6}>
-              <Button variant='primary' className={classes.button}>
-                <Calendar2 size={20} /> Agregar al calendario
-              </Button>
+              <CalendarSchedule />
             </Col>
           </>
         )}
