@@ -13,7 +13,7 @@ import { microServices } from 'commons'
 
 // bootstrap components
 import { Facebook, Google, Linkedin } from 'react-bootstrap-icons'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, Spinner } from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
@@ -40,6 +40,7 @@ interface LoginCardProps {
 export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
   const { push } = useRouter()
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState({ email: '', password: '' })
   const [providers, setProviders] = useState<ClientSafeProvider[] | undefined>(
     undefined
@@ -62,6 +63,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
 
   const handleSubmit = async (ev: SubmitType) => {
     ev.preventDefault()
+    setLoading(true)
     const data: any = await signIn('credentials', { ...user, redirect: false })
     if (data?.error) setError('Usuario o Contraseña incorrectos')
     else {
@@ -89,6 +91,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
       } else if (session?.user.role === userRoles.COACH)
         push('/dashboard/coach')
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -133,7 +136,11 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           )}
           <Row>
             <Button type='submit' className={`my-3 ${classes.button}`}>
-              {content.loginButton.label}
+              {loading ? (
+                <Spinner animation='border' />
+              ) : (
+                content.loginButton.label
+              )}
             </Button>
           </Row>
           <p className={classes.label} onClick={handleToggleChange}>

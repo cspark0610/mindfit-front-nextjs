@@ -1,0 +1,5 @@
+mutation uploadOrganization($id: Int!, $data: EditOrganizationDto!) {
+  updateOrganization(organizationId: $id, data: $data) {
+    id
+  }
+}

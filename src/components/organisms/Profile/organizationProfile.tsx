@@ -1,16 +1,32 @@
 // main tools
-import { FC, useState } from 'react'
+import { useState } from 'react'
 
 // components
 import { ChangePasswordProfile } from 'components/molecules/ChangePasswordProfile'
 import { UploadPicture } from 'components/atoms/UploadPicture'
 
 // prime components
-import { InputText } from 'primereact/inputtext'
+import { InputTextarea } from 'primereact/inputtextarea'
 
 // bootstrap components
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  Modal,
+  ProgressBar,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import { CreditCard } from 'react-bootstrap-icons'
+
+// gql
+import UPDATE_ORGANIZATION from 'lib/mutations/Organization/update.gql'
+import { useMutation } from '@apollo/client'
+
+// utils
+import { uploadFilesService } from 'utils/uploadFilesService'
+import { microServices } from 'commons'
 
 // styles
 import classes from 'styles/Profile/profile.module.scss'
@@ -19,14 +35,58 @@ import classes from 'styles/Profile/profile.module.scss'
 import { OrganizationDataType } from 'types/models/Organization'
 import { fileDataType } from 'types/models/Files'
 import { UserDataType } from 'types/models/User'
+import { ChangeEvent, FC } from 'react'
+import { ChangeType } from 'types'
 
 export const OrganizationProfile: FC<{
   organization: OrganizationDataType
   content: any
 }> = ({ organization, content }) => {
   const [organizationData, setOrganizationData] = useState(organization)
+  const [uploadPictureProgress, setUploadPictureProgress] = useState(0)
+  const [uploadPictureUrl, setUploadPictureUrl] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [uploadUrl, setUploadUrl] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const [updateOrg] = useMutation(UPDATE_ORGANIZATION, {
+    context: { ms: microServices.backend },
+  })
+
+  const handleChange = (ev: ChangeType | ChangeEvent<HTMLTextAreaElement>) =>
+    setOrganizationData({
+      ...organizationData,
+      [ev.target.name]: ev.target.value,
+    })
+
+  const handleSubmit = async () => {
+    setLoading(true)
+
+    if (uploadPictureUrl !== '') {
+      const formData = new FormData()
+      formData.append('file', organizationData.profilePicture as File)
+      await uploadFilesService(
+        uploadPictureUrl,
+        formData,
+        setUploadPictureProgress
+      )
+    }
+
+    await updateOrg({
+      variables: {
+        id: organizationData.id,
+        data: {
+          about: organizationData.about,
+          picture: (organizationData.profilePicture as File)?.type
+            ? {
+                key: (organizationData.profilePicture as File).name,
+                type: (organizationData.profilePicture as File).type,
+              }
+            : undefined,
+        },
+      },
+    })
+    setLoading(false)
+  }
 
   return (
     <>
@@ -35,25 +95,31 @@ export const OrganizationProfile: FC<{
           <Row>
             <Col lg={8}>
               <h1 className={`${classes.title} text-start`}>
-                {content.orgProfile.title}
+                {content.orgProfile.title}:{' '}
+                <strong>{organizationData.name}</strong>
               </h1>
               <Row className={classes.organizationData}>
                 <Col lg={4}>
                   <UploadPicture
-                    setUploadUrl={setUploadUrl}
+                    setUploadUrl={setUploadPictureUrl}
                     setData={setOrganizationData}
                     data={
-                      (organizationData.profilePicture as fileDataType).location
+                      (organizationData.profilePicture as fileDataType)
+                        ?.location
                     }
                   />
+                  {uploadPictureProgress !== 0 && (
+                    <ProgressBar
+                      animated
+                      now={uploadPictureProgress}
+                      label={`${uploadPictureProgress}%`}
+                    />
+                  )}
                 </Col>
                 <Col lg={6}>
-                  <InputText
-                    disabled
-                    name='email'
-                    className={classes.input}
-                    value={organization.owner?.email}
-                  />
+                  <span className={`py-3 ${classes.input}`}>
+                    {organization.owner?.email}
+                  </span>
                   <p
                     role='button'
                     onClick={() => setShowPassword(true)}
@@ -67,7 +133,9 @@ export const OrganizationProfile: FC<{
                   <h3 className={`${classes.title} text-start`}>
                     {content.orgProfile.aboutLabel}
                   </h3>
-                  <textarea
+                  <InputTextarea
+                    name='about'
+                    onChange={handleChange}
                     className={classes.input}
                     value={organizationData.about}
                   />
@@ -105,8 +173,12 @@ export const OrganizationProfile: FC<{
                   {content.orgProfile.changePasswordLabel}
                 </p>
               </Row>
-              <Button className={classes.button}>
-                {content.orgProfile.submitButton.label}
+              <Button onClick={handleSubmit} className={classes.button}>
+                {loading ? (
+                  <Spinner animation='border' />
+                ) : (
+                  content.orgProfile.submitButton.label
+                )}
               </Button>
             </Col>
           </Row>
