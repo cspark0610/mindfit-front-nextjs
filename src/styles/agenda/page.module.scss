@@ -30,6 +30,11 @@
     margin-right: 1rem;
   }
 }
+.dropdown {
+  & > button {
+    @extend .button;
+  }
+}
 .agenda {
   .availability {
     @extend .section;
