@@ -14,33 +14,33 @@ import { RowMotion } from 'components/atoms/AnimateComponents'
 import { viewportFadeIn } from 'commons/animations'
 
 // gql
-import { initializeApolloClient } from 'lib/apollo'
-import { createApolloClient } from 'lib/apolloClient'
-import { useQuery, useMutation } from '@apollo/client'
-import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
-import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
-import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachee/rejectSuggestedCoaches.gql'
 import GET_COACH_SELECTION_CONTENT from 'lib/queries/Strapi/CoachSelectionContent/getCoachSelectionContent.gql'
+import REJECT_SUGGESTED_COACHES from 'lib/mutations/Coachee/rejectSuggestedCoaches.gql'
+import GET_SUGGESTED_COACHES from 'lib/queries/Coachee/getSuggestedCoaches.gql'
+import GET_COACHEE_PROFILE from 'lib/queries/Coachee/getCoacheeProfile.gql'
+import { useQuery, useMutation } from '@apollo/client'
+import { createApolloClient } from 'lib/apolloClient'
+import { initializeApolloClient } from 'lib/apollo'
 
 // Commons
-import { microServices } from 'commons'
 import { coacheeRegistrationStatus } from 'utils/enums'
+import { microServices } from 'commons'
 
 //components
-import { Layout } from 'components/organisms/Layout'
-import { ExploreBadge } from 'components/atoms/ExploreBadge'
-import { ChooseCoachCard } from 'components/organisms/ChooseCoach/ChooseCoachCard'
-import { ChooseCoachSkeleton } from 'components/organisms/ChooseCoach/ChooseCoachSkeleton'
 import { CoachSearchFeedback } from 'components/organisms/ChooseCoach/CoachSearchFeedback'
+import { ChooseCoachSkeleton } from 'components/organisms/ChooseCoach/ChooseCoachSkeleton'
+import { ChooseCoachCard } from 'components/organisms/ChooseCoach/ChooseCoachCard'
+import { ExploreBadge } from 'components/atoms/ExploreBadge'
+import { Layout } from 'components/organisms/Layout'
 
 //styles
 import classes from 'styles/ChooseCoach/page.module.scss'
 
 //types
-import { GetSSPropsType } from 'types'
-import { CoachDataType } from 'types/models/Coach'
-import { CoacheeDataType } from 'types/models/Coachee'
 import { NextPage, GetServerSidePropsContext } from 'next'
+import { CoacheeDataType } from 'types/models/Coachee'
+import { CoachDataType } from 'types/models/Coach'
+import { GetSSPropsType } from 'types'
 
 const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   content,
@@ -56,6 +56,20 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
     { breakpoint: '850px', numVisible: 1, numScroll: 1 },
   ]
 
+  const { loading, refetch } = useQuery(GET_SUGGESTED_COACHES, {
+    context: { ms: microServices.backend },
+    onCompleted: (data) => {
+      setCoaches(data.getRandomSuggestedCoaches.coaches)
+      setSuggestedCoachesId(data.getRandomSuggestedCoaches.id)
+    },
+    onError: () => setShowMaxSuggestions(true),
+  })
+
+  const [RejectSuggestedCoaches] = useMutation(REJECT_SUGGESTED_COACHES, {
+    onCompleted: () => refetch(),
+    context: { ms: microServices.backend },
+  })
+
   //form state handlers
   const handleOpenFeedBackForm = () => setShowFeedbackForm(true)
   const handleCloseFeedBackForm = () => setShowFeedbackForm(false)
@@ -70,20 +84,6 @@ const SelectCoach: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
       handleCloseFeedBackForm()
     }
   }
-
-  const { loading, refetch } = useQuery(GET_SUGGESTED_COACHES, {
-    context: { ms: microServices.backend },
-    onCompleted: (data) => {
-      setCoaches(data.getRandomSuggestedCoaches.coaches)
-      setSuggestedCoachesId(data.getRandomSuggestedCoaches.id)
-    },
-    onError: () => setShowMaxSuggestions(true),
-  })
-
-  const [RejectSuggestedCoaches] = useMutation(REJECT_SUGGESTED_COACHES, {
-    onCompleted: () => refetch(),
-    context: { ms: microServices.backend },
-  })
 
   const coachesTemplate = (coach: CoachDataType) => (
     <ChooseCoachCard

@@ -65,17 +65,12 @@ export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
                 height={150}
                 layout='intrinsic'
                 alt='User profile picture'
-                className={classes.images}
-                src='/assets/images/avatar.png'
+                className='rounded-circle'
+                src={(coach.profilePicture as fileDataType).location}
               />
             </div>
             <h2 className={classes.name}>{coach.user?.name}</h2>
             <p className={classes.description}>{coach.bio}</p>
-          </Col>
-          <Col xs={3} className='ml-auto'>
-            <Button className={classes.button} variant='secondary'>
-              {content?.moreInfoButton.label}
-            </Button>
           </Col>
         </Row>
         <Row className='mb-5'>
@@ -87,7 +82,7 @@ export const ChooseCoachPreview: FC<ChooseCoachPreviewProps> = ({
         <Row className='d-flex justify-content-end'>
           <Col xs={3}>
             <Button onClick={handleSelectCoach} className={classes.button}>
-              {content?.nextButton.label}
+              {content?.sugestionButton.label}
             </Button>
           </Col>
         </Row>

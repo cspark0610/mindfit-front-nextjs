@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 // bootstrap components
-import { Youtube } from 'react-bootstrap-icons'
 import { Button, Col, Row, Modal } from 'react-bootstrap'
 
 // components
@@ -13,8 +12,9 @@ import { ChooseCoachPreview } from 'components/organisms/ChooseCoach/ChooseCoach
 import classes from 'styles/ChooseCoach/page.module.scss'
 
 //types
-import { FC } from 'react'
 import { CoachDataType } from 'types/models/Coach'
+import { fileDataType } from 'types/models/Files'
+import { FC } from 'react'
 
 type ChooseCoachCardProps = {
   suggestedCoachId: number
@@ -41,17 +41,9 @@ export const ChooseCoachCard: FC<ChooseCoachCardProps> = ({
               width={100}
               height={100}
               alt='coach photo'
-              src='/assets/images/avatar.png'
+              className='rounded-circle'
+              src={(data.profilePicture as fileDataType).location}
             />
-            <div className={classes.video}>
-              <Image
-                width={80}
-                height={80}
-                alt='video thumbnail'
-                src='/assets/images/video.png'
-              />
-              <Youtube size={36} className={classes.video_icon} />
-            </div>
           </Col>
           <Col className={classes.rightSide}>
             <div>
@@ -63,7 +55,7 @@ export const ChooseCoachCard: FC<ChooseCoachCardProps> = ({
               variant='secondary'
               className={classes.button}
               onClick={() => handleOpenModal()}>
-              {content?.sugestionButton.label}
+              {content?.moreInfoButton.label}
             </Button>
           </Col>
         </Row>

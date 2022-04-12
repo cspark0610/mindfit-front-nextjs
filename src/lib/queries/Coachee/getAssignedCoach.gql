@@ -1,5 +1,13 @@
 query getCoacheeProfile {
   getCoacheeProfile {
+    coachAppointments {
+      startDate
+      accomplished
+      coachConfirmation
+      coachingSession {
+        id
+      }
+    }
     assignedCoach {
       bio
       isActive

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 // bootstrap components
-import { Col, OverlayTrigger, Tooltip, Card, Button } from 'react-bootstrap'
+import { Col, Card, Button } from 'react-bootstrap'
 import { Send } from 'react-bootstrap-icons'
 
 // Animation Components
@@ -25,8 +25,6 @@ export const Percentages: FC<any> = (props) => {
     qualificationData.find(
       ({ attributes }: any) => attributes.diagnostic === diagnostic
     )
-
-  const overlayTooltip = (content: string) => <Tooltip>{content}</Tooltip>
 
   return (
     <Card className={classes.bg}>
@@ -53,19 +51,15 @@ export const Percentages: FC<any> = (props) => {
           </Col>
           <Col md={6} xl={3}>
             {props.result.puntuations.map((puntuation: any, idx: number) => (
-              <OverlayTrigger
-                key={idx}
-                placement='left'
-                overlay={overlayTooltip(puntuation.name)}>
-                <div className={classes.cardPoint}>
-                  <h4>
-                    <span className={classes.point}>
-                      {puntuation.value.toFixed(1)}
-                    </span>{' '}
-                    / {puntuation.base}
-                  </h4>
-                </div>
-              </OverlayTrigger>
+              <div key={idx} className={classes.cardPoint}>
+                <h4>
+                  <span className={classes.point}>
+                    {puntuation.value.toFixed(1)}
+                  </span>{' '}
+                  / {puntuation.base}
+                </h4>
+                <span>{puntuation.name}</span>
+              </div>
             ))}
           </Col>
           <Col className={classes.description} lg={9} xl={5}>
