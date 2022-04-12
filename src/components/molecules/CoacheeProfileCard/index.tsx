@@ -1,8 +1,12 @@
 // main tools
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import dayjs from 'dayjs'
+
+// primeicons
+import { PrimeIcons } from 'primereact/api'
 
 // bootstrap components
 import { Row, Col, Button } from 'react-bootstrap'
@@ -29,13 +33,25 @@ import classes from 'styles/coachDashboard/page.module.scss'
 // types
 import { CoacheeDataType } from 'types/models/Coachee'
 import { fileDataType } from 'types/models/Files'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
-export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
-  coachee,
-}) => {
+export const CoacheeProfileCard: FC<{
+  coachee: CoacheeDataType
+}> = ({ coachee }) => {
   const [content, setContent] = useState<any>(undefined)
   const { locale } = useRouter()
+
+  const nextAppointment = coachee.coachAppointments?.find(
+    (coachAppointment: any) => {
+      if (
+        !coachAppointment.accomplished &&
+        // coachAppointment.coachConfirmation &&
+        (dayjs(coachAppointment.startDate).isSame(dayjs()) ||
+          dayjs(coachAppointment.startDate).isAfter(dayjs()))
+      )
+        return true
+    }
+  )
 
   const { loading } = useQuery(GET_CONTENT, {
     context: { ms: microServices.strapi },
@@ -46,8 +62,17 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
     },
   })
 
+  const validateNextAppointment = (appointment: any): string => {
+    const formatedDate = dayjs(appointment.startDate)
+    const nearby = formatedDate.diff(dayjs(), 'minutes')
+
+    return nearby > 0 && nearby < 30
+      ? `/coaching-session/coachee/${appointment.coachingSession.id}`
+      : '#'
+  }
+
   return (
-    <Col key={coachee.id} md={6} lg={4} xl={3}>
+    <Col md={6} lg={4} xl={3}>
       {loading ? (
         <CoacheeProfileCardSkeleton />
       ) : (
@@ -103,12 +128,16 @@ export const CoacheeProfileCard: FC<{ coachee: CoacheeDataType }> = ({
             </Col>
           </Row>
           <Row className='justify-content-center'>
-            <Col xs={5}>
-              <Button className={classes.button}>
-                <CalendarEvent />
-                <p>10/11/21</p>
-              </Button>
-            </Col>
+            {nextAppointment?.startDate && (
+              <Col xs={5}>
+                <Link href={validateNextAppointment(nextAppointment)} passHref>
+                  <Button className={classes.button}>
+                    <i className={PrimeIcons.CALENDAR} />
+                    <p>{dayjs(nextAppointment.startDate).format('DD MMM')}</p>
+                  </Button>
+                </Link>
+              </Col>
+            )}
             <Col xs={5}>
               <Button className={classes.button}>
                 <Send />
