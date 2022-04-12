@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 
 // bootstrap components
 import { CheckSquare } from 'react-bootstrap-icons'
-import { Button, Col, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Modal, Row, Spinner } from 'react-bootstrap'
 
 // components
 import { Ratings } from 'components/atoms/Rating'
@@ -29,6 +29,7 @@ export const CoachingFeedback: FC<{
   coachingSessionId: number
 }> = ({ coachingSessionId, feedbackId }) => {
   const { data } = useSession()
+  const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(true)
   const [showCheck, setShowCheck] = useState(false)
   const [feedback, setFeedback] = useState<FeedbackProps[]>([])
@@ -41,9 +42,10 @@ export const CoachingFeedback: FC<{
     }
   )
 
-  const handleOpenCheck = () => {
+  const handleOpenCheck = async () => {
+    setLoading(true)
     if (data?.user.coachee) {
-      coachingFeedback({
+      await coachingFeedback({
         variables: {
           feedbackId: feedbackId,
           coacheeFeedback: feedback,
@@ -51,7 +53,7 @@ export const CoachingFeedback: FC<{
         },
       })
     } else {
-      coachingFeedback({
+      await coachingFeedback({
         variables: {
           feedbackId: feedbackId,
           coachFeedback: feedback,
@@ -59,6 +61,7 @@ export const CoachingFeedback: FC<{
         },
       })
     }
+    setLoading(false)
     setShowModal(false)
   }
 
@@ -85,7 +88,7 @@ export const CoachingFeedback: FC<{
             </Row>
             <Col md={4} className={classes.body_button}>
               <Button className={classes.button} onClick={handleOpenCheck}>
-                Aceptar
+                {loading ? <Spinner animation='border' /> : 'Aceptar'}
               </Button>
             </Col>
           </Col>

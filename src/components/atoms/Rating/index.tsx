@@ -16,13 +16,14 @@ import classes from 'styles/Rating/rating.module.scss'
 
 //types
 import { FC } from 'react'
+import { SetStateType } from 'types'
 import { RatingChangeParams } from 'primereact/rating'
 import { FeedbackProps } from 'types/components/feedback'
 
 export const Ratings: FC<{
   feedbackId: number
   feedback: FeedbackProps[]
-  setFeedback: ([]) => void
+  setFeedback: SetStateType<FeedbackProps[]>
 }> = ({ feedbackId, feedback, setFeedback }) => {
   const handleChange = (ev: RatingChangeParams) => {
     const newFeedback = feedback.map((item) => {
