@@ -2,6 +2,8 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import dayjs from 'dayjs'
 
 // gql
 import GET_ASSIGNED_COACH from 'lib/queries/Coachee/getAssignedCoach.gql'
@@ -33,13 +35,29 @@ import { FC } from 'react'
 
 export const CoachProfileCard: FC = () => {
   const [coach, setCoach] = useState<CoachDataType | undefined>(undefined)
+  const [nextAppointment, setNextAppointment] = useState<any>(null)
   const [content, setContent] = useState<any>(undefined)
   const [showChat, setShowChat] = useState(false)
   const { locale } = useRouter()
 
   const { loading } = useQuery(GET_ASSIGNED_COACH, {
     context: { ms: microServices.backend },
-    onCompleted: (data) => setCoach(data.getCoacheeProfile.assignedCoach),
+    onCompleted: (data) => {
+      const appointment = data.getCoacheeProfile.coachAppointments.find(
+        (coachAppointment: any) => {
+          if (
+            !coachAppointment.accomplished &&
+            // coachAppointment.coachConfirmation &&
+            (dayjs(coachAppointment.startDate).isSame(dayjs()) ||
+              dayjs(coachAppointment.startDate).isAfter(dayjs()))
+          )
+            return true
+        }
+      )
+
+      setNextAppointment(appointment)
+      setCoach(data.getCoacheeProfile.assignedCoach)
+    },
   })
   const { loading: contentLoading } = useQuery(GET_CONTENT, {
     variables: { locale },
@@ -49,6 +67,15 @@ export const CoachProfileCard: FC = () => {
       setContent(coachCard.attributes)
     },
   })
+
+  const validateNextAppointment = (appointment: any): string => {
+    const formatedDate = dayjs(appointment.startDate)
+    const nearby = formatedDate.diff(dayjs(), 'minutes')
+
+    return nearby > 0 && nearby < 30
+      ? `/coaching-session/coachee/${appointment.coachingSession.id}`
+      : '#'
+  }
 
   return (
     <>
@@ -92,12 +119,29 @@ export const CoachProfileCard: FC = () => {
               </ul>
             </div>
             <Row>
-              <Col xs={6}>
-                <Button className={classes.button}>
-                  <i className={PrimeIcons.CALENDAR} />
-                  <p>10/11/21</p>
-                </Button>
-              </Col>
+              {nextAppointment ? (
+                <Col xs={6}>
+                  <Link
+                    href={validateNextAppointment(nextAppointment)}
+                    passHref>
+                    <Button className={classes.button}>
+                      <i className={PrimeIcons.CALENDAR} />
+                      <p>
+                        {dayjs(nextAppointment.startDate).format('MM/DD/YYYY')}
+                      </p>
+                    </Button>
+                  </Link>
+                </Col>
+              ) : (
+                <Col xs={6}>
+                  <Link href='/user/schedule' passHref>
+                    <Button className={classes.button}>
+                      <i className={PrimeIcons.CALENDAR} />
+                      <p>Agendar cita</p>
+                    </Button>
+                  </Link>
+                </Col>
+              )}
               <Col xs={6}>
                 <Button
                   onClick={() => setShowChat(true)}

@@ -30,6 +30,11 @@
     margin-right: 1rem;
   }
 }
+.dropdown {
+  & > button {
+    @extend .button;
+  }
+}
 .agenda {
   .availability {
     @extend .section;
@@ -116,7 +121,8 @@
   }
 }
 .appointments {
-  max-height: 50vh;
+  max-height: 80vh;
+  min-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
