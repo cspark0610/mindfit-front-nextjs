@@ -26,6 +26,9 @@ query GetAssignedCoachees {
         accomplished
         coachConfirmation
         coacheeConfirmation
+        coachingSession {
+          id
+        }
       }
     }
   }
@@ -57,6 +60,9 @@ query GetAssignedCoachees {
         accomplished
         coachConfirmation
         coacheeConfirmation
+        coachingSession {
+          id
+        }
       }
     }
     coacheesWithUpcomingAppointments {
@@ -85,6 +91,9 @@ query GetAssignedCoachees {
         accomplished
         coachConfirmation
         coacheeConfirmation
+        coachingSession {
+          id
+        }
       }
     }
     coacheesRecentlyRegistered {
@@ -113,6 +122,9 @@ query GetAssignedCoachees {
         accomplished
         coachConfirmation
         coacheeConfirmation
+        coachingSession {
+          id
+        }
       }
     }
   }
