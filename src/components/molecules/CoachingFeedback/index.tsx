@@ -11,6 +11,7 @@ import { Ratings } from 'components/atoms/Rating'
 
 // commoms
 import { microServices } from 'commons'
+import { userRoles } from 'utils/enums'
 
 // gql
 import { useMutation } from '@apollo/client'
@@ -44,23 +45,16 @@ export const CoachingFeedback: FC<{
 
   const handleOpenCheck = async () => {
     setLoading(true)
-    if (data?.user.coachee) {
-      await coachingFeedback({
-        variables: {
-          feedbackId: feedbackId,
-          coacheeFeedback: feedback,
-          coachingSessionId: coachingSessionId,
-        },
-      })
-    } else {
-      await coachingFeedback({
-        variables: {
-          feedbackId: feedbackId,
-          coachFeedback: feedback,
-          coachingSessionId: coachingSessionId,
-        },
-      })
-    }
+    await coachingFeedback({
+      variables: {
+        feedbackId,
+        coachingSessionId,
+        ...(data?.user.role === userRoles.COACHEE
+          ? { coacheeFeedback: feedback }
+          : { coachFeedback: feedback }),
+      },
+    })
+
     setLoading(false)
     setShowModal(false)
   }
