@@ -51,7 +51,7 @@ export const UploadPicture: FC<UploadPicturesProps> = ({
   const handleSelect = async (ev: FileUploadSelectParams) => {
     const picture = new File(
       [ev.files[0]],
-      dayjs().toISOString().concat(` - ${ev.files[0].name}`),
+      dayjs().toISOString().concat(`-${ev.files[0].name}`),
       { type: ev.files[0].type }
     )
 

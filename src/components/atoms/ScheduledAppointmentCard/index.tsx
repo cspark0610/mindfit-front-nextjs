@@ -34,10 +34,9 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
   role,
   coachingSession,
 }) => {
-  const now = dayjs()
   const formatedDate = dayjs(formatDate(startDate))
-  const isBefore = formatedDate.isBefore(now)
-  const nearby = formatedDate.diff(now, 'minutes')
+  const isBefore = formatedDate.isBefore(dayjs())
+  const nearby = formatedDate.diff(dayjs(), 'minutes')
 
   return (
     <Container className={classes.agended}>
