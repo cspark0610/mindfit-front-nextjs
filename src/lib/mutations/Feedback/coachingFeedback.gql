@@ -1,4 +1,5 @@
 mutation coachingFeedback($data: CoachingSessionFeedbackDto!) {
   createCoachingSessionFeedback(data: $data) {
     id
+  }
 }

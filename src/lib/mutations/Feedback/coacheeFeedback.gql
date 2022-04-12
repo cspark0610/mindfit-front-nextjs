@@ -1,0 +1,5 @@
+mutation coacheeFeedback($data: CoacheeSessionFeedbackDto!) {
+  createCoacheeCoachingSessionFeedback(data: $data) {
+    id
+  }
+}
