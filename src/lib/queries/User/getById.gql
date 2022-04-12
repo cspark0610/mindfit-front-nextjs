@@ -4,7 +4,7 @@ query GetUserById($id: Int!) {
     name
     isStaff
     isActive
-    languages
+    language
     isVerified
     isSuperUser
     coach {
