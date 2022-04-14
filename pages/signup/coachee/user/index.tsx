@@ -1,5 +1,4 @@
 // main tools
-import { Session } from 'next-auth'
 import { getSession } from 'next-auth/react'
 
 // bootstrap components
@@ -21,6 +20,7 @@ import classes from 'styles/signup/userColaborator.module.scss'
 // types
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { GetSSPropsType } from 'types'
+import { Session } from 'next-auth'
 
 const SignupColaboratorUserPage: NextPage<
   GetSSPropsType<typeof getServerSideProps>

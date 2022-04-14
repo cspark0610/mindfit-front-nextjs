@@ -9,6 +9,7 @@ import { Button, Col, Modal, Row, Spinner } from 'react-bootstrap'
 
 // components
 import { Ratings } from 'components/atoms/Rating'
+import { CoachingFeedbackSkeleton } from './Skeleton'
 
 // commoms
 import { microServices } from 'commons'
@@ -36,15 +37,17 @@ export const CoachingFeedback: FC<{
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(true)
   const [showCheck, setShowCheck] = useState(false)
-  const [content, setContent] = useState<any>(undefined)
   const [feedback, setFeedback] = useState<FeedbackProps[]>([])
 
-  useQuery(GET_CONTENT, {
-    variables: { locale },
-    context: { ms: microServices.strapi },
-    onCompleted: (res) => setContent(res.coachCards.data.attributes)
-  })
-  
+  const { loading: contentLoading, data: contentFeedback } = useQuery(
+    GET_CONTENT,
+    {
+      variables: { locale },
+      context: { ms: microServices.strapi },
+    }
+  )
+  const content = contentFeedback.coachingFeedback.data.attributes
+
   const [coachingFeedback] = useMutation(
     data?.user.coachee ? COACHEE_FEEDBACK : COACH_FEEDBACK,
     {
@@ -80,24 +83,30 @@ export const CoachingFeedback: FC<{
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <Col lg={9} className={classes.body}>
-            <h2>{content.title}</h2>
-            <Row className={classes.rating}>
-              <h4>{content.subtitle}</h4>
-              <Ratings
-                feedback={feedback}
-                feedbackId={feedbackId}
-                setFeedback={setFeedback}
-              />
-            </Row>
-            <Col md={4} className={classes.body_button}>
-              <Button className={classes.button} onClick={handleOpenCheck}>
-                {loading ? (
-                  <Spinner animation='border' />
-                ) : (
-                  content.sendButton.label
-                )}
-              </Button>
-            </Col>
+            {contentLoading ? (
+              <CoachingFeedbackSkeleton />
+            ) : (
+              <>
+                <h2>{content.title}</h2>
+                <Row className={classes.rating}>
+                  <h4>{content.subtitle}</h4>
+                  <Ratings
+                    feedback={feedback}
+                    feedbackId={feedbackId}
+                    setFeedback={setFeedback}
+                  />
+                </Row>
+                <Col md={4} className={classes.body_button}>
+                  <Button className={classes.button} onClick={handleOpenCheck}>
+                    {loading ? (
+                      <Spinner animation='border' />
+                    ) : (
+                      content.sendButton.label
+                    )}
+                  </Button>
+                </Col>
+              </>
+            )}
           </Col>
         </Modal.Body>
       </Modal>
