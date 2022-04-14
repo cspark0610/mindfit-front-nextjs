@@ -14,6 +14,8 @@ import { Notes } from 'components/molecules/Notes'
 
 // gql
 import GET_SESSION_TOKEN from 'lib/queries/Session/GetCoachSessionTokens.gql'
+import GET_CONTENT from 'lib/strapi/queries/Coachee/detailContent.gql'
+import { initializeApolloClient } from 'lib/apollo'
 import { useQuery } from '@apollo/client'
 
 // utils
@@ -71,14 +73,14 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
           <Col md={12} xl={3} className='mt-4'>
             <Container className={`p-4 ${classes.section}`}>
-              <Notes coachee={coachee} content={content.notes} />
+              <Notes coachee={coachee} content={content} />
             </Container>
           </Col>
         </Row>
         <Row className='mt-4 mb-4'>
           <Col>
             <Container className={`p-5 ${classes.section}`}>
-              <Evaluation coachee={coachee} content={content.evaluation} />
+              <Evaluation coachee={coachee} content={content} />
             </Container>
           </Col>
         </Row>
@@ -87,17 +89,17 @@ const CoachSession: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   )
 }
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApolloClient()
+  const { data: content } = await apolloClient.query({
+    query: GET_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
   return {
     props: {
       coachingSessionId: ctx.params?.id,
-      content: {
-        notes: { notesTitle: 'Notas' },
-        evaluation: {
-          seeMoreButton: { label: 'Ver más' },
-          evaluationTitle: 'Resumen de la evaluación',
-          testButton: { label: 'Realizar Evaluación' },
-        },
-      },
+      content: content.coacheeDetail.data.attributes,
     },
   }
 }

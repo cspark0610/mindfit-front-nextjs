@@ -1,0 +1,27 @@
+query coacheeSignup($locale: I18NLocaleCode) {
+  coacheeSignup(locale: $locale) {
+    data {
+      attributes {
+        title
+        nameInput {
+          label
+        }
+        phoneNumberInput {
+          label
+        }
+        positionInput {
+          label
+        }
+        aboutPositionInput {
+          label
+        }
+        bioInput {
+          label
+        }
+        completeProfileButton {
+          label
+        }
+      }
+    }
+  }
+}

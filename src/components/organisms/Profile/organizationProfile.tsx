@@ -155,7 +155,7 @@ export const OrganizationProfile: FC<{
                     <li>Coaches nuevos</li>
                     <li>Clases en vivo</li>
                   </ul>
-                  <Button>Actualizar</Button>
+                  <Button>{content.orgProfile.updatePlanButton.label}</Button>
                 </div>
               </Row>
               <Row className={classes.paymentContainer}>
@@ -164,7 +164,7 @@ export const OrganizationProfile: FC<{
                 </h3>
                 <div className={classes.paymentMethod}>
                   <CreditCard width={48} height={48} color='#045095' />
-                  <p>Tarjeta de crédito</p>
+                  <p>{content.orgProfile.creditCardLabel}</p>
                 </div>
                 <p
                   role='button'

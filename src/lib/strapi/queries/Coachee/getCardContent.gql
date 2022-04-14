@@ -3,6 +3,7 @@ query GetCoachDashboardContent($locale: I18NLocaleCode) {
     data {
       attributes {
         accordingToLabel
+        testLabel
         organizationLabel
         signupFromLabel
         coacheeFromLabel

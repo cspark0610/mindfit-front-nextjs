@@ -15,7 +15,7 @@ import { FC, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { microServices } from 'commons'
 
-export const Satisfaction: FC = () => {
+export const Satisfaction: FC<{ content: any }> = ({ content }) => {
   const [data, setData] = useState()
 
   const { loading } = useQuery(SATISFACTION, {
@@ -27,9 +27,7 @@ export const Satisfaction: FC = () => {
 
   return (
     <section className={`mb-5 ${classes.section}`}>
-      <h3 className={`mb-5 text-center ${classes.blue}`}>
-        Satisfacción con el coaching
-      </h3>
+      <h3 className={`mb-5 text-center ${classes.blue}`}>{content.title}</h3>
       <Knob
         max={10}
         value={5.9}
@@ -41,9 +39,7 @@ export const Satisfaction: FC = () => {
         strokeWidth={8}
       />
       <Col xs={6} className='m-auto text-center'>
-        <p className={`fw-bold ${classes.gray}`}>
-          Métricas arrojadas a partir de 110 sesiones
-        </p>
+        <p className={`fw-bold ${classes.gray}`}>{content.description}</p>
       </Col>
       <Row xs='auto' className='justify-content-center align-items-end'>
         <Col xs={8} className='mt-4'>

@@ -33,11 +33,13 @@ import { SetStateType } from 'types'
 import { FC } from 'react'
 
 type ManageAvailabilityProps = {
+  content: any
   agenda: AgendaDataType
   showModal: SetStateType<boolean>
 }
 
 export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
+  content,
   agenda,
   showModal,
 }) => {
@@ -71,13 +73,13 @@ export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
 
   return (
     <Container className={classes.availability}>
-      <h3 className={classes.title}>Gestionar Disponibilidad</h3>
+      <h3 className={classes.title}>{content.availabilityLabel}</h3>
       <Row>
         <Col md={8}>
-          <p>Resumen de disponibilidad</p>
+          <p>{content.summaryLabel}</p>
         </Col>
         <Col className='d-flex align-items-center' md={4}>
-          <label htmlFor='disabled'>Fuera de servicio</label>
+          <label htmlFor='disabled'>{content.outServiceButton.label}</label>
           <InputSwitch
             inputId='disabled'
             checked={disabled}
@@ -98,6 +100,7 @@ export const GeneralAvailability: FC<ManageAvailabilityProps> = ({
                     <DayAvailability
                       day={value}
                       dayKey={key}
+                      content={content}
                       updateRanges={setAvailabilityRanges}
                     />
                   </Accordion.Body>

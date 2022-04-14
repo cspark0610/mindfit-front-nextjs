@@ -6,6 +6,9 @@ query getOrganizationProfileContent($locale: I18NLocaleCode) {
         messageButton {
           label
         }
+        scheduleButton {
+          label
+        }
         coachingArea {
           codeName
           label

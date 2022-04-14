@@ -15,10 +15,11 @@ import { FC } from 'react'
 import { CoacheeDataType } from 'types/models/Coachee'
 
 export const CardNote: FC<{
+  content: any
   notes: CoacheeDataType['coachNotes']
   edit: (note: { id: number; note: string }) => void
   removed: (id: number) => void
-}> = ({ notes, edit, removed }) => {
+}> = ({ content, notes, edit, removed }) => {
   const [selectedNote, setSelectedNote] = useState({ id: NaN, note: '' })
   const menuRef = useRef<ContextMenu>(null)
 
@@ -62,7 +63,7 @@ export const CardNote: FC<{
                 variant='light'
                 className={classes.button}
                 onClick={() => edit(item)}>
-                Ver mas...
+                {content.SeeMoreButton}
               </Button>
             </Row>
           </section>

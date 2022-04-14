@@ -137,7 +137,7 @@ export const CoachProfileCard: FC = () => {
                   <Link href='/user/schedule' passHref>
                     <Button className={classes.button}>
                       <i className={PrimeIcons.CALENDAR} />
-                      <p>Agendar cita</p>
+                      <p>{content.scheduleButton.label}</p>
                     </Button>
                   </Link>
                 </Col>

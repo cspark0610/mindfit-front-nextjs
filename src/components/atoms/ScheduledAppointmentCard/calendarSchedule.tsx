@@ -1,5 +1,5 @@
 // bootstrap components
-import { ButtonGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
+import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { Google, EnvelopeFill, FileEarmarkFill } from 'react-bootstrap-icons'
 
 // styles
@@ -8,13 +8,15 @@ import classes from 'styles/agenda/page.module.scss'
 // types
 import { FC } from 'react'
 
-export const CalendarSchedule: FC = () => {
+export const CalendarSchedule: FC<{ content: any }> = ({ content }) => {
   const handleGoogleSchedule = () => console.log('Google')
   const handleOutlookSchedule = () => console.log('Outlook')
   const handleDownloadSchedule = () => console.log('Download')
 
   return (
-    <DropdownButton className={classes.dropdown} title='Agregar al calendario'>
+    <DropdownButton
+      className={classes.dropdown}
+      title={content.addCalendarButton.label}>
       <Dropdown.Item onClick={handleGoogleSchedule}>
         <Google className='me-2' color='#045095' />
         Google

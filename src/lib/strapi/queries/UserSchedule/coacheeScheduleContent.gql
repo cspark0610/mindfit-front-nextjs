@@ -1,0 +1,35 @@
+query coacheeSchedule($locale: I18NLocaleCode) {
+  coacheeSchedule(locale: $locale) {
+  	data {
+      attributes {
+      	title
+        availabilityLabel
+        scheduleButton {
+          label
+        }
+        scheduleAppointmentButton {
+          label
+        }
+        addCalendarButton {
+          label
+        }
+        submitButton {
+          label
+        }
+        appointmentCard {
+          data{
+            attributes {
+              title
+              offRemoveButton {
+                label
+              }
+              getInButton {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

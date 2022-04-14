@@ -95,6 +95,14 @@ query orgDashboard($locale: I18NLocaleCode) {
             }
           }
         }
+        graphSatisfaction {
+          data {
+            attributes {
+              title
+              description
+            }
+          }
+        }
         graphTimeLine {
           data {
             attributes {

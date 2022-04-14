@@ -82,7 +82,9 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
     <>
       <h1 className={classes.title}>{content.title}</h1>
       {coach.coachAgenda?.outOfService && (
-        <span className={classes.outOfService}>Fuera de servicio</span>
+        <span className={classes.outOfService}>
+          {content.outServiceButton.label}
+        </span>
       )}
       <Row className={classes.agenda}>
         <Col className='p-2' xs={12} md={6} lg={7}>
@@ -126,6 +128,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
                       <ScheduledAppointmentCard
+                        content={content}
                         actions
                         {...item}
                         role='coach'
@@ -137,11 +140,8 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
           </div>
         </Col>
         <Col xs={12} md={6} lg={5}>
-          <h2 className={classes.title}>Gestionar disponibilidad</h2>
-          <p>
-            Seleccionando una fecha futura, podrás configurar tu disponibilidad
-            para ese día en especifico.
-          </p>
+          <h2 className={classes.title}>{content.availabilityLabel}</h2>
+          <p>{content.description}</p>
           <Row className='justify-content-center align-items-center mb-5'>
             <Col xs={5}>
               <Button
@@ -151,14 +151,14 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
                 }
                 className={classes.button}
                 onClick={handleManageSingleAvailability}>
-                Gestionar disponibilidad para un día
+                {content.availabilityDayButton.label}
               </Button>
             </Col>
             <Col xs={5}>
               <Button
                 className={classes.button}
                 onClick={handleManageAvailability}>
-                Gestionar Disponibilidad
+                {content.availabilityButton}
               </Button>
             </Col>
           </Row>
@@ -176,7 +176,12 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
               className={`w-100 justify-content-center ${classes.appointments}`}>
               {appointments.map((item, idx) => (
                 <Col key={idx} xs={12}>
-                  <ScheduledAppointmentCard preview {...item} role='coach' />
+                  <ScheduledAppointmentCard
+                    content={content}
+                    preview
+                    {...item}
+                    role='coach'
+                  />
                 </Col>
               ))}
             </Row>
@@ -192,6 +197,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <SingleAvailability
+            content={content}
             selectedDate={selectedDate}
             showModal={setShowManageSingleAvailability}
             agenda={coach.coachAgenda as AgendaDataType}
@@ -208,6 +214,7 @@ export const CoachSchedule: FC<CoachScheduleProps> = ({ coach, content }) => {
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <GeneralAvailability
+            content={content}
             showModal={setShowManageGeneralAvailability}
             agenda={coach.coachAgenda as AgendaDataType}
           />

@@ -4,6 +4,7 @@ query GetCoacheeDetailContent($locale: I18NLocaleCode) {
       attributes {
         notesTitle
         historyLabel
+        evaluationsLabel
         evaluationTitle
         seeMoreButton {
           label
@@ -14,6 +15,9 @@ query GetCoacheeDetailContent($locale: I18NLocaleCode) {
         watchButton {
           label
         }
+        editButton {
+          label
+        }
         coacheeCard {
           data {
             attributes {
@@ -22,6 +26,16 @@ query GetCoacheeDetailContent($locale: I18NLocaleCode) {
               signupFromLabel
               coacheeFromLabel
               messageButton {
+                label
+              }
+            }
+          }
+        }
+        editor {
+          data {
+            attributes {
+              placeholderNote
+              saveButton {
                 label
               }
             }

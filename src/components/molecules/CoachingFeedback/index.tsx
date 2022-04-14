@@ -1,5 +1,6 @@
 //main tools
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
 // bootstrap components
@@ -14,7 +15,8 @@ import { microServices } from 'commons'
 import { userRoles } from 'utils/enums'
 
 // gql
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
+import GET_CONTENT from 'lib/strapi/queries/coaching/feedbackContent.gql'
 import COACH_FEEDBACK from 'lib/mutations/Feedback/coachFeedback.gql'
 import COACHEE_FEEDBACK from 'lib/mutations/Feedback/coacheeFeedback.gql'
 
@@ -30,11 +32,19 @@ export const CoachingFeedback: FC<{
   coachingSessionId: number
 }> = ({ coachingSessionId, feedbackId }) => {
   const { data } = useSession()
+  const { locale } = useRouter()
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(true)
   const [showCheck, setShowCheck] = useState(false)
+  const [content, setContent] = useState<any>(undefined)
   const [feedback, setFeedback] = useState<FeedbackProps[]>([])
 
+  useQuery(GET_CONTENT, {
+    variables: { locale },
+    context: { ms: microServices.strapi },
+    onCompleted: (res) => setContent(res.coachCards.data.attributes)
+  })
+  
   const [coachingFeedback] = useMutation(
     data?.user.coachee ? COACHEE_FEEDBACK : COACH_FEEDBACK,
     {
@@ -70,10 +80,9 @@ export const CoachingFeedback: FC<{
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
           <Col lg={9} className={classes.body}>
-            <h2>Valorar sesión del coaching</h2>
+            <h2>{content.title}</h2>
             <Row className={classes.rating}>
-              <h4>¿Que tal te fue en la sesión?</h4>
-              <p>Podrías ayudarnos a calificar audio y video </p>
+              <h4>{content.subtitle}</h4>
               <Ratings
                 feedback={feedback}
                 feedbackId={feedbackId}
@@ -82,7 +91,11 @@ export const CoachingFeedback: FC<{
             </Row>
             <Col md={4} className={classes.body_button}>
               <Button className={classes.button} onClick={handleOpenCheck}>
-                {loading ? <Spinner animation='border' /> : 'Aceptar'}
+                {loading ? (
+                  <Spinner animation='border' />
+                ) : (
+                  content.sendButton.label
+                )}
               </Button>
             </Col>
           </Col>
@@ -95,7 +108,7 @@ export const CoachingFeedback: FC<{
         onHide={() => setShowCheck(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body>
-          <h1>Gracias por tu feedback</h1>
+          <h1>{content.gratitudeMessage}</h1>
           <CheckSquare className={classes.icon} />
         </Modal.Body>
       </Modal>

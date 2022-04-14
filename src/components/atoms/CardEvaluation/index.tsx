@@ -11,9 +11,6 @@ import { Calendar, FileEarmarkPerson } from 'react-bootstrap-icons'
 import { ContextMenu } from 'primereact/contextmenu'
 import { PrimeIcons } from 'primereact/api'
 
-// commons
-import { formatDate } from 'commons'
-
 // styles
 import classes from 'styles/CardEvaluation/styles.module.scss'
 
@@ -21,6 +18,7 @@ import classes from 'styles/CardEvaluation/styles.module.scss'
 import { FC } from 'react'
 
 type CardEvaluationProps = {
+  content: any
   edit: (evaluation: {
     id: number
     evaluation: string
@@ -36,6 +34,7 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
   removed,
   readOnly,
   evaluation,
+  content,
 }) => {
   const menuRef = useRef<ContextMenu>(null)
 
@@ -85,7 +84,7 @@ export const CardEvaluation: FC<CardEvaluationProps> = ({
               onClick={() => {
                 edit(evaluation), readOnly()
               }}>
-              Ver
+              {content.SeeMoreButton}
             </Button>
           </Col>
         </Row>

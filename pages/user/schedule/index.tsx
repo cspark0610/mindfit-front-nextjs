@@ -4,7 +4,8 @@ import { getSession } from 'next-auth/react'
 // gql
 import { initializeApolloClient } from 'lib/apollo'
 import { createApolloClient } from 'lib/apolloClient'
-import GET_PAGE_CONTENT from 'lib/strapi/queries/UserSchedule/page.gql'
+import COACH_SCHEDULE_CONTENT from 'lib/strapi/queries/UserSchedule/coachScheduleContent.gql'
+import COACHEE_SCHEDULE_CONTENT from 'lib/strapi/queries/UserSchedule/coacheeScheduleContent.gql'
 import GET_COACH_AGENDA from 'lib/queries/Coach/getAgenda.gql'
 import GET_COACHEE_AGENDA from 'lib/queries/Coachee/getAgenda.gql'
 
@@ -34,9 +35,11 @@ const AgendaPage: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
   <Layout>
     <Container className='my-5'>
       {coacheeAgenda && (
-        <CoacheeSchedule coachee={coacheeAgenda} content={content} />
+        <CoacheeSchedule coachee={coacheeAgenda} content={content.coachee} />
       )}
-      {coachAgenda && <CoachSchedule coach={coachAgenda} content={content} />}
+      {coachAgenda && (
+        <CoachSchedule coach={coachAgenda} content={content.coach} />
+      )}
     </Container>
   </Layout>
 )
@@ -71,8 +74,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         ({ data }) => (userData.coach = data.getCoachProfile as CoachDataType)
       )
 
-  const { data } = await apolloClient.query({
-    query: GET_PAGE_CONTENT,
+  const { data: contentCoachee } = await apolloClient.query({
+    query: COACHEE_SCHEDULE_CONTENT,
+    variables: { locale: ctx.locale },
+    context: { ms: microServices.strapi },
+  })
+
+  const { data: contentCoach } = await apolloClient.query({
+    query: COACH_SCHEDULE_CONTENT,
     variables: { locale: ctx.locale },
     context: { ms: microServices.strapi },
   })
@@ -85,7 +94,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       coachAgenda: userData.coach
         ? { ...userData.coach, user: session?.user }
         : null,
-      content: data.coacheeSchedule.data.attributes,
+      content: {
+        coachee: contentCoachee.coacheeSchedule.data.attributes,
+        coach: contentCoach.coachSchedule.data.attributes,
+      },
     },
   }
 }

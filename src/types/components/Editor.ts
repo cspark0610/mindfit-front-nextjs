@@ -6,4 +6,5 @@ export interface StyledEditorProps extends EditorProps {
   removed?: (id: number) => void
   loading: boolean
   save: () => void
+  content: any
 }
