@@ -1,0 +1,14 @@
+query coachingFeedback($locale: I18NLocaleCode) {
+  coachingFeedback(locale: $locale) {
+    data {
+      attributes {
+        title
+        subtitle
+        sendButton {
+          label
+        }
+        gratitudeMessage
+      }
+    }
+  }
+}

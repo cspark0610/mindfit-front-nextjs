@@ -7,6 +7,10 @@ query getOrganizationProfileContent($locale: I18NLocaleCode) {
         subscriptionLabel
         paymentMethodLabel
         changePasswordLabel
+        creditCardLabel
+        updatePlanButton {
+          label
+        }
         submitButton {
           label
         }

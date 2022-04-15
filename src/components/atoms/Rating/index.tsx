@@ -50,7 +50,6 @@ export const Ratings: FC<{
 
   return (
     <Container className={classes.section}>
-      <h5>Feedback de la sesion</h5>
       {!loading ? (
         feedback.map((item) => (
           <Row md={2} key={item.codename} className={classes.stars}>

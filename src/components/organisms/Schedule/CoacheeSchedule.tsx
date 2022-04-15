@@ -104,6 +104,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
                   .map((item, idx) => (
                     <Col key={idx} xs={12} lg={8}>
                       <ScheduledAppointmentCard
+                        content={content}
                         actions
                         {...item}
                         role='coachee'
@@ -119,7 +120,7 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
                 <Button
                   onClick={handleShowAvailabilityRange}
                   className={classes.button}>
-                  Solicitar cita con el coach
+                  {content.submitButton.label}
                 </Button>
               )}
             </Row>
@@ -132,7 +133,11 @@ export const CoacheeSchedule: FC<CoacheeScheduleProps> = ({
               ?.sort((prev, next) => sortingAscending(prev, next, 'startDate'))
               .map((item, idx) => (
                 <Col key={idx} xs={12}>
-                  <ScheduledAppointmentCard preview {...item} />
+                  <ScheduledAppointmentCard
+                    content={content}
+                    preview
+                    {...item}
+                  />
                 </Col>
               ))}
           </Row>

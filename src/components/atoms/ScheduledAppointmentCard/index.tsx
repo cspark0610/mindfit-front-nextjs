@@ -20,6 +20,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 
 type ScheduledAppointmentCardProps = {
+  content: any
   startDate: string
   preview?: boolean
   actions?: boolean
@@ -28,6 +29,7 @@ type ScheduledAppointmentCardProps = {
 }
 
 export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
+  content,
   startDate,
   preview,
   actions,
@@ -51,7 +53,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
           </span>
         </Col>
         <Col className={classes.info} xs={7}>
-          <strong className={classes.info_title}>Sesión de Coaching</strong>
+          <strong className={classes.info_title}>{content.title}</strong>
           <span className={classes.info_desc}>
             {formatedDate.format('HH:MM')}
           </span>
@@ -69,7 +71,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
       <Row className='w-100 flex-row-reverse'>
         {preview && !isBefore && (
           <Col xs='auto'>
-            <CalendarSchedule />
+            <CalendarSchedule content={content}/>
           </Col>
         )}
       </Row>
@@ -79,12 +81,12 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
             {role !== 'coach' && (
               <Col xs={6}>
                 <Button variant='primary' className={classes.button}>
-                  Posponer / eliminar
+                  {content.offRemoveButton.label}
                 </Button>
               </Col>
             )}
             <Col xs={6}>
-              <CalendarSchedule />
+              <CalendarSchedule content={content}/>
             </Col>
           </>
         )}
@@ -95,7 +97,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
               href={`/coaching-session/${role}/${coachingSession?.id}`}
               passHref>
               <Button variant='primary' className={classes.button}>
-                Entra a tu cita ¡Ya es la hora!
+                {content.getInButton.label}
               </Button>
             </Link>
           </Col>

@@ -22,6 +22,7 @@ import { SetStateType } from 'types'
 import { FC } from 'react'
 
 type DayAvailabilityProps = {
+  content: any
   dayKey: string
   day: { from?: string | Date; to?: string | Date }[]
   updateRanges: SetStateType<availabilityRangeDataType | undefined>
@@ -30,6 +31,7 @@ type DayAvailabilityProps = {
 export const DayAvailability: FC<DayAvailabilityProps> = ({
   day,
   dayKey,
+  content,
   updateRanges,
 }) => {
   const [availableRanges, setAvailableRanges] = useState(day)
@@ -64,7 +66,7 @@ export const DayAvailability: FC<DayAvailabilityProps> = ({
       <Row className='flex-row-reverse my-4'>
         <Col xs={5}>
           <Button onClick={handleAddRange} variant='outline-primary'>
-            Agregar Intervalo <Plus size={28} />
+            {content.addIntervalButton.label}* <Plus size={28} />
           </Button>
         </Col>
       </Row>
@@ -72,7 +74,7 @@ export const DayAvailability: FC<DayAvailabilityProps> = ({
         <Row className='my-4' key={idx}>
           <Col className={classes.range_item} xs={5}>
             <label htmlFor={`from-${idx}`} className={classes.label}>
-              Desde
+              {content.fromLabel}
             </label>
             <Calendar
               timeOnly
@@ -88,7 +90,7 @@ export const DayAvailability: FC<DayAvailabilityProps> = ({
           </Col>
           <Col className={classes.range_item} xs={5}>
             <label htmlFor={`to-${idx}`} className={classes.label}>
-              Hasta
+              {content.until}
             </label>
             <Calendar
               timeOnly

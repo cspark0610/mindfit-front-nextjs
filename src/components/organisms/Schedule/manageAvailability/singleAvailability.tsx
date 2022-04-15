@@ -26,12 +26,14 @@ import { SetStateType } from 'types'
 import { AgendaDataType, RangeDataType } from 'types/models/Agenda'
 
 type SingleAvailabilityProps = {
+  content: any
   agenda: AgendaDataType
   selectedDate: Date | null
   showModal: SetStateType<boolean>
 }
 
 export const SingleAvailability: FC<SingleAvailabilityProps> = ({
+  content,
   agenda,
   showModal,
   selectedDate,
@@ -78,13 +80,13 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
 
   return (
     <Container className={classes.availability}>
-      <h3 className={classes.title}>Gestionar disponibilidad para un dia</h3>
+      <h3 className={classes.title}>{content.availabilityDayButton.label}</h3>
       <Row>
         <Col xs={8}>
           <p>{dateToSchedule?.key}</p>
         </Col>
         <Col className='d-flex align-items-center' md={4}>
-          <label htmlFor='disabled'>Fuera de servicio</label>
+          <label htmlFor='disabled'>{content.outServiceButton.label}</label>
           <InputSwitch
             className={classes.availability_switch}
             inputId='disabled'
@@ -97,6 +99,7 @@ export const SingleAvailability: FC<SingleAvailabilityProps> = ({
       {dateToSchedule && (
         <Row className='my-5'>
           <DayAvailability
+            content={content}
             dayKey={dateToSchedule?.key as string}
             day={dateToSchedule?.value}
             updateRanges={setAvailabilityRange}

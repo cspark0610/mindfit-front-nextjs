@@ -46,7 +46,10 @@ import { FC, ChangeEvent } from 'react'
 import { Session } from 'next-auth'
 import { ChangeType } from 'types'
 
-export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
+export const ColaboratorSignup: FC<{ session: Session; content: any }> = ({
+  session,
+  content,
+}) => {
   const { push } = useRouter()
   const [uploadUrl, setUploadUrl] = useState('')
   const [colaboratorData, setUserData] = useState<
@@ -94,7 +97,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
 
   return (
     <section className={classes.container}>
-      <h1 className={classes.title}>Completa tu perfil</h1>
+      <h1 className={classes.title}>{content.title}</h1>
       <UploadPicture setUploadUrl={setUploadUrl} setData={setUserData} />
       <Container fluid>
         <Row className={classes.row}>
@@ -103,7 +106,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               name='name'
               value={colaboratorData.name}
               onChange={handleChange}
-              placeholder='Nombre y apellido'
+              placeholder={content.nameInput.label}
               className={classes.input}
             />
           </Col>
@@ -114,7 +117,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               value={colaboratorData.phoneNumber}
               className={classes.input}
               mask='+99 (999) 999-9999'
-              placeholder='Numero de celular'
+              placeholder={content.phoneNumberInput.label}
             />
           </Col>
           <Col xs={12} md={4}>
@@ -123,7 +126,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               name='position'
               options={workPositions}
               onChange={handleChange}
-              placeholder='Posición o Cargo'
+              placeholder={content.positionInput.label}
               className={classes.input}
               value={colaboratorData.position}
             />
@@ -136,7 +139,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               value={colaboratorData.aboutPosition}
               onChange={handleChange}
               className={classes.textarea}
-              placeholder='Descripcion del cargo'
+              placeholder={content.aboutPositionInput.label}
             />
           </Col>
 
@@ -148,7 +151,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               value={colaboratorData.bio}
               onChange={handleChange}
               className={classes.textarea}
-              placeholder='Biografía'
+              placeholder={content.bioInput.label}
             />
           </Col>
         </Row>
@@ -169,7 +172,7 @@ export const ColaboratorSignup: FC<{ session: Session }> = ({ session }) => {
               disabled={!validateUserSignup(colaboratorData)}
               onClick={handleSignup}
               className={classes.button}>
-              Completa tu perfil
+              {content.completeProfileButton.label}
             </Button>
           </Col>
         </Row>

@@ -152,7 +152,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
           />
         )}
         <h3 className={classes.subtitle}>
-          Sesión con{' '}
+          {content.sessionWithLabel}{' '}
           {!coach ? <Spinner animation='border' /> : coach?.user?.name}
         </h3>
       </Row>
@@ -188,10 +188,10 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
           </div>
         </Col>
         <Col className='px-5' xs={6}>
-          <p className={`my-4 ${classes.label}`}>¿A qué hora puedes?</p>
+          <p className={`my-4 ${classes.label}`}>{content.timeQuestionLabel}</p>
           <Row className='justify-content-center'>
             {!selectedRanges ? (
-              <p>Escoge una fecha</p>
+              <p>{content.chooseDateLabel}</p>
             ) : (
               selectedRanges?.map((range, idx) => {
                 const from = dayjs(range.from).format('HH:mm')
@@ -216,7 +216,7 @@ export const ScheduleAppointment: FC<ScheduleAppointmentProps> = ({
               <Button
                 onClick={handleScheduleAppointment}
                 className={classes.button}>
-                Guardar y agendar
+                {content.SaveSheduleButton.label}
               </Button>
             </Col>
           </Row>

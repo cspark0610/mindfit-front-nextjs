@@ -90,7 +90,7 @@ export const CoacheeProfileCard: FC<{
             </a>
           </Link>
           <p className='fw-bold m-0'>{content?.accordingToLabel}</p>
-          <p className='fw-bold'>prueba de autoevaluación</p>
+          <p className='fw-bold'>{content.testLabel}</p>
           <Row className='justify-content-center'>
             <Col xs={9}>
               {coachee.dimensionAverages?.map((area) => (

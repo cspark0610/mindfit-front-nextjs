@@ -128,6 +128,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           <Col md={6} lg={8} xl={6} className='pt-4'>
             <Container className={`p-0 ${classes.section_small}`}>
               <StyledEditor
+                content={content}
                 readOnly={readOnly}
                 loading={loading}
                 save={saveEvaluation}
@@ -138,7 +139,9 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
               {readOnly && (
                 <Row xs='auto' className='m-3 justify-content-end'>
                   <Col>
-                    <Button onClick={() => setReadOnly(false)}>Editar</Button>
+                    <Button onClick={() => setReadOnly(false)}>
+                      {content.editButton.label}
+                    </Button>
                   </Col>
                 </Row>
               )}
@@ -151,7 +154,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
           </Col>
         </Row>
         <Row className='pt-4 pb-4'>
-          <h3 className={classes.title}>Evaluaciones Realizadas</h3>
+          <h3 className={classes.title}>{content.evaluationsLabel}</h3>
           <Container className={`my-4 ${classes.evaluations}`}>
             {loading ? (
               <Spinner animation='border' />
@@ -168,6 +171,7 @@ const DetailCoachee: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
                 {evaluations.map((evaluation) => (
                   <Col key={evaluation.id} xs={6} lg={3} className='mb-3'>
                     <CardEvaluation
+                      content={content}
                       readOnly={() => setReadOnly(true)}
                       evaluation={evaluation}
                       edit={handleEditEvaluation}

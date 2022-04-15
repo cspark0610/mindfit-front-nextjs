@@ -1,0 +1,42 @@
+query coachSchedule($locale: I18NLocaleCode) {
+  coachSchedule(locale: $locale) {
+    data {
+      attributes {
+        title
+        availabilityLabel
+        summaryLabel
+        untilLabel
+        fromLabel
+        description
+        availabilityDayButton {
+          label
+        }
+        availabilityButton {
+          label
+        }
+        outServiceButton {
+          label
+        }
+        addIntervalButton {
+          label
+        }
+        addCalendarButton {
+          label
+        }
+        appointmentCard {
+          data{
+            attributes {
+              title
+              offRemoveButton {
+                label
+              }
+              getInButton {
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

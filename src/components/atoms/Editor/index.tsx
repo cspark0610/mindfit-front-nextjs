@@ -14,6 +14,7 @@ import { FC } from 'react'
 import { StyledEditorProps } from 'types/components/Editor'
 
 export const StyledEditor: FC<StyledEditorProps> = ({
+  content,
   loading,
   coachNote,
   save,
@@ -50,7 +51,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
             className={classes.edit}
             headerTemplate={renderHeader()}
             value={coachNote.note || coachNote.evaluation}
-            placeholder='Escribe tu nota...'
+            placeholder={content.placeholderNote}
           />
           <Row xs='auto' className='m-3 justify-content-between'>
             <Col>
@@ -71,7 +72,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
                 {loading ? (
                   <Spinner animation='border' color='primary' />
                 ) : (
-                  'Guardar'
+                  content.saveButton.label
                 )}
               </Button>
             </Col>
@@ -84,7 +85,7 @@ export const StyledEditor: FC<StyledEditorProps> = ({
           className={classes.edit}
           headerTemplate={renderHeader()}
           value={coachNote.note || coachNote.evaluation}
-          placeholder='Escribe tu nota...'
+          placeholder={content.placeholderNote}
         />
       )}
     </>

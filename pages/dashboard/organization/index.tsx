@@ -54,7 +54,7 @@ const OrgDashboard: NextPage<GetSSPropsType<typeof getServerSideProps>> = ({
         </Col>
         <Col sm={12} lg={6} className='mb-5'>
           <Container>
-            <Satisfaction />
+            <Satisfaction content={content.graphSatisfaction} />
             <FocusAreas content={content.graphFocusArea} />
           </Container>
         </Col>
@@ -99,6 +99,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         coacheeForm: content.coacheeForm.data.attributes,
         confirmDeletion: content.confirmDeletion.data.attributes,
         graphDevelopmentArea: content.graphDevelopmentArea.data.attributes,
+        graphSatisfaction: content.graphSatisfaction.data.attributes,
         graphFocusArea: content.graphFocusArea.data.attributes,
         graphTimeLine: content.graphTimeLine.data.attributes,
       },
