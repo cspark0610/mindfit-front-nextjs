@@ -1,5 +1,5 @@
 // main tools
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { PrimeIcons } from 'primereact/api'
 
 // bootstrap components
@@ -13,7 +13,7 @@ import classes from 'styles/Library/page.module.scss'
 
 // types
 import { FC } from 'react'
-import { SubmitType } from 'types'
+import { ChangeType } from 'types'
 
 type FilterProps = {
   placeholder: string
@@ -28,48 +28,37 @@ export const Filter: FC<FilterProps> = ({
   postCategories,
   defaultCategory,
 }) => {
-  const formRef = useRef<HTMLFormElement>(null)
   const [searcher, setSearcher] = useState('')
   const [selectedCategory, setSelectedCategory] = useState(defaultCategory)
 
   const handleClick = (category: string) => {
     setSelectedCategory(category)
-    const filter = { postCategories: { category: { eq: category } } }
-    refetch(filter)
+    refetch({ postCategories: { category: { eq: category } } })
   }
 
-  const handleSubmit = (ev: SubmitType) => {
-    ev.preventDefault()
-    const filter = { title: { contains: searcher } }
-    refetch(filter)
-    setSearcher('')
+  const handleChange = (ev: ChangeType) => {
+    setSearcher(ev.target.value)
+    refetch({ title: { containsi: ev.target.value } })
     setSelectedCategory('')
   }
 
   useEffect(() => {
     if (defaultCategory) {
-      const filter = { postCategories: { category: { eq: defaultCategory } } }
-      refetch(filter)
+      refetch({ postCategories: { category: { eq: defaultCategory } } })
     }
   }, [defaultCategory, refetch])
 
   return (
     <Row className={classes.filter}>
       <Col xs={12} md={8}>
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className={`p-input-icon-right ${classes.searcher}`}>
-          <i
-            onClick={() => formRef.current?.requestSubmit()}
-            className={`${classes.inputIcon} ${PrimeIcons.SEARCH}`}
-          />
+        <form className={`p-input-icon-right ${classes.searcher}`}>
+          <i className={`${classes.inputIcon} ${PrimeIcons.SEARCH}`} />
           <InputText
             type='search'
             value={searcher}
             placeholder={placeholder}
             className={classes.input}
-            onChange={(ev) => setSearcher(ev.target.value)}
+            onChange={(ev) => handleChange(ev)}
           />
         </form>
       </Col>
