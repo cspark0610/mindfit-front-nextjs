@@ -123,7 +123,12 @@ export const Notes: FC<{ coachee: CoacheeDataType; content: any }> = ({
         </Col>
       </Row>
       {!showEdit ? (
-        <CardNote content={content} notes={notes} edit={edit} removed={confirmRemove} />
+        <CardNote
+          content={content}
+          notes={notes}
+          edit={edit}
+          removed={confirmRemove}
+        />
       ) : (
         <StyledEditor
           content={content}

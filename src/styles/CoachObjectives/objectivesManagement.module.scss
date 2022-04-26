@@ -1,0 +1,29 @@
+@import '../variables.scss';
+@import '../UI/Button/button.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+
+.subtitle {
+  color: $primary;
+}
+
+.icon {
+  font-size: 24px;
+  color: $primary;
+}
+
+.dialog {
+  width: 80%;
+}
+
+.progress {
+  background: $lightGray;
+  :global(.p-progressbar-value) {
+    background-color: $primary;
+  }
+  :global(.p-progressbar-label) {
+    color: $white;
+  }
+  &_icon {
+    color: $secondary;
+  }
+}

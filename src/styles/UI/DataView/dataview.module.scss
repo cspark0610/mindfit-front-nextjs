@@ -1,0 +1,13 @@
+.dataiew {
+  :global(.p-dataview-content) {
+    background-color: transparent !important;
+    :global(.p-grid) {
+      display: flex;
+      flex-wrap: wrap;
+      > div {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+    }
+  }
+}

@@ -1,4 +1,8 @@
 @import '../variables.scss';
+@import '../UI/Card/AppCard.module.scss';
+@import '../UI/Modal/appModal.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/DataView/dataview.module.scss';
 
 .subtitle {
   color: $primary;
@@ -6,4 +10,22 @@
 
 .paragraph {
   color: gray;
+}
+
+.icon {
+  font-size: 24px;
+  color: $secondary;
+}
+
+.close {
+  padding: 40px 40px 0;
+  border-bottom: none;
+}
+
+.section_modal {
+  @extend .section;
+  border: none;
+  @media (max-width: 991px) {
+    padding: 80px 30px;
+  }
 }
