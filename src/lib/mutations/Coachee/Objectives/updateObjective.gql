@@ -1,0 +1,5 @@
+mutation updateObjective($data: CreateUpdateCoacheeObjectiveDto!, $id: Int!) {
+  updateCoacheeObjective(data: $data, id: $id) {
+    id
+  }
+}

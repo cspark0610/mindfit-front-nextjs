@@ -5,11 +5,14 @@ import { useState } from 'react'
 import { Icons } from '../Icons'
 
 // bootstrap components
-import { Button, Col } from 'react-bootstrap'
+import { Button, Col, Spinner } from 'react-bootstrap'
 
 // prime components
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
+
+// services
+import { useCoacheeObjectives } from 'services/coachee'
 
 // styles
 import classes from 'styles/CoachObjectives/objectivesManagement.module.scss'
@@ -18,9 +21,14 @@ import classes from 'styles/CoachObjectives/objectivesManagement.module.scss'
 import { FC } from 'react'
 import { ChangeType } from 'types'
 
-export const AddObjectives: FC = () => {
+export const AddObjectives: FC<{ show: (ev: boolean) => void }> = ({
+  show,
+}) => {
   const [goal, setGoal] = useState({ title: '', icon: '' })
   const [showIcons, setShowIcons] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const { addObjective } = useCoacheeObjectives()
 
   const handleChange = (ev: ChangeType) => {
     setGoal({ ...goal, [ev.target.id]: ev.target.value })
@@ -31,8 +39,11 @@ export const AddObjectives: FC = () => {
     setShowIcons(false)
   }
 
-  const handleAddGoal = () => {
-    console.log(goal)
+  const handleAddGoal = async () => {
+    setLoading(true)
+    await addObjective({ variables: { data: goal } })
+    setLoading(false)
+    show(false)
   }
 
   return (
@@ -66,7 +77,11 @@ export const AddObjectives: FC = () => {
         />
       </Col>
       <Col className='text-end'>
-        <Button onClick={handleAddGoal}>Guardar</Button>
+        <Button
+          onClick={handleAddGoal}
+          disabled={!goal.icon || !goal.title ? true : false}>
+          {!loading ? 'Guardar' : <Spinner animation='border' />}
+        </Button>
       </Col>
     </>
   )

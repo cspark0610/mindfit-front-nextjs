@@ -1,28 +1,39 @@
+// main tools
+import { useState } from 'react'
+
 // bootstrap components
-import { Button, Col } from 'react-bootstrap'
+import { Button, Col, Spinner } from 'react-bootstrap'
 
 // prime components
 import { InputText } from 'primereact/inputtext'
+
+// services
+import { useCoacheeObjectives } from 'services/coachee'
 
 // styles
 import classes from 'styles/CoachObjectives/objectivesManagement.module.scss'
 
 // type
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { ChangeType } from 'types'
 
-export const AddTasks: FC<{ objectiveId: number }> = ({ objectiveId }) => {
-  const [task, setTask] = useState({
-    title: '',
-    coacheeObjectiveId: objectiveId,
-  })
+export const AddTasks: FC<{ goalId: number; show: (ev: boolean) => void }> = ({
+  goalId,
+  show,
+}) => {
+  const [task, setTask] = useState({ title: '', coacheeObjectiveId: goalId })
+  const [loading, setLoading] = useState(false)
+  const { addTask } = useCoacheeObjectives()
 
   const handleChange = (ev: ChangeType) => {
     setTask({ ...task, [ev.target.id]: ev.target.value })
   }
 
-  const handleAddTask = () => {
-    console.log(task)
+  const handleAddTask = async () => {
+    setLoading(true)
+    await addTask({ variables: { data: task } })
+    setLoading(false)
+    show(false)
   }
 
   return (
@@ -40,7 +51,9 @@ export const AddTasks: FC<{ objectiveId: number }> = ({ objectiveId }) => {
         />
       </Col>
       <Col className='text-end'>
-        <Button onClick={handleAddTask}>Guardar</Button>
+        <Button onClick={handleAddTask} disabled={!task.title ? true : false}>
+          {!loading ? 'Guardar' : <Spinner animation='border' />}
+        </Button>
       </Col>
     </>
   )

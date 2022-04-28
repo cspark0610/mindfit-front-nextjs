@@ -35,5 +35,15 @@ query GetCoacheeProfile {
     assignedCoach {
       id
     }
+    objectives {
+      id
+      icon
+      title
+      tasks{
+        id
+        title
+        progress
+      }
+    }
   }
 }

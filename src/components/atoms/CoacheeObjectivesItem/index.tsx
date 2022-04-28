@@ -24,8 +24,8 @@ import { ObjectivesProps, TasksProps } from 'types/components/Objectives'
 export const CoacheeObjectivesItem: FC<{
   editGoal: (ev: ObjectivesProps) => void
   removeGoal: (ev: number) => void
-  objectives: ObjectivesProps
-}> = ({ editGoal, removeGoal, objectives }) => {
+  goals: ObjectivesProps
+}> = ({ editGoal, removeGoal, goals }) => {
   const menu = useRef<Menu>(null)
   const cm = useRef<ContextMenu>(null)
   const [showAddTask, setShowAddTask] = useState(false)
@@ -35,13 +35,13 @@ export const CoacheeObjectivesItem: FC<{
   const items = [
     {
       label: 'Editar',
-      icon: 'pi pi-fw pi-pencil',
-      command: () => editGoal(objectives),
+      icon: 'pi pi-pencil',
+      command: () => editGoal(goals),
     },
     {
       label: 'Eliminar',
-      icon: 'pi pi-fw pi-trash',
-      command: () => removeGoal(objectives.id),
+      icon: 'pi pi-trash',
+      command: () => removeGoal(goals.id),
     },
   ]
 
@@ -59,11 +59,11 @@ export const CoacheeObjectivesItem: FC<{
         className={classes.goalsCard}
         onContextMenu={(e) => cm.current?.show(e)}>
         <div className={`text-center ${classes.section}`}>
-          <div className={`d-flex ${classes.section_header}`}>
+          <div className={`d-flex mb-3 ${classes.section_header}`}>
             <Col>
               <Row xs='auto' className='justify-content-center'>
-                <i className={`fs-4 ${objectives.icon}`} />
-                <p className='fw-bold fs-6 my-0'>{objectives.title}</p>
+                <i className={`fs-4 ${goals.icon}`} />
+                <p className='fw-bold fs-6 my-0'>{goals.title}</p>
               </Row>
             </Col>
             <Menu model={items} popup ref={menu} />
@@ -73,21 +73,32 @@ export const CoacheeObjectivesItem: FC<{
               className={`${classes.icon} ${PrimeIcons.ALIGN_JUSTIFY}`}
             />
           </div>
-          {objectives.tasks?.map((task) => (
-            <div key={task.title} className={`text-center ${classes.task}`}>
-              <div className='d-flex justify-content-between align-items-center'>
-                <Col xs={10}>
-                  <p className={classes.task_title}>{task.title}</p>
-                </Col>
-                <i
-                  role='button'
-                  onClick={() => editTasks(task)}
-                  className={`${classes.icon} ${PrimeIcons.PENCIL}`}
+          {goals.tasks?.length ? (
+            goals.tasks?.map((task) => (
+              <div key={task.title} className={`text-center ${classes.task}`}>
+                <div className='d-flex justify-content-between align-items-center'>
+                  <Col xs={10}>
+                    <p className={classes.task_title}>{task.title}</p>
+                  </Col>
+                  <i
+                    role='button'
+                    onClick={() => editTasks(task)}
+                    className={`${classes.icon} ${PrimeIcons.PENCIL}`}
+                  />
+                </div>
+                <ProgressBar
+                  className={`${
+                    classes[
+                      task.progress === 100 ? 'progress_full' : 'progress'
+                    ]
+                  }`}
+                  value={task.progress}
                 />
               </div>
-              <ProgressBar className={classes.progress} value={task.progress} />
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>no has añadido tareas</p>
+          )}
           <Button variant='light' onClick={() => setShowAddTask(true)}>
             <i className={`${classes.icon} ${PrimeIcons.PLUS}`} />
           </Button>
@@ -101,7 +112,7 @@ export const CoacheeObjectivesItem: FC<{
         onHide={() => setShowAddTask(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body className={classes.section_modal}>
-          <AddTasks objectiveId={objectives.id} />
+          <AddTasks goalId={goals.id} show={(ev) => setShowAddTask(ev)} />
         </Modal.Body>
       </Modal>
       <Modal
@@ -112,7 +123,7 @@ export const CoacheeObjectivesItem: FC<{
         onHide={() => setShowEditTask(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body className={classes.section_modal}>
-          <EditTasks {...task} />
+          <EditTasks taskData={task} show={(ev) => setShowEditTask(ev)} />
         </Modal.Body>
       </Modal>
     </>

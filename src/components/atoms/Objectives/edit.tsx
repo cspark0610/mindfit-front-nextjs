@@ -5,11 +5,14 @@ import { useState } from 'react'
 import { Icons } from '../Icons'
 
 // bootstrap components
-import { Button, Col } from 'react-bootstrap'
+import { Button, Col, Spinner } from 'react-bootstrap'
 
 // prime components
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
+
+// services
+import { useCoacheeObjectives } from 'services/coachee'
 
 // styles
 import classes from 'styles/CoachObjectives/objectivesManagement.module.scss'
@@ -19,9 +22,15 @@ import { FC } from 'react'
 import { ChangeType } from 'types'
 import { ObjectivesProps } from 'types/components/Objectives'
 
-export const EditObjectives: FC<ObjectivesProps> = (props) => {
-  const [goal, setGoal] = useState(props)
+export const EditObjectives: FC<{
+  goalData: ObjectivesProps
+  show: (ev: boolean) => void
+}> = ({ goalData, show }) => {
   const [showIcons, setShowIcons] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [goal, setGoal] = useState(goalData)
+
+  const { updateObjective, deleteObjective } = useCoacheeObjectives()
 
   const handleChange = (ev: ChangeType) => {
     setGoal({ ...goal, [ev.target.id]: ev.target.value })
@@ -32,8 +41,20 @@ export const EditObjectives: FC<ObjectivesProps> = (props) => {
     setShowIcons(false)
   }
 
-  const handleEditGoal = () => {
-    console.log(goal)
+  const handleEditGoal = async () => {
+    setLoading(true)
+    await updateObjective({
+      variables: { data: { title: goal.title, icon: goal.icon }, id: goal.id },
+    })
+    setLoading(false)
+    show(false)
+  }
+
+  const handleDeleteGoal = async () => {
+    setLoading(true)
+    await deleteObjective({ variables: { id: goal.id } })
+    setLoading(false)
+    show(false)
   }
 
   return (
@@ -67,7 +88,12 @@ export const EditObjectives: FC<ObjectivesProps> = (props) => {
         />
       </Col>
       <Col className='text-end'>
-        <Button onClick={handleEditGoal}>Guardar</Button>
+        <Button className='me-3' variant='danger' onClick={handleDeleteGoal}>
+          {!loading ? 'Eliminar' : <Spinner animation='border' />}
+        </Button>
+        <Button onClick={handleEditGoal}>
+          {!loading ? 'Guardar' : <Spinner animation='border' />}
+        </Button>
       </Col>
     </>
   )

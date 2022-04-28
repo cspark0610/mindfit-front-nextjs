@@ -24,10 +24,16 @@
     .progress {
       background: $lightGray;
       :global(.p-progressbar-value) {
-        background-color: $primary;
+        background-color: $secondary;
       }
       :global(.p-progressbar-label) {
         color: $white;
+      }
+      &_full {
+        @extend .progress;
+        :global(.p-progressbar-value) {
+          background-color: $primary;
+        }
       }
     }
     .icon {

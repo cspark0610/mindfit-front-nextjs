@@ -1,0 +1,5 @@
+mutation updateTask($data: UpdateObjectiveTaskDto!, $id: Int!) {
+  updateObjectiveTask(data: $data, id: $id) {
+    id
+  }
+}

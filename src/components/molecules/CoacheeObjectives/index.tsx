@@ -11,7 +11,10 @@ import { PrimeIcons } from 'primereact/api'
 import { DataView } from 'primereact/dataview'
 
 // bootstrap components
-import { Container, Modal, Row } from 'react-bootstrap'
+import { Container, Modal, Row, Spinner } from 'react-bootstrap'
+
+// services
+import { useCoacheeObjectives } from 'services/coachee'
 
 // styles
 import classes from 'styles/CoachObjectives/coachObjectives.module.scss'
@@ -24,73 +27,23 @@ export const CoacheeObjectives: FC<{ content: any }> = ({ content }) => {
   const [showAddGoal, setShowAddGoal] = useState(false)
   const [showEditGoal, setShowEditGoal] = useState(false)
   const [goal, setGoal] = useState({ id: NaN, icon: '', title: '' })
-
-  const data = [
-    {
-      id: 1,
-      title: 'Communication',
-      icon: PrimeIcons.BOOK,
-      tasks: [
-        { title: 'Be more assertive', progress: 100 },
-        { title: 'Not taking anything personally', progress: 50 },
-        {
-          title: 'Talk to a colleague every day about my personal life',
-          progress: 66,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: 'Health',
-      icon: PrimeIcons.HEART,
-      tasks: [
-        {
-          title: 'Eat fruits or vegetables at every meal',
-          progress: 50,
-        },
-        { title: 'Avoid junk food', progress: 70 },
-        {
-          title: 'Engage in moderate physical activity 5 times a week.',
-          progress: 80,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'Emotional state',
-      icon: PrimeIcons.THUMBS_UP,
-      tasks: [
-        {
-          title: 'Practice meditation at least once a day.',
-          progress: 0,
-        },
-        {
-          title: 'Practice meditation.',
-          progress: 0,
-        },
-        {
-          title: 'Living more in the present and less in the future',
-          progress: 0,
-        },
-      ],
-    },
-  ]
+  const { goalsLoading, goalsData, deleteObjective } = useCoacheeObjectives()
 
   const editGoal = (ev: ObjectivesProps) => {
     setGoal(ev)
     setShowEditGoal(true)
   }
 
-  const removeGoal = (ev: number) => {
-    console.log(ev)
+  const deleteGoal = async (ev: number) => {
+    await deleteObjective({ variables: { id: ev } })
   }
 
   const itemTemplate = (product: ObjectivesProps) => (
     <CoacheeObjectivesItem
-      key={`${product?.title}`}
+      goals={product}
+      key={product?.id}
       editGoal={editGoal}
-      removeGoal={removeGoal}
-      objectives={product}
+      removeGoal={deleteGoal}
     />
   )
 
@@ -114,15 +67,19 @@ export const CoacheeObjectives: FC<{ content: any }> = ({ content }) => {
             />
           </p>
         </Row>
-        <DataView
-          rows={4}
-          value={data}
-          layout='grid'
-          paginator={data.length > 4}
-          className={classes.dataiew}
-          itemTemplate={itemTemplate}
-          emptyMessage='no has creado ningún objetivo'
-        />
+        {!goalsLoading ? (
+          <DataView
+            rows={4}
+            value={goalsData}
+            layout='grid'
+            paginator={goalsData.length > 4}
+            className={classes.dataiew}
+            itemTemplate={itemTemplate}
+            emptyMessage='no has creado ningún objetivo'
+          />
+        ) : (
+          <Spinner animation='border' />
+        )}
       </Container>
       <Modal
         size='lg'
@@ -132,7 +89,7 @@ export const CoacheeObjectives: FC<{ content: any }> = ({ content }) => {
         onHide={() => setShowAddGoal(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body className={classes.section_modal}>
-          <AddObjectives />
+          <AddObjectives show={(ev) => setShowAddGoal(ev)} />
         </Modal.Body>
       </Modal>
       <Modal
@@ -143,7 +100,7 @@ export const CoacheeObjectives: FC<{ content: any }> = ({ content }) => {
         onHide={() => setShowEditGoal(false)}>
         <Modal.Header className={classes.close} closeButton />
         <Modal.Body className={classes.section_modal}>
-          <EditObjectives {...goal} />
+          <EditObjectives goalData={goal} show={(ev) => setShowEditGoal(ev)} />
         </Modal.Body>
       </Modal>
     </>
