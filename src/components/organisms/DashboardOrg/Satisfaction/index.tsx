@@ -37,7 +37,9 @@ export const Satisfaction: FC<{ content: any }> = ({ content }) => {
         <p>No existen suficientes datos para mostrar esta gráfica</p>
       ) : (
         <>
-          <h3 className={`mb-5 text-center ${classes.blue}`}>{content.title}</h3>
+          <h3 className={`mb-5 text-center ${classes.blue}`}>
+            {content.title}
+          </h3>
           <Knob
             max={10}
             value={5.9}
@@ -50,7 +52,7 @@ export const Satisfaction: FC<{ content: any }> = ({ content }) => {
           />
           <Col xs={6} className='m-auto text-center'>
             <p className={`fw-bold ${classes.gray}`}>
-              {content.Description}{' '}{data.averageSatisfaction}
+              {content.Description} {data.averageSatisfaction}
             </p>
           </Col>
           <Row xs='auto' className='justify-content-center align-items-end'>
