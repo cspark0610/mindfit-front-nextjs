@@ -146,7 +146,8 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
           <p className={classes.label} onClick={handleToggleChange}>
             {content.recoverPasswordLabel}
           </p>
-          {!providers ? (
+          {/**Inicio de session con Google
+            !providers ? (
             <Skeleton width='100%' height='3rem' borderRadius='16px' />
           ) : (
             <Row>
@@ -164,7 +165,7 @@ export const LoginCard: FC<LoginCardProps> = ({ setToggleView, content }) => {
                   )
               )}
             </Row>
-          )}
+          )**/}
           <ExploreBadge />
         </form>
       </Col>
