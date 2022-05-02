@@ -1,0 +1,3 @@
+mutation deleteObjective($id: Int!) {
+  deleteCoacheeObjective(id: $id)
+}

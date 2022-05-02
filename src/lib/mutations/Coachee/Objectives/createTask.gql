@@ -1,0 +1,5 @@
+mutation createTask($data: CreateObjectiveTaskDto!) {
+  createObjectiveTask(data: $data) {
+    id
+  }
+}

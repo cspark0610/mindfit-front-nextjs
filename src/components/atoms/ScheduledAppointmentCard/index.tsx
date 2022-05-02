@@ -71,7 +71,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
       <Row className='w-100 flex-row-reverse'>
         {preview && !isBefore && (
           <Col xs='auto'>
-            <CalendarSchedule content={content}/>
+            <CalendarSchedule content={content} />
           </Col>
         )}
       </Row>
@@ -86,7 +86,7 @@ export const ScheduledAppointmentCard: FC<ScheduledAppointmentCardProps> = ({
               </Col>
             )}
             <Col xs={6}>
-              <CalendarSchedule content={content}/>
+              <CalendarSchedule content={content} />
             </Col>
           </>
         )}

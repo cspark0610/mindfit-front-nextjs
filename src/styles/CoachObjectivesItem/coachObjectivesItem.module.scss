@@ -1,27 +1,43 @@
 @import '../variables.scss';
 @import '../UI/Card/AppCard.module.scss';
+@import '../UI/Input/AppInput.module.scss';
+@import '../UI/Modal/appModal.module.scss';
 
 .goalsCard {
   display: flex;
+  &:hover {
+    filter: brightness(0.9);
+    transition: filter 0.3s;
+  }
   .section {
     padding: 22px 15px;
     border-radius: 15px;
     margin-bottom: 1rem;
-    min-height: 301px;
+    overflow-y: auto;
+    height: 301px;
+    width: 100%;
     &_header {
       color: $primary;
-    }
-    &_header > p {
-      margin-left: 13px;
+      align-items: center;
+      justify-content: space-between;
     }
     .progress {
       background: $lightGray;
       :global(.p-progressbar-value) {
-        background-color: $primary;
+        background-color: $secondary;
       }
       :global(.p-progressbar-label) {
         color: $white;
       }
+      &_full {
+        @extend .progress;
+        :global(.p-progressbar-value) {
+          background-color: $primary;
+        }
+      }
+    }
+    .icon {
+      color: $secondary;
     }
   }
 
@@ -32,5 +48,18 @@
     &_title {
       margin-bottom: 14px;
     }
+  }
+}
+
+.close {
+  padding: 40px 40px 0;
+  border-bottom: none;
+}
+
+.section_modal {
+  @extend .section;
+  border: none;
+  @media (max-width: 991px) {
+    padding: 80px 30px;
   }
 }
